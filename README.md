@@ -1,4 +1,4 @@
 textrank-module
 ===============
 
-TextRank implementation in Python
+<a href="http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf">TextRank</a> implementation in Python
