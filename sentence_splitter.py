@@ -1,4 +1,4 @@
 
 
 def sentence_split(text):
-    return []
+    return [word.strip() + '.' for word in text.split('.')]
