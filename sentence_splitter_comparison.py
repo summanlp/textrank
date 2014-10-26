@@ -1,15 +1,12 @@
 
-
-from sentence_splitter import sentence_split
 from nltk.tokenize import sent_tokenize
 import nltk.data
+from sentence_splitter import split_into_sentences
+import os
+import os.path
 
-SAMPLE_TEXT_1 = "samples/rush.txt"
-SAMPLE_TEXT_2 = "samples/argentina.txt"
-
-''' Tests the sentence_splitter function by comparing a sample result
-    with the output of the sentence_tokenize function in NLTK.
-'''
+SAMPLES_DIRECTORY = "samples"
+DEBUG = False
 
 
 def compare_sentences(output_list_1, output_list_2):
@@ -19,6 +16,9 @@ def compare_sentences(output_list_1, output_list_2):
     for line in output_list_1:
         if line in output_list_2:
             sentences_hit += 1
+        else:
+            if DEBUG:
+                print "Line not found on source #2:", line
 
     return float(sentences_hit) / float(total_sentences)
 
@@ -37,17 +37,19 @@ def compare(sample_text_file_name):
     with open(sample_text_file_name) as text_fp:
         sample_text = text_fp.read()
 
-    output_2 = sentence_split(sample_text)
+    output_2 = split_into_sentences(sample_text)
 
     return compare_sentences(output_1, output_2)
 
 
 def run_tests():
-    rush_acc = compare(SAMPLE_TEXT_1)
-    print "Sample text Rush: {acc}".format(acc=rush_acc)
-
-    argentina_acc = compare(SAMPLE_TEXT_2)
-    print "Sample text Argentina: {acc}".format(acc=argentina_acc)
+    """ Tests the sentence_splitter function by comparing a sample result
+    with the output of the sentence_tokenize function in NLTK.
+    """
+    for filename in os.listdir(SAMPLES_DIRECTORY):
+        filepath = os.path.join(SAMPLES_DIRECTORY, filename)
+        accuracy = compare(filepath)
+        print "Accuracy for sample text '{filename}': {acc}".format(filename=filename, acc=accuracy)
 
 
 run_tests()
