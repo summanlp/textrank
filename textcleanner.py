@@ -1,6 +1,6 @@
 
-from gensim.utils import tokenize
-from gensim.utils import lemmatize
+#from gensim.utils import tokenize
+#from gensim.utils import lemmatize
 
 import re
 
@@ -33,10 +33,9 @@ def get_clean_sentences(text):
 def tokenize_sentences(text): 
 	"""
 		http://regex101.com/#python para probar regex.
-		Esa NO anda en casos de 'its position at 2 a.m. Sunday at latitude 16.1 north' 
-		porque separa por los puntos intermedios
+		Esa NO anda en casos de 'hola\nchau' 
 	"""
-	pattern = re.compile('\s*[^.!?]*[.!?]')
+	pattern = re.compile('(\S.+?[.!?\n])(?=\s+|$)')
 	for match in pattern.finditer(text):
 		yield match.group()
 

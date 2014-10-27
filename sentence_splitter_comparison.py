@@ -2,11 +2,12 @@
 from nltk.tokenize import sent_tokenize
 import nltk.data
 from sentence_splitter import split_into_sentences
+from textcleanner import tokenize_sentences
 import os
 import os.path
 
 SAMPLES_DIRECTORY = "samples"
-DEBUG = False
+DEBUG = True
 
 
 def compare_sentences(output_list_1, output_list_2):
@@ -35,7 +36,6 @@ def compare(sample_text_file_name):
 
     return compare_sentences(output_1, output_2)
 
-
 def nltk_tokenize(file):
     sample_text = nltk.data.load(file)
     output_1 = sent_tokenize(sample_text)
@@ -48,6 +48,17 @@ def my_tokenize(file):
 
     return split_into_sentences(sample_text)
 
+def tokenize2(file):
+    with open(file) as text_fp:
+        sample_text = text_fp.read()
+
+    return list(tokenize_sentences(sample_text))
+
+def compare2(sample_text_file_name):
+    output_1 = nltk_tokenize(sample_text_file_name)
+    output_2 = tokenize2(sample_text_file_name)
+
+    return compare_sentences(output_1, output_2)
 
 def run_tests():
     """ Tests the sentence_splitter function by comparing a sample result
@@ -56,7 +67,10 @@ def run_tests():
     for filename in os.listdir(SAMPLES_DIRECTORY):
         filepath = os.path.join(SAMPLES_DIRECTORY, filename)
         accuracy = compare(filepath)
-        print "Accuracy for sample text '{filename}': {acc}".format(filename=filename, acc=accuracy)
+        print "Accuracy for simple method: '{filename}': {acc}".format(filename=filename, acc=accuracy)
+        accuracy2 = compare2(filepath)
+        print "Accuracy for improved method: '{filename}': {acc}".format(filename=filename, acc=accuracy2)
+        print
 
 
 run_tests()
