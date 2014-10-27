@@ -30,16 +30,23 @@ def compare(sample_text_file_name):
     Returns the proportion between the mathes of both methods and the number of
     sentences of the first.
     """
-    sample_text = nltk.data.load(sample_text_file_name)
-    output_1 = sent_tokenize(sample_text)
-    output_1 = [sentence.encode('utf8') for sentence in output_1]
-
-    with open(sample_text_file_name) as text_fp:
-        sample_text = text_fp.read()
-
-    output_2 = split_into_sentences(sample_text)
+    output_1 = nltk_tokenize(sample_text_file_name)
+    output_2 = my_tokenize(sample_text_file_name)
 
     return compare_sentences(output_1, output_2)
+
+
+def nltk_tokenize(file):
+    sample_text = nltk.data.load(file)
+    output_1 = sent_tokenize(sample_text)
+    return [sentence.encode('utf8') for sentence in output_1]
+
+
+def my_tokenize(file):
+    with open(file) as text_fp:
+        sample_text = text_fp.read()
+
+    return split_into_sentences(sample_text)
 
 
 def run_tests():
