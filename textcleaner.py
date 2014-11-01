@@ -41,9 +41,14 @@ STOPWORDS = frozenset(w for w in STOPWORDS.split() if w)
 
 
 def clean_text(text):
+	"""
+	Given some text, tokenizes into sentences, applies filters and lemmatizes them.
+	Returns dictionary that map sentences to processed sentences.
+	"""
 	original_sentences = get_tokenized_sentences(text)
 	filtered_sentences = filter_words(original_sentences)
 	return {item[0]:item[1] for item in zip(original_sentences, filtered_sentences)}
+
 
 def get_tokenized_sentences(text):
 	processed = replace_abbreviations(text)
@@ -79,6 +84,3 @@ def apply_filters(sentence, filters):
 
 def remove_stopwords(sentence):
 	return " ".join(w for w in sentence.split() if w not in STOPWORDS)
-
-
-
