@@ -2,7 +2,7 @@
 from nltk.tokenize import sent_tokenize
 import nltk.data
 from sentence_splitter import split_into_sentences
-from textcleanner import tokenize_sentences
+import textcleaner as tc
 import os
 import os.path
 
@@ -52,7 +52,7 @@ def tokenize2(file):
     with open(file) as text_fp:
         sample_text = text_fp.read()
 
-    return list(tokenize_sentences(sample_text))
+    return tc.get_tokenized_sentences(sample_text)
 
 def compare2(sample_text_file_name):
     output_1 = nltk_tokenize(sample_text_file_name)
