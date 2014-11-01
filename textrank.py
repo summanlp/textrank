@@ -1,22 +1,19 @@
 
 from pygraph.classes.digraph import digraph as pydigraph
 from pagerank_weighted import pagerank_weighted as pagerank
+from textcleaner import clean_text
 from math import log10
 
 SUMMARY_LENGTH = .2
-TEST_FILE = "test_data/textrank_example.txt"
+TEST_FILE = "samples/textrank_example.txt"
 
 
-def textrank(filename=None, text=None):
-    # Creates the graph and calculates the simmilarity coefficient
-    # for every pair of nodes.
-    if text != None:
-        text = text.split('\n')
-    
-    if filename != None:
-        text = get_text_from_file(filename)
-    
-    graph = get_graph(text)
+def textrank(text):
+    # Gets a dict of  original_sentence -> processed_sentence
+    sentences = clean_text(text)
+
+    # Creates the graph and calculates the simmilarity coefficient for every pair of nodes.
+    graph = get_graph(sentences.values())
     set_graph_edge_weights(graph)
 
     # Ranks the sentences using the PageRank algorithm.
@@ -27,17 +24,17 @@ def textrank(filename=None, text=None):
 
     # Sorts the extracted sentences by apparition order in the
     # original text.
-    summary = sort_by_apparition(extracted_sentences, text)
+    summary = sort_by_apparition(extracted_sentences, sentences, text)
     
     return "\n".join(summary)
 
 
-def sort_by_apparition(extracted_sentences, text):
+def sort_by_apparition(extracted_sentences, sentences, text):
     summary = []
 
-    for sentence in text:
-        if sentence in extracted_sentences:
-            summary.append(sentence)
+    for key in sentences:
+        if sentences[key] in extracted_sentences:
+            summary.append(key)
 
     return summary
 
@@ -46,11 +43,6 @@ def extract_sentences(sentences, scores):
     sentences.sort(key=lambda s: scores[s], reverse=True)
     length = len(sentences) * SUMMARY_LENGTH
     return sentences[:int(length)]
-
-
-def get_text_from_file(filename):
-    with open(filename) as fp:
-        return fp.readlines()
 
 
 def get_graph(text):
@@ -81,10 +73,7 @@ def set_graph_edge_weights(graph):
             graph.add_edge(edge_2, similarity)
 
 
-def get_similarity(s1, s2):
-    s1_list = s1.split()
-    s2_list = s2.split()
-
+def get_similarity(s1_list, s2_list):
     common_word_count = get_common_word_count(s1_list, s2_list)
 
     log_s1 = log10(len(s1_list))
@@ -98,4 +87,10 @@ def get_common_word_count(s1_list, s2_list):
 
 
 if __name__ == "__main__":
-    print textrank(filename=TEST_FILE)
+    main()
+
+def main():
+    with open(TEST_FILE) as file:
+        text = file.read()
+
+    print textrank(text)
