@@ -1,10 +1,13 @@
 
 #from gensim.utils import tokenize
-#from gensim.utils import lemmatize
 
-import re
+from gensim.utils import lemmatize
+from gensim.parsing.preprocessing import strip_numeric, strip_punctuation
+
+import re  	# http://regex101.com/#python para probar regex.
 
 SEPARATOR = r"@"
+RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)') # backup (\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)
 AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)\s(\w)")
 AB_ACRONYM = re.compile("(\.[a-zA-Z]\.)\s(\w)")
 UNDO_AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)" + SEPARATOR + "(\w)")
@@ -12,30 +15,45 @@ UNDO_AB_ACRONYM = re.compile("(\.[a-zA-Z]\.)" + SEPARATOR + "(\w)")
 
 
 # StopWords from NLTK
-STOPWORDS = frozenset(['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours',
-'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers',
-'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves',
-'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are',
-'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does',
-'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until',
-'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into',
-'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down',
-'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here',
-'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more',
-'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so',
-'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now'])
+STOPWORDS = """
+all six eleven just less being indeed over both anyway detail four front already through yourselves fify  
+mill still its before move whose one system also somewhere herself thick show had enough should to only  
+seeming under herein ours two has might thereafter do them his around thereby get very de none cannot  
+every whether they not during thus now him nor name regarding several hereafter did always cry whither  
+beforehand this someone she each further become thereupon where side towards few twelve because often ten  
+anyhow doing km eg some back used go namely besides yet are cant our beyond ourselves sincere out even  
+what throughout computer give for bottom mine since please while per find everything behind does various  
+above between kg neither seemed ever across t somehow be we who were sixty however here otherwise whereupon  
+nowhere although found hers re along quite fifteen by on about didn last would anything via of could thence  
+put against keep etc s became ltd hence therein onto or whereafter con among own co afterwards formerly  
+within seems into others whatever yourself down alone everyone done least another whoever moreover couldnt  
+must your three from her their together top there due been next anyone whom much call too interest thru  
+themselves hundred was until empty more himself elsewhere mostly that fire becomes becoming hereby but  
+else part everywhere former don with than those he me forty myself made full twenty these bill using up us  
+will nevertheless below anywhere nine can theirs toward my something and sometimes whenever sometime then  
+almost wherever is describe am it doesn an really as itself at have in seem whence ie any if again hasnt  
+inc un thin no perhaps latter meanwhile when amount same wherein beside how other take which latterly you  
+fill either nobody unless whereas see though may after upon therefore most hereupon eight amongst never  
+serious nothing such why a off whereby third i whole noone many well except amoungst yours rather without  
+so five the first having once
+"""
+STOPWORDS = frozenset(w for w in STOPWORDS.split() if w)
 
+
+def clean_text(text):
+	original_sentences = get_tokenized_sentences(text)
+	filtered_sentences = filter_words(original_sentences)
+	return {item[0]:item[1] for item in zip(original_sentences, filtered_sentences)}
 
 def get_tokenized_sentences(text):
-	""" 
-		Returns a dictionary with the clean sentence as key, and the original sentence 
-		as value.
-	"""
 	processed = replace_abbreviations(text)
-	return process_text(processed)
+	return [undo_replacement(sentence) for sentence in tokenize_sentences(processed)]
 
 def replace_abbreviations(text):
 	return replace_with_separator(text, SEPARATOR, [AB_SENIOR, AB_ACRONYM])
+
+def undo_replacement(sentence):
+	return replace_with_separator(sentence, r" ", [UNDO_AB_SENIOR, UNDO_AB_ACRONYM])
 
 def replace_with_separator(text, separator, regexs):
 	replacement = r"\1" + separator + r"\2"
@@ -44,27 +62,23 @@ def replace_with_separator(text, separator, regexs):
 		result = regex.sub(replacement, result)
 	return result
 
-
-def process_text(text):
-	result = []
-	for sentence in tokenize_sentences(text):
-		result.append(undo_replacement(sentence))
-	return result
-
-
 def tokenize_sentences(text): 
-	"""
-		http://regex101.com/#python para probar regex.
-		Esa NO anda en casos de 'hola\nchau' 
-	"""
-	pattern = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?\n)')
-	for match in pattern.finditer(text):
+	for match in RE_SENTENCE.finditer(text):
 		yield match.group()
 
 
-def undo_replacement(sentence):
-	return replace_with_separator(sentence, r" ", [UNDO_AB_SENIOR, UNDO_AB_ACRONYM])
+
+def filter_words(sentences):
+	filters = [lambda x: x.lower(), strip_numeric, strip_punctuation, remove_stopwords, lemmatize]
+	return [apply_filters(sentence, filters) for sentence in sentences]
+
+def apply_filters(sentence, filters):
+	for f in filters:
+		sentence = f(sentence)
+	return sentence
+
+def remove_stopwords(sentence):
+	return " ".join(w for w in sentence.split() if w not in STOPWORDS)
 
 
-def filter_stopwords(sentences):
-		return [[word for word in sentence.lower().split() if word not in STOPWORDS] for sentence in sentences]
+
