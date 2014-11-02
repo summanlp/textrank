@@ -1,48 +1,63 @@
 
 from pygraph.classes.digraph import digraph as pydigraph
 from pagerank_weighted import pagerank_weighted as pagerank
-from textcleaner import clean_text
+from textcleaner import tokenize_by_sentences
 from math import log10
+
+import pdb
 
 SUMMARY_LENGTH = .2
 TEST_FILE = "samples/textrank_example.txt"
-
+DEBUG = False
 
 def textrank(text):
-    # Gets a dict of  original_sentence -> processed_sentence
-    sentences = clean_text(text)
+    # Gets a dict of  processed_sentence -> original_sentences
+    tokens = tokenize_by_sentences(text)
 
     # Creates the graph and calculates the simmilarity coefficient for every pair of nodes.
-    graph = get_graph(sentences.values())
+    graph = get_graph(tokens.keys())
     set_graph_edge_weights(graph)
 
-    # Ranks the sentences using the PageRank algorithm.
+    # Ranks the tokens using the PageRank algorithm.
     scores = pagerank(graph)
 
-    # Extracts the most important sentences.
-    extracted_sentences = extract_sentences(graph.nodes(), scores)
+    # Extracts the most important tokens.
+    extracted_tokens = extract_tokens(graph.nodes(), scores)
 
     # Sorts the extracted sentences by apparition order in the
     # original text.
-    summary = sort_by_apparition(extracted_sentences, sentences, text)
+    summary = sort_by_apparition(extracted_tokens, tokens, text)
     
     return "\n".join(summary)
 
 
-def sort_by_apparition(extracted_sentences, sentences, text):
+def sort_by_apparition(extracted_tokens, tokens, text):
     summary = []
 
-    for key in sentences:
-        if sentences[key] in extracted_sentences:
-            summary.append(key)
+    for extracted in extracted_tokens:
+        original_sentence = tokens[extracted]
+        try:
+            index = text.index(original_sentence)
+            if DEBUG: 
+                summary.append((original_sentence, index, extracted_tokens[extracted]))
+            else:
+                summary.append((original_sentence, index))
 
-    return summary
+        except ValueError:
+            print "ERROR: sentence not found: " + original_sentence 
+
+    summary.sort(key=lambda t: t[1])
+    if DEBUG:
+        debug_info = lambda item: "({0:.4f}) : {1}".format(item[2], item[0])
+        return [debug_info(item) for item in summary]    
+    return [item[0] for item in summary]
 
 
-def extract_sentences(sentences, scores):
+
+def extract_tokens(sentences, scores):
     sentences.sort(key=lambda s: scores[s], reverse=True)
     length = len(sentences) * SUMMARY_LENGTH
-    return sentences[:int(length)]
+    return { sentences[i]: scores[sentences[i]] for i in range(int(length))}
 
 
 def get_graph(text):
@@ -73,7 +88,11 @@ def set_graph_edge_weights(graph):
             graph.add_edge(edge_2, similarity)
 
 
-def get_similarity(s1_list, s2_list):
+def get_similarity(s1, s2):
+
+    s1_list = s1.split()
+    s2_list = s2.split()
+
     common_word_count = get_common_word_count(s1_list, s2_list)
 
     log_s1 = log10(len(s1_list))
