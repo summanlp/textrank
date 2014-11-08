@@ -10,8 +10,9 @@ SUMMARY_LENGTH = .2
 TEST_FILE = "samples/textrank_example.txt"
 DEBUG = False
 
+
 def textrank(text):
-    # Gets a dict of  processed_sentence -> original_sentences
+    # Gets a dict of processed_sentence -> original_sentences
     tokens = tokenize_by_sentences(text)
 
     # Creates the graph and calculates the simmilarity coefficient for every pair of nodes.
@@ -51,7 +52,6 @@ def sort_by_apparition(extracted_tokens, tokens, text):
         debug_info = lambda item: "({0:.4f}) : {1}".format(item[2], item[0])
         return [debug_info(item) for item in summary]    
     return [item[0] for item in summary]
-
 
 
 def extract_tokens(sentences, scores):
@@ -105,11 +105,12 @@ def get_common_word_count(s1_list, s2_list):
     return sum(1 for w in set(s1_list) if w in set(s2_list))
 
 
-if __name__ == "__main__":
-    main()
-
 def main():
     with open(TEST_FILE) as file:
         text = file.read()
 
     print textrank(text)
+
+
+if __name__ == "__main__":
+    main()

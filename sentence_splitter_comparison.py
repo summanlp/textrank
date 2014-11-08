@@ -36,6 +36,7 @@ def compare(sample_text_file_name):
 
     return compare_sentences(output_1, output_2)
 
+
 def nltk_tokenize(file):
     sample_text = nltk.data.load(file)
     output_1 = sent_tokenize(sample_text)
@@ -48,17 +49,20 @@ def my_tokenize(file):
 
     return split_into_sentences(sample_text)
 
+
 def tokenize2(file):
     with open(file) as text_fp:
         sample_text = text_fp.read()
 
     return tc.get_tokenized_sentences(sample_text)
 
+
 def compare2(sample_text_file_name):
     output_1 = nltk_tokenize(sample_text_file_name)
     output_2 = tokenize2(sample_text_file_name)
 
     return compare_sentences(output_1, output_2)
+
 
 def run_tests():
     """ Tests the sentence_splitter function by comparing a sample result

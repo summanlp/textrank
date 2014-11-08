@@ -38,6 +38,7 @@ so five the first having once
 """
 STOPWORDS = frozenset(w for w in STOPWORDS.split() if w)
 
+
 def tokenize_by_sentences(text):
 	"""
 	Given some text, tokenizes into sentences, applies filters and lemmatizes them.
@@ -52,11 +53,14 @@ def split_sentences(text):
 	processed = replace_abbreviations(text)
 	return [undo_replacement(sentence) for sentence in get_sentences(processed)]
 
+
 def replace_abbreviations(text):
 	return replace_with_separator(text, SEPARATOR, [AB_SENIOR, AB_ACRONYM])
 
+
 def undo_replacement(sentence):
 	return replace_with_separator(sentence, r" ", [UNDO_AB_SENIOR, UNDO_AB_ACRONYM])
+
 
 def replace_with_separator(text, separator, regexs):
 	replacement = r"\1" + separator + r"\2"
@@ -65,10 +69,10 @@ def replace_with_separator(text, separator, regexs):
 		result = regex.sub(replacement, result)
 	return result
 
+
 def get_sentences(text): 
 	for match in RE_SENTENCE.finditer(text):
 		yield match.group()
-
 
 
 def filter_words(tokens):
@@ -85,9 +89,9 @@ def apply_filters(sentence, filters):
 		sentence = f(sentence)
 	return sentence
 
+
 def remove_stopwords(sentence):
 	return " ".join(w for w in sentence.split() if w not in STOPWORDS)
-
 
 
 # Falta bocha por acá:
@@ -95,8 +99,9 @@ def remove_stopwords(sentence):
 #  - Ver que se debe hacer con las palabras repetidas (releer paper)
 
 import pdb
+
+
 def tokenize_by_word(text):
 	# pdb.set_trace()
 	original_words = list(tokenize(text, to_lower=True))
 	return filter_words(original_words)
-	
