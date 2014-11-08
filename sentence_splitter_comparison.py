@@ -24,15 +24,15 @@ def compare_sentences(output_list_1, output_list_2):
     return float(sentences_hit) / float(total_sentences)
 
 
-def compare(sample_text_file_name):
+def compare(sample_text_file_name, custom_sentence_splitter):
     """
-    Given the filename of a sample text, extracts its sentences using two
-    different methods.
+    Given the filename of a sample text, extracts its sentences using the
+    sent_tokenize method from NLTK and the custom method.
     Returns the proportion between the mathes of both methods and the number of
     sentences of the first.
     """
     output_1 = nltk_tokenize(sample_text_file_name)
-    output_2 = my_tokenize(sample_text_file_name)
+    output_2 = custom_sentence_splitter(sample_text_file_name)
 
     return compare_sentences(output_1, output_2)
 
@@ -57,22 +57,15 @@ def tokenize2(file):
     return tc.split_sentences(sample_text)
 
 
-def compare2(sample_text_file_name):
-    output_1 = nltk_tokenize(sample_text_file_name)
-    output_2 = tokenize2(sample_text_file_name)
-
-    return compare_sentences(output_1, output_2)
-
-
 def run_tests():
     """ Tests the sentence_splitter function by comparing a sample result
     with the output of the sentence_tokenize function in NLTK.
     """
     for filename in os.listdir(SAMPLES_DIRECTORY):
         filepath = os.path.join(SAMPLES_DIRECTORY, filename)
-        accuracy = compare(filepath)
+        accuracy = compare(filepath, my_tokenize)
         print "Accuracy for simple method: '{filename}': {acc}".format(filename=filename, acc=accuracy)
-        accuracy2 = compare2(filepath)
+        accuracy2 = compare(filepath, tokenize2)
         print "Accuracy for improved method: '{filename}': {acc}".format(filename=filename, acc=accuracy2)
         print
 
