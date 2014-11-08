@@ -7,7 +7,7 @@ import os
 import os.path
 
 SAMPLES_DIRECTORY = "samples"
-DEBUG = True
+DEBUG = False
 
 
 def compare_sentences(output_list_1, output_list_2):
@@ -54,7 +54,7 @@ def tokenize2(file):
     with open(file) as text_fp:
         sample_text = text_fp.read()
 
-    return tc.get_tokenized_sentences(sample_text)
+    return tc.split_sentences(sample_text)
 
 
 def compare2(sample_text_file_name):

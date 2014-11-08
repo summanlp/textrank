@@ -1,3 +1,4 @@
+#encoding: cp850
 
 from gensim.utils import tokenize
 from gensim.utils import lemmatize
@@ -6,7 +7,7 @@ from gensim.parsing.preprocessing import strip_numeric, strip_punctuation
 import re  	# http://regex101.com/#python para probar regex.
 
 SEPARATOR = r"@"
-RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)') # backup (\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)
+RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)')  # backup (\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)
 AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)\s(\w)")
 AB_ACRONYM = re.compile("(\.[a-zA-Z]\.)\s(\w)")
 UNDO_AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)" + SEPARATOR + "(\w)")
@@ -94,7 +95,7 @@ def remove_stopwords(sentence):
 	return " ".join(w for w in sentence.split() if w not in STOPWORDS)
 
 
-# Falta bocha por ac√°:
+# Falta bocha por ac†:
 #  - Corregir bug cuando alguna palabra se transforma a ""
 #  - Ver que se debe hacer con las palabras repetidas (releer paper)
 
