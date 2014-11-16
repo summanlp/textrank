@@ -1,0 +1,27 @@
+
+  Other related work includes Becker (1993) and Habert
+(1991).
+  See, for example, Bleiching (1992,
+1994), Brown  Hippisley (1994), Corbett  Fraser (1993), Cahill
+(1990, 1993), Cahill  Evans (1990), Fraser  Corbett (in press),
+Gazdar (forthcoming), Gibbon (1992), Kilgarriff (1993), Kilgarriff 
+Gazdar (in press), Reinhard  Gibbon (1991).
+  See, for example, Andry et al.
+(1992) on compilation, Kilbury et al. (1991) on coding DAGs,
+Langer (1994) on reverse querying, and Barg (1994), Light (1994),
+Light et al. (1993) and Kilbury et al. (1994) on
+automatic acquisition.  And there are at least a dozen different
+ implementations available on various platforms and programming
+languages.
+  And note in addition that the examples in this
+paper are simplified still further for expositional purposes.
+  Or the principal anchor node, in constructions which have
+more than one lexical anchor.
+  The parent is not a leaf of the entire tree, of
+course, but it is a leaf of the subtree above the current node.
+  To gain a superficial understanding of this
+fragment, read a line such as [] == INTRANS_VERB as ``inherit everything from the definition of .'', and a line such as
+[parent] == PP_TREE:[] as ``inherit the  subtree
+from the definition of PP_TREE.'' Inheritance is always
+default - locally defined feature specifications take priority over
+inherited ones.

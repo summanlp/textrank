@@ -1,0 +1,9 @@
+
+We describe a computational framework for a grammar architecture
+in which different linguistic domains such as morphology, syntax,
+and semantics are treated not as separate components but
+compositional domains. Word and phrase formation are modeled as
+uniform processes contributing to the derivation of the semantic form.
+The morpheme, as well as the lexeme, has lexical representation
+in the form of semantic content, tactical constraints, and phonological
+realization. The model is based on Combinatory Categorial Grammars.

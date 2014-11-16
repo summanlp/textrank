@@ -1,0 +1,15 @@
+
+Tableaux originate as a decision method for a logical language.
+They can also be extended to obtain a structure that
+spells out all the information in a set of sentences in terms of
+truth value assignments to atomic formulas that appear in them.
+This approach is pursued here.  Over such a structure,
+compositional rules are provided for obtaining the
+presuppositions of a logical statement from its atomic subformulas
+and their  presuppositions.
+The rules are based on classical logic semantics
+and they are shown to model the  behaviour of presuppositions
+observed in natural language sentences built with
+if ...then, and and or.
+The advantages of this method  over existing
+frameworks for presuppositions are discussed.

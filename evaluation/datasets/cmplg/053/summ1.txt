@@ -1,0 +1,21 @@
+
+Syntactic natural language parsers have shown themselves to be
+inadequate for processing highly-ambiguous large-vocabulary text, as
+is evidenced by their poor performance on domains like the Wall Street
+Journal, and by the movement away from parsing-based approaches to
+text-processing in general.  In this paper, I describe SPATTER, a
+statistical parser based on decision-tree learning techniques which
+constructs a complete parse for every sentence and achieves accuracy
+rates far better than any published result.  This work is based on the
+following premises: (1) grammars are too complex and detailed to
+develop manually for most interesting domains; (2) parsing models must
+rely heavily on lexical and contextual information to analyze
+sentences accurately; and (3) existing n-gram modeling techniques
+are inadequate for parsing models.  In experiments comparing SPATTER
+with IBM's computer manuals parser, SPATTER significantly outperforms
+the grammar-based parser.  Evaluating SPATTER against the Penn
+Treebank Wall Street Journal corpus using the PARSEVAL measures,
+SPATTER achieves 86% precision, 86% recall, and 1.3 crossing
+brackets per sentence for sentences of 40 words or less, and 91%
+precision, 90% recall, and 0.5 crossing brackets for sentences
+between 10 and 20 words in length.

@@ -1,0 +1,9 @@
+
+In conversation, a person sometimes has to refer to an object
+that is not previously known to the other participant.  We present a
+plan-based model of how agents collaborate on reference of this sort.
+In making a reference, an agent uses the most salient attributes of the
+referent.  In understanding a reference, an agent determines his
+confidence in its adequacy as a means of identifying the referent.  To
+collaborate, the agents use judgment, suggestion, and elaboration moves
+to refashion an inadequate referring expression.

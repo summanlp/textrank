@@ -1,0 +1,18 @@
+
+In many applications of natural language processing it is
+necessary to determine the likelihood of a given word combination. For
+example, a speech recognizer may need to determine which of the two
+word combinations ``eat a peach'' and ``eat a beach'' is more likely.
+Statistical NLP methods determine the likelihood of a word combination
+according to its frequency in a training corpus. However, the
+nature of language is such that many word combinations are infrequent
+and do not occur in a given corpus. In
+this work we propose a method for estimating the probability of such
+previously unseen word combinations using available information on
+``most similar'' words.
+We describe a probabilistic word association model based on
+distributional word similarity, and apply it to improving probability
+estimates for unseen word bigrams in a variant of Katz's back-off
+model. The similarity-based method yields a 20% perplexity improvement
+in the prediction of unseen bigrams and statistically
+significant reductions in speech-recognition error.

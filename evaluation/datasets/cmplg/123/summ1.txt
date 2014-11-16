@@ -1,0 +1,12 @@
+
+We prove a theorem stating that any semantics can be encoded as a
+compositional semantics, which means that, essentially, the standard
+definition of compositionality is formally vacuous. We then show that when
+compositional semantics is required to be "systematic"
+(that is, the meaning
+function cannot be arbitrary, but must belong to some class),
+it is possible to
+distinguish between compositional and non-compositional semantics.
+As a result, we believe that the paper clarifies the
+concept of compositionality and opens a possibility of making systematic
+formal comparisons of different systems of grammars.

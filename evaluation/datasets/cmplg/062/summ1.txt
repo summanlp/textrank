@@ -1,0 +1,16 @@
+
+Possessive pronouns are used as determiners in English when no
+  equivalent would be used in a Japanese sentence with the same
+  meaning.  This paper proposes a heuristic method of generating such
+  possessive pronouns even when there is no equivalent in the
+  Japanese.  The method uses information about the use of possessive
+  pronouns in English treated as a lexical property of nouns, in
+  addition to contextual information about noun phrase referentiality
+  and the subject and main verb of the sentence that the noun phrase
+  appears in.  The proposed method has been implemented in NTT
+  Communication Science Laboratories' Japanese-to-English machine
+  translation system ALT-J/E.  In a test set of 6,200 sentences,
+  the proposed method increased the number of noun phrases with
+  appropriate possessive pronouns generated, by 263 to 609, at the
+  cost of generating 83 noun phrases with inappropriate possessive
+  pronouns.

@@ -1,0 +1,12 @@
+
+Few, if any, current NLP systems make any significant use
+of punctuation. Intuitively, a treatment of punctuation seems
+necessary to the analysis and production of text. Whilst this
+has been suggested in the fields of discourse structure, it is still
+unclear whether punctuation can help in the syntactic field.
+This investigation attempts to answer this question by parsing
+some corpus-based material with two similar grammars -- one
+including rules for punctuation, the other ignoring it. The
+punctuated grammar significantly out-performs the
+unpunctuated one, and so the conclusion is that punctuation
+can play a useful role in syntactic processing.

@@ -1,0 +1,6 @@
+
+This paper presents a grammar formalism designed for use in data-oriented
+approaches to language processing. It goes on to investigate
+ways in which a corpus pre-parsed with this
+formalism may be processed to provide a probabilistic language model
+for use in the parsing of fresh texts.

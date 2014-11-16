@@ -1,0 +1,7 @@
+
+The lexicalist approach to Machine Translation offers significant
+advantages in the development of linguistic descriptions.  However, the
+Shake-and-Bake generation algorithm of [] is
+NP-complete.  We present a polynomial time algorithm for lexicalist MT
+generation provided that sufficient information can be transferred to
+ensure more determinism.

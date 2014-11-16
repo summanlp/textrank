@@ -1,0 +1,10 @@
+
+We present a metagrammatical formalism, generic rules, 
+to give a default interpretation to grammar 
+rules. Our formalism introduces a process of dynamic binding 
+interfacing the level of pure grammatical knowledge representation and 
+the parsing level. We present an approach to 
+non-constituent coordination within categorial grammars, and 
+reformulate it as a generic rule. This reformulation is context-free 
+parsable and reduces drastically the search space associated to the 
+parsing task for such phenomena. 

@@ -1,0 +1,17 @@
+
+In this paper, we present an alternative approach to multiple inheritance
+for typed feature structures.
+In our
+approach, a feature structure can be associated with several types coming
+from different hierarchies (dimensions). In case of multiple inheritance, a
+type
+has supertypes from different hierarchies. We contrast this approach
+with approaches based on a single type hierarchy where a feature structure
+has only one unique most general type, and multiple inheritance
+involves computation of greatest lower bounds in the hierarchy.
+The proposed approach supports current linguistic
+analyses in constraint-based formalisms like HPSG, inheritance in
+the lexicon, and knowledge representation for NLP systems. Finally,
+we show that multi-dimensional inheritance hierarchies can be
+compiled into a Prolog term representation, which allows to compute
+the conjunction of two types efficiently by Prolog term unification.

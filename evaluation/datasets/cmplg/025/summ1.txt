@@ -1,0 +1,13 @@
+
+Recent work has considered corpus-based or statistical approaches to
+the problem of prepositional phrase attachment ambiguity.
+Typically, ambiguous verb phrases of the form v np1 p np2 are
+resolved through a model which considers values of the four head
+words (v, n1, p and n2). This paper shows that the
+problem is analogous to n-gram language models in speech
+recognition, and that one of the most common methods for language modeling,
+the backed-off estimate, is applicable. Results on Wall
+Street Journal data of 84.5% accuracy are obtained using this method.
+A surprising result is the importance of
+low-count events - ignoring events which occur less than 5
+times in training data reduces performance to 81.6%.

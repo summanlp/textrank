@@ -1,0 +1,17 @@
+
+ProFIT is an extension of Standard Prolog
+with Features, Inheritance and
+Templates. ProFIT allows the programmer or grammar developer to declare
+an inheritance
+hierarchy, features and templates. Sorted feature terms can be used
+in ProFIT programs
+together with Prolog terms to provide a clearer description
+language for linguistic structures.
+ProFIT compiles all sorted feature terms
+into a Prolog term representation, so that the built-in Prolog term
+unification can be used for the unification of sorted feature structures,
+and no special unification algorithm is needed.
+ProFIT programs are compiled into Prolog programs, so that no meta-interpreter
+is needed for their execution. ProFIT thus provides
+a direct step from grammars developed with sorted feature terms to
+Prolog programs usable for practical NLP systems.

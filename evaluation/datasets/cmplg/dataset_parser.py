@@ -13,6 +13,9 @@ SUMM_FILENAME = 'summ1.txt'
 
 # Reads every file in the sources directory.
 for i, filename in enumerate(os.listdir(SRC_DIR)):
+    if not filename.endswith('.xml'):
+        continue
+
     # Opens the source file.
     filepath = os.path.join(SRC_DIR, filename)
     parser = etree.XMLParser(remove_comments=True)
@@ -25,7 +28,7 @@ for i, filename in enumerate(os.listdir(SRC_DIR)):
     assert tree[2].tag == ELEM_BODY
 
     # Creates a directory for every source file.
-    directory_name = "{:0>2d}".format(i)
+    directory_name = "{:0>3d}".format(i + 1)
     assert not os.path.exists(directory_name)
     os.makedirs(directory_name)
 

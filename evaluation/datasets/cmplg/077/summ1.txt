@@ -1,0 +1,12 @@
+
+This paper describes  RESOLVE, a system that uses decision
+trees to learn how to classify coreferent phrases in the domain of
+business joint ventures.  An experiment is presented in which the
+performance of  RESOLVE is compared to the performance of
+a manually engineered set of rules for the same task.  The results
+show that decision trees achieve higher performance than the rules in
+two of three evaluation metrics developed for the coreference task.
+In addition to achieving better performance than the rules,
+ RESOLVE provides a framework that facilitates the
+exploration of the types of knowledge that are useful for solving the
+coreference problem.

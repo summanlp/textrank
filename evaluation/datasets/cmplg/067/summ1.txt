@@ -1,0 +1,8 @@
+
+In this paper we provide a probabilistic interpretation for typed
+  feature structures very similar to those used by Pollard and Sag.
+  We begin with a version of the interpretation which lacks a
+  treatment of re-entrant feature structures, then provide an extended
+  interpretation which allows them.  We sketch algorithms allowing the
+  numerical parameters of our probabilistic interpretations of HPSG to
+  be estimated  from corpora.

@@ -1,0 +1,9 @@
+
+We describe and experimentally evaluate a method for automatically
+clustering words according to their distribution in particular
+syntactic contexts. Deterministic annealing is used to find lowest
+distortion sets of clusters. As the annealing parameter increases,
+existing clusters become unstable and subdivide, yielding a
+hierarchical ``soft'' clustering of the data. Clusters are used as the
+basis for class models of word coocurrence, and the models evaluated
+with respect to held-out test data.

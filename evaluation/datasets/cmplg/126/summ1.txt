@@ -1,0 +1,10 @@
+
+Explanation-based generalization is used to extract a specialized grammar
+from the original one using a training corpus of parse trees. This allows
+very much faster parsing and gives a lower error rate, at the price of a
+small loss in coverage. Previously, it has been necessary to specify the
+tree-cutting criteria (or operationality criteria) manually; here they are
+derived automatically from the training set and the desired coverage of the
+specialized grammar.
+This is done by assigning an entropy value to each node in the parse trees
+and cutting in the nodes with sufficiently high entropy values.

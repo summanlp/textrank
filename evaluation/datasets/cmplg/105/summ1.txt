@@ -1,0 +1,12 @@
+
+A comparison was made of vectors derived by using ordinary co-occurrence
+statistics from large text corpora and
+of vectors derived by measuring the inter-word distances in dictionary
+definitions.
+The precision of word sense disambiguation by
+using co-occurrence vectors from the 1987 Wall Street Journal
+(20M total words) was higher than that by using
+distance vectors from the Collins English Dictionary
+( head words +  definition words).
+However, other experimental results suggest that distance vectors
+contain some different semantic information from co-occurrence vectors.

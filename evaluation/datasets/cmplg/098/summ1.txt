@@ -1,0 +1,9 @@
+
+This paper introduces a spelling correction system which integrates
+seamlessly with morphological analysis using a multi-tape formalism.
+Handling of various Semitic error problems is illustrated, with
+reference to Arabic and Syriac examples.  The model handles errors
+vocalisation, diacritics, phonetic syncopation and morphographemic
+idiosyncrasies, in addition to Damerau errors.  A complementary
+correction strategy for morphologically sound but morphosyntactically
+ill-formed words is outlined.

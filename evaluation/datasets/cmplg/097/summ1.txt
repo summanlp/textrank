@@ -1,0 +1,10 @@
+
+We describe an approach to robust domain-independent syntactic parsing
+of unrestricted naturally-occurring (English) input. The technique involves
+parsing sequences of part-of-speech and punctuation labels using a
+unification-based grammar coupled with a probabilistic LR parser. We describe
+the coverage of several corpora using this grammar and report the results of a
+parsing experiment using probabilities derived from bracketed training data.
+We report the first substantial experiments to assess the contribution of
+punctuation to deriving an accurate syntactic analysis, by parsing identical
+texts both with and without naturally-occurring punctuation marks.

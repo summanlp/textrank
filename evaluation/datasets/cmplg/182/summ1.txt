@@ -1,0 +1,15 @@
+
+Infants face the difficult problem of segmenting continuous speech
+into words without the benefit of a fully developed lexicon. Several
+sources of information in speech might help infants solve this
+problem, including prosody, semantic correlations and phonotactics.
+Research to date has focused on determining to which of these sources
+infants might be sensitive, but little work has been done to determine
+the potential usefulness of each source. The computer simulations
+reported here are a first attempt to measure the usefulness of
+distributional and phonotactic information in segmenting phoneme
+sequences. The algorithms hypothesize different segmentations of the
+input into words and select the best hypothesis according to the
+Minimum Description Length principle. Our results indicate that while
+there is some useful information in both phoneme distributions and
+phonotactic rules, the combination of both sources is most useful.

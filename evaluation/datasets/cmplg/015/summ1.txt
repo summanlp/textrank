@@ -1,0 +1,9 @@
+
+Analyzing compound nouns is one of the crucial issues for natural
+language processing systems, in particular for those systems that aim
+at a wide coverage of domains.  In this paper, we propose a method to
+analyze structures of Japanese compound nouns by using both word
+collocations statistics and a thesaurus. An experiment is conducted
+with 160,000 word collocations to analyze compound nouns of with an
+average length of 4.9 characters. The accuracy of this method is about
+80%.

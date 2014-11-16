@@ -1,0 +1,11 @@
+
+We rely on the strength of linguistic and philosophical perspectives
+in constructing a framework that offers a unified explanation for
+presuppositions and existential commitment.  We use a rich ontology
+and a set of methodological principles that embed the essence of
+Meinong's philosophy and Grice's conversational principles into a
+stratified logic, under an unrestricted interpretation of the
+quantifiers. The result is a logical formalism that yields a tractable
+computational method that uniformly calculates all the presuppositions
+of a given utterance, including the existential ones.
+2

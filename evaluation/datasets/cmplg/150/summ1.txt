@@ -1,0 +1,13 @@
+
+Effective problem solving among multiple agents requires a better
+understanding of the role of communication in collaboration.  In this
+paper we show that there are communicative strategies that greatly
+improve the performance of resource-bounded agents, but that these
+strategies are highly
+sensitive to the task requirements, situation parameters and agents'
+resource limitations.  We base our argument on two sources of
+evidence: (1) an analysis of a corpus of 55 problem solving dialogues,
+and (2) experimental simulations of collaborative problem solving
+dialogues in an experimental world, Design-World, where we
+parameterize task requirements, agents' resources and communicative
+strategies.

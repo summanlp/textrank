@@ -1,0 +1,591 @@
+
+During the last five years, people have started to believe there is a serious
+possibility of building practically useful spoken language translators for
+limited domains.  There are now a number of high-profile projects with large
+budgets, the most well-known being the German Verbmobil effort.  At the moment,
+the best systems are at the level of advanced prototypes; making projections
+from current performance, it seems reasonable to hope that these could be
+developed into commercially interesting systems within a time-scale of five to
+ten more years.
+
+This paper will describe work carried out on one such advanced
+prototype, the Spoken Language Translator (SLT) system
+ ,. SLT can translate spoken English  utterances from the domain of air travel planning (ATIS; ) into spoken Swedish or French, using a vocabulary of about 1200 stem
+entries. The Swedish version has been operational since June 1993, and
+has been publicly demonstrated on numerous occasions. The French
+version became operational fairly recently; the language-processing
+component was demoed for the first time at the CeBIT trade fair at
+Hannover in March 1995. The Swedish and French versions have
+ approximately equivalent levels of performance . SLT incorporates modules for speech recognition, speech synthesis and
+translation. In the paper, we will focus on the last of these. All
+examples given will refer to the French version.
+
+One of the most important differences between spoken language
+translation and text translation is that there are much stronger
+demands on quality of output.  If output is not good enough, people
+frequently have difficulty understanding what has been said. There is
+no possibility of the pre- or post-editing which nearly all text
+translation systems rely on.  Quite apart from the problem of generating
+natural-sounding speech, it is also necessary to ensure that the
+translated text sent to the speech synthesizer is itself of sufficient
+quality.  A high-quality translation must fulfill several criteria: in
+particular, it should preserve the meaning of the original utterance,
+be grammatical, and contain correct word-choices.
+
+The basic design philosophy of the SLT project has been to build a framework
+which
+is theoretically clean, on the usual grounds that this makes for a
+system that is portable and easy to scale up.  We have attempted to subsume as
+much of the system as possible under two standard paradigms:  unification-based language processing and the noisy-channel statistical
+model.  The unification-based part of the system encodes domain-independent
+grammatical rules; for each source-language word or grammatical construction
+covered by the system, it describes the possible target-language translations.
+When the rules permit more than one potentially valid translation, the
+statistical component is used to rank them in order of relative plausibility.
+The next two paragraphs give some examples to motivate this division of
+knowledge sources.
+
+The simplest examples of transfer rules are those used to translate individual
+words; here it is immediately clear that many words can be translated in
+several ways, and thus that more than one rule will often apply.  For
+instance, the English preposition ``on'' can be translated as any of the
+French prepositions ``avec'' (fly to Boston on Delta 
+
+aller  Boston avec Delta); ``sur'' (information on ground
+transportation 
+
+ des renseignements sur les transports publics);
+` bord de'' (a meal on that flight 
+
+ un repas
+ bord de ce vol); ``pour'' (the aircraft which is used on
+this flight 
+
+ l'avion qu'on utilise pour ce vol); or omitted and
+replaced by an implicit temporal adverbial marker (leave on Monday
+
+ partir le lundi).  In each of these cases, the correct choice
+of translation is determined by the context.
+
+To take a slightly more complex case, which involves some grammar, there are
+a number of transfer rules that list possible ways of realizing the English
+compound nominal construction in French.  Among these are adjective + noun
+(economy flight 
+
+
+vol conomique); noun + PP
+(arrival time 
+
+
+heure d'arrive; Boston ground transportation 
+
+
+transports publics
+ Boston); or in special cases simply a compound noun (Monday
+morning 
+
+
+lundi matin).  Again, the individual lexical
+items and the context determine the correct rule to use.
+
+Experience has shown that it is relatively simple to write the
+context-independent rules which list sets of choices like the ones
+above.  It is however much more difficult to use rules to specify the
+context in which each particular choice is appropriate.  Moreover, the
+correct choice is frequently domain-dependent; thus the rules will
+need to be rewritten if the system is ported to a new application.
+For these reasons, statistically trained machine translation
+architectures have recently been receiving a great deal of attention.
+Some researchers (notably those in the IBM CANDIDE project,
+ ) have even gone so far as to claim that statistical techniques are sufficient on their own.  Our view is that this is at
+best unnecessary. Since many aspects of language (for instance,
+agreement and question-formation in French) appear to be regular and
+readily describable by rules, it seems more logical to use a mixture
+of rules and statistics; it is in this sense that we have a hybrid transfer model
+ (cf. ,,). 
+
+The rest of the paper describes the system in more detail, focussing
+on the question of how rules and statistics are combined in the
+ translation component. Section  describes the  overall architecture of SLT.  Section  gives examples of typical non-trivial translation problems from the
+English/French ATIS domain, and the way they are dealt with.
+ Finally, Section  summarizes the current implementation status of the project, and presents the results of
+tests carried out on a recent version of the prototype.
+
+The SLT system consists of a set of individual processing modules,
+linked together in a pipelined fashion. The input speech signal is
+ processed by the SRI DECIPHER(TM) recognizer , and an N-best list of hypotheses is passed to the source language processor,
+ a copy of the SRI Core Language Engine (CLE; ) loaded with an English grammar and lexicon. The CLE produces for each speech
+hypothesis a set of possible analyses in Quasi Logical Form, and uses
+trainable preference methods to select the most plausible hypothesis
+and analysis
+ ,. 
+
+The QLF analysis selected as most plausible is passed to the transfer
+component, which first annotates it with extra information in a
+rule-based pre-transfer phase. Next, a set of possible target-language
+QLFs is created, using the unification-based transfer rules
+ . The target QLFs are  stored in a ``packed'' form  to avoid a combinatoric explosion when many transfer choices are non-deterministic.  A
+rule-based post-transfer phase then performs some simple rewriting of
+the transferred QLFs, following which a second set of trained
+statistical preferences extract the most plausible transferred QLF and
+``unpack'' it into a normal representation. The selected
+target-language QLF is passed to a second copy of the CLE, loaded with
+a target-language grammar and lexicon, which generates a surface string
+ using the Semantic Head-Driven algorithm . Finally, the target-language string is passed to a speech synthesizer and converted
+into output speech.
+
+Most of this processing has already been covered in detail in
+ , with reference to the Swedish version. The rest of this section will describe the new functionalities added since then:
+trainable transfer preferences, transfer packing, and the use of pre-
+and post-transfer phases. The final sub-section briefly summarizes the
+main features of the French language description.
+
+The basic preference model and training method for transfer
+ preferences is the one described in  and  , suitably adapted for the transfer task; a brief summary follows.  We start with a training corpus, consisting of
+a set of utterances, each paired with a list of possible output
+sentences produced by the transfer component.  A human judge marks
+each transfer as either acceptable or unacceptable. In line with
+the noisy-channel statistical model of translation described in
+ , the plausibility of a new candidate transfer is now defined to be a real number, calculated as a weighted sum of two
+contributions: the transfer rule score, and the target
+language model score. The first of these represents the relative
+plausibility of the rules used to make the transfer, and the second
+the plausibility of the target QLF produced.
+
+The transfer rule score and the target language model score are
+computed using the same method; for clarity, we first describe this
+method with reference to transfer rules.  The transfer rule score for
+the bag of transfer rules used to produce a given target QLF is a sum
+of the discriminant scores for the individual transfer rules.
+The discriminant score for a rule R is calculated from the
+training corpus, and summarizes the reliability of R as an indicator
+that the transfer is correct or incorrect. The intent is that transfer
+rules which tend to occur more frequently in correct transfers than
+incorrect ones will get positive scores; those which occur more
+frequently in incorrect transfers than correct ones will get negative
+scores.
+
+More formally, we define the discriminant score for R, d(R), as
+follows. We find all possible 3-tuples 
+
+(S, T1, T2) in the
+training corpus where
+
+S is a source language utterance,
+
+T1 and T2 are possible transfers for S, exactly one of
+which is correct,
+
+The transfer rule R is used in exactly one of T1 and T2.
+
+
+If R occurs in the correct hypothesis of the pair 
+
+(T1, T2), we
+call this a ``good'' occurrence of R; otherwise, it is a ``bad''
+one.  Counting occurrences over the whole set, we let g be the total
+number of good occurrences of R, and b be the total number of bad
+occurrences. d(R) is then defined as
+
+
+
+This formula is a symmetric, logarithmic transform of the function 
+
+(g
++ 1)/(g + b + 2), which is the expected a posteriori
+probability that a new 
+
+(S, T1, T2) 3-tuple will be a good
+occurrence of R, assuming that, prior to the quantities g and b being
+known, this probability has a uniform a priori distribution on
+the interval [0,1].
+
+The target language model score is defined similarly. The first step
+ is to extract a bag of ``semantic triples''  from each possible transferred QLF in the training corpus, following
+which each individual triple is assigned a discriminant score using
+the method above. Semantic triples encode grammatical relationships
+between head-words; we have generalized the original definition from
+  to include relationships involving determiners, since these are important for transfer. Thus for example
+the normal reading of the English sentence
+
+would include the triples
+
+ In Section  below, we will present examples illustrating how the two components of the transfer preference model
+combine to solve some non-trivial transfer problems.
+
+Ideally, we would like to say that unification-based rules
+and trainable transfer preferences constituted the whole transfer
+mechanism. In fact, we have found it necessary to bracket the
+unification-based transfer component between pre- and post-transfer
+phases. Each phase consists of a small set of rewriting rules, which
+are applied recursively to the QLF structure. It would in principle
+have been possible to express these as normal unification-based
+transfer rules, but efficiency considerations and lack of
+implementation time persuaded us to adopt the current solution.
+
+The pre-transfer phase implements a simple treatment of reference
+resolution or coercion, which at present only deals with a few cases
+important in the ATIS domain. Most importantly, QLF constructs
+representing bare code expressions used as NPs are annotated with the
+type of object the code refers to. Code expression are frequent
+in ATIS, and the type of referent is always apparent from the code's
+syntactic structure. The extra information is necessary to obtain a
+good French translation: flight codes must be prefaced with
+le vol (e.g. C O one three three 
+
+ le vol C O
+cent trente-trois) while other codes are translated literally.
+
+The post-transfer phase reduces the transferred QLF to a canonical
+form; the only non-trivial aspect of this process concerns the
+treatment of nominal and verbal PP modifiers. In French, PP modifier
+sequences are subject to a strong ordering constraint: locative PPs
+should normally be first and temporal PPs last, with other PPs in
+between. In the limited context of the ATIS domain, this requirement
+can be implemented fairly robustly with a half-dozen simple rules, and
+leads to a marked improvement in the quality of the translation.
+
+As already indicated, the basic philosophy of the transfer component is
+to make the transfer rules more or less context-independent, and let
+the results be filtered through the statistically trained transfer
+preferences. The positive side of this is that the transfer rules are
+robust and simple to understand and maintain. The negative side is
+that non-deterministic transfer choices multiply out, giving a
+combinatoric explosion in the number of possible transferred QLFs.
+
+To alleviate this problem, transferred QLFs are packed, in
+ the sense of ; lexical transfer ambiguity is left ``unexpanded'', as a locally ambiguous structure in the target QLF.
+It is possible to compute preference scores efficiently on the
+packed QLFs, and only unpack the highest-scoring candidates; this
+keeps the transfer phase acceptably efficient even when several
+thousand transferred QLFs are produced.
+
+The following example illustrates how transfer packing works. The
+source utterance is
+
+and the packed transferred QLF (in slightly simplified form) is:
+
+This contains three lexical transfer ambiguities, reflecting the
+different ways of translating the bare singular and bare plural
+determiners, and the preposition ``on''. In this case,
+the transfer preferences determine that the best choices are
+to realise English bare plural as French definite plural, English
+bare singular as French definite singular, and ``on'' as an
+implicit temporal NP marker. Substituting these in, the preferred
+unpacked QLF is
+
+producing the French surface output
+
+
+The French language description is a straightforward adaptation of the
+general unification-based CLE grammar and lexicon for English
+ . It covers most important French constructions, including all those occurring frequently in the ATIS
+domain. The most significant divergences compared to the English
+language description are in the treatment of clitic pronouns, which
+will be reported in detail elsewhere.  Very briefly, however, a
+approach analogous to the standard idea of ``gap-threading'' has been
+implemented, which uses difference lists to ``move'' the clitics from
+their surface position next to the verb to their notional positions
+(usually, but not necessarily, as verb complements).
+
+A fairly complete treatment of French inflectional morphology has been
+ implemented, based on . The French lexicon currently
+contains about 750 stem entries (excluding proper nouns), which is adequate
+to provide good coverage of the ATIS domain in the English to French
+direction. Of these entries, about half are for function words and the
+remainder for content words.
+
+This section will give examples of non-trivial translation problems
+from the ATIS domain, and describe how SLT deals with them. We were
+interested to discover that even a domain as simple as ATIS actually
+contains many quite difficult transfer problems; also, that
+English/French is considerably more challenging than the
+English/Swedish transfer pair used in the original SLT system.  We
+ will begin by giving examples where it is fairly clear that the problem is essentially grammatical
+in nature, and thus primarily involves the rule-based part of the
+system; later, we give examples where the problem mainly involves the
+preference component, and examples where both types of knowledge are
+needed.
+
+An obvious case of a grammatical phenomenon is agreement, which is
+considerably more important in French than in English; the rules for
+agreement are rigid and well-defined, and easy to code in a
+feature-based formalism. Quite frequently, however, they relate words
+which are widely separated in the surface structure, which makes them
+hard to learn for surface-oriented statistical models. For example,
+there are many instances in ATIS of nouns which in French are
+postmodified both by a PP and by a relative clause, e.g.
+
+Here, the verb partent has to agree in number and person with
+the head noun vols, despite the gap of five surface words
+in between.
+
+Many problems related to word-order also fall under the same heading,
+in particular those relating to question-formation and the position of
+clitic pronouns. For example, French YN-questions can be formed in
+three ways: by inversion of subject and main verb, by prefacing the
+declarative version of the clause with the question particle est-ce que, or by ``complex inversion'', fronting the subject and
+inserting a dummy pronoun after the inverted verb.  If the subject is
+a pronoun, only the first and second alternatives are allowed; if it
+is not a pronoun, only the second and third are valid.  Thus for
+example
+
+Embedded questions constitute another good example of a mainly
+grammatical problem. Just as in English, French embedded
+questions normally have the uninverted word-order, e.g.
+
+However, if the main verb is tre with an NP complement, the
+inverted word-order is obligatory, e.g.
+
+In ATIS, embedded questions occur in about 1% of all corpus
+sentences; this makes them too frequent to ignore, but rare
+enough that a pure statistical model will probably have difficulties
+finding enough training examples to acquire the appropriate
+regularities. The relevant facts are however quite easy to state as
+grammatical rules. Moreover, they are domain-independent, and can thus
+be reused in different applications.
+
+In contrast, there are many phenomena, especially involving
+word-choice, which are hard to code as rules and largely domain- and
+application-dependent. As mentioned earlier in
+ Section , the translation of prepositions and determiners is most frequently determined on
+collocational grounds; in our framework, this means that the
+information used to decide on an appropriate translation is
+primarily supplied by the transfer preferences. We will now
+decribe in more detail how the idea works in practice.
+
+Recall that the preference score for a given transfer candidate is a
+weighted sum of a channel contribution (discriminants on transfer
+rules) and a target language model score (discriminants from target
+language semantic triples). The transfer rule discriminants make
+transfer rules act more or less strongly as defaults. If a transfer
+rule R is correct more often than not when a choice arises, it will have
+a positive discriminant, and will thus be preferred if there is no
+reason to avoid it. If use of R produces a strong negative
+target-language discriminant, however, the default will be overridden.
+
+Let us look at some simple examples. The English indefinite singular
+article ``a'' can be translated in several ways in French, but
+most often it is correct to realise it as an indefinite singular (``un'' or ``une''). The discriminant associated with the
+transfer rule that takes indefinite singular to indefinite singular is
+thus fairly strongly positive. There are however several French
+prepositions which have a strong preference for a bare singular
+argument; for instance, ``flights without a stop'' is almost
+always better translated as ``les vols sans escale'' than ``les vols sans une escale''.  In cases like these, the a-to-un rule will be wrong, and the less common rule that takes
+indefinite singular to bare singular will be right. So if enough
+training examples are available, the negative discriminant associated
+with the semantic triple
+
+will have a higher absolute value than the positive discriminant
+associated with a-to-un, and can overrule it.
+
+Similar considerations apply to prepositions. In the ATIS domain, most
+prepositions have several possible translations, none of which are
+strongly preferred. For example, the channel score discriminants
+associated with the transfer rules on-to-sur and
+on-to-avec both have low absolute values; the first
+is slightly negative, and the second slightly positive.
+Target language triples associated with these prepositions are however
+in general more definite: the triples
+
+are both strongly positive, while
+
+are strongly negative. The net result is that the target language
+contribution makes the decision, and as desired we get ``fly on
+Delta'' and ``information on flights'' going to ``aller
+avec Delta'' and ``des renseignements sur les vols'' rather
+than ``aller sur ...'' and ``des renseignements avec
+...''.
+
+In general, a combination of rules and collocational information is
+needed to translate a construction. A good example is the English
+implicit singular mass determiner, which is common in ATIS.
+Grammatical rules are used to decide that there is a singular mass
+determiner present, following which the correct translation is
+selected on collocational grounds. An elementary French grammar will
+probably say that the normal translation should either be the French
+partitive singular determiner, e.g.
+
+or else the definite singular, e.g.
+
+In the ATIS domain, it happens that the nouns which most frequently
+occur with mass singular determiner are ``transportation'' and
+``information'', both of which are conventionally singular in English
+but plural in French. Because of this, neither of the standard rules
+for translating mass singular gets a strong positive discriminant
+score, and once again the target language model tends to make the decision.
+For instance, if the head noun is ``transportation'', it is most
+often correct to translate the mass singular determiner as a definite
+plural, e.g.
+
+This is captured in a strong positive discriminant score associated
+with the target language triple
+
+Note that the translation ``transportation'' to ``les
+transports'' is only a preference, not a hard rule; it can be
+overridden by an even stronger preference, such as the preference against
+having a definite plural subject of an existential construction. So we
+have e.g.
+
+
+So far, the French version of SLT has consumed about eleven
+person-months of effort over and above the effort expended on the
+original English/Swedish SLT project. Of this, about seven
+person-months were spent on the French language description, two on
+transfer rules, and two on other tasks. The small quantity of effort
+required to develop a good French language description underlines the
+extent to which its structure overlaps with that of the original
+English grammar and lexicon.
+
+We now describe preliminary experiments designed to test the
+performance of the system. A set of 2000 ATIS utterances was used,
+randomly selected from the subset of the ATIS corpus consisting of A
+ or D class utterances of length up to 15 words, which had not previously been examined during the development of the French version
+of SLT.  Utterances were supplied in text form, i.e. the speech
+recognition part of the system was not tested here.
+
+Each utterance was analysed using the English language version of the
+CLE, and for the 1847 sentences where at least one QLF was produced the
+most plausible QLF was selected using the preference methods described
+ in .  This was then submitted to the transfer phase, and a set of transfer candidates produced. A simple set of
+hand-coded transfer preferences was applied, and one French surface
+string was generated for each of the five highest-scoring transfer
+candidates.  A native French speaker fluent in
+English judged each generated string as being either an acceptable or
+an unacceptable translation of the source utterance. Translations were
+only regarded as acceptable if they were fully grammatical, preserved
+the meaning of the source utterance, and used a stylistically natural
+choice of words. The judging process took approximately eight hours,
+averaging three seconds per source/target pair.
+
+The annotated N-best transfer corpus was then used to train a new set
+of preferences using the method described in
+ Section ; the corpus was divided into five equal pieces, each fifth being held out in turn as test data with the
+remaining four-fifths used as training. Finally, the derived
+preferences were tested for accuracy. Of the 1847 transfer sets, there
+were 1374 for which at least one acceptable transfer was in the top
+ five candidates. The trained transfer preferences selected an acceptable candidate in 1248 of these 1374 cases (91%);
+in contrast, random choice among the top five gave a baseline score of
+826 acceptable transfers, or 60%. We regard this as a promising
+initial result, and intend soon to repeat the experiment with a larger
+set of 5000-10000 sentences. We also anticipate significant
+improvements over the next few months from planned extensions and
+refinements to the French language description.
+
+Agns, M-S.,
+Alshawi, H., Bretan, I., Carter, D.M.  Ceder, K.,
+Collins, M., Crouch, R., Digalakis, V., Ekholm, B., Gambck, B.,
+Kaja, J., Karlgren, J., Lyberg, B., Price, P., Pulman, S., Rayner, M.,
+Samuelsson, C. and Svensson, T.
+1994.
+Spoken Language Translator: First Year Report.
+SRI technical report CRC-043 (also SICS research report
+R94:03) Available through WWW from http://www.cam.sri.com
+
+Alshawi, H., Carter, D., Rayner, M. and Gambck, B.
+1991.
+Transfer through Quasi Logical Form.
+Proc. 29th ACL, Berkeley, CA.
+
+Alshawi, H. (ed.)
+1992.
+The Core Language Engine.
+MIT Press.
+
+Alshawi, Hiyan, and David Carter.
+1994.
+Training and Scaling Preference Functions for Disambiguation.
+Computational Linguistics, 20:4.
+
+Bouillon, P. and L. Tovena.
+1990.
+L'analyse morphologique du francais et de l'italien avec
+le lexique ALVEY.
+ISSCO working paper 57, Geneva.
+
+Brown, P.F., J. Cook, S.A. della Pietra, V.G. della Pietra, F.
+Jelinek, J.D. Lafferty, R.L. Mercer and P.S. Roossin.
+1990.
+A statistical approach to machine translation.
+Computational Linguistics, 16:2.
+
+Brown, P.F., S.A. della Pietra, V.G. della Pietra, J.D. Lafferty and
+R.L. Mercer.
+1992.
+Analysis, statistical transfer and synthesis in machine translation.
+ In . 
+
+Carbonnel, J., T. Mitamura and E.H. Nyberg 3rd.
+1992.
+The KANT perspective: a critique of pure transfer (and pure
+interlingua, pure statistics,...).
+ In . 
+
+Grishman, R. and M. Kosaka.
+1992.
+Combining rationalist and empiricist approaches to machine
+translation.
+ In . 
+
+Hemphill, C.T., J.J. Godfrey and G.R. Doddington.
+1990.
+The ATIS Spoken Language Systems pilot corpus.
+Proc. DARPA Speech and Natural Language Workshop, Hidden
+Valley, Pa.
+
+Murveit, H., Butzberger, J., Digalakis, V. and Weintraub, M.
+1993.
+Large Vocabulary Dictation using SRI's DECIPHER(TM) Speech
+Recognition System: Progressive Search Techniques.
+Proc. Inter. Conf. on Acoust., Speech and Signal, Minneapolis,
+Minnesota.
+
+Pulman, S.
+1992.
+Unification-based syntactic analysis.
+ In . 
+
+Rayner, M.,
+Alshawi, H., Bretan, I., Carter, D.M.,
+Digalakis, V., Gambck, B., Kaja, J., Karlgren, J.,
+Lyberg, B., Price, P., Pulman, S. and Samuelsson, C.
+1993.
+A Speech to Speech Translation System Built From Standard Components.
+Proc. 1st ARPA workshop on Human Language Technology.
+
+Rayner, M., D. Carter, V. Digalakis and P. Price.
+1994.
+Combining Knowledge Sources to Reorder N-Best Speech Hypothesis
+Lists.
+Proc. 2nd ARPA workshop on Human Language Technology.
+
+Rayner, M., D. Carter, P. Price and B. Lyberg.
+1994.
+Estimating the Performance of Pipelined Spoken Language
+Translation Systems.
+Proc. of ICSLP '94, Yokohama.
+
+Shieber, S. M., van Noord, G., Pereira, F.C.N and Moore, R.C.
+1990.
+Semantic-Head-Driven Generation.
+Computational Linguistics, 16:30-43.
+
+TMI.
+1992.
+Proc. Fourth International Conference on Theoretical and
+Methodological Issues in Machien Translation. Montreal, Canada.
+
+Tomita, M.
+1986.
+Efficient Parsing for Natural Language.
+Kluwer Academic Publisher.
+
+  All examples presented in this
+section are correctly processed by the current French version of SLT.
+  This means roughly that the sentence represented a
+valid inquiry to the database, either alone or in the context in which
+it was uttered.
+  There were a further 246 sets in which at
+least one candidate translation was produced; in most of these cases,
+the best translation was comprehensible and grammatically correct, but
+was rejected on stylistic grounds.

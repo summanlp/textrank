@@ -1,0 +1,8 @@
+
+In this paper we present a unification-based lexical platform designed for
+highly inflected languages (like Roman ones). A formalism is proposed for
+encoding a lemma-based lexical source, well suited for linguistic
+generalizations. From this source, we automatically generate an allomorph
+indexed dictionary, adequate for efficient processing.  A set of software
+tools have been implemented around this formalism: access libraries,
+morphological processors, etc.

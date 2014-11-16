@@ -1,0 +1,225 @@
+
+The division of morphology and syntax in agglutinative languages is
+difficult compared to relatively more isolating languages. For
+instance, in Turkish, there is a significant amount of interaction between
+morphology and syntax. Typical examples are: causative suffixes change the
+valence of the verb, and the reciprocal suffix subcategorize the verb
+for a noun phrase marked with the comitative case. Moreover, the head
+that a bound morpheme modifies may be not its stem but a compound
+head crossing over the word boundaries, e.g.,
+
+3iyi  oku-mus  ocuk
+           well  read-REL  child
+           'well-educated child'
+
+ In (), the relative suffix -mus  (in past form of subject participle)
+modifies [iyi oku] to give the scope
+[[[iyi oku]mus] ocuk].
+If syntactic composition is performed after morphological composition,
+we would get compositions
+such as [iyi [okumus ocuk]] or
+[[iyi okumus] ocuk], which yield ill-formed
+semantics for this utterance.
+
+ As pointed out by Oehrle ,, there is no reason to assume a layered grammatical architecture which has linguistic division of
+labor into components acting on one domain at a time. As a
+computational counterpart of this idea, rather than
+treating morphology, syntax and semantics in a cascaded manner,
+we integrate the process models of morphology and syntax, providing
+semantic composition in parallel.
+The model,
+which is based on
+ Combinatory Categorial Grammars (CCG) ,, uses the morpheme as the building
+block of composition at all three linguistic domains.
+
+When the morpheme is given the same status as the lexeme in terms
+of its lexical, syntactic, and semantic contribution, the distinction
+between the process models of morphotactics and syntax disappears.
+In this case, new scoping problems arise in word and phrase formation.
+
+CG accounts of scoping problems concentrate on syntactic and semantic
+ issues such as quantifier scoping ,. In word formation, morphological bracketing paradoxes are introduced by
+lexicalized composite affixes which require mixed
+ compositions . However, the scoping problems in morphosyntax go beyond bracketing paradoxes as they may also
+produce different semantic forms.
+ Consider the example in (): 
+
+3uzun  kol-lu  gmlek
+           long  sleeve-ADJ  shirt
+
+ Two different compositions in CCG formalism are
+ given in Figure . Both interpretations are plausible, with (1a) being the most likely in the
+absence of  a long pause after the first adjective. To account for
+both cases, the suffix -lu must be allowed to modify the head
+ it is attached to (e.g., 1b in Figure ), or a compound head encompassing the word boundaries (e.g., 1a
+ in Figure ). 
+
+ Example ( depicts the CCG treatment of this example. The verb konus does not
+ subcategorize for a dative noun phrase (cf. example ); kadina is the argument of dn.
+In this case, the adverbial suffix -erek must modify
+[kadina dn]
+to obtain the correct reading.
+[a.]3kadin-a  dn-erek  konus-tu
+                    woman-DATIVE  turn-ADV  talk-TENSE
+                    'Facing the lady, (he/she) talked.'
+[b.]* kadina konustu
+
+ Oehrle  describes a model of multi-dimensional composition in which every domain Di has an algebra with a finite set
+of primitive operations Fi. As indicated by Turkish data in
+ sections , Fi may in fact have a domain larger than--but compatible with--Di.
+
+In order to perform morphological and syntactic compositions in a
+unified (monostratal) framework, the slash operators of categorial grammar
+must be enriched
+with the knowledge about the type of process and the type of morpheme.
+ We adopt a representation similar to Hoeksema and Janda's  notation for
+the operator. The 3-tuple (direction, morpheme type, process type)
+ indicates direction (left, right, unspecified), morpheme type (free, bound), and the type of morphological or syntactic
+attachment (e.g., affixation, syntactic concatenation,
+ reduplication, clitic). Examples
+of different operator combinations are as follows:
+
+Entries in the categorial lexicon have tactical constraints, grammatical
+and semantic features, and phonological representation. Similar
+ to  HPSG , every entry is a signed attribute-value matrix.
+
+Syntactic and semantic information are of grammatical (g) sign and
+semantic (s) sign, respectively. These properties include
+agreement features such as person, number, and possessive, and
+selectional restrictions:
+
+
+
+
+Basic and derived categories of CG are of p (property) or f(function) sign, respectively.
+
+
+
+
+ RES-OP-ARG is the categorial notation for the element. Every
+ RES and  ARG feature has an f or p sign.
+
+Lexical and phrasal elements have functional representation (f or p sign)
+and the  PHON feature.
+ PHON represents the phonological string. Lexical elements
+may have (a) phonemes, (b) meta-phonemes
+such as  H for high vowel, and  D for a dental stop whose
+voicing is not yet determined, and (c) optional segments,
+e.g., -(y)lA, to model vowel/consonant drops,  in the  PHON
+feature. During composition,
+the surface forms of composed elements are mapped and saved in  PHON.
+ PHON also allows efficient lexicon search. For instance, the causative
+suffix -DHr has eight different realizations but only one
+lexical entry.
+
+A special feature value called none is used for imposing certain
+morphotactic constraints. For instance, most of the inflectional
+morphemes of Turkish have the category  X
+X where
+ X is the category of the stem. none is used to make sure
+that the stem is not inflected with the same feature more than once; it
+also ensures, through  SYN constraints, that inflections are
+marked in the right order.
+A sample lexicon entry for a derivational suffix is given in
+ Figure . For composition, we use a generalized LR  parser  in which CCG rules are encoded as recursive rewrite rules with
+equational constraints.
+
+Turkish is a language in which grammatical functions can be marked
+morphologically (e.g., case), or syntactically (e.g., indirect
+objects). Semantic composition is also affected by the interplay
+of morphology and syntax, for instance the change in the scope
+of modifiers and genitive suffixes, or valency and thematic
+role change in causatives. To model interactions between domains,
+we propose a categorial approach in which composition in all domains
+proceed in parallel.
+In the domain of phonology, there are categorial accounts of
+ prosody  and voice assimilation . Our treatment of phonology is not yet integrated into the uniform
+grammar architecture. Morphophonemic processes such as vowel
+harmony and devoicing are modeled as mappings from the operator
+and the phonological strings to surface forms. Integrating categorial
+phonology into the architecture will help restore the modularity of
+processing at all domains.
+
+A. E. Ades and M. Steedman.
+1982.
+On the order of words.
+Linguistics and Philosophy, 4:517-558.
+
+Jack Hoeksema and Richard D. Janda.
+1988.
+Implications of process-morphology for categorial grammar.
+In R. T. Oehrle, E. Bach, and D. Wheeler, editors,
+Categorial Grammars and Natural Language Structures, D. Reidel,
+Dordrecht, 1988.
+
+Beryl Hoffman.
+1992.
+A CCG approach to free word order languages.
+In Proceedings of the 30th Annual Meeting of the
+ACL, Student Session, 1992.
+
+Michael Moortgart.
+1988.
+Mixed Composition and Discontinuous Dependencies.
+In R. T. Oehrle, E. Bach, and D. Wheeler, editors,
+Categorial Grammars and Natural Language Structures, D. Reidel,
+Dordrecht, 1988.
+
+Richard T. Oehrle.
+1988.
+Multi-dimensional compositional functions as a basis for
+grammatical analysis.
+In R. T. Oehrle, E. Bach, and D. Wheeler, editors,
+Categorial Grammars and Natural Language Structures, D. Reidel,
+Dordrecht, 1988.
+
+Richard T. Oehrle.
+1994.
+Term-labeled Categorial Type Systems.
+Linguistics and Philosophy, 17:633-678.
+
+Fernando C. N. Pereira.
+1990.
+Categorial Semantics and Scoping.
+Computational Linguistics, 16(1):1-10.
+
+C. Pollard and I. A. Sag.
+1994.
+Head-driven Phrase Structure Grammar.
+University of Chicago Press.
+
+Mark Steedman.
+1985.
+Dependencies and coordination in the grammar of Dutch and
+English.
+Language, 61:523-568.
+
+Mark Steedman.
+1991.
+Structure and intonation.
+Language, 67:260-296.
+
+Masaru Tomita.
+1987.
+An Efficient Augmented-Context-Free Parsing Algorithm.
+Computational Linguistics, 13(1-2):31-46.
+
+Deirdre Wheeler.
+1988.
+Consequences of some categorially-motivated phonological
+assumptions.
+In R. T. Oehrle, E. Bach, and D. Wheeler, editors,
+Categorial Grammars and Natural Language Structures, D. Reidel,
+Dordrecht, 1988.
+
+  derived and basic
+categories in the examples
+ are in fact feature structures; see section . We use 
+
+
+to denote the combination of categories x and ygiving the result z
+we have not yet incorporated into our model the word-order
+ variation in syntax. See  for a CCG based approach to this phenomenon.
+intensifiers such as ap- and bes- in
+ap-aik and bes-belli may appear as prefixes but they
+are in fact reduplicated from the first syllable of the stem

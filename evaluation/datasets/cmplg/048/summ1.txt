@@ -1,0 +1,13 @@
+
+I explore some of the issues that arise when trying to establish a connection
+between the underspecification hypothesis pursued in the NLP literature and
+work on ambiguity in semantics and in the psychological literature.  A theory
+of underspecification is developed `from the first principles', i.e., starting
+from a definition of what it means for a sentence to be semantically ambiguous
+and from what we know about the way humans deal with ambiguity. An
+underspecified language is specified as the translation language of a grammar
+covering sentences that display three classes of semantic ambiguity: lexical
+ambiguity, scopal ambiguity, and referential ambiguity. The expressions of this
+language denote sets of senses. A formalization of defeasible reasoning with
+underspecified representations is presented, based on Default Logic.  Some
+issues to be confronted by such a formalization are discussed.

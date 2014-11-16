@@ -1,0 +1,18 @@
+
+Excellent results have been reported for Data-Oriented Parsing (DOP)
+ of natural language texts .  Unfortunately, existing algorithms are both computationally intensive and difficult to
+implement.  Previous algorithms are expensive due to two factors: the
+exponential number of rules that must be generated and the use of a
+Monte Carlo parsing algorithm.  In this paper we solve the first
+problem by a novel reduction of the DOP model to a small, equivalent
+probabilistic context-free grammar.  We solve the second problem by a
+novel deterministic parsing strategy that maximizes the expected
+number of correct constituents, rather than the probability of a
+correct parse tree.  Using the optimizations, experiments yield a 97%
+crossing brackets rate and 88% zero crossing brackets rate.  This
+differs significantly from the results reported by Bod, and is
+comparable to results from a duplication of Pereira and Schabes's
+ experiment on the same data.  We show that Bod's
+results are at least partially due to an extremely fortuitous choice
+of test data, and partially due to using cleaner data than other
+researchers.

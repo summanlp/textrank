@@ -1,0 +1,12 @@
+
+This paper shows the necessity of distinguishing different
+  referential uses of noun phrases in machine translation.  We argue
+  that differentiating between the generic, referential and ascriptive
+  uses of noun phrases is the minimum necessary to generate articles
+  and number correctly when translating from Japanese to English.
+  Heuristics for determining these differences are proposed for a
+  Japanese-to-English machine translation system.  Finally the results
+  of using the proposed heuristics are shown to have raised the
+  percentage of noun phrases generated with correct use of articles
+  and number in the Japanese-to-English machine translation system
+  ALT-J/E from 65% to 77%.

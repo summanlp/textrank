@@ -1,0 +1,16 @@
+
+This
+  paper is concerned with the detection and correction of
+  sub-sentential English text errors.  Previous spelling programs,
+  unless restricted to a very small set of words, have operated as
+  post-processors.  And to date, grammar checkers and other programs
+  which deal with ill-formed input usually step directly from spelling
+  considerations to a full-scale parse, assuming a complete sentence.
+  Work described below is aimed at evaluating the effectiveness of
+  shallow (sub-sentential) processing and the feasibility of
+  cooperative error checking, through building and testing
+  appropriately an error-processing system.  A system under
+  construction is outlined which incorporates morphological checks
+  (using new two-level error rules) over a directed letter graph, tag
+  positional trigrams and partial parsing.  Intended testing is
+  discussed.

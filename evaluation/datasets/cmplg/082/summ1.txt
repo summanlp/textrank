@@ -1,0 +1,14 @@
+
+The recognition problem for attribute-value grammars(AVGs) was shown
+to be undecidable by Johnson in 1988. Therefore, the general
+form of AVGs is of no practical use. In this paper we study
+a very restricted form of AVG, for which the recognition problem
+is decidable (though still 
+
+
+ -complete), the R-AVG. We show that
+the R-AVG formalism captures all of the context free languages and
+more, and introduce a variation on the so-called off-line
+parsability constraint, the honest
+parsability constraint, which lets different types of
+R-AVG coincide precisely with well-known time complexity classes.

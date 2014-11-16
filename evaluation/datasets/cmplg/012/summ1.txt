@@ -1,0 +1,7 @@
+
+We propose an algorithm to resolve anaphors, tackling mainly the problem
+of intrasentential antecedents. We base our methodology on the fact that such 
+antecedents are likely to occur in embedded sentences. Sidner's focusing mechanism 
+is used as the basic algorithm in a more complete approach. The proposed algorithm
+has been tested and implemented as a part of a conceptual analyser, mainly to
+process pronouns. Details of an evaluation are given.

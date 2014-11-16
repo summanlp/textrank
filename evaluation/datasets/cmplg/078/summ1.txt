@@ -1,0 +1,10 @@
+
+The paper presents a prototype lexicalist Machine Translation system (based on
+ the so-called `Shake-and-Bake' approach of ) consisting of an analysis component, a dynamic bilingual lexicon, and a generation component,
+and shows how it is applied to a range of MT problems. Multi-Lexeme
+translations are handled through bi-lexical rules which map bilingual lexical
+signs into new bilingual lexical signs. It is argued that much translation can
+be handled by equating translationally equivalent lists of lexical signs,
+either directly in the bilingual lexicon, or by deriving them through
+bi-lexical rules.  Lexical semantic information organized as Qualia structures
+   (   ( is used as a mechanism for restricting the domain of the rules.

@@ -1,0 +1,17 @@
+
+An extragrammatical sentence is what a normal parser fails to analyze. 
+It is important to recover it using only syntactic information
+although results of recovery are better if semantic factors are considered.
+A general algorithm for least-errors recognition,  
+which is based only on syntactic information, 
+was proposed by G. Lyon to deal with the extragrammaticality. 
+We extended this algorithm to recover extragrammatical sentence into grammatical one
+in running text.
+Our robust parser with recovery mechanism
+- extended general algorithm for least-errors recognition -
+can be easily  scaled up and modified because it utilize only
+syntactic information.
+To upgrade this robust parser
+we proposed heuristics through the analysis on the Penn treebank corpus.
+The experimental result shows 68% 
+77% accuracy in error recovery.  

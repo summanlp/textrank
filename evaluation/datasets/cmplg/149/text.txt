@@ -1,0 +1,1134 @@
+
+Grammatical theories always make a distinction between unmarked and
+marked phenomena. The general case is to use certain mechanisms which
+are likely to deal with regular behaviour. More complex mechanisms
+should be available when exceptional behaviour is present. However,
+this difference is not formally expressed in most grammar accounts of
+complex phenomena. The need to restrict licensing of additional
+grammar resources is commonly asserted outside of the formal framework
+used. 
+As exceptional rules involve a higher computational cost, parsing
+processes associated to such formalisms become computationally
+intractable. 
+
+Non-constituent coordination treatments show this pattern. In general, 
+a conjunction combines constituents. But there are cases where the 
+conjunction coordinates linguistic elements which do not form a 
+constituent. For instance, consider  
+`John went to Alabama in summer and to Spain in fall'. 
+The conjunction `and' is coordinating `to Alabama in 
+summer' with `to Spain in fall', which do not form
+constituents. 
+The solutions displayed in the literature incorporate additional 
+grammatical resources to deal with such data. 
+We would expect a high restriction 
+on the use of the rules associated to this phenomena,  
+but all we have is informal comments about when to apply them. 
+That makes parsing time of the grammar exponential 
+in the length of the string.  
+Though there is a general concern on the 
+need to make explicit some process of rule licensing, no formal 
+framework has  
+been proposed, to our knowledge, to regulate the  interaction between 
+regular and exceptional grammatical resources.  
+In this paper we propose a metagrammatical formalism, generic 
+rules, to give a different degree of specificity to each grammatical 
+rule. We present an approach to parse non-constituent coordination 
+within categorial grammars that can be parsed in polynomial time when 
+reformulated as a generic rule.  
+The essential idea is to introduce a process of dynamic binding
+interfacing the level of pure grammatical representation and the
+parsing processes.  When the parsing process calls the grammar to
+combine linguistic objects, the dynamic binding process inspects the
+applicable grammatical resources, considers their different priority
+and returns an effective rule, or set of rules, to be applied on such
+linguistic objects.  This approach is inspired in the object-oriented
+programming paradigm, where polymorphism is exploited in order to get
+default and specific behaviour.
+In order to make dynamic binding a meaningful process, we will view
+generic and specific behaviour as object-oriented functions that map
+daughters information into mother features.  A set of such functions
+will be called a generic rule. Precedence between them will be
+established according to the specificity of the type constraints on
+the daughters.
+This paper is structured as follows: first, we outline the main ideas 
+behind our approach. Next, we make a more formal presentation of   generic rules. Then, we turn to the linguistic problem of 
+non-constituent coordination, and give a linguistic explanation within 
+categorial grammar that uses the tuple operation introduced in 
+ ,. Recognition with that grammar is NP-hard,  as it is with most extensions of Lambek Calculus. We present, then, a 
+reformulation of that grammar as a generic rule. The representational 
+facilities of generic rules allow the specification of each 
+grammatical resource at an appropriate level of specificity, 
+drastically constraining the search space for the parsing task.
+
+Consider a context-free grammar - possibly augmented with functional
+restrictions attached to each rule - that includes the hierarchy
+
+
+and the
+rule 
+
+.
+
+If we decide to write down a new rule that specifies a different, more
+specific behaviour for 
+
+VPi when combining with a
+
+ NP, we could think of adding a new rule as:
+
+
+.  If our aim is to
+state this rule as the rule to be used when the VP
+belongs to the more specific subclass 
+
+VPi, we want the
+production 
+
+
+to
+be valid, but not the production 
+
+.
+Just adding
+
+
+to the CFG does not
+capture the exceptional sense of the rule; in a CFG, both derivations
+are equally possible.
+
+We have two options to get the desired behaviour from the CFG.  The
+first one is to keep 
+
+
+and
+rewrite the specific rule 
+
+
+into the following set of rules:
+
+
+
+The second one is to rewrite the hierarchy, in order to keep the
+number of rules invariant:
+
+
+
+None of these options is an incremental way of capturing exceptions in
+a grammar. The introduction of an exception forces the revision of
+previously described lexical types and grammar rules.
+
+This naive example exemplifies a problem that becomes significant when
+an operation or rule carries on most of the information-combining
+task. This is a standard situation in lexicalist approaches to
+ grammar.  For instance,  proposes a distinction between a basic categorial grammar, which only includes forward and   backward application, and an extended grammar that also includes
+type raising and functional composition. The basic grammar
+is used for most of the analysis, whereas the extended one should only
+be used in specific situations such as non-constituent coordination.
+It is suggested that this rules should be licensed only when
+functional application fails to parse a string. However, no
+formalization of the different status of such rules is offered.
+
+We propose a formalism to express and handle default and exceptional
+rules within a phrase-structure approach that permits this kind of
+representations.  Our formalism describes rules as object-oriented
+functions that map daughters information into mother features. As in
+object-oriented programming, precedence between rules is not given
+statically in the linguistic signature, but it is dynamically
+established upon the types of the input structures of the
+compositional process. When combining two constituents, a
+metagrammatical mechanism establishes a partial order for the
+candidate rules and selects the most appropriate rule (or set of
+rules) to be applied.
+
+Before defining such framework, let us introduce the proposal with a
+generic rule representation for the naive example above. The generic
+rule having the desired behaviour for rule 
+
+
+and rule 
+
+
+has this aspect:
+
+
+
+ Equation  describes a generic rule,  
+,
+that
+returns a type for the composition of two linguistic objects.
+
+
+is a partial
+rule applicable when the arguments 
+
+
+belong to the
+types 
+
+,
+in that order.
+
+
+is applicable when the arguments belong to the types
+
+.
+
+A bottom-up parsing process may call 
+
+
+when it tries to
+combine two objects with types 
+
+.
+The applicable
+partial rules will be 
+
+.
+The natural way to establish
+precedence between rules is attending to the specificity of the type
+constraints of their arguments: 
+
+
+will be more
+specific than 
+
+
+if 
+
+.
+
+Some examples of the application of 
+
+
+would be:
+
+
+
+In each case, the following partial rules have been applied:
+
+
+
+In that way, we have the ability to express default rules, and rules
+with different degrees of specificity in an incremental way, without a
+need to give them different formal status. Also, only minor changes
+have to be made to a CFG parsing algorithm in order to work with
+generic rules.
+
+Consider a partially ordered set (poset) 
+
+
+and a
+domain of linguistic objects 
+typed with 
+
+
+(i.e.,
+there is a function type:
+
+).
+Consider also an informational domain 
+associated to by means of a function :
+
+
+(perhaps
+multivaluated) that associates at least one element in 
+to every
+object of .
+
+A generic rule 
+over the tuple
+
+
+is another tuple
+
+,
+where: 
+
+
+
+
+is a set of functions,  that will be called  partial
+  rules,  of the form:
+
+where 
+
+,
+and the following 
+condition holds on the set of partial rules: 
+
+.
+
+
+
+
+is a partially ordered poset defined over 
+
+as follows:
+
+
+
+
+
+
+We call cartesian poset 
+
+
+over a poset 
+
+
+to 
+any subset of 
+
+
+equipped with the partial ordering 
+relation .
+We call cartesian type of a partial rule 
+
+
+to the 
+type specification 
+
+.
+
+
+such that 
+
+
+is the lowest upper bound of 
+
+
+in 
+
+.
+
+
+is called the dynamic binding function for 
+.
+It interfaces parsing processes with the grammar, 
+selecting the most specific partial rule in  
+given two 
+arguments of types  
+
+.
+
+
+Note that 
+
+
+is a subset of the cartesian product 
+
+,
+and that the partial ordering relation 
+is 
+deduced from the relation 
+that holds between the elements of 
+.
+By means of the definition of cartesian poset, we
+have 
+managed to axiomatize precedence issues between partial rules, turning 
+the dynamic binding process into a simple order checking over the 
+elements of a poset.  
+The function 
+
+
+provides the interface of the generic rule, 
+as a system of object-oriented functions, with the parsing process 
+that calls it. In particular, the dynamic binding function provides 
+the default interpretation for partial rules. Given a pair of 
+arguments of types 
+
+,
+a dynamic extension  
+
+
+of the original cartesian poset 
+
+
+that includes the cartesian type 
+
+
+is considered. In virtue of 
+the definition of the partial ordering relation ,
+the new 
+type 
+
+
+takes its place in the hierarchy. Its supertypes denote 
+all the applicable rules to compose the pair of arguments, and the 
+partial ordering between this supertypes denotes precedence between 
+them. The action of the generic rule 
+over a couple of 
+linguistic objects with types 
+
+
+and 
+associated expressions 
+
+
+is given by 
+
+.
+In our definition, precedence is used to keep the most specific rule 
+and override the rest. However, more sophisticated binding processes 
+could be considered. For instance, if the partial rules were 
+unification constraints, some default version of  unification 
+could be performed on the 
+applicable rules, taking their relative precedence into account. 
+We have adopted the restriction of binary branching (binary rules) to 
+take full advantage of the concept of dynamic binding with the minimum 
+effort. However, this is not a serious limitation: most linguistically 
+significant rules are binary, and those which are not can be easily 
+converted in binary rules.
+
+Given the definition of the preceding section, there can be situations 
+where precedence conflicts cannot be solved. When 
+the cartesian type that represents the arguments of a call to the 
+generic rule has more than one direct supertype, there is not a single 
+ ``most specific rule'' (see the example in Figure ). 
+
+If this indeterminacy is possible for a 
+given generic rule, we say that the Cartesian Poset 
+
+
+is 
+not well-formed:  
+A Cartesian Poset 
+
+ 
+is well-formed iff  
+
+ not ordered, such that 
+
+ and  
+
+, it
+holds that 
+
+
+This kind of indeterminacy appears also when dealing with multiple
+default 
+ inheritance  or default unification over feature   structures with structure-sharing ,, and  can only be solved adding extra  
+ordering information or forbidding such situations. Our 
+well-formedness condition adopts the first solution. The main reason 
+is that the cartesian hierarchies are not defined by the user, but 
+arranged by the system. Such conflicts are potentially dangerous, as 
+the grammar writer is not necessarily aware of them. An advantage of 
+the definition of well-formedness is that it can detect 
+inconsistencies at compile-time and signal them for correction.
+
+A generic rule may interact with a phrase-structure grammar to perform 
+ the composition of some informational field. In , for  instance,  we propose generic rules as a well-suited mechanism to 
+perform categorial semantic interpretation as a modular process that 
+interacts with a phrase-structure grammar.  
+On the other hand, a  grammar could be made up exclusively of generic 
+rules, adequately combined to perform parsing.  
+We will present a simple account of each of these possibilities.  
+We will adopt here the deductive 
+ parsing approach described in ; it provides  a neat account of parsing systems, simplifying our presentation. 
+We will start from a bottom-up shift reduce algorithm as presented in 
+ . We will gradually adopt this algorithm to capture  generic rule parsing. 
+Let 
+be a string of terminals wi. Let 
+
+
+stand for 
+
+.
+ In  a shift-reduce  bottom-up deductive parsing system is expressed as the following 
+calculus:
+This parser can be augmented to do semantic interpretation. If each 
+rule has an associated function that related the meanings of the 
+elements in the rhs with the meaning of the lhs element, the basic 
+tuples are 
+
+.
+The reduce rule carries 
+ on semantic composition:   
+where f is the semantic composition function associated to the rule 
+
+.
+We can augment the shift-reduce parser in a similar way to represent 
+the interaction between a generic rule and a phrase-structure grammar.
+We have to take account of
+two differences between generic rule parsing and the
+syntactic-semantic parser above:
+
+1.
+The action of the generic rule has to be specified through the 
+dynamic binding function. There is not a partial rule associated to 
+  each context-free rule.  
+2.
+The interpretation of the context-free rules has to be slightly 
+  modified to take into account the hierarchization of 
+  non-terminals. A hierarchy is equivalent, in context-free terms, to 
+  a set of unary rules in which every inmediate-ordering relation is 
+  expressed writing a type as a left-hand side of a rule, and its 
+  subtype as the right-hand side. Being these rules ``compiled'' into 
+  the hierarchy, a context-free rule as  
+
+,
+  has to be interpreted as 
+
+
+such that 
+
+.
+
+The basic element in the logic that represents the parsing algorithm 
+is the same as in the preceding case: 
+
+.
+Now, 
+is an expression that belongs to the informational 
+domain associated to a generic rule .
+The reduce rule that takes account of the interaction of a 
+generic rule with a context-free grammar is 
+
+
+
+The interaction with the generic rule is expressed in the term
+
+.
+The left part,
+
+,
+performs dynamic binding,
+returning the effective rule that will be applied on
+
+.
+
+The side conditions on this rule are: one, that exists an applicable
+syntactic rule 
+
+.
+And two, that the generic function, applied over
+
+,
+returns a positive result.  Note that it could be
+the case that there is an appropriate syntactic rule, but the
+additional restrictions imposed by the generic rule do not hold
+ . 
+
+It is interesting to remark that the dynamic binding process depends
+on the particular objects in the Reduce rule, not only on the
+conditions of the context-free rule. That makes impossible to
+pre-attach an ``effective partial rule'' to each context-free rule at
+compilation time, such that the binding process could be performed
+off-line. This fact is reflected in the term
+
+.
+If it were
+
+,
+binding could be done at compile time.
+Though this behaviour introduces and additional complexity factor in
+generic rule parsing, it allows the specification of semantic and
+syntactic processes as independent mechanisms that interact modularly.
+
+A particular case of generic rule is that in which the combination
+functions simply return a type, as in our first example. In such a
+rule, the role of every partial rule is similar to that of a
+context-free rule, and the generic rule works as a context-free
+grammar in which rules has a default interpretation. For this kind of
+generic rules, that combine syntactic information, it is senseless to
+consider their interaction with a context-free grammar, as they are
+parsable by themselves. Such parsing does not differ substantially
+from context-free parsing. The main restriction is that, due to the
+functional interpretation of partial rules, bottom-up algorithms are
+best suited that top-down mechanisms, that would require the
+definition of inverse functions.
+
+The reduce rule that takes account of syntactic parsing with a
+generic rule can be described as follows:
+
+
+
+The expression
+
+,
+with both 
+arguments repeated, may seem confusing. Note, however, that each
+couple of arguments plays 
+very different roles. The first couple are the arguments of the dynamic
+binding function, from which an effective partial rule is
+obtained. Such partial rule is then applied to the second set of
+arguments. They are related to the informational domain associated to
+the generic rule, which is, in this case, the type information
+associated to the linguistic objects. 
+
+The side condition, in this case, is precisely the one that licenses
+the syntactic combining operation. If
+
+
+does not
+return a positive result, then we cannot build a phrase out of the
+arguments 
+
+.
+
+The computational cost of parsing processes associated to this kind
+of generic rules carrying on syntactic information is obviously the
+same as the cost of parsing a context-free grammar. The only
+difference between both processes is the way to select the appropriate
+rule when the Reduce step is called. In context-free parsing, this
+step involves looking up the available rules and matching the objects
+involved with the right-hand side of the rules. In the worst case,
+this process 
+introduces a factor G in the overall complexity of parsing, being G
+the size of the grammar. For a generic rule, the reduce rule involves
+introducing a new type in the hierarchy of rules. Again, this implies
+a factor G in the overall complexity, being G the number of partial
+rules associated to the generic rule. The dependence with the length
+of the string is obviously the same, as the surface behaviour of a
+context-free grammar and a generic rule is exactly the same for
+bottom-up parsing.
+
+Another interesting case is when we have a generic rule to
+specify syntactic restrictions, and another one to perform semantic
+interpretation. It is easy to specify an algorithm to parse such
+grammars from the preceding cases. 
+Now the elements of the logic have the form 
+
+,
+and the parser includes the following reduce rule:
+
+
+
+Let us see a (linguistically weird ) example. Consider the grammar
+made up of the following generic rules:
+
+
+
+
+
+ The syntactic rule has already been considered in section . We assume the same hierarchy of that example, augmented with a new
+type 
+
+.
+The semantic generic rule
+takes account of a very special semantic issue, namely that Pete has a 
+weak personality and imitates his friends in everything they do.
+If we consider the phrases
+
+
+Betty : 
+
+
+; Betty
+  
+proper-noun
+
+got+angry : 
+
+
+;
+  got+angry 
+
+
+
+
+
+the application of the deductive system above to the string
+`Betty got angry' would be as follows:
+
+1.
+
+2.
+
+
+(Shift)
+3.
+
+
+(Shift)
+4.
+
+
+(Reduce) 
+
+In the only application of the reduce rule, the following terms were
+used: 
+
+
+
+
+
+
+
+
+ =  
+
+
+
+This example illustrates the point, stated before, that it is not
+possible to attach a semantic rule to each syntactic rule at compile
+time. It is, essentially, a dynamic binding process. 
+
+A phrase-structure grammar with a one-to-one correspondence between
+syntactic and semantic rules would need 12 pairs of rules to get the
+same behaviour as the two generic rules above. The incrementality and
+modularity of the generic rule approach is evident in this case.
+
+The general scheme for coordination corresponds to the conjunction of
+constituents belonging to the same type: `Nothing is certain,
+  except death and taxes', `Take the money and run', `the
+  long and winding road'. Within the categorial grammar framework,
+such cases are solved using the basic function application rules
+(corresponding to the non-associative Lambek calculus in a
+sequent calculus presentation). 
+Nevertheless, there are cases of the so-called non-constituent
+  coordination, where the conjoined expressions are not constituents
+in the classical sense: `John met Jane yesterday and Chris
+today', `John read a book about linguistics on Monday and a
+journal about computers on Tuesday' (Left-node raising) , `John made and Peter painted a wooden chair (Right-node
+raising). The most common solution is to postulate extra-grammatical
+levels of representation and/or special purpose parsing algorithms.
+
+There have been a number of proposals within the categorial framework,
+however,  that
+deal with such phenomena at a grammatical level, extending the number of
+rules or the set of basic operators. The combinatory rules of type
+ raising and functional composition , for instance, introduce associativity in the structural resources of the grammar.
+  uses these rules to assign a category to the coordinated conjuncts. With the exception of 
+ , that proposes a (less intuitive) normal form for such rules that avoid spurious ambiguity, all the proposals
+suffer from intractability of the parsing task. Significantly, none of
+them includes, to our knowledge, a formal differentiation between
+default and exceptional rules. 
+
+We will consider here a particularly simple account for
+non-constituent coordination
+phenomena based on the sequence product operator introduced in
+ . Its reformulation as a generic rule will show the advantages of expressing default and exceptional grammar rules. 
+
+In the non-constituent coordination examples above, we may consider
+`Jane yesterday', `a book about linguistics on Tuesday',
+etc, as being tuples of expressions belonging to the tuple product.
+ . In this case the conjunction scheme type 
+
+
+would substitute a sequence product by
+the variable x.
+
+In order to introduce this operator we need to extend the basic
+string algebra of types by adding a tuple operation. Thus the
+algebra would be 
+
+,
+being + the
+concatenative and associative operation and 
+
+the operation of tuple formation.
+
+The model-theoretic definition for the sequence product is as
+follows:
+
+
+
+ The sequent rules corresponding to  are: 
+
+
+
+Examples with more than two elements in the sequence product will need a
+generalization of the tuple operation. This generalization is
+straightforward 
+using the standard definition of n-tuple: 
+
+[ x1,...,xn ] = [ [
+x1,...,xn-1 ] xn ].  
+Now we are able to account for a sentence
+like `John read a book about linguistics on Monday  
+and a journal about computers on Tuesday' by using a 3-tuple 
+
+.
+Right-node raising examples
+proceed in a similar way.
+
+This approach avoids using type-raising (a rule that can be applied on 
+any category at any time), but still suffers from intractability, as
+it is available for every combination of types. Again, the problem
+relies on the exceptional status that should be given to the rules
+that deal with non-canonical phenomena.
+
+The framework of generic rules offers a natural way to express the
+grammar to deal with non-constituent coordination as an arrangement
+of default rules, where each combination of types is performed
+according to the most specific rule available.
+
+The essential rules we want to express are:
+
+
+By default, two types are combined using functional
+    application and, if functional application is not applicable, they
+    cannot be combined.
+
+When we try to combine two or more verbal complements and
+    there is 
+    a conjunction inmediately preceding them, a sequence product can
+    be formed 
+    with them.
+
+When we try to combine a noun phrase and a verb followed
+    by a 
+    conjunction, a sequence product can be formed with them. 
+
+
+
+``Verbal complement'', for our present purposes, stands for a
+
+,
+a 
+
+
+or, in turn, a sequence product
+ . 
+
+Such rules would guarantee that a sequence product is formed only in
+the relevant 
+cases. We only need an additional rule to scan optimally the elements
+that match the sequence product on the left-side of the coordination. 
+
+The formalism of generic rules allows for a direct specification
+of such set of - still very informal - rules. Once turned into a
+generic rule, they can be parsed with any bottom-up context-free
+recognition algorithm (reformulated as the shift-reduce parsing in
+ section ).   
+
+The first step is to express the operations related to the grammar as
+binary rules: 
+
+
+
+
+
+
+
+
+and 
+
+
+are the usual forward and backward application rules.
+
+
+is the rule to introduce a sequence product. As stated, it
+seems a 
+context-sensitive rule: The formation of a sequence product is only
+possible when 
+a conjunction is present to the left of the elements that form a
+ sequence product . However, this
+context-sensitivity does not overcome context-free grammar parsing, as 
+the licensing element is a lexical item, a terminal, and its presence 
+can be checked in constant time.  
+
+
+rule implements the 
+stepped application of rules L/ and 
+
+
+in the cancellation 
+of type 
+
+.
+
+
+matches elements to the left of the
+conjunction with the items in the tuple built to the right. This
+reformulation is intended to a) keep the binary rules arrangement to
+allow 
+easy formulation of the generic rule, and b) take into account the
+asymmetry between the formation process for the right and the left
+ coordinated conjuncts  . The necessity of bulding a tuple is given by the right conjunct, and the left conjunct is built only to match
+the right one.  
+
+
+is implementing the consecutive application of
+
+
+and 
+
+.
+
+
+is the rule to eliminate the
+tuple operator and it implements the 
+
+
+rule.
+
+The crucial point to write a generic rule based upon the rules above
+is to determine the types of the arguments associated to each
+operation. By default, any combination of categories
+is driven by functional application rules: forward
+application (
+
+)
+and backward application (
+
+). Therefore, the
+first 
+partial rule  would be licensed on arguments of the most
+general type 
+
+.
+This rule will try to apply 
+
+
+or 
+
+,
+and will return 
+if both fail, forbidding that
+combination.
+
+The second partial rule is the rule of tuple formation. The type
+conditions over the arguments of such a rule arise in a natural way
+from the informal specification made at the beginning of this section:
+both tupled elements have to be verb complements (in the case of
+left-node raising) or an np followed by a verb (in the case of
+right-node raising). We need two partial rules to establish both type
+specifications. 
+We will consider a
+type 
+
+
+that has 
+
+
+and 
+
+as direct subclasses. Another possibility
+is that one of the tupled members is, in turn, a tuple. Therefore, 
+the tuple has to
+be introduced as a direct subclass of 
+
+
+as well. That
+dependency provides the possibility of building n-tuples. 
+
+Finally, we need a scan rule to match objects at the left of the
+conjunction once the right tuple has been combined with
+the conjunction (by means of simple forward application). Therefore,
+the type constraint on right elements is type 
+
+
+again. 
+The second one has to be 
+a coordination of tuples missing some elements to its right. We will
+denote this type as 
+
+.
+This
+rule has to act in coordination with 
+
+,
+which will be applied
+only after the last conjoined element in the right coordinated
+conjunct has been cancelled. 
+
+To establish the interaction between the rules of
+  and the partial rules, we will use the following operations of composition, disjunction and optionality:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+That is the fragment of hierarchy that we need for our present
+purposes: 
+
+The type 
+
+
+represents verb complements, as introduced above. 
+The type 
+
+
+represents the combination of a
+conjunction 
+with a tuple as its right coordinated conjunct. It is needed to
+specify the scan rule over the appropriate kind of objects. The type
+
+
+is included as a verb complement, to allow formation
+and coordination of n-tuples.
+
+Given that hierarchy, we propose the following generic rule to parse
+sentences including non-constituent coordination:
+
+
+
+Note, again, that no precedence has to be defined by the grammar
+writer to control the interaction of the rules. An easy, natural
+analysis of the suitable arguments for each rule has implicitly
+defined a partial ordering between them. 
+
+The Hasse diagram of the cartesian poset associated to that generic
+rule is:
+
+ac
+ad
+
+ This rule can be parsed with the algorithm in . The only novelty is that some word indexing has to be kept so that the
+presence of a conjunction inmediately to the right of the arguments
+can be checked in order to apply 
+
+
+and
+
+.
+
+ The Figure  shows how dynamic binding works to get an analysis of `John met Jane yesterday and Chris today'.
+We have annotated each step of the analysis with the partial rule
+effectively applied on the constituents being combined. That partial
+rule is signalled by the dynamic binding function as the most specific 
+to combine the types involved in the combination process.
+
+A context-free parser with the modifications shown in
+ section  for the reduce step can produce this analysis at a context-free cost in time, both in the length of the
+string and the size of the grammar. Compared with the calculus
+ presented in section , the generic rule does not suffer from intractability and can be parsed with well-known, general parsing
+techniques. 
+
+A parser with heuristics or daemons to control coordination processes
+could achieve a similar efficiency.  The clear advantage of a generic
+rule is that the knowledge that reduces the search space is
+declaratively introduced at the grammar level, and controlled at an
+intermediate level between the grammar and the parser (by means of
+dynamic binding).  This enhances linguistic motivation, modularity and
+incrementality (both to extend the grammar and to control the parsing
+processes).
+
+The possibility of formally stating grammar rules with a default
+interpretation has some advantages from a 
+parsing perspective and from the point of view of 
+knowledge representation.
+On one side, it provides a declarative and modular way to reduce the
+search space of parsing processes without altering parsing algorithms
+with heuristic recipes.
+On the other side, it
+provides a linguistically motivated account of exceptional behaviour
+that 
+is particularly appealing for lexicalized grammar formalisms
+where the lexicon is the repository of most of the linguistic
+information, and there are only a few, very general rules that govern
+linguistic phenomena. 
+
+Our account of non-constituent coordination illustrates the advantages 
+of such default arrangements for grammar rules. 
+We have presented a categorial account of 
+non-constituent coordination in which incombinable constituents on 
+both sides of conjunction are 
+treated as tuples of elements by the introduction of a sequence
+type in the conjunction type. Once we have formed a single
+tuple constituent, we can combine it with the remaining elements.
+This approach of non-constituent coordination within Categorial
+Grammar needs some rules of introduction and elimination
+of the sequence operator which are not commonly needed for other 
+simpler linguistic phenomena, and that makes the parsing process
+intractable in its original Lambek-style formulation. 
+When reformulated as a generic rule, the type conditions on the
+arguments for each rule are used by the dynamic binding process to
+fire the most appropriate grammar rule at every parsing step. The
+process turns to be context-free parsable, and exhibits a highly
+restricted search space. 
+
+Bouma, G. (1992).
+Feature structures and nonmonotonicity.
+Computational Linguistics, 18-2.
+
+Carpenter, R. (1993).
+Skeptical and credulous default unification with application
+to templates and inheritance.
+In Inheritance, Defaults and the Lexicon. Cambridge
+University 
+  Press.
+
+Daelemans, W., De Smedt, K., and Gazdar, G. (1992).
+Inheritance in natural language processing.
+Computational Linguistics, vol 18-2.
+
+Dowty, D. (1988).
+Type raising, functional composition, and non-constituent
+  conjunction.
+In Categorial Grammars and Natural Language
+  Structures. Reidel Publishing Company.
+
+Gonzalo, J. (1995).
+An object-oriented approach to treat exceptions in grammar.
+In Topics in Constraint Grammar Formalism for
+  Computational Linguistics. Seminar fr Sprachwissenschaft:
+Universitt Tbingen.
+
+Morrill, G. and Solas, T. (1993).
+Tuples, discontinuity and gapping in categorial grammar. 
+In EACL-93.
+
+Ross, J. (1967).
+Constraints on variables in Syntax.
+PhD thesis, MIT.
+
+Shieber, S., Schabes, Y., and Pereira, F. (1994).
+Principles and implementation of deductive parsing.
+Technical Report TR-11-94, Center for Research in Computing 
+  Technology, Harvard University.
+Also as cmp-lg/9404008 .
+
+Solas, M. (1992).
+Gramticas Categoriales, Coordinacin
+  Generalizada y Elisin.
+PhD thesis, Universidad Autnoma de Madrid.
+
+Solas, T. (1993).
+Sequence product, gapping and multiple wrapping.
+In Proceedings of the workshop on Linear Logic and
+  Lambek Calculus.
+
+Steedman, M. (1985).
+Dependency an coordination in the grammar of dutch and
+english. 
+Language, 61(3).
+
+Wittenburg, K. and Wall, R. (1990).
+Parsing with categorial grammar in predictive normal form. 
+In Current Issues in Parsing Technologies. Wiley.
+
+This definition assumes that the original poset is bounded complete, 
+i.e., each pair of types have at most one common subtype.
+  The other rules are modified 
+  trivially.
+   This would be the case of semantic disambiguation.
+   For these simplest cases of Non-constituent coordination we
+  may also use Lambek's associative product. However the introduction
+  of the sequence product brings advantages in more intricate examples
+   of coordination like the ones considered in .   Therefore we will use the sequence product in consideration of
+  further extensions of this work.
+  We use
+
+
+as an abbreviation for 
+
+.
+In this application we are only taken
+  under consideration the possibility of having types 
+
+
+and
+
+
+as verbal complements. This set should be extended if
+  some other kind of complementation were considered.
+ As  pointed out, the conjunction licenses type sequences. Therefore, sequence product can appear in coordination 
+environments, whereas other categories do not.
+  The stepped cancellation of the right
+  and the left conjuncts has well-known linguistic motivation, first
+   stated in . 

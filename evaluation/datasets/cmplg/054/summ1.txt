@@ -1,0 +1,22 @@
+
+A model for the full treatment of Spanish inflection for verbs, nouns and
+adjectives is presented. This model is based on feature unification and it
+relies upon a lexicon of allomorphs both for stems and morphemes.  Word
+forms are built by the concatenation of allomorphs by means of special
+contextual features. We make use of standard Definite Clause Grammars (DCG)
+included in most Prolog implementations, instead of the typical
+finite-state approach. This allows us to take advantage of the
+declarativity and bidirectionality of Logic Programming for NLP.
+The most salient feature of this approach is simplicity: A really
+straightforward rule and lexical components. We have developed a very simple
+model for complex phenomena.
+Declarativity, bidirectionality, consistency and completeness of the model
+are discussed: all and only correct word forms are analysed or generated,
+even alternative ones and gaps in paradigms are preserved.  A Prolog
+implementation has been developed for both analysis and generation of
+Spanish word forms.  It consists of only six DCG rules, because our lexicalist approach -i.e. most information is in the
+dictionary. Although it is quite efficient, the current implementation
+could be improved for analysis by using the non logical features of Prolog,
+especially in word segmentation and dictionary access.
+Keywords:  Applications of Logic Programming to NLP,
+Computational Morphology.

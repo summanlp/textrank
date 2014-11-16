@@ -1,0 +1,10 @@
+
+GLR* is a recently developed robust version of the Generalized LR Parser
+[], that can parse almost any input sentence by ignoring
+unrecognizable parts of the sentence. On a given input sentence, the parser
+returns a collection of parses that correspond to maximal, or close to maximal,
+parsable subsets of the original input. This paper describes recent work on
+developing an integrated heuristic scheme for selecting the parse that is
+deemed ``best'' from such a collection. We describe the heuristic measures
+used and their combination scheme. Preliminary results from experiments
+conducted on parsing speech recognized spontaneous speech are also reported.

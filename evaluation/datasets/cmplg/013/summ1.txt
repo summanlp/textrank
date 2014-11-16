@@ -1,0 +1,10 @@
+
+A technique for reducing a tagset used for n-gram part-of-speech
+disambiguation is introduced and evaluated in an experiment. The
+technique ensures that all information that is provided by the original
+tagset can be restored from the reduced one. This is crucial, since we
+are interested in the linguistically motivated tags for part-of-speech
+disambiguation. The reduced tagset needs fewer parameters for its
+statistical model and allows more accurate parameter estimation.
+Additionally, there is a slight but not significant improvement of
+tagging accuracy.

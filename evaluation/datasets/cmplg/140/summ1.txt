@@ -1,0 +1,14 @@
+
+The paper argues the importance of high-quality translation for
+spoken language translation systems. It describes an
+architecture suitable for rapid development of high-quality
+limited-domain translation systems, which has been implemented within
+an advanced prototype English to French spoken language translator.
+The focus of the paper is the hybrid transfer model which combines
+unification-based rules and a set of trainable statistical
+preferences; roughly, rules encode domain-independent grammatical
+information and preferences encode domain-dependent distributional
+information.  The preferences are trained from sets of examples
+produced by the system, which have been annotated by human judges as
+correct or incorrect.  An experiment is described in which the model
+was tested on a 2000 utterance sample of previously unseen data.

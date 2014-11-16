@@ -1,0 +1,1553 @@
+
+Describing objects is one of several purposes for which linguists use
+feature structures.  A description is an entity that can be
+interpreted as true or false of an object.  For example, the
+conventional interpretation of the description `it is black' is true
+of a soot particle, but false of a snowflake.  Therefore, any use of a
+feature structure to describe an object demands that the feature
+structure can be interpreted as true or false of the object.  In this
+paper, I tailor the semantics of [] to suit the typed
+feature structures of [], and so create an
+explicit interpretation of a typed feature structure used as a
+description.  I then use this interpretation to define the notion of a
+satisfiable feature structure.
+
+Though no feature structure algebra provides descriptions as
+expressive as those provided by a feature logic, using feature
+structures to describe objects profits from a large stock of available
+computational techniques to represent, test and process feature
+structures.  In this paper, I demonstrate the computational benefits
+of marrying a tractable syntax and an explicit semantics by creating a
+simple and effective algorithm to decide the satisfiability of a
+feature structure.  Gerdemann and Gtz's Troll type resolution
+system implements both the semantics and an efficient refinement of
+the satisfiability algorithm I present here (see [],
+[] and []).
+
+A signature provides the symbols from which to construct typed feature
+structures, and an interpretation gives those symbols meaning.
+[
+Definition
+
+is a signature iff
+[
+
+is a sextuple 
+
+
+ ,
+
+
+
+is a set,
+
+
+
+is a partial order,
+
+
+
+
+
+
+
+is a set,
+
+
+
+is a partial function from the Cartesian product of 
+
+
+and 
+
+
+ to 
+
+
+ ,
+and
+
+for
+each 
+
+
+ ,
+each 
+
+
+and
+each 
+
+
+ ,
+[
+[
+if
+
+
+is defined and
+
+
+ then
+
+
+is defined, and
+
+
+ .
+]
+]
+]
+]
+Henceforth, I tacitly work with a signature
+
+
+ .
+I call members of 
+
+
+states,
+members of 
+
+
+types, 
+
+subsumption, members of 
+
+species,
+members of 
+
+
+attributes, and 
+
+
+appropriateness.
+[
+Definition
+
+I is an interpretation iff
+[
+I is a triple 
+
+
+ ,
+
+U is a set,
+
+S is a total function from U to 
+
+A is a total function from 
+
+
+to the set of partial functions from
+U to U,
+
+for
+each 
+
+
+and
+each 
+
+ ,
+[
+[
+if
+
+
+is defined
+then
+
+
+is defined, and
+
+
+ ,
+and
+]
+]
+
+for
+each 
+
+
+and
+each 
+
+ ,
+[
+[
+if
+
+
+is defined
+then
+
+
+is defined.
+]
+]
+]
+]
+Suppose that I is an interpretation 
+
+
+ .
+I call each
+member of U an object in I.
+
+Each type denotes a set of objects in I.  The denotations of the
+species partition U, and S assigns each object in I the unique
+species whose denotation contains the object: object u is in the
+denotation of species 
+
+iff 
+
+
+ .
+Subsumption encodes
+a relationship between the denotations of species and types: object
+u is in the denotation of type 
+
+iff 
+
+
+ .
+So,
+if 
+
+
+then the denotation of type 
+
+contains
+the denotation of type 
+
+ .
+
+Each attribute denotes a partial function from the objects in I to
+the objects in I, and A assigns each attribute the partial
+function it denotes.  Appropriateness encodes a relationship between
+the denotations of species and attributes: if
+
+
+is defined then the denotation of
+attribute 
+
+acts upon each object in the denotation of species
+
+to yield an object in the denotation of type
+
+
+ ,
+but if 
+
+
+is
+undefined then the denotation of attribute 
+
+acts upon no
+object in the denotation of species 
+
+ .
+So, if
+
+
+is defined then the denotation of attribute
+
+acts upon each object in the denotation of type 
+
+to
+yield an object in the denotation of type 
+
+
+ .
+
+I call a finite sequence of attributes a path, and write 
+
+for the
+set of paths.
+[
+Definition
+
+P is the path interpretation function under I iff
+[
+I is an interpretation 
+
+
+ ,
+
+P is a total function from 
+
+to the set of partial functions from
+U to U, and
+
+for
+each 
+
+
+ ,
+[
+
+
+is the functional composition
+of 
+
+
+ .
+]
+]
+]
+I write PI for the path interpretation function under I.
+
+[
+Definition
+
+F is a feature structure iff
+[
+F is a quadruple 
+
+
+ ,
+
+Q is a finite subset of 
+
+
+ ,
+
+ ,
+
+is a finite partial function from the Cartesian product of
+Q and 
+
+
+to Q,
+
+is a total function from Q to 
+
+
+ ,
+and
+
+for
+each 
+
+ ,
+[
+for
+some 
+
+ ,
+
+runs to q' in F,
+]
+]
+where
+
+
+runs to q' in F iff
+[
+
+
+ ,
+
+ ,
+and
+
+for
+some 
+
+
+ ,
+[
+q=q0,
+
+for
+each i[n,
+[
+
+
+is defined, and
+
+
+ ,
+and
+]
+
+qn=q'.
+]
+]
+]
+Each feature structure is a connected Moore machine (see []) with finitely many states, input alphabet 
+
+
+ ,
+and output
+alphabet 
+
+
+ .
+
+[
+Definition
+
+F is true of u under I iff
+[
+F is a feature structure 
+
+
+ ,
+
+I is an interpretation 
+
+
+ ,
+
+u is an object in I, and
+
+for
+each 
+
+
+ ,
+each 
+
+
+and
+each 
+
+ ,
+[
+[
+if
+
+runs to q' in F, and
+
+runs to q' in Fthen
+
+
+is defined,
+
+
+is defined,
+
+
+ ,
+and
+
+
+ .
+]
+]
+]
+]
+[
+Definition
+
+F is a satisfiable feature structure iff
+[
+F is a feature structure, and
+
+for
+some interpretation I and
+some object u in I,
+F is true of u under I.
+]
+]
+
+The abundance of interpretations seems to preclude an effective
+algorithm to decide if a feature structure is satisfiable.  However, I
+insert morphs between feature structures and objects to yield an
+interpretation free characterisation of a satisfiable feature
+structure.
+
+[
+Definition
+
+M is a semi-morph iff
+[
+M is a triple 
+
+
+ ,
+
+is a nonempty subset of 
+
+ ,
+
+is an equivalence relation over 
+
+ ,
+
+for
+each 
+
+
+ ,
+each 
+
+
+and
+each 
+
+
+ ,
+[
+[
+if
+
+
+and
+
+
+ then
+
+
+ ,
+]
+]
+
+is a total function from 
+
+to 
+
+ ,
+
+for
+each 
+
+
+and
+each 
+
+
+ ,
+[
+if
+
+
+ then
+
+
+ ,
+and
+]
+
+for
+each 
+
+
+and
+each 
+
+ ,
+[
+[
+if
+
+
+ then
+
+
+ ,
+
+
+is defined, and
+
+
+ .
+]
+]
+]
+]
+[
+Definition
+
+M is a morph iff
+[
+M is a semi-morph 
+
+
+ ,
+and
+
+for
+each 
+
+
+and
+each 
+
+ ,
+[
+[
+if
+
+
+and
+
+
+is defined
+then
+
+
+ .
+]
+]
+]
+]
+Each morph is the Moshier abstraction (see []) of a
+connected and totally well-typed (see []) Moore
+machine with possibly infinitely many states, input alphabet 
+
+
+ ,
+and
+output alphabet 
+
+ .
+
+[
+Definition
+
+M abstracts u under I iff
+[
+M is a morph 
+
+
+ ,
+
+I is an interpretation 
+
+
+ ,
+
+u is an object in I,
+
+for
+each 
+
+
+and
+each 
+
+
+ ,
+[
+[
+
+
+ iff
+
+
+is defined,
+
+
+is defined, and
+
+
+ ,
+and
+]
+]
+
+for
+each 
+
+
+and
+each 
+
+ ,
+[
+[
+
+
+ iff
+
+
+is defined, and
+
+
+ .
+]
+]
+]
+]
+[
+Proposition
+
+For
+each interpretation I and
+each object u in I,
+[
+some unique morph abstracts u under I.
+]
+]
+I thus write of the abstraction of u under I.
+
+[
+Definition
+
+u is a standard object iff
+[
+u is a quadruple 
+
+
+ ,
+
+
+
+is a morph, and
+
+
+
+is an equivalence class under 
+
+ .
+]
+]
+I write 
+
+
+for the set of standard objects, write 
+
+
+for the
+total function from 
+
+
+to 
+
+ ,
+where
+[
+for
+each 
+
+
+and
+each 
+
+
+ ,
+[
+[
+
+
+ iff
+for
+some 
+
+
+ ,
+
+
+ ,
+]
+]
+]
+and write 
+
+for the total function from 
+
+
+to the set of partial
+functions from 
+
+
+to 
+
+
+ ,
+where
+[
+for
+each 
+
+
+ ,
+each 
+
+
+and
+each 
+
+
+ ,
+[
+[
+
+
+is defined, and
+
+
+ ,
+and
+for
+some 
+
+
+ ,
+
+
+ .
+]
+]
+]
+[
+Lemma
+
+
+
+is an interpretation.
+]
+I write 
+
+
+for 
+
+
+ .
+[
+Lemma
+
+For
+each 
+
+
+ ,
+each 
+
+
+and
+each 
+
+ ,
+[
+[
+
+
+is defined, and
+
+
+ ,
+and
+for
+some 
+
+
+ ,
+
+
+ .
+]
+]
+]
+[
+By induction on the length of 
+
+ .
+]
+[
+Lemma
+
+For
+each 
+
+
+ ,
+[
+[
+if
+
+
+is the equivalence class of the empty path under 
+
+ then
+the abstraction of 
+
+
+under
+
+
+is 
+
+
+ .
+]
+]
+]
+[
+Proposition
+
+For
+each morph M,
+[
+for
+some interpretation I and
+some object u in I,
+[
+M is the abstraction of u under I.
+]
+]
+]
+
+[
+Definition
+
+F approximates M iff
+[
+F is a feature structure 
+
+
+ ,
+
+M is a morph 
+
+
+ ,
+and
+
+for
+each 
+
+
+ ,
+each 
+
+
+and
+each 
+
+ ,
+[
+[
+if
+
+runs to q' in F, and
+
+runs to q' in Fthen
+
+
+ ,
+and
+
+
+ .
+]
+]
+]
+]
+A feature structure approximates a morph iff the Moshier abstraction
+of the feature structure abstractly subsumes (see []) the morph.
+[
+Proposition
+
+For
+each interpretation I,
+each object u in I and
+each feature structure F,
+[
+[
+F is true of u under Iiff
+F approximates the abstraction of u under I.
+]
+]
+]
+
+[
+Theorem
+
+For each feature structure F,
+[
+F is satisfiable
+iff
+F approximates some morph.
+]
+]
+[
+From
+ propositions   and . ]
+
+ Though theorem  gives an interpretation free characterisation of a satisfiable feature
+structure, the characterisation still seems to admit of no effective
+algorithm to decide if a feature structure is satisfiable.  However, I
+ use theorem  and resolved feature structures to yield a less general
+interpretation free characterisation of a satisfiable feature
+structure that admits of such an algorithm.
+
+[
+Definition
+
+R is a resolved feature structure iff
+[
+R is a feature structure 
+
+
+ ,
+
+is a total function from Q to 
+
+ ,
+and
+
+for
+each 
+
+
+and
+each 
+
+ ,
+[
+[
+if
+
+
+is defined
+then
+
+
+is defined, and
+
+
+ .
+]
+]
+]
+]
+Each resolved feature structure is a well-typed (see []) feature structure with output alphabet 
+
+ .
+
+[
+Definition
+
+R is a resolvant of F iff
+[
+R is a resolved feature structure 
+
+
+ ,
+
+F is a feature structure 
+
+
+ ,
+and
+
+for
+each 
+
+ ,
+
+
+ .
+]
+]
+[
+Proposition
+
+For
+each interpretation I,
+each object u in I and
+each feature structure F,
+[
+[
+F is true of u under Iiff
+some resolvant of F is true of u under I.
+]
+]
+]
+
+[
+Definition
+
+
+
+is rational iff
+for
+each 
+
+
+and
+each 
+
+
+ ,
+[
+[
+if
+
+
+is defined
+then
+for
+some 
+
+
+ ,
+
+
+ .
+]
+]
+]
+[
+Proposition
+
+If
+
+
+is rational
+then
+for
+each resolved feature structure R,
+R is satisfiable.
+]
+[
+Suppose that 
+
+
+and 
+
+is a bijection
+from ordinal 
+
+to 
+
+ .
+Let
+[
+
+
+
+
+
+
+ ,
+let
+[
+
+
+ (_n(),)
+
+
+
+
+
+
+ (_n(),)()
+
+
+ ,
+
+
+is a
+semi-morph.  Let
+[
+
+
+ ,
+
+
+
+ ,
+and
+
+
+
+ .
+]
+
+
+is a morph that R approximates.
+ By theorem , Ris satisfiable. ]
+
+[
+Theorem
+
+If
+
+
+is rational
+then
+for each feature structure F,
+[
+F is satisfiable
+iff
+F has a resolvant.
+]
+]
+[
+From
+ propositions   and . ]
+
+In this section, I use
+ theorem  to show how - given a rational signature that meets reasonable computational
+conditions - to construct an effective algorithm to decide if a
+feature structure is satisfiable.
+
+[
+Definition
+
+
+
+is computable iff
+[
+
+
+ ,
+
+
+and 
+
+
+are countable,
+
+is finite,
+
+for some effective function 
+
+
+ ,
+[
+for
+each 
+
+
+and
+each 
+
+
+ ,
+[
+[
+if
+
+
+ then
+
+
+`true'
+otherwise
+
+
+`false', and
+]
+]
+]
+
+for some effective function 
+
+
+ ,
+[
+for
+each 
+
+
+and
+each 
+
+
+ ,
+[
+[
+if
+
+
+is defined
+then
+
+
+ otherwise
+
+
+ `undefined'.
+]
+]
+]
+]
+]
+[
+Proposition
+
+If
+
+
+is computable
+then
+for
+some effective function 
+
+
+ ,
+[
+for
+each feature structure F,
+[
+
+
+a list of the resolvants of F.
+]
+]
+]
+[
+Since 
+
+
+is computable, for some
+effective function 
+
+
+ ,
+[
+for
+each finite 
+
+
+ ,
+[
+
+
+a list of the total functions from Q to 
+
+ ,
+]
+]
+for some effective function 
+
+
+ ,
+[
+for
+each finite set Q,
+each finite partial function 
+
+from the Cartesian product of
+Q and 
+
+
+to Q, and
+each total function 
+
+from Q to 
+
+
+ ,
+[
+[
+if
+for
+each 
+
+
+in the domain of 
+
+ ,
+[
+
+
+is defined, and
+
+
+ ]
+then
+
+
+`true'
+otherwise
+
+
+`false',
+]
+]
+]
+and for some effective function 
+
+
+ ,
+[
+for
+each finite set Q,
+each total function 
+
+from Q to 
+
+
+and
+each total function 
+
+from Q to 
+
+
+ ,
+[
+[
+if
+for
+each 
+
+ ,
+
+
+ then
+
+
+`true'
+otherwise
+
+
+`false'.
+]
+]
+]
+Construct 
+
+
+as follows:
+[
+for
+each feature structure 
+
+
+ ,
+[
+set
+
+
+and
+
+
+while
+
+
+is not empty
+
+[do
+=
+set
+
+
+[
+if
+
+
+`true',
+
+
+`true', and
+
+
+ then
+set
+
+
+ ]
+]
+
+[
+if
+
+
+ then
+output 
+
+
+is an effective algorithm, and
+[
+for
+each feature structure F,
+[
+
+
+a list of the resolvants of F.
+]
+]
+]
+
+[
+Theorem
+
+If
+
+
+is rational and computable
+then
+for
+some effective function 
+
+
+ ,
+[
+for each feature structure F,
+[
+[
+if
+F is satisfiable
+then
+
+
+`true
+otherwise
+
+
+`false'.
+]
+]
+]
+]
+[
+ From theorem  and  proposition . ]
+
+Gerdemann and Gtz's Troll system (see [],
+[] and []) employs
+an efficient refinement of 
+
+
+to test the satisfiability of
+feature structures.  In fact, Troll represents each feature structure
+as a disjunction of the resolvants of the feature structure.  Loosely
+speaking, the resolvants of a feature structure have the same
+underlying finite state automaton as the feature structure, and differ
+only in their output function.  Troll exploits this property to
+represent each feature structure as a finite state automaton and a set
+of output functions.  The Troll unifier is closed on these
+representations.  Thus, though 
+
+
+is computationally expensive,
+Troll uses 
+
+
+only during compilation, never during run time.
+
+[
+Robert Carpenter The logic of typed feature structures.
+Cambridge tracts in theoretical computer science 32.  Cambridge
+University Press, Cambridge, England.  1992.
+
+Dale Gerdemann.  Troll: type resolution system, user's guide.
+Sonderforschungsbereich 340 technical report.
+Eberhard-Karls-Universitt, Tbingen, Germany.  Forthcoming.
+
+Dale Gerdemann and Paul John King.  The correct and efficient
+implementation of appropriateness specifications for typed feature
+structures.  In these proceedings.
+
+Thilo Gtz.  A normal form for typed feature structures.
+Master's thesis.  Eberhard-Karls-Universitt, Tbingen, Germany.
+1993.
+
+Paul John King.  A logical formalism for head-driven phrase
+structure grammar.  Doctoral thesis.  The University of Manchester,
+Manchester, England.  1989.
+
+E. F. Moore.  `Gedanken experiments on sequential machines'.  In Automata Studies.  Princeton University Press, Princeton, New Jersey,
+USA.  1956.
+
+Michael Andrew Moshier.  Extensions to unification grammar for
+the description of programming languages.  Doctoral thesis.  The
+University of Michigan, Ann Arbor, Michigan, USA.  1988.
+]

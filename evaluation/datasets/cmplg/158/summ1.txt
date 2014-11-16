@@ -1,0 +1,14 @@
+
+An account of utterance interpretation in discourse needs to face the
+issue of how the discourse context controls the space of interacting
+preferences. Assuming a discourse processing architecture that
+distinguishes the grammar and pragmatics subsystems in terms of
+monotonic and nonmonotonic inferences, I will discuss how
+independently motivated default preferences interact in the
+interpretation of intersentential pronominal anaphora.
+In the framework of a general discourse processing model that
+integrates both the grammar and pragmatics subsystems, I will propose
+a fine structure of the preferential interpretation in pragmatics in
+terms of defeasible rule interactions. The pronoun interpretation
+preferences that serve as the empirical ground draw from the survey
+data specifically obtained for the present purpose.

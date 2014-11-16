@@ -1,0 +1,15 @@
+
+Dependency grammar is usually interpreted as equivalent to a strict form
+of X-bar theory that forbids the stacking of nodes of the same bar
+level (e.g., 
+
+
+immediately dominating 
+
+
+with the same
+head).  But adequate accounts of one-anaphora and of the
+semantics of multiple modifiers require such stacking and accordingly
+argue against dependency grammar. Dependency grammar can be salvaged by
+reinterpreting its claims about phrase structure, so that modifiers map
+onto binary-branching X-bar trees rather than ``flat'' ones.

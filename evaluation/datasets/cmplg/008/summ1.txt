@@ -1,0 +1,15 @@
+
+Previous approaches to robustness in natural language processing
+usually treat deviant input by relaxing grammatical
+constraints whenever a successful analysis cannot be provided by
+``normal'' means. This schema implies, that error detection
+always comes prior to error handling, a behaviour which hardly can
+compete with its human model, where many erroneous
+situations are treated without even noticing them.
+The paper analyses the necessary preconditions for achieving a
+higher degree of robustness in natural language processing and
+suggests a quite different approach based on a
+procedure for structural disambiguation. It not only offers the
+possibility to cope with robustness issues in a more natural way but
+eventually might be suited to accommodate quite different aspects of
+robust behaviour within a single framework.

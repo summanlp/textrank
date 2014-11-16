@@ -1,0 +1,8 @@
+
+The temporal relations that hold between events described by
+successive utterances are often left implicit or underspecified.  We
+address the role of two phenomena with respect to the recovery of
+these relations: (1) the referential properties of tense, and (2) the
+role of temporal constraints imposed by coherence relations.  We
+account for several facets of the identification of temporal
+relations through an integration of these.

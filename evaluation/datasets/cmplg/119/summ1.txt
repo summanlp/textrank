@@ -1,0 +1,19 @@
+
+We present an argument for construction grammars
+based on the minimum description length (MDL) principle
+(a formal version of the Ockham Razor). The argument consists in
+using linguistic and computational evidence in setting up a
+formal model, and then applying the MDL principle to prove
+its superiority with respect to alternative models.
+We show that construction-based representations are
+at least an order of magnitude more compact that the corresponding
+lexicalized representations of the same linguistic data.
+The result is significant for our understanding of the relationship
+between syntax and semantics, and consequently for choosing
+NLP architectures. For instance, whether the
+processing should proceed in a pipeline from syntax to semantics to
+pragmatics, and whether all linguistic information should be
+combined in a set of constraints. From a broader perspective,
+this paper does not only argue for
+a certain model of processing, but also provides a methodology for
+determining advantages of different approaches to NLP.

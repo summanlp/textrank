@@ -1,0 +1,15 @@
+
+Dialect groupings can be discovered objectively and automatically by
+cluster analysis of phonetic transcriptions such as those found in a
+linguistic atlas.  The first step in the analysis, the computation of
+linguistic distance between each pair of sites, can be computed as
+Levenshtein distance between phonetic strings.  This correlates
+closely with the much more laborious technique of determining and
+counting isoglosses, and is more accurate than the more familiar
+metric of computing Hamming distance based on whether vocabulary
+entries match.  In the actual clustering step, traditional
+agglomerative clustering works better than the top-down technique of
+partitioning around medoids.  When agglomerative clustering of
+phonetic string comparison distances is applied to Gaelic,
+reasonable dialect boundaries are obtained, corresponding to national
+and (within Ireland) provincial boundaries.

@@ -1,0 +1,748 @@
+
+In this paper, we will describe how substantial domain-independent
+language-processing systems for French and Spanish were quickly
+developed by manually adapting an existing English system, the SRI
+Core Language Engine. The resulting systems have been integrated as
+components in the Spoken Language Translator (SLT;
+ ,). The English to French version of SLT   is of a standard comparable to the original English to Swedish version.
+
+The syntactic rule-set for French covers nearly all the basic
+constructions of the language, including the following: declarative,
+interrogative and imperative clauses; formation of YN and WH-questions
+using inversion, complex inversion and ``est-ce que''; clitic
+pronouns; adverbial modification; negation; nominal and verbal PPs;
+complements to `tre'' and ``il y a''; relative clauses,
+including those with ``dont''; partitives, including use of 
+``en''; passives; pre- and post-nominal adjectival modification,
+including comparative and superlative; code expressions; sentential
+complements and embedded questions; complex determiners; numerical
+expressions; date and time expressions; conjunction of most major
+constituents; and a wide variety of verb types, including modals and
+reflexives. There is a good treatment of inflectional morphology which
+includes all major paradigms.  The coverage of the Spanish grammar is
+comparable in scope, though slightly less extensive.  The French and
+Spanish versions of the CLE are both ``reversible'', and can be used
+for either analysis or generation.
+
+We will describe the adaptation process in detail, and argue that it
+provides a fairly general recipe for converting a grammar-based system
+for English into a corresponding one for a Romance language.  Due to
+space limitations, and since it is rather the better of the two, we
+will concentrate on the French version. Examples will be taken
+from the Air Travel Planning (ATIS) domain used in the current
+SLT prototype.
+
+The rest of the paper is organized as
+ follows. Section  gives an overview of the CLE, focussing on the aspects relevant to this paper.
+ Section  describes the French morphology  rules. Sections  and  describe the French and Spanish
+ grammars. Section  concludes. 
+
+The CLE is a general language-processing system, which has been
+developed by SRI International in a series of projects starting in
+1986. The original system was for English only.  A Swedish
+ version , 14.2]  was developed in a collaboration with
+the Swedish Institute of Computer Science; the French and Spanish
+versions described here were developed in collaborations with ISSCO
+and the University of Seville respectively. The CLE is extensively
+ described elsewhere ,,, so this section will only give the minimum background necessary to understand
+the remainder of the paper.
+
+The basic functionality offered by the CLE is two-way translation
+between surface form and a representation in terms of a logic-based
+ formalism called QLF . The modules comprising a version of the CLE for a given language can be divided into three
+groups, which we refer to as ``code'', ``rules'' and
+``preferences''. The ``code'' modules constitute the
+language-independent compilers and interpreters that make up the basic
+processing engine; the other two types of module between them
+constitute a declarative description of the language.
+
+The ``rules'' contain domain-independent lexico-grammatical
+information for the language in question; they encode a
+relationship between surface strings and QLF representations. Thus for
+any given surface string, the rules define a set of possible QLF
+representations of that string.  Conversely, given a well-formed QLF
+representation, the rules can be used to produce a set of possible
+surface-form realisations of the QLF. The code modules support
+compilation of the rules into forms that allow fast processing in both
+directions: surface-form 
+
+
+QLF (analysis) and QLF
+
+
+surface-form (generation).
+
+The relationship between surface form and QLF is in general
+many-to-many. ``Preference'' modules contain data in the form of
+statistically learned distributional facts, based on analysis of
+ domain corpora ,).  Using this extra information, the system can distinguish between plausible
+and implausible applications of the rules with a fairly high degree of
+accuracy. In particular, the preference information makes it possible
+in a given application domain to select the intended readings of
+ambiguous utterances. We will not consider the preference modules
+further here, as the statistical training procedures are completely
+language-independent and invisible to the developer.
+
+The non-trivial problems involved in adapting the CLE to a 
+new language arise in connection with the ``rule'' modules,
+which we will now consider in more detail. These fall into
+the following main categories:
+Lexicon:
+The largest single set of rules is that which
+comprises the lexicon. This is in fact divided up into three subsets:
+a function-word lexicon; a set of macros specifying generic lexical
+entries for common types of content word (e.g. ``count noun'',
+``intransitive verb'', etc.); and a content word lexicon which defines
+lexical entries for other words in terms of the generic macros.
+Morphology:
+This set of rules defines the inflectional morphology
+of the language, allowing analysis of words in terms of stems
+and inflections. The morphology rules are described further in
+ Section . Syntax:
+Syntax rules are written in a unification-based
+feature-grammar formalism. The style of the
+CLE grammar is loosely based on GPSG; detailed descriptions
+of the CLE grammar for English are available
+ in  and . Semantics:
+The CLE grammar is
+ ``sign-based'' ; each syntax rule is coupled with one or more semantic counterpart, which defines the piece
+of QLF form produced by that rule. QLF representations are built up
+compositionally using unification only.
+Reference resolution and scoping:
+Further sets of
+rules can be used to convert QLF representations into 
+representations in full first-order logic. This phase of
+processing is required, for example, when using the CLE
+ for database query applications ,  As noted in , 14.2.2] the effort involved in adapting a set of rule modules to a new
+language depends on how directly they refer to surface form;
+unsurprisingly, modules defining surface phenomena are the ones which
+require most work. When adapting the system to French and Spanish, the
+problems arose almost exclusively in connection with morphology and
+syntax rules. Other parts of the English system were adapted with
+little effort. In particular, the semantic rule-sets for English could
+be used for the new languages with only minimal changes.
+
+The following two sections describe in detail the issues pertaining 
+to the morphology and syntax rule-sets respectively.
+
+In order to handle the more complex inflectional morphology of Romance
+and other European languages, a morphological processor based on
+feature-augmented two-level morphology was developed
+ . This allows the complex spelling changes occurring in these languages to be handled quickly in both analysis and
+generation.  Compilation of the full sets of two-level rules
+describing spelling changes and of production rules describing legal
+affix combinations takes of the order of a minute, allowing changes to
+the rules to be debugged relatively easily. Further flexibility is
+gained by not requiring the lexicon to be present at compile time
+ (contrast ); thus the lexicon can be incremented and tested without any recompilation being required. Two-level
+spelling rules were also used to describe the inter-word effects that
+are particularly common in French.
+
+The total number of rules required to describe inflectional morphology
+was around 75 for French and 50 for Spanish (inter-word rules being
+responsible for much of the difference). 
+We concentrate here on the French phenomena, which are more complex.
+
+Intra-word spelling changes for French present several problems not
+encountered in English inflectional morphology. Some of these are
+technical in nature, and easily dealt with. In particular, French
+exhibits many multiple letter changes, e.g. ``chameau+e''
+
+
+chamelle, ``peign+rai'' 
+
+
+ peindrai. For reasons explained in , these must be handled by a separate rule for each letter that changes, rather than
+one for the whole changed substring. Also, some changes can be
+optional. For example, the ``y'' in verbs such as ``payer'' can remain
+the same or change to ``i'' before silent ``e'': ``pay+e'' 
+
+either paye or paie. This phenomenon is rare or absent in
+English, but is handled easily by making the relevant spelling rule
+optional.
+
+Less trivial problems, however, arise from the fact that spelling
+changes in French generally cannot be predicted from the surface form
+of the word alone. This means the application of the rules must be
+controlled; we do this by specifying feature constraints, which must
+match between the rule and all morphemes it applies to. The following
+extended example describes our treatment of one of the most
+challenging cases.
+
+Nouns, adjectives and verbs ending in ``-et'' or ``-el''
+can either double the ``t'' or ``l'' before a silent ``e'' or change
+the prefinal ``e'' to `'': ``cadet+e'' 
+
+
+cadette, but ``complet+e'' 
+
+
+complte.  The
+application of the spelling rules is therefore controlled by means of
+a feature spelling_type, with value double in the first
+case and change_e_ in the second.
+
+This situation is further complicated by two facts. Firstly, the surface 
+`l'' or `t'' of the verbs is ambiguous between a deep 
+``el'' or ``et'', and `l'' or `t''. For example, 
+we have achte 
+
+
+``achet+e'', but 
+affrte 
+
+
+``affrt+e''. For this reason, we 
+introduce a third value for spelling_type: 
+change__. ``Affrt'' has thus the feature 
+spelling_type=change__, ``achet'' 
+spelling_type=change_e_ and ``appel'' 
+spelling_type=double.
+
+Secondly, the ``e'' that begins future and conditional endings sometimes 
+affects preceding letters as if it were silent, and sometimes as if it 
+were not.  For example, ``appel+erai'' 
+
+
+appellerai, 
+doubling the ``l'' just as in ``appel+e'' 
+
+
+appelle, 
+where the final ``e'' actually is silent. However, ``cd+erai''
+
+
+cderai, not *cderai as would be
+expected from the silent-e behaviour ``cd+e'' 
+
+
+cde.  To make this distinction, we use a feature muet
+(``silent'') for specifying if the ``e'' in the suffix is silent, 
+as ``e'' (muet=y), not silent, as ``ez'' (muet=n) 
+or the ``e'' of the future or conditional tenses, for example ``erai/erais'' 
+(muet=fut_cond_e). Then, we restrict the rule for doubling
+the consonant with the features spelling_type=double, 
+muet=yfut_cond_e, and the one for `'' 
+
+
+`'' with the features 
+spelling_type=change__,muet=y. 
+
+In English, inter-word spelling changes occur only in the alternation
+between ``a'' and ``an'' before consonant and vowel sounds
+respectively. In French, such changes are far more widespread and can
+be complex.  However, they can be handled by judiciously specifying
+contexts in two-level rules and, in a few cases, by postulating
+non-obvious underlying lexical items.  Some important cases are:
+
+The ``e'' in the function words ``de'', ``je'', ``le'', ``me'',
+``ne'', ``que'', ``se'' and ``te'' is elided before (most) words
+starting in a vowel sound, except when the function word follows a
+hyphen: ``le homme'' 
+
+
+l'homme, ``je ai''
+
+
+j'ai, but ``puis-je avoir'' does not elide, so the
+elision rule specifies that the hyphen be absent from the
+context. ``Ce'' also elides when used as a pronoun (``ce est''
+
+
+c'est, but when used as a determiner it takes the
+form ``cet'' before a vowel: cet homme. We therefore take the
+underlying form of the determiner to be ``cet'', which loses its
+``t'' when followed by a consonant-initial word (``cet soir''
+
+
+ce soir).  
+Numerals do not allow elision either: ``le onze'' does not become
+*l'onze. We therefore treat the lexical form as being
+``#onze'', where ``#'' acts as an underlying consonant but is
+realised as a null.  (Syntax plays a role here too: ``le un''
+
+
+l'un when is a determiner, but not when it is a
+numeral. Thus lexically we have ``un'' as determiner and ``#un'' as
+numeral).
+
+The very common preposition/article combinations
+``de''/`'' and ``le''/``les'': ``de le'' 
+
+
+du,
+` les'' 
+
+
+aux, etc.  These contractions span
+constituent boundaries (we view du vol as being syntactically
+[PP de [NP le vol]]) so need to be treated as spelling effects. Also,
+vowel elision takes precedence: ``de le homme'' 
+
+
+de
+l'homme, not *du homme.
+
+Hyphens between verbs and clitic pronouns are treated as lexical
+items in our grammar. They are realised as -t- when preceded by
+``a'' or ``e'' and followed by ``e'', ``i'' or ``o'': ``va - il''
+
+
+va-t-il, but ``vont - ils'' 
+
+vont-ils. Hyphens joining nouns or names are treated as different
+lexical items not subject to this change: ``les vols Atlanta -
+Indianapolis'' does not involve introduction of ``t''.
+
+
+
+When comparing the French and English grammars, there are two types of
+objects of immediate interest: syntax rules and features.
+Looking first at the rules themselves, about 80% of the French syntax
+rules are either identical with or very similar to the English counterparts
+from which they have been adapted. Of the remainder, some rules (e.g those for date, time and number expressions) are different, but
+essentially too trivial to be worth describing in detail. Similar
+considerations apply to features. 
+
+We will concentrate our exposition on the rules and features which are
+both significantly different, and possess non-trivial internal
+structure. Examining the grammar, we find that there are three large
+interesting groups of rules and features, describing three separate
+complexes of linguistic phenomena: question-formation, clitic pronouns
+ and agreement. As we have argued previously , all of these are rigid and well-defined types of construction which
+occur in all genres of written and spoken French. It is thus both
+desirable and reasonable to attempt to encode them in terms of
+feature-based rules, rather than (for instance) expecting to derive
+them as statistical regularities in large corpora.
+ In Sections ,   and , we describe how we handle these key problems.
+
+We start this section by briefly reviewing the way in which
+question-formation is handled in the English CLE grammar. There are
+two main dimensions of classification: questions can be either WH- or
+Y-N; and they can use either the inverted or the uninverted
+word-order. Y-N questions must use the inverted word-order, but both
+word-orders are permissible for WH-questions. The phrase-structure
+rules analyse an inverted WH-question as constituting a fronted WH+
+element followed by an inverted clause containing a gap element.  The
+feature inv distinguishes inverted from uninverted clauses.
+The following examples illustrate the top-level structure of
+Y-N, unmoved WH- and moved WH-questions respectively.
+[Does he love Mary]
+
+S:[inv=y]
+[Who loves Mary]
+
+S:[inv=n]
+[[Whom]NP [does he love []NP]
+
+S:[inv=y]]
+
+The French rules for question formation are structurally fairly similar
+to the English ones. However, there are several crucial differences which
+mean that the constructions in the two languages often differ widely
+at the level of surface form. Two phenomena in particular stand out.
+Firstly, English only permits subject-verb inversion when the verb
+is an auxiliary, or a form of ``have'' or ``be''; in contrast,
+French potentially allows subject-verb inversion with any verb.
+For this reason, English question-formation using auxiliary ``do''
+lacks a corresponding construction in French.
+
+Secondly, French permits two other common question-formation
+constructions in addition to subject-verb inversion: prefacing the
+declarative version of the clause with the question particle ``est-ce
+que'', and ``complex inversion'', i.e. fronting the subject and inserting a
+dummy pronoun after the inverted verb. In certain circumstances,
+primarily if the subject is the pronoun `a'', it is also
+possible to form a non-subject WH-question out of a fronted WH+ phrase
+followed by an uninverted clause containing an appropriate gap. We
+refer to this last possibility as ``pseudo-inversion''.
+
+If the subject is a pronoun, only inversion and the ``est-ce que''
+construction are allowed; if it is not a pronoun, only the
+``est-ce que'' construction and complex inversion are valid. In
+addition, a subject pronoun following an inverted verb needs to be
+linked to it by a hyphen, which can be realised as a ``-t-''
+ (cf. Section ).    Figure  presents examples illustrating the main French question
+constructions.
+
+Modification of the English syntax rules to capture the basic
+requirements so far is quite simple. In our grammar, we added three
+extra rules to cover the ``est-ce que'', complex-inversion and
+pseudo-inversion constructions: the second of these rules combines the
+complex-inverted verb with the following dummy pronoun to form a verb,
+in essence treating the dummy pronoun as a kind of verbal affix. A
+further rule deals with the hyphen linking an inverted verb with a
+following subject.
+
+With regard to the feature-set, the critical change involves the inv feature. In English, as we saw, this feature had two possible
+values, y and n. In French, the corresponding feature has
+five values: inverted, uninverted, est_ce_que,
+complex and pseudo, distinguishing clauses formed using
+the different question-formation constructions. (It is important to
+note, though, that the semantic representation of the clause is the
+same irrespective of its inversion-type). To enforce the restrictions
+concerning combinations of inversion-type and subject form, we also
+added a new clausal feature which distinguished clauses in which the
+subject is a pronoun. 
+
+The attractive aspect of this treatment is that the remaining English
+rules used for question-formation can be retained more or less
+unchanged. In particular, the English semantic rules can still be
+used, and produce QLF representations with similar form. 
+
+It would almost be true to claim that the above constituted our 
+entire treatment of French question-formation. In practice, we
+have found it desirable to add a few more features to the grammar
+in order to block infelicitous combinations of the inversion
+rules with certain commonly occurring lexical items. It is 
+possible that the effect of these features could be achieved 
+equally well by statistical modelling or other means, but
+we describe them here for completeness:
+Restrictions on use of ``est-ce que'':
+Question-formation with
+``est-ce que'' is strongly dispreferred when the main verb is a
+clause-final occurrence of `tre'', or existential ``avoir'' (as in
+``il y a''). For example:
+?Quand est-ce que le prochain vol est?
+?Combien de vols est-ce qu'il y a?
+We enforce this by adding a suitable feature to the verb
+category. 
+Fronting of ``heavy'' NPs:
+Most languages prefer not to
+front ``heavy'' NPs, and this dispreference is particularly
+strong in French. We have consequently added an NP feature 
+called heavy, which has the value y
+on NPs containing PP and VP post-modifiers. Thus for example
+generation of
+Quels vols en partance de Dallas y a-t-il?
+is blocked, but the preferable
+Quels vols y a-t-il en partance de Dallas?
+is permitted.
+Inverted subject NPs:
+Occurrence of some pronouns (in
+particular ``cela'', and `a'') is strongly dispreferred in
+inverted subject position.
+A binary feature enforces this as a rule, for example
+blocking
+Combien cote a pour aller  Boston?
+but instead permitting
+Combien a cote pour aller  Boston?
+
+The most difficult technical problems in adapting an English grammar
+to a Romance language are undoubtedly caused by clitic pronouns. In
+contrast to English, certain proform complements of verbs do not
+appear in their normal positions; instead, they occur adjacent to the
+main verb, and possibly joined to it by a hyphen. The position of the
+clitics in relation to the verb (pre- or post-verbal) is determined by
+the mood of the verb, and whether or not the verb is negated. If
+two or more clitics are affixed to the verb, their internal order is
+determined by their surface forms. Several attempts to account for the
+above and other data have previously been described in the literature
+ e.g. ,,,; we have in particular been influenced by the last of these,.
+
+Although the underlying framework is very different from the HPSG
+formalism used by Miller and Sag, our basic idea is the same: to treat
+``clitic movement'' by a mechanism similar to the one used to handle
+WH movement. More specifically, we introduce two sets of new
+rules. The first set handles the ``surface'' clitics. They define the
+structure of the verb/clitic complex, which we, like Estival, regard
+as a constituent of category V composed of a main verb and a
+``clitic-list''. A second set of ``gap'' rules defines empty
+constituents of category NP or PP, occurring at the notional ``deep''
+positions occupied by the clitics.  Thus, for example, on our account
+the constituent structure of ``Est-ce que vous le voulez?'' will be
+[Est-ce que [vousNP [le voulez]V []NP]S]Swhere the ``gap'' NP category represents the notional direct
+object of ``voulez'', realised at surface level by the pre-verbal
+clitic ``le''.
+
+To make this work, we add an extra feature, clitics, to all
+categories which can participate in clitic movement: in our grammar,
+these are V, VP, S, NP and PP. The clitics feature is used
+to link the cliticised V constituent and its associated clitic gap
+or gaps. We have found it convenient to define the value of the 
+clitics feature to be a bundle of five separate sub-features,
+one for each of the five possible clitic-positions in French. 
+Thus for instance the second-position clitics ``le'', ``la'' and
+``les'' are related to object-position clitic gaps through the
+second sub-feature of clitics; the fourth-position ``y''
+clitic is related to its matching PP gap through the fourth
+sub-feature; and so on. 
+The linking relation between a clitic-gap
+and its associated clitic is formally exactly the same as
+that obtaining between a WH-gap and its associated antecedent,
+and can if desired be conceptualized as a type of coindexing.
+
+The clitics feature-bundle is threaded through the grammar rule
+which defines the structure of the list of clitics associated with
+a cliticised verb, and enforces the constraints on ordering of
+surface clitics. These constraints are encoded in the lexical
+entry for each clitic. 
+
+This basic framework is fairly straight-forward, though a number of
+additional features need to be added in order to capture the
+syntactic facts. We summarize the main points:
+Position of surface clitics:
+Clitics occur post-verbally in
+positive imperative clauses, otherwise pre-verbally. The clitic-list
+constituent consequently needs to share suitable features with the
+verb it combines with. 
+Surface form of clitics:
+The first- and second-person singular
+clitics are realised differently depending on whether they occur pre-
+or post-verbally: for example ``Vous me rservez un vol'' versus
+``Rservez-moi un vol''. Moreover, ``me'' and ``te'' are
+first-position clitics (e.g. ``Vous me les donnez''), while ``moi''
+and ``toi'' are third-position (``Donnez-les-moi''). This alternation
+is achieved simply by having separate lexical entries for each
+form. The entries have different syntactic features, but a common
+semantic representation.
+Special problems with the ``en'' clitic:
+The most abstruse
+problems occur in connection with the ``en'' clitic, and are
+motivated by sentences like
+Combien en avez-vous?
+Here, our framework seems to dictate a constituent structure including
+three gaps, viz:
+[Combien [[en avez]V [vousNP [[]V [[]NP []PP]NP]]S]S]Sin which the V gap links to ``avez'', the NP gap to ``combien'', and
+the PP gap to ``en''. The specific difficulty here is that the ``en''
+PP gap ends up as an NP modifier (it modifies the NP gap). Normally,
+however, PP modifiers of NPs cannot be gaps, and the above type of
+construction is the only exception we have found.
+
+Rather than relax the very common NP 
+
+ NP PP rule to
+permit a gap PP daughter, we introduce a second rule of this type
+which specifically combines certain NPs, including suitable gaps
+resulting from WH-movement, and an ``en'' clitic gap. A feature, takespartative, picks out the NPs which can participate as left
+daughters in this rule.
+
+Although grammatical agreement is a linguistic phenomenon that plays a
+considerably larger role in French than in English, the adjustments
+needed to the lexicon and syntax rules are usually obvious. For
+instance, a feature has to be added to the both daughters of the rule
+for pre-nominal adjectival modification, to enforce agreement in
+number and gender. In nearly all cases, this same procedure is used. A
+feature called agr is added to the relevant categories, whose
+value is a bundle representing the category's person, number and
+gender, and the agr feature is shared between the categories
+which are required to agree.
+
+There are however some instances where agreement is less trivial.  For
+example, the subject and nominal predicate complement of `tre'' may
+occasionally fail to agree in gender, e.g.
+La gare est le plus grand btiment de la ville.
+However, if the predicate complement is a pronoun (``lequel'',
+ ``celui-ci'', ``quel''...)  agreement in both gender and number is obligatory: thus for instance
+Quel/*quelle/*quels est le premier vol.
+It would be most unpleasant to duplicate the syntax rules, with
+separate versions for the pronominal and non-pronominal cases.
+Instead, we add a second agreement feature (compagr) to the NP
+category, which is constrained to have the same value as agr on
+pronominal NPs; subject/predicate agreement can then use the 
+compagr feature on the predicate, getting the desired behaviour.
+
+Similar considerations apply to the rule allowing modification of
+a NP by a ``de'' PP. In general, there is no requirement on 
+agreement between the head NP and the NP daughter of the PP. However,
+for certain pronominal NP (``lequel'', ``l'un'', ``chacun'')
+gender agreement is obligatory, e.g.
+lequel/*laquelle de ces vols  
+laquelle/*lequel de ces dates
+This is dealt with correspondingly, by addition of a new agreement
+feature specific to the NP 
+
+ NP PP rule.
+
+This section briefly describes the interesting features of the Spanish
+syntactic rule-set. In general, the Spanish rules were distinctly
+simpler than the French ones.  With a few exceptions noted below (in
+particular, prodrop), the current Spanish syntax rules are essentially
+a slightly modified subset of the French ones. Despite this, they give
+very adequate coverage of the ATIS domain, the only in which they have
+so far been seriously tested. In a little more detail:
+Question-formation:
+The Spanish rules for question-formation
+are similar to, but less elaborate than the French ones. Subject-verb
+inversion is allowed with any subject; there is no restriction that it
+be pronominal. There are no constructions corresponding to ``est-ce
+que'' or complex inversion. When the inverted subject is a pronoun, it
+does not require a preceding hyphen linking it to the verb.
+Clitics:
+The Spanish clitic system is also considerably simpler
+than the French one. There are fewer clitics; in particular, there 
+are no clitics corresponding to the French ``y'' and ``en'', which as
+ we saw in Section  above gave rise to many of the difficult problems in French. 
+
+Postverbal clitics are affixed directly to the verb, rather than being
+joined by hyphens. Since CLE morphotax rules have a uniform
+ format , 3.9], this only involved moving the relevant syntax rules to the morphology rule file. 
+Phrasal rules:
+The rules for Spanish numbers, dates and times
+are substantially different from the French ones, and those for dates
+in particular needed to be rewritten more or less from scratch. The
+issues involved are however straight-forward.
+
+Also, the form of the Spanish superlative adjective is slightly
+different: the postnominal superlative adjective has no extra article,
+e.g. ``le vol le [plus cher] versus ``la plaza [menos cara]''.
+The necessary adjustments are again simple.
+Relative clauses:
+A less trivial difference involves
+relative clauses. In Spanish, the main verb of
+the relative clause must be in the subjunctive mood if it 
+modifies an argument of a verb in the imperative mood. Thus for example
+Which is the first flight that serves a meal?  
+
+
+Cul es el primer vuelo que sirve una comida?
+(``sirve'' = present indicative), but
+Show me flights that serve a meal! 
+
+
+Enseme los vuelos que sirva una comida
+(``sirva'' = present subjunctive). Handling this alternation
+correctly involves trailing an extra feature through many grammar
+rules, so as to link the main verb in the relative clause to
+the main verb in the clause immediately above it.
+Prodrop:
+The second substantial change required when adapting
+the French grammar to Spanish was necessitated by the prodrop rule:
+Spanish, unlike French, permits and indeed encourages omission of the
+subject when it is a pronoun. Perhaps surprisingly, prodrop in fact
+only resulted in a few divergences between the Spanish and French
+grammars. A new syntax rule of the form S 
+
+ VP was
+added (it is in fact a slightly modified version of the French
+imperative-formation rule). The associated semantic rule fills in a
+representation of the omitted clausal subject from the main verb; to
+make this possible, the semantic entries for inflected verbs are all
+modified to contain an extra feature encoding the possible prodrop
+subject. The details are straight-forward.
+
+The preceding sections describe in essence all the changes we needed
+to make in order to adapt a substantial English language processing
+system to French and Spanish. Due to space limitations, we have been
+obliged to present some of the details in a more compressed form than
+we would ideally have wished, but nothing important has been
+omitted. Creation of a good initial French version required about five
+person-months of effort; after this, the Spanish version took only
+about two person-months. We do not believe that we were greatly aided
+by any special features of the Core Language Engine, other than the
+fact that it is a well-engineered piece of software based on sound
+linguistic ideas. Our overall conclusion is that an English-language
+system conforming to these basic design principles should in general
+be fairly easy to port to Romance languages.
+
+The work described here was supported by SRI International, Suissetra,
+and Telia Research AB, Sweden. We would like to acknowledge the
+assistance provided by Gabriela Fernandez of the University of Seville
+in developing the Spanish version of the system, and thank Sabine
+Lehmann, David Milward and Steve Pulman for helpful comments.
+
+Agns, M-S., Alshawi, H., Bretan, I., Carter, D.M.,  Ceder, K.,
+Collins, M., Crouch, R., Digalakis, V., Ekholm, B., Gambck, B.,
+Kaja, J., Karlgren, J., Lyberg, B., Price, P., Pulman, S., Rayner, M.,
+Samuelsson, C. and Svensson, T.
+1994.
+Spoken Language Translator: First Year Report.
+ SRI technical report CRC-043 
+
+Alshawi, H. (ed.)
+1992.
+The Core Language Engine.
+MIT Press.
+
+Alshawi, H. Carter, D., Crouch, R., Pulman, S., Rayner, M. and Smith, A.
+1992.
+CLARE: A Contextual Reasoning and Cooperative Response Framework for the Core Language Engine
+SRI technical report CRC-028. 
+
+Alshawi, H., and Carter, D.
+1994. 
+Training and Scaling Preference Functions for Disambiguation. 
+Computational Linguistics, 20:4.
+
+Alshawi, H. and Crouch, R.
+1992.
+``Monotonic Semantic Interpretation''.
+Proceedings of 30th ACL.
+
+Bs, G. and Gardent, C.
+1989.
+French Order without Order.
+Proceedings of 4th European ACL.
+
+Carter, D.
+1995.
+Rapid Development of Morphological Descriptions for Full
+Language Processing Systems.
+Proceedings of 7th European ACL.
+Also SRI Technical Report CRC-047
+
+Estival, D.
+Generating French with a Reversible Unification Grammar.
+1990.
+Proceedings of 13th COLING.
+
+Grimshaw, J.
+1982.
+On the Lexical Representation of Romance Reflexives. 
+In J. Bresnan (ed.), The Mental Representation of
+Grammatical Relations.
+MIT Press.
+
+Kaplan, R., and Kay, M.
+1994. 
+Regular Models of Phonological Rule Systems.
+Computational Linguistics, 20:3, 331-378.
+
+Miller, P. and Sag, I.
+1995.
+French Clitic Movement Without Clitics or Movement.
+CSLI Technical Report.
+
+Pulman, S.
+1992. 
+Unification-Based Syntactic Analysis.
+ In  
+
+Rayner, M. 
+1993.
+Abductive Equivalential Translation and its
+Application to Natural Language Database Interfacing.
+PhD thesis, Royal Institute of Technology/Stockholm
+University.
+Also SRI Technical Report CRC-052
+
+Rayner, M. 
+1994.
+English linguistic coverage.
+ In  
+
+Rayner, M., Alshawi, H., Bretan, I., Carter, D.M., 
+Digalakis, V., Gambck, B., Kaja, J., Karlgren, J., 
+Lyberg, B., Price, P., Pulman, S. and Samuelsson, C.
+1993.
+A Speech to Speech Translation System Built From Standard Components.
+Proc. 1st ARPA workshop on Human Language Technology.
+Also SRI Technical Report CRC-031.
+
+Rayner, M. and Bouillon, P.
+1995.
+Hybrid Transfer in an English-French Spoken Language Translator. 
+Proceedings of IA '95, Montpellier, France.
+Also SRI Technical Report CRC-056.
+
+van Eijck, J. and Moore, R.
+1992. 
+Semantic Rules for English.
+ In  
+
+  Most French grammars regard ``quel''
+as an adjective, but for semantic reasons we have found it more
+convenient to treat it as a pronoun in this type of construction and
+as a determiner in expression like ``quel vol''.
+  All SRI Cambridge
+technical reports are available through WWW from http://www.cam.sri.com

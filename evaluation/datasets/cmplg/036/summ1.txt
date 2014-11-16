@@ -1,0 +1,12 @@
+
+In this paper, I argue, contrary to the prevailing opinion in the
+linguistics and philosophy literature, that a sortal approach to
+aspectual composition can indeed be
+explanatory.  In support of this view, I develop a synthesis of
+competing proposals by Hinrichs, Krifka and Jackendoff which takes
+Jackendoff's cross-cutting sortal distinctions as its point of
+departure.  To show that the account is well-suited for computational
+purposes, I also sketch an implemented calculus of eventualities which
+yields many of the desired inferences.  Further details on both the
+model-theoretic semantics and the implementation can be found in
+ . 

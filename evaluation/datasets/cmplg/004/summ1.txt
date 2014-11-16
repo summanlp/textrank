@@ -1,0 +1,12 @@
+
+The use of terms from natural and social scientific
+titles and abstracts is studied from the perspective
+of sublanguages and their specialized dictionaries.
+Different notions of sublanguage distinctiveness are explored.
+Objective methods for separating hard and soft sciences are suggested based
+on measures of sublanguage use, dictionary characteristics, and sublanguage
+distinctiveness.
+Abstracts were automatically classified with a high
+degree of accuracy by using a formula that considers the
+degree of uniqueness of terms in each sublanguage.
+This may prove useful for text filtering or information retrieval systems.

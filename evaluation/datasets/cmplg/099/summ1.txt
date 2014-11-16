@@ -1,0 +1,23 @@
+
+Natural Language Generation (NLG) systems generate texts in English
+(or other human
+languages, such as French) from computer-accessible data.  NLG systems are
+(currently) most often used to help human authors write routine documents,
+ including business letters  and  weather reports .  They also have been used as interactive explanation tools which communicate information in
+an understandable way to non-expert users, especially in software
+ engineering (eg, ) and medical (eg, ) contexts.
+From a technical perspective, almost all applied NLG systems perform the
+ following three tasks : 
+Content Determination and Text Planning:
+Decide what information should be communicated to the user (content
+determination), and how this information should be rhetorically structured
+(text planning).  These tasks are usually done simultaneously.
+Sentence Planning:
+Decide how the information will be split among individual sentences and
+paragraphs, and what cohesion devices
+(eg, pronouns, discourse markers)
+should be added to make the text flow smoothly.
+Realization:
+Generate the individual sentences in a grammatically correct manner.
+In the rest of this paper, I shall briefly discuss different ways of
+performing each of these tasks.

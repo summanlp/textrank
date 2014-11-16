@@ -1,0 +1,886 @@
+
+It is common knowledge that a rational agent is inclined to presuppose
+the existence of definite references that occur in utterances. Hearing
+or uttering the examples below, a rational agent presupposes that the
+cheese, children, and car physically exist.
+(1) 
+The cheese I bought yesterday is very bad.
+(2) 
+I really don't know what to do with my children anymore.
+(3) 
+Sorry I couldn't make it; my car broke on my way.However, day-to-day English provides an impressive number of cases
+when existential presuppositions are not inferred, or when they are
+defeated by some commonsense knowledge 
+for a comprehensive study).  One can explicitly speak of
+ nonexistence (); events and actions that do not  occur (); existence at other times ();  or fictional and imaginary objects (). 
+(4) 
+ No one got an A+ in this course.  
+(5) 
+ John's party is cancelled.  
+(6) 
+ Gdel was a brilliant mathematician.  
+(7) 
+Sherlock Holmes is smarter than any other detective.
+ Note that the simple dichotomy found in most approaches to presupposition between existent and nonexistent objects is not enough
+for a full account of natural language expressiveness.
+
+The study of presuppositions is primarily a study of commitment --
+commitment to the existence of presupposed definite referents or to
+the truth of factive complements.  The reduction of presupposition to
+entailment is inadequate because presuppositions are implied,
+not specified; they are not part of the truth conditions of
+natural language sentences, and they can be cancelled in negative
+environments.   Trying to explain the whole phenomenon and to provide
+solutions for the projection problem, linguists have often omitted any
+explanation for the existential commitment of definite references or
+their explanation has been a superficial one.  Similarly, philosophers
+who have studied existence and nonexistence have been more concerned
+with providing formal tools for manipulation of nonexistent objects
+than tools to capture our commonsense commitment.  This puts us in a
+difficult position. From a linguistic perspective, the literature
+provides a good set of theories able to more or less explain the
+commitment to the presupposed truth of factives and the like but not
+the existential commitment of definite references.  From a
+philosophical perspective, we have quite a few theories which deal
+with existence and nonexistence, but they too offer no explanation for
+existential commitment.
+
+Our aim here is to provide a formalism that has the
+strength of both perspectives. We achieve this using the following:
+
+a set of methodological principles that unify
+Meinong's  philosophy with
+Grice's  conversational principles;
+
+a rich ontology in the style of Hirst , 
+which  provides  the possibility of having consistent models that
+contain objects belonging to different ontological spaces;
+
+an extension of stratified logic  where  the quantifiers are read under
+Lejewski's    ``unrestricted interpretation'',
+which provides us the formal tool for expressing the above layers.
+
+
+
+The implementation relies on an extension of the Beth semantic
+tableaux to stratified logic. The code is written in Common Lisp and
+makes extensive use of the nondeterministic facilities of the Screamer
+ system ,. 
+
+We first review the philosophical approaches in studying existence
+and nonexistence and the linguistic approaches in studying
+presuppositions, emphasizing their (in)ability to deal with
+presuppositions and nonexistence respectively. We give a brief
+introduction to stratified logic, its implementation, and explain the
+methodological principles of our approach.  In section 4 we show how
+this approach is able not only to deal with nonexistence but also able to
+explain the existential commitment of definite reference. The rest of
+the paper is dedicated to a comparison with Parsons's and Hobbs's
+work.
+
+Early works of Frege  and
+Russell  tackled a very small subset of what
+today is labelled with the name ``presupposition'': the
+presuppositions introduced by definite references and proper names.
+Hirst  shows that classical logic, which embeds
+ Quine's metaphysical view , p.150] that ``everything exists'', is not able to deal adequately with nonexistent objects. For
+example, if one knows that dragons do not exist -- 
+
+
+-- it is impossible to distinguish between My dragon
+has blue eyes and My dragon does not have blue eyes because
+both translations in first-order logic are false: 
+
+.
+Therefore, first-order logic is doomed to fail in any attempt to
+reflect the presuppositions of definite references.
+
+Several approaches to nonexistence rely on Meinong's mental act
+ philosophy .  For example, Parsons  avoids Russell's paraphrase of the
+definite description by using the predicate E!. For Parsons, 
+
+
+refers to the unique object that satisfies 
+if there is
+such an object. Otherwise, it does not refer to anything at all.  For
+a sentence such as ``The man in the doorway is clever'',
+Parsons  argues that the translation
+
+
+is not
+adequate because it does not reflect our commitment to the man's
+existence. Therefore, he proposes that the translation should be
+
+
+where E! is the existential predicate. But the problem
+with this is that it embeds the existential commitment in the logical
+translation -- not as something that is ``implied'' or presupposed,
+but as something ``said'' or specified.  This is not the case with
+linguistic presuppositions. Thus, the first translation is too weak
+-- unable to capture the commitment, and the second one is too strong
+-- the commitment becomes part of the translation and leaves no room
+for cancellation of presupposition.
+
+Outside Meinong's world, we find other approaches that focus on the
+appropriate reading of the quantifiers.
+Lejewski  and Hintikka 
+both propose an ``unrestricted interpretation'' of the quantifiers,
+which makes no commitment to the existence of the objects over which
+they range.  Under this interpretation, existence can be predicated
+(Lejewski), or explicitly captured as 
+
+
+(Hintikka).
+The latter solution is nothing but a translation into logic of Quine's
+slogan, ``to exist is to be the value of a variable''.  In these
+universes, we are free now to talk about Pegasus and dragons but we
+cannot explain our commitment to the existence of the definite
+referents.
+
+An interesting approach towards explaining the conditions in which
+existential presuppositions are generated is built by
+Atlas  around the notions of ``aboutness'' and
+``noun-phrase topicality''.  Instead of allowing all the noun-phrases
+in a sentence to exhibit presupposition generation capabilities, only
+the topical ones enjoy this property. Atlas gives no hint of how this
+theory could be extended to deal with factives or verbs of judging, and
+defining the notions of aboutness and topicality for them is not
+trivial. Even if we did manage to do this, such presuppositions can
+never be cancelled. Either they are generated or they are not. This
+leads us to believe that sentences such as John didn't stop
+beating the rug because he never started cannot be captured in this
+manner.
+
+Hobbs  uses the ``unrestricted interpretation'' of
+the quantifiers introduced by Lejewski . Hence,
+in Hobbs's framework, the set of things we can talk about (including,
+therefore, nonexistent things) and the set of things we quantify over
+are equal. The existential commitment is captured by a set of
+``transparency axioms''. For example, the sentence Ross worships
+Zeus is represented as:
+
+  
+
+The first conjunct says that E is the event of worshipping Zeus by
+Ross,  and the second says that E exists in the real world. Hobbs
+assigns a transparency property to the predicates. For
+
+,
+this property entails the existence of its second
+argument in the physical world:
+
+  
+
+Apparently, the commitment to Ross's existence is solved.
+
+
+is transparent in its second argument but not in its
+third; so we may infer that Ross is existent, but draw no conclusions
+about Zeus.  The problem is that the transparency axioms are
+associated with the predicates and not with the objects, so that there
+is no criterion to choose an appropriate translation for a sentence
+like The King of Buganda worships Zeus because the translation
+should be transparent if we know nothing about Buganda and opaque
+otherwise.
+
+The vast majority of the linguistic approaches are more concerned with
+``how presuppositions are inherited'' than with ``what presuppositions
+are''. Presuppositions are defined in terms of plugs, holes, and
+ filters , consistency ,  uncontroversiality , or hypothetical and secondary  contexts , but nothing is said about the logical framework into which they may be expressed. An exception is Mercer's
+approach mercerphd.  He abandons the projection method in
+favour of rules of inference in default logic. Our main objection is
+to Mercer's use of natural disjunction as an exclusive disjunction,
+and the reduction of natural implication to logical equivalence.
+Mercer  argued that this is a consequence of the
+way he intended his ``proof by cases'', in which ``the cases are taken
+from a conjunctive statement, where the conjuncts are the disjuncts in
+a classical proof''. He assumes that this non-standard notion is the
+one that must be used in nonmonotonic reasoning.  But this
+non-traditional analysis and the reduction of natural implication to
+logical equivalence are not representable within the logic itself.
+Hence, this method is also a procedural one.
+
+A different perspective is given by Sandt  and
+Zeevat  for whom presuppositions are understood as
+anaphoric expressions that have internal structure and semantic
+content. Because they have more semantic content than other anaphors,
+presuppositions are able to create an antecedent in the case that the
+discourse does not provide one. Van der Sandt provides a computational
+method for presupposition resolution in an enhanced discourse
+representation theory, while Zeevat gives a declarative account for it
+using update semantics, but neither of the methods is able to
+accommodate the cancellation of presupposition that is determined by
+information added later to the discourse. A simple ontology consisting
+only of existent and nonexistent objects is inadequate for dealing
+with fictions or objects that have unactualized existence. Therefore,
+sentences such as Sherlock Holmes is smarter than any other
+detective or The strike was averted cannot be represented in
+their theories.
+
+ Stratified logic  reflects a different understanding of default reasoning phenomena from that found in the classic
+ literature . Instead of treating the notion of defeasibility on consistency and justification-based grounds, we
+conjecture that defeasible inferences are ``weaker'' than classical
+entailments. For the purpose of this paper, it is enough to consider
+only a subset of stratified logic.
+
+In first-order stratified logic, a stratified interpretation 
+consists of an universe of objects U and a function mapping Fas in first-order logic, but the relation set is partitioned according
+to the strength (undefeasible and defeasible relations) and polarity
+(positive and negative relations).  Thus, the set of relations Rwill be given by the union 
+
+
+where R[u] stands for positive undefeasible
+relations, 
+
+
+for negative undefeasible relations, R[d]for positive defeasible relations, and 
+
+
+for negative
+defeasible relations. Positive atomic formulas and negative (negated)
+atomic formulas are labelled as defeasible (e.g. 
+
+)
+or undefeasible (e.g. 
+
+)
+and compound
+formulas are obtained from positive and negative atomic formulas using
+classical logical connectors.  For example, one would formalize that
+uttering that John does not regret that Mary came to the party
+presupposes that Mary came to the party as
+
+
+
+because Mary came to the party is defeasible: John does not
+regret that Mary came to the party because she did not come.
+
+At the semantic level, we extend the notion of satisfiability to the
+two levels we have introduced; hence, we will have u-satisfiability, ,
+and d-satisfiability, .
+
+    Assume 
+is an  
+valuation such that 
+
+
+and assume that 
+maps n-ary predicates
+p to relations 
+
+.
+For any atomic formula 
+
+,
+and any stratified
+valuation ,
+where 
+
+
+and
+ti are terms, the x-satisfiability relations are
+defined as follows:
+
+
+
+
+
+iff  
+
+
+
+
+
+
+iff  
+
+
+
+
+
+
+iff  
+
+
+
+
+
+
+iff  
+
+
+
+
+
+For any negation of an atomic formula 
+
+,
+and any stratified valuation ,
+where 
+
+
+and ti are terms, the x-satisfiability relations are
+defined as follows:
+
+
+
+
+
+iff  
+
+
+
+
+
+
+iff  
+
+
+
+
+
+
+iff  
+
+
+
+
+
+
+iff  
+
+
+
+
+
+The x-satisfiability relation for compound formulas is defined
+in the usual way. One can see that this definition of satisfiability
+has two major advantages: on one hand, the 
+relation
+provides a high degree of liberty in satisfying sets of formulas that
+contain positive and negative information of different strengths; on
+the other hand the 
+relation is able to signal when such a
+contradiction occurs. For example, in accordance with the above
+definition, the theory 
+
+
+is u-satisfiable but is not d-satisfiable. That means defeasible and undefeasible information are
+allowed to co-exist because the satisfiability relations are able to
+handle them appropriately.
+
+Stratified logic uses an extension of semantic tableaux that is both
+sound and complete to compute the models associated with a given
+theory. On a set of model schemata, we define a partially ordered
+relation ()
+that yields the most optimistic schemata for the
+theory, i.e., those that contain more information and whose
+information is as defeasible as possible. For example, a translation
+in stratified logic of the classical example involving Tweety
+(represented by the constant T) will yield three model schemata.
+Schema m1 does not cancel the fact that Tweety flies as schema
+m2 does.  Moreover, m1 contains more information than m3.
+Therefore, m1 is the most optimistic model schema.
+
+
+
+Model schema m1 corresponds to an 
+structure defined
+over an universe that contains only one object, T, and no
+function symbols. The relations defined on the universe are 
+
+,
+
+
+and 
+
+.
+For the sake of compactness and clarity we
+represent stratified models as unions of relations partitioned according
+to their strength:
+
+
+
+The stratified semantic tableaux and the model-ordering relations have
+been fully implemented in Common Lisp using the Screamer macro package
+that provides nondeterministic facilities
+  ,. Our program takes as input a logical representation of the background knowledge and of an
+utterance, computes the model schemata for the theory, and returns the set of
+most optimistic schemata and the presuppositions associated with a given
+utterance in the case that they exist. Computing the model schemata for a
+stratified theory can be done within the same complexity bounds as in
+first-order logic. The algorithm for determining the most optimistic
+schemata is O(n[2]).
+
+The approach to nonexistent objects and presuppositions that we are going
+to present is constructed on the basis of a modified  set of Meinongian
+principles about nonexistence. They are embedded in a stratified logic
+framework in which quantifiers are taken under Lejewski's unrestricted
+interpretation. The ontology is enhanced with the eight types of
+existence listed by Hirst , though in this paper, we
+will deal only with physical existence, represented as E!,
+unactualized existence, represented as ,
+existence
+outside the world but with causal interaction with that world,
+EOW!, and existence in fiction, F!.
+
+Following Rapaport's style , we propose a set
+of methodological principles based on Meinong 
+that are meant to capture the ability of an intelligent agent to deal
+with existence and nonexistence rather from a conversational
+perspective than from a rational one.
+
+MC1.
+Every uttered sentence is ``directed'' towards an
+``object'', because every uttered sentence can be seen as a
+materialization of a mental act.
+
+MC2.
+All uttered sentences  exist (technically, ``have being'').
+However, this does not imply the existence of their referents,  which
+are ``ausserseiend'' (beyond being and non-being).
+
+MC3.
+It is not self-contradictory to deny, nor tautologous to
+affirm, the existence of a referent.
+
+MC4.
+Every referent and every uttered sentence  has properties.
+
+MC5.
+The principles MC2 and MC4 are not inconsistent.
+
+Corollary: Even referents of an uttered sentence that do not
+exist have properties.
+
+MC6.
+(a) Every set of properties (Sosein) corresponds to the
+utterance of a sentence. 
+                    (b) Every object of thought can be uttered.
+
+MC7.
+Some referents of an utterance are incomplete (undetermined
+with
+respect to some properties).
+
+In accordance with Grice , we need two additional
+principles:
+GC1.
+The speaker is committed to the truth of the sentences he utters.
+
+GC2.
+Using and deriving  presuppositions requires, from both speaker and
+listener, a sort of ``optimism''.
+Principle GC1 is formalized by the translation of the uttered
+sentences into classical logic formulas in which quantifiers are read
+under their unrestricted interpretation. Principle GC2 is formalized
+by the rules containing defeasible information that exist in the
+knowledge base of the speaker and the hearer, and the notion of
+optimism in the model-ordering relation. For example, a factive
+negation weakly implies the truth of its complement (see
+ formula  above).  Note that a non-optimistic interpretation of utterances will never be able to account for any of
+the pragmatic inferences, because they are not explicitly uttered.
+
+We assume that our inference process relies not only on core
+knowledge as in ``all men are mortal'' or ``birds fly'', but also on
+knowledge of language use as in ``a factive negation weakly implies
+ the truth of its complement'' as shown in formula . 
+
+That definite references imply the existence of their referents
+constitutes another instance of defeasible inference (see
+ examples ()--()).  We can capture this either by adding a new formula 
+
+
+
+to our knowledge
+base, and by embedding syntactic terms into the logical form, as Hobbs
+did , or by representing this defeasible commitment
+explicitly in the translation of each utterance containing a definite
+reference or proper noun.  Both approaches exhibit the same semantic
+behavior, and due to the model-ordering relation they explain our
+commitment to a referent's existence (in the case that we do not know
+otherwise). Because 
+
+
+is
+syntactic information, we depict it using a different font, but the
+reader should understand that 
+
+
+is bound by the same
+quantifier as x is, and that  
+
+is used as a metalogical symbol that triggers pragmatic inferences.
+
+As a last step, we abandon the Fregean reading of the quantifiers
+and we adopt Lejewski's unrestricted
+interpretation . This means that 
+and
+
+do not mix quantification with ontological commitment:
+
+
+does not entail the physical existence of x,
+so the things we can talk about equals the things we can quantify
+over.  This yields the following:
+
+Definition: Presuppositions are  defeasible information
+that is derived from knowledge of language use and that is included in
+the most optimistic models of a theory described in terms of stratified
+logic under an unrestricted interpretation of the quantifiers.
+
+Assume that someone utters the sentence The king of Buganda is
+(not) bald. If we know nothing about Buganda and its king, the
+complete theory of this utterance and the available knowledge in
+stratified logic is this:
+
+
+
+This theory has one optimistic model that reflects  one's commitment to
+the king's existence. The king's existence has the status of defeasible
+information; it is derived using knowledge of language use and is a
+presupposition of the utterance.
+
+
+
+Knowledge about the political system of France can inhibit
+the inference regarding the existence of its king in a sentence such as
+The king of France is (not) bald. Assume that  we know
+there is no king of France 
+
+.
+A complete formalization follows:
+
+
+
+For this theory, we obtain only one model schema:
+
+One can notice that the existential presupposition is now
+cancelled by some background knowledge. The only way one can satisfy
+the initial theory is if she has a stratified structure where 
+
+.
+Thus, the theory yields one model
+
+
+
+Asserting existence
+or nonexistence affects defeasible inferences due to knowledge of
+language use and restricts some of the models.
+If someone utters The king of Buganda exists and  we know nothing
+about Buganda, the translation
+
+
+
+gives  one  model:
+
+
+
+If we know that the king of Buganda does not exist, or in other
+words we evaluate the above sentence against a knowledge base that
+contains
+
+
+
+there is no model for this theory, so the utterance is interpreted as
+false.  It is noteworthy that the inconsistency appears due to
+specific knowledge about the king's physical existence and not because
+of a quantification convention as in classical first-order logic. On
+the other hand, the negation, The king of Buganda does not
+exist, is consistent with the knowledge base and provides this model:
+
+
+
+So far, we have emphasized the way presuppositions of definite
+references can be handled in this framework. However, the proposed
+method is general in the sense that it captures the other
+presuppositional environments as well.  Moreover, the cancellation can
+occur at any moment in discourse. Consider for example the
+utterance John does not regret that Mary came to the party. Its
+formalization in stratified logic follows:
+
+
+
+The optimistic model computed by our program is this:
+
+
+
+This model reflects our intuitions that Mary came to the
+party and all definite references exist.
+
+If one utters now Of course he doesn't. Mary did not come to the
+party, the new model computed by our program will reflect the fact that a
+presupposition has been cancelled, even though this cancellation
+occurred later in the discourse. Thus, the new optimistic model will
+be this:
+
+
+
+Our approach correctly handles references to unactualized objects such
+as averted strikes or the paper that we had wanted to submit to AAAI-94. The
+utterance The strike was averted can be formalized thus:
+
+
+
+This gives one optimistic model:
+
+
+
+Parsons argues that is impossible to distinguish between the shape of
+the logical form of two sentences like these, in which one subject is
+fictional and the other is real:
+a. Sherlock Holmes is more famous than any other detective.
+
+b. Pel is more famous than any other soccer player.
+In our approach, similar syntactic translations give different
+semantic models when interpreted against different knowledge
+bases. A complete theory for the first sentence is this:
+
+
+
+This theory gives only one model:
+
+
+
+This corresponds to an object 
+that does not exist in the
+real world but exists as a fiction, has the property of being Sherlock
+Holmes, and for any other object y, real or fictional that has the
+property of being a detective, the object 
+is more famous
+than object y.  Of course, in this model, it is impossible to commit
+ourselves to Holmes's physical existence, but is possible to talk
+about him.
+
+The theory for the second sentence is this:
+
+
+
+This theory exhibits one optimistic model:
+
+
+
+Model m states that the object ,
+being Pel, exists in a
+defeasible sense and this is the existential presupposition of the
+initial utterance.
+
+As seen, it is needless to mention the existence of specific objects
+in the knowledge base.  The model-ordering relation rejects anyhow
+models that are not optimistic. In this way, the commitment to Pel's
+existence is preserved, and appears as a presupposition of the
+utterance. Parsons's theory provides different logical forms for the
+above sentences, but fails to avoid the commitment to nonexistent
+objects.
+
+The approach presented here is not subject to Russell's criticisms of
+Meinong.  His first objection was concerned with impossible objects,
+which ``are apt to infringe the law of contradiction''. Russell does
+not say explicitly how this is supposed to happen.
+Parsons  reconstructs a line of reasoning
+for round squares that yields the inconsistency of having a
+round square that is both round and not round.  Our approach is not
+subject to this contradiction because the existential and universal
+quantifier do not commit us to the physical existence of the objects
+they quantify over. The sentence Squares are not round is true
+in the world of Euclidian geometry, and assuming this geometry
+correctly formalizes the real world, it is valid for entities from
+this world. There is no reason to extend our judgments about physical
+existent objects to the realm of nonexistent ones. Therefore, being
+square implies not being round only for the physical existent objects:
+
+
+
+Even if we agree now that Round squares are round and Round
+squares are square, we cannot apply Modus Ponens because the
+existence of round squares is not asserted; therefore, the
+contradiction vanishes.
+
+The second Russellian objection was this: consider the existent golden
+mountain; by the satisfaction principle it is golden, it is a mountain,
+and it exists. Therefore, some gold mountain exists, which is
+empirically
+false.  The apparent puzzle found in Meinong's answer, The
+existent golden mountain is existent, but it does not exist, is
+consistent with our theory, because the adjective existent
+brings nothing new to our knowledge -- we are already committed to
+the mountain's existence. The only difference is that this commitment
+is defeasible, so the model in which it is not acceptable to believe
+in the existence of the mountain will survive our core knowledge. The
+translation is
+
+
+
+and its semantic model contains a golden mountain 
+which, even
+if it does not exist, 
+
+,
+is existent, 
+
+.
+
+We have mentioned that Hobbs's transparency pertains to relations and
+not to objects. In our approach, a sentence such as Ross worships
+Zeus can be satisfied by a set of semantic models that correspond to
+each possible combination of the existence and non-existence of Ross
+and Zeus.
+
+
+
+Among them, only one is minimal: the one that explains the commitment
+to both  Ross's  and Zeus's existence.
+
+
+
+But let us  assume we know that there is no  entity in the real world that
+enjoys the property of being Zeus, but rather one who exists outside the real
+world as a god (EOW![u]).
+
+
+
+This theory is no longer satisfiable by a model in which Zeus exists
+as a physical entity. However, the optimistic model explains our
+commitment to Ross's existence.
+
+
+
+Joining Meinong's philosophy of nonexistence with Grice's
+conversational principles provides a very strong motivation for a
+uniform treatment of linguistic presuppositions. Lejewski's
+unrestricted interpretation of the quantifiers, Hirst's ontology, and
+the notion of reasoning with stratified tableaux and
+model-ordering in stratified logic provide the formal
+tools to implement the principles. This amounts to a model-theoretic
+definition for presuppositions that is able to offer a uniform
+treatment for linguistic presuppositions and an explanation for the
+existential commitment. A computationally tractable method can be
+derived from the formalism. Its implementation in Common Lisp finds
+the natural language presuppositions, including the existential ones,
+and correctly reflects their cancellation.
+
+Acknowledgements
+
+This research was supported in part by a grant from the Natural
+Sciences and Engineering Research Council of Canada.
+
+J.D. Atlas.
+What are negative existence statements about?
+Linguistics and Philosophy, 11:373-394, 1988.
+
+G. Frege.
+ber sinn und bedeutung.
+Z. Philos. Philos. Kritik, 100:373-394, 1892.
+reprinted as: On Sense and Nominatum, In Feigl H. and Sellars W.,
+  editors, Readings in Philosophical Analysis, pages 85-102,
+  Appleton-Century-Croft, New York, 1947.
+
+G.J.M. Gazdar.
+Pragmatics: Implicature, Presupposition, and Logical Form.
+Academic Press, 1979.
+
+H.P. Grice.
+Logic and conversation.
+In Cole P. and Morgan J.L., editors, Syntax and Semantics,
+  Speech Acts, volume 3, pages 41-58. Academic Press, 1975.
+
+K.J.J. Hintikka.
+Existential presuppositions and existential commitments.
+Journal of Philosophy, 56:125-137, 1959.
+
+G. Hirst.
+Existence assumptions in knowledge representation.
+Artificial Intelligence, 49:199-242, 1991.
+
+J.R. Hobbs.
+Ontological promiscuity.
+In Proceedings 23rd Annual Meeting of the Association for
+  Computational Linguistics, pages 61-69, 1985.
+
+L. Karttunen.
+Presuppositions of compound sentences.
+Linguistic Inquiry, 4(2):169-193, 1973.
+
+P. Kay.
+The inheritance of presuppositions.
+Linguistics  Philosophy, 15:333-379, 1992.
+
+C. Lejewski.
+Logic and existence.
+British Journal for the Philosophy of Science, 5:104-119,
+  1954.
+
+D. Marcu.
+A formalism and an algorithm for computing pragmatic inferences and
+  detecting infelicities.
+Master's thesis, Dept. of Computer Science, University of Toronto,
+  September 1994.
+Also published as Technical Report CSRI-309, Computer
+Systems Research Institute, University of Toronto.
+
+A. Meinong.
+ber gegenstandstheorie.
+In Meinong A., editor, Untersuchungen zur Gegenstandstheorie und
+  Psychologie. Barth, Leipzig, 1904.
+reprinted in: The theory of objects, Chisholm R.M. editor,   Realism and the Background of Phenomenology, pages 76-117. Free Press,
+  Glencoe, IL, 1960.
+
+R.E. Mercer.
+A Default Logic Approach to the Derivation of Natural Language
+  Presuppositions.
+PhD thesis, Department of Computer Science, University of British
+  Columbia, 1987.
+
+R.E. Mercer.
+Personal communication, 1993.
+
+T. Parsons.
+Nonexistent Objects.
+Yale University Press, New Haven, CT, 1980.
+
+W.V.O. Quine.
+Designation and existence.
+In Feigl H. and Sellars W., editors, Readings in Philosophical
+  Analysis, pages 44-51. Appleton-Century-Croft, New York, 1949.
+
+W.J. Rapaport.
+Meinongian semantics for propositional semantic networks.
+In Proceedings 23rd Annual Meeting of the Association for
+  Computational Linguistics, pages 43-48, 1985.
+
+R. Reiter.
+A logic for default reasoning.
+Artificial Intelligence, 13:81-132, 1980.
+
+B. Russell.
+On denoting.
+Mind n.s., 14:479-493, 1905.
+reprinted in: Feigl H. and Sellars W. editors, Readings in
+  Philosophical Analysis, pages 103-115. Appleton-Century-Croft, New York,
+  1949.
+
+R.A. van der Sandt.
+Presupposition projection as anaphora resolution.
+Journal of Semantics, 9:333-377, 1992.
+
+J.M. Siskind and D.A. McAllester.
+Nondeterministic Lisp as a substrate for constraint logic
+  programming.
+In Proceedings of the Twelfth National Conference on Artificial
+  Intelligence, pages 133-138, 1993.
+
+J.M. Siskind and D.A. McAllester.
+Screamer: A portable efficient implementation of nondeterministic
+  Common Lisp.
+Technical Report IRCS-93-03, University of Pennsylvania, Institute
+  for Research in Cognitive Science, July 1 1993.
+
+S. Soames.
+How presuppositions are inherited: A solution to the projection
+  problem.
+Linguistic Inquiry, 13(3):483-545, Summer 1982.
+
+H. Zeevat.
+Presupposition and accommodation in update semantics.
+Journal of Semantics, 9:379-412, 1992.
+

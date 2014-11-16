@@ -1,0 +1,12 @@
+
+We present a system for the investigation of computational
+  properties of categorial grammar parsing based on a labelled
+  analytic tableaux theorem prover. This proof method allows us to
+  take a modular approach, in which the basic grammar can be kept
+  constant, while a range of categorial calculi can be captured by
+  assigning different properties to the labelling algebra. The theorem
+  proving strategy is particularly well suited to the treatment of
+  categorial grammar, because it allows us to distribute the
+  computational cost between the algorithm which deals with the
+  grammatical types and the algebraic checker which constrains the
+  derivation.

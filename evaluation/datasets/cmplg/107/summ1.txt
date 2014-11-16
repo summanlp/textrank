@@ -1,0 +1,9 @@
+
+In this paper we present a semantic study of motion complexes (ie. of
+   a motion verb followed by a spatial preposition). We focus on the
+   spatial and the temporal intrinsic semantic properties of the motion
+   verbs, on the one hand, and of the spatial prepositions, on the other
+   hand. Then we address the problem of combining these basic semantics
+   in order to formally and automatically derive the spatiotemporal
+   semantics of a motion complex from the spatiotemporal properties
+   of its components.

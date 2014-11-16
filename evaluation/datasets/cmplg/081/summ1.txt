@@ -1,0 +1,17 @@
+
+Spoken language processing requires speech and natural language
+integration. Moreover, spoken Korean calls for unique processing
+methodology due to its linguistic characteristics. This paper presents
+SKOPE, a connectionist/symbolic spoken Korean processing engine, which
+emphasizes that: 1) connectionist and symbolic techniques must be selectively
+applied according to their relative strength and weakness, and  2) the
+linguistic
+characteristics of Korean must be fully considered for phoneme recognition,
+speech and language integration, and morphological/syntactic processing.
+The design and implementation of SKOPE demonstrates how connectionist/symbolic
+hybrid architectures can be constructed for spoken agglutinative language
+processing.  Also SKOPE
+presents many novel ideas for speech and language processing. The phoneme
+recognition, morphological analysis, and syntactic analysis
+experiments show that SKOPE is a viable approach for the spoken Korean
+processing.

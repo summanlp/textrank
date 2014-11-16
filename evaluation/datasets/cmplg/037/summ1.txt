@@ -1,0 +1,10 @@
+
+A discourse strategy is a strategy for communicating with another
+agent.  Designing effective dialogue systems requires designing agents
+that can choose among discourse strategies. We claim that the design
+of effective strategies must take cognitive factors into account,
+propose a new method for testing the hypothesized factors,
+and present experimental results on an effective strategy for
+supporting deliberation. The proposed method of computational dialogue
+simulation provides a new empirical basis for computational
+linguistics.

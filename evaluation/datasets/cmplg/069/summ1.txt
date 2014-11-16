@@ -1,0 +1,7 @@
+
+The paper demonstrates that exponential complexities with respect to
+grammar size and input length have little impact on the performance of three
+unification-based parsing algorithms, using a wide-coverage grammar. The
+results imply that the study and optimisation of unification-based parsing
+must rely on empirical data until complexity theory can more accurately
+ predict the practical behaviour of such parsers. 

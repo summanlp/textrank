@@ -1,0 +1,11 @@
+
+This is an interim report discussing possible guidelines for the assessment and
+evaluation of projects developing speech and language systems. 
+After a discussion of terminology, the report focusses on combining
+user-centred and technology-centred assessment, and on how meaningful
+comparisons can be made of a variety of systems performing different
+tasks for different domains.  The report outlines the kind of
+infra-structure that might be required to support comparative
+assessment and evaluation of heterogenous projects, and also the
+results of a questionnaire concerning different approaches to
+evaluation.

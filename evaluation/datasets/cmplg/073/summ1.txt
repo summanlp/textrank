@@ -1,0 +1,13 @@
+
+The important part of semantics of complex sentence is captured as
+relations among semantic roles in subordinate and main clause
+respectively.  However if there can be relations between every pair of
+semantic roles, the amount of computation to identify the relations that
+hold in the given sentence is extremely large. In this paper, for
+semantics of Japanese complex sentence, we introduce new pragmatic roles
+called observer and motivated respectively to bridge
+semantic roles of subordinate and those of main clauses. By these new
+roles constraints on the relations among semantic/pragmatic roles are
+known to be almost local within subordinate or main clause. In other
+words, as for the semantics of the whole complex sentence, the only role
+we should deal with is a motivated.

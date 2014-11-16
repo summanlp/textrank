@@ -1,0 +1,18 @@
+
+Conversation between two people is usually of  MIXED-INITIATIVE,
+with  CONTROL over the conversation being transferred from one
+person to another.  We apply a set of rules for the transfer of
+control to 4 sets of dialogues consisting of a total of 1862 turns.
+The application of the control rules lets us derive domain-independent
+discourse structures. The derived structures indicate that initiative
+plays a role in the structuring of discourse.  In order to explore the
+relationship of control and initiative to discourse processes like
+centering, we analyze the distribution of four different classes of
+anaphora for two data sets. This distribution indicates that some
+control segments are hierarchically related to others.  The analysis
+suggests that discourse participants often mutually agree to a change
+of topic. We also compared initiative in Task Oriented and Advice
+Giving dialogues and found that both allocation of control and the
+manner in which control is transferred is radically different for the
+two dialogue types. These differences can be explained in terms of
+collaborative planning principles.

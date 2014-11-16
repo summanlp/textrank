@@ -1,0 +1,17 @@
+
+We address the problem of automatically acquiring case frame
+  patterns (selectional patterns) from large corpus data. In
+  particular, we propose a method of learning dependencies between
+  case frame slots. We view the problem of learning case frame
+  patterns as that of learning a multi-dimensional discrete joint
+  distribution, where random variables represent case slots. We then
+  formalize the dependencies between case slots as the     probabilistic dependencies between these random variables. Since
+  the number of parameters in a multi-dimensional joint distribution
+  is exponential in general, it is infeasible to accurately estimate
+  them in practice. To overcome this difficulty, we settle with
+  approximating the target joint distribution by the product of     low order component distributions, based on corpus data. In
+  particular we propose to employ an efficient learning algorithm
+  based on the MDL principle to realize this task. Our experimental
+  results indicate that for certain classes of verbs, the accuracy
+  achieved in a disambiguation experiment is improved by using the
+  acquired knowledge of dependencies.

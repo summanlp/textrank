@@ -1,0 +1,10 @@
+
+A novel  approach to   HPSG based natural language processing  is
+described  that  uses an  off-line compiler to  automatically  prime a
+declarative grammar  for generation or parsing, and inputs  the primed
+grammar to an advanced Earley-style processor.  This way we provide an
+elegant  solution to  the  problems  with  empty  heads and  efficient
+bidirectional processing which is illustrated for the special  case of
+  HPSG generation.  Extensive  testing  with  a large   HPSG
+grammar  revealed  some  important  constraints  on  the  form  of the
+grammar.

@@ -1,0 +1,7 @@
+
+We earlier described two taggers for French, a statistical one and a
+constraint-based one.  The two taggers have the same tokeniser and
+morphological analyser.  In this paper, we describe aspects of this
+work concerned with the definition of the tagset, the building of the
+lexicon, derived from an existing two-level morphological analyser,
+and the definition of a lexical transducer for guessing unknown words.

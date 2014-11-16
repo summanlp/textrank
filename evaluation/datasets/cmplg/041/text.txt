@@ -1,0 +1,560 @@
+
+The experiments reported in the current article continue a line of
+research  in the field of part-of-speech tagging using self-organizing
+models that was presented at the previous (9th) Scandinavian Conference
+on Computational Linguistics. Then, the well-established HMM-based Xerox
+ tagger, see , was  compared with some less known taggers, namely a neural-network tagger described in
+[], and a Bayesian tagger presented  in
+ . The Xerox tagger performs lexical generalizations by clustering words based  on their distributional patterns, while the
+latter two utilize the morphological information present in Swedish by
+generalizing over word suffixes.
+
+This time, another HMM-based approach is compared with a novel
+reductionistic statistical tagger inspired by the successful Constraint
+ Grammar  system,    []. 
+
+The performed experiments do not only serve to evaluate the two taggers,
+but also shed some new light on the Teleman corpus as an evaluation
+domain for part-of-speech taggers compared to other, English, corpora.
+
+ The paper is organized as follows: Section  discusses the  Teleman corpus and the tagsets used. Section  describes the  HMM-based tagger  and Section  the reductionistic statistical one. The vital issue of handling sparse data is addressed in
+ Section  and the experimental results are presented in  Section . 
+
+ The Teleman corpus  is a corpus of contemporary Swedish, representing a mixture of different text genres like
+information brochures on military service and medical care, novels, etc.
+It comprises 85,408 words (tokens; here, words is a collective
+denotation of proper words, numbers, and punctuation). There are 14,191
+different words (types); the most frequent one is ``.'', which occurs
+4,662 times; the most frequent proper word is ``och'' (and), which occurs 2,217 times. 8,458 of the words occur exactly
+once, which is 60% of the types but only 10% of the tokens.
+
+For the experiments, we used two different tagsets. First, we used the
+original tagset, consisting of 258 tags. Each of the 14,191 word types
+can have between one and 15 of the 258 tags (the highly ambiguous word
+``fr'' (for, stern, lead, too, ...) has the maximum
+number of tags). We then used a reduced tagset, consisting of 19 tags,
+which represent  common syntactic categories and punctuation. This
+tagset is identical  to that used in the publications mentioned above.
+Each of the word types then has between one and 7 tags (``fr'' and ``i'' have the maximum number of tags).
+
+Since 10% of the words in the Teleman corpus occur only once, we expect
+ from the Good-Turing formula  that 10% of the words in new text be unknown, which is a very high percentage. Other publications
+typically report 5%. Since most of the work in this area is on English
+corpora, we compared the Teleman corpus with an English corpus, namely
+ the Susanne corpus , which is a re-annotated part of the  Brown Corpus , comprising different text genres. The  relevant facts are summarized and compared in Table . The major difference (apart from corpus size and tagsets used) is the
+percentage of words that occur exactly once: 10% for Teleman vs. 4%
+for Susanne. According to the Good-Turing formula, this percentage is
+identical to the expected percentage of unknown words. Actual counts by
+dividing the corpora into training and test parts yield around 14% and
+7%, respective. This indicates that unseen Swedish text will have
+substantially more unknown words than unseen English, which is most
+likely due to the higher degree of morphological variation in Swedish.
+
+A further difficulty with the Swedish corpus is the higher degree of
+ambiguity. In the Teleman corpus, each word in the running text has  in
+average 2.38 tags for the small tagset, and 3.69 for the large tagset.
+These numbers are 2.07 and 2.61 for the Susanne corpus, despite the fact
+ that the tagsets for the Susanne corpus are larger than those for the
+Teleman corpus.  Thus, there is much more work for the tagger to do in
+the Teleman corpus. Some more numbers: in the running text,
+54.5%/64.2% of the words in the Teleman corpus are ambiguous, and only
+44.3%/48.9% in the Susanne corpus (small/large tagset, resp.; see
+ Table  for further details). 
+
+
+
+Tags in the Susanne corpus with
+indices are counted as separate tags.
+
+
+
+Unknown words are words that
+occur only in the test set, but not in the training set.
+
+
+
+The remaining 9,823 words of the
+Susanne corpus were not used in the experiments.
+
+A Hidden Markov Model (HMM) consists of a set of states, a set of output
+symbols and a set of transitions. For each state and each symbol, the
+probability that this symbol is emitted by that state is given. Also, a
+probability is associated with each transition between states (see
+  for a good introduction). The transition probability, and thus the probability of the following state, depends only on the
+previous state for first order HMMs, or on k previous states for HMMs
+of kth order. HMM approaches to part-of-speech tagging make the
+well-known assumption that the current category or part-of-speech of a
+word depends only on the previous (n-1) categories (Markov
+assumption), thus they assume that natural language is a Markov process
+of order (n-1), which of course is not true, but a successful
+approximation. n = 3 is chosen in most of the cases, resulting in a
+trigram model (i.e., always working with a window of size 3), since it
+yields the best compromise between size of corpora needed for training
+and tagging accuracy. Furthermore, the current word (symbol) depends
+only on the current category (state). Thus, instead of calculating and
+maximizing 
+
+
+ ,
+with Ti tags and
+Wi words, which is impossible in all practical cases, one calculates
+and maximizes
+
+
+
+to find the best sequence of tags for a given sequence of words.
+
+The parameters of an HMM can be estimated directly from a pretagged
+corpus via maximum-likelihood estimation (MLE). But MLE sets a lot of
+the transition probabilities to zero, and if one of the multiplied
+ probabilities in () is zero, the product becomes zero, leaving no means to distinguish between different products that contain
+a zero probability. This results in poor estimates for the probabilities
+of new sequences of words. This problem is addressed in Section
+ . 
+
+Another way of estimating the parameters of an HMM is to use an untagged
+corpus, a lexicon with parts-of-speech lists for the words and the
+ Baum-Welch algorithm . This approach has the advantage of avoiding the tedious work of manually annotating a corpus, but it
+requires a sophisticated choice of initial biases, and generally, the
+performance is worse than that achieved with annotated corpora.
+
+When using an HMM for tagging, the system gets a string of words and has
+to find the most probable sequence of tags that could have produced
+the string of words. This is done with a dynamic programming method, the
+ Viterbi algorithm . The algorithm finds the most probable sequence of states in time linear
+in the length of the input string.
+
+Although not yet fully realized, the basic philosophy behind the
+reductionistic statistical approach is to give it the same expressive
+power as the Constraint Grammar system.
+
+The Constraint Grammar system performs remarkably well;
+[Voutilainen  Heikkil 1994] report 99.7% recall, or 0.3%
+error rate,  which is ten times smaller than that of the best
+statistical taggers. These impressive results are achieved by:
+1.
+Utilizing a number of different information
+sources, and not only the stereotyped lexical statistics and n-gram tag
+statistics that have become the de facto standard in statistical
+part-of-speech tagging. 2.
+  Not fully resolving all  ambiguities when this would jeopardize the recall. Property     means that the system trades precision for recall, which makes it ideal as a preprocessor for natural language systems
+performing deeper analysis.
+
+The Constraint Grammar system works as follows:
+First, the input string is assigned all possible tags from the lexicon, or
+rather, from the morphological analyzer.
+Then, tags are removed iteratively by repeatedly applying a set of rules,
+or constraints, to the tagged string.
+When no more tags are removed by the last iteration, the process terminates,
+and morphological disambiguation is concluded.
+Then a set of syntactic tags are assigned to the tagged input
+string and a similar process is performed for syntactic disambiguation.
+This method is often referred to as reductionistic tagging.
+
+The rules are sort-of formulated as finite state automata [Tapanainen,
+personal communication], which allows very fast processing.
+
+Each rule applies to a current word with a set of candidate tags.
+The structure of a rule is typically:
+``In the following context, discard the following tags.''
+or
+``In the following context, commit to the following tag.''
+We will call discarding or committing to tags the rule action.
+A typical rule context is:
+``There is a word to the left that is unambiguously tagged with the
+following tag, and there are no intervening words tagged with such
+and such tags.''
+
+The structure of the Constraint Grammar rules readily allows their contexts
+to be viewed as the conditionings of conditional probabilities,
+and the actions have an obvious interpretation as the corresponding
+probabilities.
+
+Each context type can be seen as a separate information source, and we will
+combine information sources 
+
+
+by multiplying the scaled
+probabilities:
+
+This formula can be established by Bayesian inversion, then performing the
+independence assumptions, and renewed  Bayesian inversion:
+
+In standard statistical part-of-speech tagging there are only two
+information sources -- the lexical probabilities and the tags assigned
+to neighbouring words. We thus have:
+
+The context will in general not be fully disambiguated. Rather than
+employing dynamic programming over the lattice of remaining candidate
+tags, the new approach uses the weighted average over the remaining
+candidate tags  to estimate the probabilities:
+
+It is assumed that 
+
+
+constitutes a partition of
+the context C, i.e., that 
+
+
+and that 
+
+
+for 
+
+ .
+In particular, trigram probabilities are
+combined as follows:
+
+Here T denotes a candidate tag of the current word, Tl denotes a
+candidate tag of the immediate left neighbour, and Tr denotes a
+candidate tag of the  immediate right neighbour. C is the set of
+ordered pairs (Tl,Tr) drawn from the set  of candidate tags of the
+immediate neighbours. 
+
+
+is the symmetric trigram
+probability.
+
+The tagger is reductionistic since it repeatedly removes low-probability
+candidate tags.  The probabilities are then recalculated, and the
+process terminates when  the probabilities have stabilized and no more
+tags can be removed without  jeopardizing the recall; candidate tags are
+only removed if their probabilities are below some threshold value.
+
+Handling sparse data consists of two different tasks:
+1.
+Estimating the probabilities of events that do not occur in the
+training data.
+2.
+Improving the estimates of conditional probabilities where the
+        number of observations under this conditioning is small.
+Coping with unknown words, i.e., words not encountered in the training
+set, is an archetypical example of the former task. Estimating
+probability distributions conditional on small contexts is an example of
+the latter task. We will examine several approaches to these tasks.
+
+For the HMM, it is necessary to avoid zero probabilities. The most
+straight-forward strategy is employing the expected-likelihood estimate
+(ELE), which simply adds 0.5 to each frequency count and then constructs
+ a maximum-likelihood estimate (MLE), (see e.g. ). The MLE of the probability is the relative frequency r. Another possibility is
+ the Good-Turing method , where each frequency f is replaced by 
+
+
+ ,
+where Nf denotes the
+frequency of frequency f.  Alternatively, one can use linear
+interpolation of the probabilities obtained by MLE,
+
+
+[] let the  
+
+values
+dependent on the context, which improves the tagging accuracy. This is
+related to the idea of successive abstraction presented in
+ Section . To achieve improved estimates of lexical  probabilities, words can be clustered together, see []. 
+
+There are several ways to handle unknown words. These include:
+1.
+Making every tag a possible tag for that word with equal probability
+and finding the most probable tag solely based on context
+        probabilities. The results can be slightly improved by trying only
+        open-class tags for unknown words.
+2.
+As an extension to case 1, choosing different but again constant
+        probabilities for each possible tag. This constitutes an a priori
+        distribution for unknown words, reflecting for example that most of
+        the unknown words are nouns. The probabilities could be obtained
+        from a separate training part, or from the distribution of words
+        that occur only once in the training corpus. These words reflect
+        the distribution of unknown
+         words according to the formula presented in . 3.
+ Exploiting word-form information as proposed in .         Here, the probability distributions are determined from the last
+        n characters of the word, and the remaining number of syllables.
+        This method has been proven successful for Swedish text.
+4.
+Utilizing orthographical cues such as capitalization.
+
+Assume that we want to estimate the probability 
+
+
+of the
+event  E given a context C from the number of times NE it occurs
+in N = |C| trials, but that this data is sparse. Assume further that
+there is abundant  data in a more general context 
+
+
+that we
+want to use to  get a better estimate of 
+
+
+ .
+
+If there is an obvious linear order  
+
+
+of the various  generalizations Ck of C,
+we can build the estimates of 
+
+
+on the relative frequency
+
+
+of event E in context Ck and the previous estimates
+of 
+
+
+ .
+We call this method linear successive
+abstraction. A simple example is estimating the probability  
+
+
+of a tag T given 
+
+
+ ,
+the
+last j+1 letters of the word. In this case, the estimate will be based
+on the relative frequencies  
+
+
+ Previous experiments  indicate that the following is a suitable formula:
+\hat{P}(E \mid C) = \frac{\sqrt{N} \: r(E \mid C) + \hat{P}(E \mid
+C')}{\sqrt{N} + 1}
+\end{eqnarray} -->
+This formula simply up-weights the relative frequency r by a factor
+
+ ,
+the square root of the size of context C, which is the
+active ingredient of the standard deviation of r.
+
+If there is only a partial order of the various generalizations, the
+scheme is  still viable. For example, consider generalizing symmetric
+trigram statistics, i.e., statistics  of the form 
+
+
+ .
+Here, both Tl and Tr are one-step generalizations of the context
+Tl,Tr, and both have in turn the common  generalization 
+
+ .
+We
+ modify Equation  accordingly:
+
+and
+
+We call this partial successive abstraction.
+
+For the experiments, both corpora were divided into three sets, one
+large set and two small sets. We used three different divisions into
+training and testing sets. First, all three sets were used for both
+training and testing. In the second and third case, training and test
+sets were disjoint, the large set and one of the small sets were used
+for training, the remaining small set was used for testing. As a
+baseline to indicate what is gained by taking the context into account,
+we performed an additional set of experiments that used lexical
+probabilities only, and ignored the context.
+
+The experiments of this section were performed with a trigram tagger as
+ described in Section . Zero frequencies were avoided by using expected-likelihood estimation. Unknown words were handled by a
+ mixture of methods 2 and 3 listed in Section : If the suffix of 4 characters (3 characters for the Susanne corpus) of the unknown
+words was found in the lexicon, the tag distribution for that suffix was
+used. Otherwise we used the distribution of tags for words that occurred
+only once in the training corpus.
+
+As opposed to trigram tagging, lexical tagging ignores context
+probabilities and is based solely on lexical probabilities. Each word is
+assigned its most frequent tag from the training corpus. Unknown words
+were assigned the most frequent tag of words that occurred exactly once
+in the training corpus. The most frequent tags for single occurrence
+words are for the Teleman corpus NNSS (indefinite noun-noun
+compound) and noun (large and small tagset, resp.), for the
+Susanne corpus NN2 (plural common noun) and NN (common noun;
+again large and small tagset resp.).
+
+Tagging speed was generally between 1000 and 2000 words per second on a
+SparcServer 1000; most of this variation was due to variations in the
+number of unknown words.
+
+The results for the Teleman corpus are shown in
+ Table  and the results for the Susanne  corpus in Table . 
+
+What immediately attracts attention is the remarkably low performance of
+the trigram approach for the Teleman corpus. Already the baseline
+obtained by lexical tagging is below 80% for new text, usual results
+are around 90%. Normal results can be obtained only for known words or
+when using the small tagset, the latter being in fact a very simple
+task,  since the algorithm has to choose from only 19 tags.  For the
+large tagset, trigram tagging achieves only 83% accuracy.  This low
+figure is due to the unusually high number of unknown words and  the
+larger degree of ambiguity compared to English corpora, as is discussed
+ in Section . Using a large Swedish lexicon or morphological  analyzer should improve the results significantly.
+
+Another interesting result is that accuracy increases when the size of
+the tagset increases for the cases where known text is tagged and
+context probabilities are taken into account. This means that the
+additional information about the context in the larger tagset is very
+helpful for disambiguation, but only when disambiguating known text.
+This could arise from the fact that a large number (
+
+ )
+of the
+trigrams that occur in the training text occur exactly once. And most of
+the possible trigrams do not occur at all (generally more than 90%,
+depending on the size of the tagset). Now, the trigram approach has a
+distinct bias to those trigrams that occurred once over those that never
+occurred. These happen to be the right ones for known text but not
+necessarily for new text, thus the positive effect of a larger tagset
+vanishes for fresh text.
+
+The results for the Susanne corpus are similar to those reported in
+other publications for (other) English corpora.
+
+ The reductionistic statistical tagger described in Section  was tested on the same data as the HMM tagger.  The information sources
+employed in the experiments were lexical statistics and contextual
+information, which consisted of symmetric trigram statistics. Unknown
+words were handled by creating a decision tree of the four last letters
+from words with three or less occurrences.  Each node in the tree was
+associated with a probability distribution (over the  tagset) extracted
+from these words, and the probabilities were smoothened through linear
+ successive abstraction, see Section . 
+
+There were two cut-off values for contexts: Firstly, any context with
+less than 10 observations was discarded. Secondly, any context where the
+probability distributions did not differ substantially from the
+unconditional one was also discarded. Only the remaining ones were used
+for disambiguation.  Due to the computational model employed, omitted
+contexts are equivalent to backing off to whatever the current
+probability distribution is. The distributions conditional on contexts
+are however susceptible to the problem of sparse data. This was handled
+using partial successive abstraction as described in
+ Section . 
+
+ The results are shown in Tables   and . They clearly indicate that: 
+
+The employed treatment of unknown words is quite effective.
+
+Using contextual information, i.e., trigrams, improves tagging
+        accuracy.
+
+The performance is on pair with the HMM tagger and comparable to
+        state-of-the-art statistical part-of-speech taggers.
+
+Teleman is a considerably tougher nut to crack than Susanne.
+
+
+The results using the Susanne corpus are similar to those reported for
+ the  Lancaster-Oslo-Bergen (LOB) corpus in , where a statistical n-best-path approach was employed to trade precision for
+recall.
+
+The tagging speed was typically a couple of hundred words per second on
+a SparcServer 1000, but varied with the size of the tagset and the
+amount of remaining ambiguity.
+
+The experiments with the HMM approach show that it is much harder to
+process the Swedish than the English corpus. Although the two corpora
+are not fully comparable because of the differences in size and tagsets
+used, they reveal a strong tendency. The difficulty in processing is
+mostly due to the rather large number of unknown words in the Swedish
+corpus and the higher degree of ambiguity despite having smaller
+tagsets. These effects mainly arise from the higher morphological
+variation of Swedish which calls for additional strategies to be
+applied. These could be the use of a large corpus-independent lexicon
+and a separate morphological analysis.
+
+It is reassuring to see that the reductionistic tagger performs as well
+as the HMM tagger, indicating that the new framework is as powerful as
+the conventional one when using strictly conventional information
+sources. The new framework also enables using the same sort of
+information as the highly successful Constraint Grammar approach, and
+the hope is that the addition of further information sources can advance
+state-of-the-art performance of statistical taggers.
+
+Viewed as an extension of the Constraint Grammar approach, the new
+scheme allows making decisions on the basis of not fully disambiguated
+portions of the input string. The absolute value of the probability of
+each tag can be used as a quantitative measure of when to remove a
+particular candidate tag and when to leave in the ambiguity.  This
+provides a tool to control the tradeoff between recall (accuracy) and
+precision (remaining ambiguity).
+
+We wish to thank Bjrn Gambck for providing information on previous
+work with the Teleman corpus.
+
+L. E. Baum.
+``An inequality and associated maximization technique in statistical
+  estimation for probabilistic functions of Markov processes'',
+Inequalities III, pp. 1-8, 1972.
+
+P. F. Brown, V. J. Della Pietra, F. Jelinek, J. D. Lafferty, R. L. Mercer and
+  P. S. Roossin.
+``Class-based n-gram models of natural language'',
+Computational Linguistics 18(4) pp. 467-479, 1992.
+
+Douglass Cutting.
+``A Practical Part-of-Speech Tagger'',
+in Procs. 9th Scandinavian Conference on Computational Linguistics,
+pp. 65-70, Stockholm University, 1994.
+
+Douglass R. Cutting, Julian Kupiec, Jan Pedersen and Penelope Sibun.
+``A Practical Part-of-Speech Tagger''.
+in Procs. 3rd Conference on Applied Natural Language Processing,
+pp. 133-140, ACL, 1992.
+
+Martin Eineborg and Bjrn Gambck.
+``Tagging Experiments Using Neural Networks'',
+in Procs. 9th Scandinavian Conference on Computational Linguistics,
+pp. 71-82, Stockholm University, 1994.
+
+N. W. Francis and H. Kucera.
+Frequency Analysis of English Usage,
+Houghton Mifflin, Boston, 1982.
+
+W. A. Gale and K. W. Church.
+``Poor Estimates of Context are Worse than None'',
+in Proc. of the Speech and Natural Language Workshop,
+pp. 283-287, Morgan Kaufmann, 1990.
+
+I. J. Good.
+``The population frequencies of species and the estimation of population
+parameters'',
+Biometrika 40, pp. 237-264, 1953.
+
+Fred Karlsson, Atro Voutilainen, Juha Heikkil and Arto Anttila (eds).
+Constraint Grammar. A Language-Independent System for Parsing
+Unrestricted Text,
+Mouton de Gruyter, Berlin / New York, 1995.
+
+Carl G. de Marcken.
+``Parsing the LOB Corpus'',
+in Procs. 28th Annual Meeting of the Association for Computational
+Linguistics, pp. 243-251, ACL 1990.
+
+L. R. Rabiner.
+``A tutorial on hidden Markov models and selected applications in speech
+recognition'',
+in Proceedings of the IEEE 77(2), pp. 257-285, 1989.
+
+Geoffrey Sampson.
+English for the Computer,
+Oxford University Press, Oxford, 1995.
+
+Christer Samuelsson.
+``Morphological Tagging Based Entirely on Bayesian Inference'',
+in Procs. 9th Scandinavian Conference on Computational Linguistics,
+pp. 225-238, Stockholm University, 1994.
+
+Ulf Teleman.
+Manual fr grammatisk beskrivning av talad och skriven svenska,
+(in Swedish), Studentlitteratur, Lund, Sweden 1974.
+
+A. Viterbi.
+``Error bounds for convolutional codes and an asymptotically optimum
+decoding algorithm'',
+in IEEE Transactions on Information Theory, pp. 260-269, 1967.
+
+Atro Voutilainen and Juha Heikkil.
+``An English constraint grammar (ENGCG): a surface-syntactic parser of
+English'',
+in Procs. 14th International Conference on English Language
+Research on Computerized Corpora, pp. 189-199, Zrich, 1994.
+

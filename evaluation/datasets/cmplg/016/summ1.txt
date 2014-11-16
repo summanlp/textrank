@@ -1,0 +1,13 @@
+
+One of the most important questions in applied NLG is what benefits
+(or `value-added', in business-speak) NLG technology offers over
+template-based approaches.  Despite the importance of this question
+to the applied NLG community, however, it has not been discussed
+much in the research NLG community, which I think is a pity.  In this paper,
+I try to summarize the issues involved and recap current thinking on this
+topic.  My goal is not to answer this question (I don't think we know enough
+to be able to do so), but rather to increase the visibility of this issue
+in the research community, in the hope of getting some input and ideas
+on this very important question.  I conclude with a list of specific
+research areas I would like to see more work in, because I think they would
+increase the `value-added' of NLG over templates.

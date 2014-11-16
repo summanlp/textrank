@@ -1,0 +1,873 @@
+
+Typed feature structures (TFSs) serve as a means for the specification
+of linguistic information in current linguistic formalisms such as
+ HPSG (,) or Categorial Grammar (). Generalizing first-order terms (FOTs), TFSs are also used to specify
+ logic programs and constraint systems in LOGIN (), LIFE  (), ALE (,), TFS () and others.  General frameworks that are completely independent of any
+linguistic theory can be used to specify grammars for natural
+languages. Indeed, most of the above mentioned languages were used for
+specifying HPSG grammars.
+
+Linguistic formalisms (in particular, HPSG) use TFSs as the basic
+blocks for representing linguistic data: lexical items, phrases and
+rules. Usually, no mechanism for manipulating TFSs (e.g., parsing
+algorithm) is specified.  Current approaches for processing HPSG
+grammars either translate the grammar to Prolog (e.g.,
+ ,) or specify it as a general constraint system. Using general solvers for a specific application, namely parsing,
+results in disappointing performance. Clearly, efficient processing
+calls for a different method.
+
+Research in the semantics of programming language has undergone much
+progress in recent years. At the same time, linguistic theories have
+become more formal and grammars for natural languages are nowadays
+specified with rigor, resembling computer programs. The interaction of
+computer science and linguistics enables the use of techniques and
+results of the former to be applied to the latter.
+
+We present an approach for processing TFSs that guarantees both an
+explicit definition and high efficiency. Our main aim is to provide an
+operational semantics for TFS-based linguistic formalisms, especially
+HPSG. We adopt an abstract machine approach for the compilation of
+grammars, in a formalism that is a subset of ALE.  Such approaches
+were used for processing procedural and functional languages, but they
+gained much popularity for logic programming languages since the
+introduction of the Warren Abstract Machine (WAM - see
+ ). Most current implementations of Prolog, as well as of other logic languages, are based on abstract machines.  The
+incorporation of such techniques usually leads to very efficient
+compilers in terms of both space and time requirements.  The abstract
+machine is composed of data structures and a set of instructions,
+augmented by a compiler from the TFS formalism to the abstract
+instructions. The effect of each instruction is defined using a
+low-level language that can be executed on ordinary
+hardware. Recently, a similar approach was applied to LIFE
+ (), which is a general purpose logic programming language; however, due to differences in the motivation and in the formalisms,
+our machine is much different. Moreover, the LIFE machine is limited
+to term unification, whereas our machine includes a control module
+that enables manipulation of whole grammars.
+
+The abstract machine ensures that a grammars specified using our
+system are endowed with well defined meaning. It enables, for example,
+to formally verify the correctness of a compiler for HPSG, given an
+independent definition.  The design of such an abstract architecture
+must be careful enough to compromise two, usually conflicting,
+requirements: the closer the machine is to common architectures, the
+harder it is to develop compilers for it; on the other hand, if such a
+machine is too complex, then while a compiler for it is easier to
+produce, it becomes more complicated to execute its language on normal
+architectures.
+
+The next section sketches the framework for which our machine is
+ designed and defines some basic notions. Section  describes the abstract machine core design along with the compilation scheme. In
+ section  control structures are added to enable parsing. A conclusion and plans for further research are given in
+ section .  Due to lack of space, the description is  rather general. Refer to  for more details. 
+
+We briefly review the basic notions we use (thoroughly described in
+ ,). An HPSG grammar consists of a type specification and grammar rules
+(including principles and lexical rules).  The basic entity of HPSG is
+the (typed) feature structure (TFS), which is a connected, directed,
+labeled, possibly cyclic, finite graph, whose nodes are decorated with
+types and whose edges are labeled by features.  A TFS is
+reentrant if it contains two different paths that lead to the
+same node.  The types are ordered according to an inheritance
+hierarchy where higher types inherit features from their super-types.
+
+Many different formalizations of TFS systems exist; we basically
+ follow the definitions of (,).  The set of types includes both 
+
+ ,
+the least type, and 
+
+ ,
+the greatest
+one. Types are ordered by subsumption (
+
+ )
+according to
+their information content, not set inclusion of their
+denotation. Hence, 
+
+is the most general type, subsuming every
+other, and 
+
+is the contradictory type, subsumed by every other.
+
+The inheritance hierarchy is required to be bounded complete: every
+set of consistent types 
+
+
+must have a unique least
+upper bound 
+
+
+ .
+Every partial
+order can be naturally extended to a bounded complete one. The
+appropriateness function 
+
+Approp(t,f) is required to be monotone and
+ to comply with the feature introduction condition.  However, we allow appropriateness specifications to contain loops.
+
+The basic operation performed on TFSs is unification
+(
+
+ ). There are various definitions for TFS unification, and we
+base our unification algorithm on the definition given in
+ . Two TFSs A and B are inconsistent if their unification results in failure, denoted by 
+
+
+ .
+
+The TFSs with which we deal are required to be totally
+ well-typed, for more efficient processing. This might be problematic for the users who may prefer to
+specify only partial information about linguistic entities. Therefore,
+some description language must be provided, allowing partial
+descriptions from which totally well-typed feature structures can be
+automatically deduced.  As there are efficient algorithms to deduce
+structures from their descriptions, we prefer not to commit ourselves
+to one description language. We define our system over explicit
+representations of TFS, as will be clear from
+ section . 
+
+A program (or a grammar) contains a type specification, consisting of
+a type hierarchy and an appropriateness specification. We adopt ALE's
+ format () for this specification: it is a sequence of statements of the form:
+t sub 
+
+
+intro 
+
+
+ .
+where 
+
+
+are types,
+
+
+are features and 
+
+ .
+This statement,
+which is said to characterize t, means that 
+
+
+ are (immediate) subtypes of t (i.e., for every 
+
+
+appropriate for it. Moreover, these features are introduced by t, i.e., they are not appropriate for any type t'such that 
+
+
+ .
+Finally, the statement specifies that
+
+Approp(t,fi) = ri for every i.  Each type (except 
+
+and
+
+ )
+must be characterized by exactly one statement. The arity of a type t, Ar(t), is the number of features appropriate for it.
+
+The full subsumption relation is the reflexive transitive closure of
+the immediate relation determined by the characterization
+statements. If this relation is not a bounded complete partial order,
+the specification is rendered invalid. The same is true in case it is
+not an appropriateness specification.
+
+ We use the type hierarchy in figure  as a running example, where bot stands for 
+
+ .
+The type 
+
+ is systematically omitted from type specifications.
+
+The most convenient graphical representation of TFSs is
+attribute-value matrices (AVMs). However, to represent a (totally
+well-typed) feature structure linearly we use an FOT-like notation,
+based upon At-Kaci's 
+
+  -terms (,), where the type plays a similar role to that of a function symbol and the
+features are listed in a fixed order. Reentrancy is implied by
+attaching identical tags to reentrant TFSs. A term is normal if
+all its types are tagged, and if the same tag appears more than once,
+then only its first occurrence carries information.
+ See  for the details. 
+
+Total well-typedness implies that the names of the features in a TFS can
+be coded by their position in the argument list of a type, and thus
+feature-names are omitted from the linear representation.  Assuming
+that the feature names are ordered alphabetically, the linear
+ representation of an example TFS is given in figure . 
+
+While TFSs resemble FOTs in many aspects, it is important to note the
+differences between them. First, TFSs are typed, as opposed to
+(ordinary) FOTs.  TFSs are interpreted over more specific domains than
+FOTs.  In addition, TFSs label the arcs by feature names, whereas FOTs
+use a positional encoding for argument structure. More importantly,
+while FOTs are essentially trees, with possibly shared leaves, TFSs
+are directed graphs, within which variables can occur anywhere.
+Moreover, our system doesn't rule out cyclic structures, so that
+infinite terms can be represented, too.  FOTs are consistent only if
+they have the same functor and the same arity. TFSs, on the contrary,
+can be unified even if their types differ (as long as they have a
+non-degenerate least upper bound). Moreover, their arity can differ,
+and the arity of the unification result can be greater than that of
+any of the unificands.  Consequently, many diversions from the
+original WAM were necessary in our design. In the following sections
+we try to emphasize the points where such diversions were made.
+
+The machine's engine is designed for unifying two TFSs: a program and a query.  The program is compiled once to produce
+machine instructions.  Each query is compiled before its execution;
+the resulting code is executed prior to the execution of the compiled
+program.  Processing a query builds a graph representation of the
+query in the machine's memory. The processing of a program produces
+code that, during run-time, unifies the program with a query already
+resident in memory.  The result of the unification is a new TFS,
+represented as a graph in the machine's memory.  In what follows we
+interleave the description of the machine, the TFS language it is
+designed for and the compilation of programs in this language.
+
+Following the WAM, we use a global, one-dimensional array called 
+HEAP of data cells.  A global register H points to the
+(current) top element of HEAP.  Data cells are tagged: STR cells
+correspond to nodes, and store their types, while REF cells represent
+arcs, and contain the address of their targets. The number of arcs
+leaving a node of type t is Ar(t), fixed due to total
+well-typedness.  Hence, we can keep the WAM's convention of storing
+all the outgoing arcs from a node consecutively following the
+node. Given a type t and a feature f, the position of the arc
+corresponding to f (f-arc) in any TFS of type t can be
+statically determined; the subgraph that is the value of f can be
+accessed in one step.  This is a major difference from the approach
+ presented in , which leads to a more time-efficient system without harming the elegance of the machine design.
+
+It is important to note that STR cells differ from their WAM analogs
+in that they can be dereferenced when a type is becoming more
+specific. In such cases, a chain of REF cells leads to the
+dereferenced STR cell.  Thus, if a TFS is modified, only its STR cell
+has to be changed in order for all pointers to it to `feel' the
+modification automatically. The use of self-referential REF cells is
+different, too: there are no real (Prolog-like) variables in our
+system, and such cells stand for features whose values are temporarily
+unknown.
+
+One cell is required for every node and arc, so for representing a
+graph of n nodes and m arcs, n+m cells are needed. Of course,
+during unification nodes can become more specific and a chain of REF
+cells is added to the count, but the length of such a chain is bounded
+by the depth of the type hierarchy and path compression during
+ dereferencing cuts it occasionally. As an example, figure  depicts a possible heap representation of the TFS
+b(b(1d,1),d).
+
+Before processing a TFS, its linear representation is transformed to a
+set of ``equations'', each having a flat (nesting free) format.  To
+facilitate this a set of registers 
+
+that store addresses of TFSs in memory is used.  A register Reg[j] is
+associated with each tag j of a normal term.  The flattening
+algorithm is straight-forward and similar to the WAM's.
+ Figure  depicts examples of the equations corresponding to two TFSs.
+
+When processing an equation of the form 
+
+
+representing part of a query, two different instructions are
+generated. The first is put_node t/n, Xi0, where n =
+Ar(t). Then, for every argument Xij, an instruction
+of the form put_arc Xi0, j, Xij is
+generated. put_node creates a representation of a node of type
+t on top of the heap and stores its address in Xi0; it also
+increments H to leave space for the arcs. put_arc fills
+this space with REF cells.
+
+In order for put_arc to operate correctly, the registers it
+uses must be initialized. Since only put_node sets the
+registers, all put_node instructions must be executed before
+any put_arc instruction is. Hence, the machine maintains two
+separate streams of instructions, one for put_node and one for
+put_arc, and executes the first completely before moving to the
+other. This compilation scheme is called for by the cyclic character
+ of TFSs: as explained in , the original single-streamed WAM scheme would fail on cyclic terms.  Consequently, the order of the
+equations becomes irrelevant, and in the actual implementation they
+might be processed in any order.
+
+The effect of the two instructions is given in
+ figure  lists the result of compiling the term b(b(1d,1),d). When this code is
+executed (first the put_node instructions, then the 
+put_arc ones), the resulting representation of the TFS in memory is
+ the one shown above in figure . 
+
+
+
+
+One of the reasons for the efficiency of our compiler is that it
+performs an important part of the unification during compile-time: the
+type unification.  The WAM's equivalent of this operation is a simple
+functor and arity comparison. It is due to the nature of a typed
+system that this check has to be replaced by a more complex
+computation.  Efficient methods were suggested for performing
+least-upper-bound computation during run time
+ (see ), but clearly computing during compilation time is preferable.  Since type unification adds information by
+returning the features of the unified type, this operation builds new
+structures, in our design, that reflect the added knowledge. Moreover,
+the WAM's special register S is here replaced by a stack. S is used by
+the WAM to point to the next sub-term to be matched against, but in
+our design, as the arity of the two terms can differ, there might be a
+need to hold the addresses of more than one such sub-term.  These
+addresses are stored in the stack.  When the type hierarchy is
+processed, the (full) subsumption relation is computed.  Then, a table
+is generated which stores, for every two types t1,t2, the least
+upper bound 
+
+
+ .
+Moreover, this table lists also the
+arity of t, its features and their `origin': whether they are
+appropriate for t1, t2, both or none of them.  Out of this table
+a series of abstract machine language functions are generated. The
+functions are arranged as a two-dimensional array called 
+unify_type, indexed by two types t1,t2. Each such function
+receives one parameter, the address of a TFS on the heap. When
+executed, it builds on the heap a skeleton for the unification result:
+an STR cell of the type 
+
+
+ ,
+and a REF cell for each
+appropriate feature of it.
+
+Consider unify_type[t1,t2](addr) where addr is the
+address of a TFS A (of type t2) in memory.  Let 
+
+
+ ,
+and let f be some feature appropriate for t.  If f is
+inherited from t2 only, the value of the REF cell is simply set to
+point to the f-arc in A.  If f is inherited from t1 only, a
+self-referential REF cell is created. But the information that the
+actual value for this cell is yet to be seen must be recorded.  This
+is done by means of the global stack S, every element of which is a
+pair [action,addr], where action is either `copy' or
+`unify'. In the case we describe, the action is `copy' and the address
+is that of the REF cell. If f is appropriate for both t1 and
+t2, a REF cell with the address of the f-arc in A is created,
+and a `unify' cell is pushed onto the stack. Finally, if f is
+introduced by t, a VAR cell is created, with 
+
+Approp(t,f) as its
+ value. VAR cells are explained in section .  As an  example, we list below (figure ) the resulting code for the unification the two types a and b.
+
+This example code is rather complex; often the code is much simpler:
+for example, when t2 is subsumed by t1, nothing has to be
+done. As another example, if t1 is subsumed by t2, then
+additional features of the program term have to be added to A. But
+if no such features exist, the only required effect is a change of the
+type of A.  Another case is when t1 and t2 are
+not compatible: unify_type[t1,t2] returns `fail'.
+This leads to a call to the function fail, which aborts
+the unification.
+
+The program is stored in a special memory area, the CODE area.
+Unlike the WAM, in our framework registers that are set by the
+execution of a query are not helpful when processing a program. The
+reason is that there is no one-to-one correspondence between the
+sub-terms of the query and the program, as the arities of the TFSs can
+differ.  The registers are used, but (with the exception of X1)
+their old values are not retained during execution of the program.
+
+Three kinds of machine instructions are generated when processing a
+program equation of the form Xi0 =
+t(Xi1,...,Xin). The first instruction is 
+get_structure t/n,Xi0, where n = Ar(t).  For each argument
+Xij of t an instruction of the form unify_variable
+Xij is generated if Xij is first seen; if it was
+already seen, unify_value Xij is generated.  For
+example, the machine code that results from compiling the program
+ a(3d1,3) is depicted in figure . The implementation of these three instructions is given in
+ figure . 
+
+The get_structure instruction is generated for a TFS Ap (of
+type t) which is associated with a register Xi. It matches Apagainst a TFS Aq that resides in memory using Xi as a pointer to
+Aq. Since Aq might have undergone some type inference or
+previous binding (for example, due to previous unifications caused by
+other instructions), the value of Xi must first be
+dereferenced. This is done by the function deref which follows a
+chain of REF cells until it gets to one that does not point to
+another, different REF-cell. The address of this cell is the value it
+returns.
+
+The dereferenced value of Xi, addr, can either be a
+self-referential REF cell or an STR cell. In the first case, the TFS
+has to be built by the program. A new TFS is being built on top of the
+heap (using code similar to that of put_structure) with 
+addr set to point to it.  For every feature of this structure, a
+`copy' item is pushed onto the stack.  The second case, in which Xipoints to an existing TFS of type t', is the more interesting one.
+An existing TFS has to be unified with a new one whose type is
+t. Here the pre-compiled unify_type[t,t'] is invoked.
+
+The unify_variable instruction resembles very much its WAM
+analog, in the case of read mode. There is no equivalent of the
+WAM's write mode as there are no real variables in our
+system. However, in unify_value there is some similarity to the
+WAM's modes, where the `copy' action corresponds to write mode and the
+`unify' action to read mode. In this latter case the function 
+unify is called, just like in the WAM.  This function
+ (figure ) is based upon unify_type.  In contrast to the latter, the two TFS arguments of unify are in
+memory, and full unification is performed. The first difference is the
+reason for removing an item from the stack S and using it as a part of
+the unification process; the second is realized by recursive calls to
+unify for subgraphs of the unified graphs.
+
+When a sequence of instructions that were generated for some TFS is
+successfully executed on some query, the result of the unification of
+both structures is built on the heap and every register Xi stores
+the value of its corresponding node in this graph. The stack S is
+empty.
+
+One of the drawbacks of maintaining total structures is that when two
+TFSs are unified, the values of features that are introduced by the
+unified type have to be built.  For example, unify_type[a,b]
+ (figure ) has to build a TFS of type bot, which is the value of the f4 feature of type c. This is expensive
+in terms of both space and time; the newly built structure might not
+be used at all. Therefore, it makes sense to defer it.
+
+To optimize the design in this aspect, a new kind of heap cells,
+VAR-cells, is introduced. A VAR cell whose contents is a type 
+t stands for the most general TFS of type t. VAR cells are
+generated by the various unify_type functions for introduced
+features; they are expanded only when the explicit values of such
+features are needed: either during the execution of 
+get_structure, where the dereferenced value is a VAR cell, or during
+unify. In both cases the TFS has to be built, by means of
+executing the pre-compiled function build_most_general_fs
+with the contents of the VAR cell as an argument. This function (which
+is automatically generated by the type hierarchy compiler) builds a
+TFS of the designated type on the heap, with VAR cells instead of REF
+cells for the features. These cells will, again, only be expanded when
+needed. We thus obtain a lazy evaluation of TFSs that weakly resembles
+Gtz's notion of unfilled feature structures
+ (). Moreover, we gain another important property, namely that our type hierarchies can now contain loops, since
+appropriateness loops can only cause non termination when introduced
+features are fully constructed.
+
+The previous section delineated a very simple abstract machine,
+capable of unifying two simple TFSs. We now add to this machine
+control structures that will enable parsing.  We define rules,
+grammars and parsing, and then describe how the basic machine is
+extended to accommodate the application of a single rule. We sketch
+the extensions necessary for manipulating a whole grammar (program).
+These extensions were not tested yet.
+
+A multi-rooted structure (MRS) is a directed, labeled, finite
+graph with an ordered non-empty set of distinguished nodes, roots, from which all the nodes are reachable.  A rule is a
+MRS, where the graph that is reachable from the last root is the
+ rule's head, and the ones  that are reachable from the rest of the roots form its body. A MRS is linearly represented as a sequence of terms, separated by
+commas, where two occurrences of the same tag, even within two
+different terms, denotes reentrancy (that is, the scope of the tags is
+the entire sequence of terms). The head is preceded by `
+
+
+ '
+ rather than by a comma.  See  for the formal details.
+
+Application of a rule amounts to unifying its body with a MRS resident
+in memory and producing its head as a result.  When two TFSs A1 and
+A2 are parts of MRSs 
+
+and 
+
+ ,
+respectively, the
+unification of A1 and A2 in the context of
+
+and 
+
+is defined just like ordinary unification,
+but 
+
+and 
+
+might be affected by the process.  As an
+example, the rule 
+
+
+consists of a MRS of length three. When it is applied
+to the MRS 
+
+
+ ,
+the result is a new MRS
+whose head is a(d2,d1). 
+
+ 's head is modified even though
+it does not participate directly in the unification, as it is part of
+the context.
+
+A grammar is a finite set 
+
+of rules together with a
+start feature structure As.  The lexicon associates with
+ every word w a TFS Aw, its category, by means of special rules of the form  
+
+The input for the parser, therefore, is a
+MRS rather than a string of words.  A MRS 
+
+is derived by
+some TFS A if there exists a rule 
+
+
+such that Ais obtained by unifying 
+
+with 
+
+ 's body in the context of
+
+ 's head. We abuse the term `derive' to denote also the reflexive
+transitive closure of this relation. A is a category if it
+ derives a substring of some input.  The language generated by the grammar is the set of strings of words 
+
+
+such that the category of wi is Ai for 
+
+
+ and As derives 
+
+
+ .
+
+A dotted rule (or edge) is a MRS that is more specific
+than some rule in the grammar, with an additional dot,
+indicating a location preceding some element in the MRS.  An edge is
+complete if its dot precedes the head and is active
+otherwise.  We denote dotted rules by 
+
+
+Informally, such
+a dotted rule asserts that each of 
+
+
+derives a string
+
+
+such that 
+
+
+is a
+substring of the input. 
+
+
+still have to derive
+
+
+in order for A0 to be a category
+deriving 
+
+
+ .
+
+We view parsing as a computational process along the lines of
+ . Given a grammar (R,As), an item is a triple 
+
+
+ where i,j are natural numbers and 
+
+is a dotted rule. A state is a finite set of items.  A computation is triggered by some
+input string of words 
+
+
+of length n ] 0.  The
+initial state, 
+
+ ,
+is 
+
+
+where Ai is the
+category of wi and 
+
+
+ .
+For any state S, the next state S' is constructed by the following
+transition relation `
+
+ ' (the fundamental rule):
+For every 
+
+
+and 
+
+
+such that 
+
+
+ ,
+ add  
+
+to S',
+where 
+
+
+is obtained by
+unifying Band B'' in the contexts of 
+
+
+and 
+
+
+respectively.
+
+A computation is an infinite sequence of states 
+
+
+ ,
+such
+that 
+
+
+and for every 
+
+ ,
+
+
+ .
+A
+computation is terminating if there exists some 
+
+for which
+
+Sm = Sm+1 (i.e., a fixed-point is reached). A successful
+computation is a terminating one, the final state of which contains an
+item of the form 
+
+
+where 
+
+
+ ;
+otherwise, the computation fails.
+The presence of more than one such item in the final state indicates
+that the input can be analyzed in more than one way.
+
+To represent a state of the computation the machine uses a chart, structured as a two-dimensional array storing, in the (i,j)entry, all the dotted rules 
+
+such that 
+
+
+is a member
+of the state.  Items are added to the chart by means of an agenda that controls the order of addition.
+
+To allow the application of a single rule, the syntax of queries is
+extended from simple TFSs to MRSs. The same code is generated for the
+queries, with additional advance instructions preceding each TFS
+of the query.  The advance instruction simply increments the
+indices of the chart item being manipulated. As a result of executing
+the query, the (i,i+1) diagonal of the chart is initialized with
+singleton sets of edges.
+
+The syntax of programs is extended, too, from a TFS to a single
+MRS. Again, the same code is generated for the TFSs of a program:
+program-code for each element of the rule's body and query-code for
+the head.  Before the first TFS, a start_rule instruction is
+generated. A move_dot and next_item instructions are
+generated between two consecutive structures, and after the last one,
+the head, an end_rule instruction concludes the generated code.
+
+To understand the effect of these instructions, one must understand
+the non-uniform internal representation of dotted rules.  Each such
+rule is represented by a record, edge, containing three
+fields. The seen field is a list of pointers to the roots of an
+MRS, for the part of the dotted rule preceding the dot. The 
+to_see field is a pointer to the code area, for the rest of the
+rule.  A complete edge is represented as a single TFS, its head, since
+the rest of the structures (that are unaccessible from the head) are
+irrelevant.  An edge with an initial dot is simply a pointer to code.
+
+Since the rules are applied incrementally, a TFS at a time, care must
+be taken of reentrancies. The rules manipulate registers which must
+contain the right values when used. To that end the values of the
+registers are stored after execution of a part of a rule (that is,
+before moving the dot), and the right values are loaded prior to each
+such execution (after moving the dot). The field regs of
+an edge stores the saved registers.
+
+start_rule sets the stage for the application of the rule: it
+stores the address of the beginning of the query in X1, where 
+get_structure expects to find it. It also records the values of
+i,j and k of the current edges.  move_dot is executed after
+the successful unification of one TFS; it copies the newly created
+edge, including the values of the registers, to the chart (and
+interacts with the agenda).  next_item just restores the
+registers' values and resumes execution.  end_rule is executed
+once a complete edge is constructed; it adds the edge to the chart and
+selects the next edge to work on.
+
+When designing the control module, three parameters
+have to be set:
+the order of searching chart entries that can combine with a complete
+edge e;
+the order of searching active edges within this chart entry;
+and the search strategy: are all the edges that can combine with ecomputed first, and then their consequences (BFS), or rather all the
+consequences of the first such edge, then the next etc. (DFS).
+The order the chart is searched for active edges is right to left:
+from (i,i) to (0,i).  There is no way to decide that a certain
+edge in the chosen chart entry is appropriate save by trying to unify
+it with the complete edge that was just entered.  Hence all edges in a
+chart entry are considered a disjunctive value, and each of them is
+tried in turn.  Furthermore, upon initialization each entry on the
+diagonal (i,i) of the chart is set to be a disjunction of all the
+rules in the grammar.  As for the search strategy, we chose to employ
+BFS; some way to record all the edges that were added as consequences
+of e is needed, in order to compute their consequences next.
+
+Determining the values of these parameters is program-independent: the
+maintenance of the chart is fixed. This fact results from the nature
+of the process the machine implements, namely parsing, and has a
+desirable consequence: one might change some of these parameters
+easily without having to modify the compiler or even the set of
+machine instructions. What has to be changed is the data structures
+that support the control mechanism.
+For lack of space we don't detail the control module. Essentially, it
+employs a list of edges, agenda, and interacts with the machine
+instructions described above through designated functions.
+
+As linguistic formalisms become more rigorous, the necessity of well
+defined semantics for grammar specifications increases. We presented
+an operational semantics for TFS-based formalisms, making use of
+an abstract machine specifically tailored for  this kind of
+applications. In addition, we described a compiler for a general
+TFS-based language. The compiled code, in terms of abstract machine
+instructions, can be interpreted and executed on ordinary hardware.
+The use of abstract machine techniques is expected to result in highly
+efficient processing.
+
+The TFS unification engine and the type hierarchy compiler were
+already implemented; the control module will be implemented shortly.
+We then plan to enhance the machine by adding specific
+values for lists (and perhaps sets). The implementation will
+serve as a platform for developing an HPSG grammar for the Hebrew language.
+
+Part of the work described herein was done while the first author was
+visiting the Seminar fr Sprachwiessenschaft in Tbingen, Germany.
+We wish to thank the Minerva Stipendien Komitee for funding
+this visit, and the members of the SFB-340 B4 project
+in Tbingen, especially Paul King, Thilo Gtz and John Griffith,
+for stimulating discussions.
+We also wish to thank Bob Carpenter for his help during this
+project, and the anonymous referees for enlightening comments.
+This work is supported by a grant from the Israeli Ministry of
+Science: ``Programming Languages Induced Computational Linguistics''.
+The work of the second author was also partially supported by the Fund
+for the Promotion of Research in the Technion.
+
+H. At-Kaci.
+Warren's Abstract Machine: A Tutorial Reconstruction.
+Logic Programming. The MIT Press, Cambridge, Massachusetts, 1991.
+
+H. At-Kaci.
+An introduction to LIFE - programming with logic, inheritance,
+  functions and equations.
+In D. Miller, editor, Logic Programming - Proceedings of the
+  1993 International Symposium, pages 52-68. MIT Press, 1993.
+
+H. At-Kaci, R. Boyer, P. Lincoln, and R. Nasr.
+Efficient implementation of lattice operations.
+ACM TOPLAS,
+  11(1):115-146, January 1989.
+
+H. At-Kaci and R. Di Cosmo.
+Compiling order-sorted feature term unification.
+PRL Technical Note 7, Digital Paris Research Laboratory, December
+  1993.
+
+H. At-Kaci and R. Nasr.
+LOGIN: a logic programming language with built-in inheritance.
+Journal of Logic Programming, 3:185-215, 1986.
+
+H. At-Kaci, A. Podelski, and S. C. Goldstein.
+Order-sorted feature theory unification.
+In D. Miller, editor, Logic Programming - Proceedings of the
+  1993 International Symposium, pages 506-524, Cambridge, Mass., 1993. MIT
+  Press.
+
+B. Carpenter.
+ALE - the attribute logic engine: User's guide.
+Technical report, Laboratory for Computational Linguistics,
+  Philosophy Department, Carnegie Mellon University, Pittsburgh, PA 15213, Dec.
+  1992.
+
+B. Carpenter.
+The Logic of Typed Feature Structures.
+Cambridge Tracts in Theoretical Computer Science. Cambridge
+  University Press, 1992.
+
+B. Carpenter, C. Pollard, and A. Franz.
+The specification and implementation of constraint-based unification
+  grammars.
+In Proceedings of the Second International Workshop on Parsing
+  Technology, Cancun, Mexico, 1991.
+
+G. Erbach.
+ProFIT: Prolog with features, inheritance and templates.
+CLAUS Report 42, Computerlinguistik, Universitt des Saarlandes,
+  July 1994.
+
+T. W. Gtz.
+A normal form for types feature structures.
+Master's thesis, Eberhard-Karls Universitt, Tbingen, March
+  1994.
+
+N. Haddock, E. Klein, and G. Morill, editors.
+Categorial Grammar, Unification and Parsing, volume 1 of   Working Papers in Cognitive Science.
+University of Edingburgh, Center for Cognitive Science, 1987.
+
+G. Penn.
+A comprehensive HPSG grammar in ALE.
+Technical report, Laboratory for Computational Linguistics, Carnegie
+  Mellon University, Pittsburgh, PA, 1993.
+
+C. Pollard and I. A. Sag.
+Information Based Syntax and Semantics.
+Number 13 in CSLI Lecture Notes. CSLI, 1987.
+
+C. Pollard and I. A. Sag.
+Head-Driven Phrase Structure Grammar.
+University of Chicago Press and CSLI Publications, 1994.
+
+S. M. Shieber, Y. Schabes, and F. C. N. Pereira.
+Principles and implementation of deductive parsing.
+Technical Report TR-11-94, Center for Research in Computing
+  Technology, Division of Applied Sciences, Harvard University, 1994.
+
+S. Wintner and N. Francez.
+Abstract machine for typed feature structures.
+Technical Report LCL 94-8, Laboratory for Computational
+  Linguistics, Technion, Israel Institute of Technology, Haifa 32000, Israel,
+  July 1994.
+
+R. Zajac.
+Inheritance and constraint-based grammar formalisms.
+Computational Linguistics, 18(2):159-182, 1992.
+
+  This
+condition states that every feature is introduced by some least type
+and is appropriate for all the types it subsumes.
+  A TFS is totally well-typed if it contains all
+and only the features that are appropriate for its type, and each
+feature bears an appropriate value. This requirement will be slightly
+ relaxed; see section . 
+   We use the operator `*' to refer to
+the contents of an address or a register.
+  This use of head must not be confused
+with the linguistic one, the core features of a phrase.
+  Notice that the traditional direction is
+reversed. Note also that the head and the body need not be disjoint.
+  Words can have more
+than one category, but we ignore ambiguity for the sake of
+simplicity.
+  Categories are TFSs rather
+than the atomic symbols of Context Free Grammars.
+  If 
+
+
+then 
+
+
+ .

@@ -1,0 +1,8 @@
+
+We give a new treatment of tabular LR parsing,
+which is an alternative to Tomita's generalized LR algorithm.
+The advantage is twofold. Firstly, our treatment is conceptually more
+attractive because it uses simpler concepts, such as grammar
+transformations and standard tabulation techniques also
+know as chart parsing. Secondly, the static and dynamic
+complexity of parsing, both in space and time, is significantly reduced.

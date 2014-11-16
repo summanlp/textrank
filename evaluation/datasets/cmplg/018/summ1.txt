@@ -1,0 +1,10 @@
+
+ Evans and Gazdar , introduced DATR as a simple, non-monotonic language for representing natural language lexicons.
+Although a number of implementations of DATR exist, the full language
+has until now lacked an explicit, declarative semantics. This paper
+rectifies the situation by providing a mathematical semantics for
+DATR. We present a view of DATR as a language for defining certain
+kinds of partial functions by cases. The formal model provides a
+transparent treatment of DATR's notion of global context. It is shown
+that DATR's default mechanism can be accounted for by interpreting
+value descriptors as families of values indexed by paths.

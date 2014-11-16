@@ -1,0 +1,13 @@
+
+This paper describes the author's implementation of a parser aimed at
+reproducing,  in a computationally explicit system,  the
+constraints of a particular psycholinguistic model (Gorrell in
+press). In Gorrell's  model, ``unconscious'' garden paths
+may be processed via the addition of structural relations to a
+monotone increasing set at the point of disambiguation, but there is
+no discussion as to how the parser decides which relations to
+add. We model this decision as a search for a node in the tree at
+which an explicitly defined parsing operation,  tree-lowering
+may be applied. With reference to English and Japanese processing
+data, we show  the importance of this search for  empirical
+adequacy of the  psycholinguistic model.

@@ -1,0 +1,8 @@
+
+In this paper, we show that Higher-Order Coloured Unification -
+a form of unification developed for automated theorem proving -
+provides a general theory for modeling the interface between the
+interpretation process and other sources of linguistic, non semantic
+information. In particular, it provides the
+general theory for the Primary Occurrence Restriction which
+ 's analysis called for. 

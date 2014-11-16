@@ -1,0 +1,8 @@
+
+A description is an entity that can be interpreted as true or false of
+an object, and using feature structures as descriptions accrues
+several computational benefits.  In this paper, I create an explicit
+interpretation of a typed feature structure used as a description,
+define the notion of a satisfiable feature structure, and create a
+simple and effective algorithm to decide if a feature structure is
+satisfiable.

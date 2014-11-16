@@ -1,0 +1,7 @@
+
+A simple and general method is described that can combine different
+knowledge sources to reorder N-best lists of hypotheses produced by a
+speech recognizer. The method is automatically trainable, acquiring
+information from both positive and negative examples.  Experiments are
+described in which it was tested on a 1000-utterance sample of unseen
+ATIS data.

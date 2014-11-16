@@ -1,0 +1,13 @@
+
+If an agent does not possess the knowledge needed to perform an
+action, it may privately plan to obtain the required information on
+its own, or it may involve another agent in the planning process by
+engaging it in a dialogue.  In this paper, we show how the
+requirements of knowledge preconditions can be used to account for
+information-seeking subdialogues in discourse.  We first present an
+axiomatization of knowledge preconditions for the SharedPlan model of
+ collaborative activity , and then provide an analysis of information-seeking subdialogues within a general
+framework for discourse processing.  In this framework, SharedPlans
+and relationships among them are used to model the intentional
+component of Grosz and Sidner's  theory of
+discourse structure.

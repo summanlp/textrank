@@ -1,0 +1,9 @@
+
+We define semantic complexity using a new concept of
+meaning automata. We measure the semantic complexity of
+understanding of prepositional phrases, of an "in depth
+understanding system", and of a natural language interface to an on-line
+calendar. We argue that it is possible to measure some semantic
+complexities of natural language processing systems before building them,
+and that systems that exhibit relatively  complex behavior
+can be built from semantically simple components.

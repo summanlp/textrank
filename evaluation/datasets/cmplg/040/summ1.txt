@@ -1,0 +1,30 @@
+
+Current measures of the readability of texts are very simplistic,
+typically based on counts of words or syllables per sentence.  A more
+sophisticated analysis needs to take account of the fact that the
+particular distributions of meanings across wordings chosen by the
+writer, and the consequent variations in syntactic structure, have a
+significant effect on readability.
+A step towards the required sophistication is provided by the notion
+of  LEXICAL DENSITY (Halliday, 1985), which suggests that different
+words carry different amounts of semantic weight; this idea of semantic
+weight is also used implicitly in areas such as information retrieval
+and authorship attribution.
+Current
+definitions of these notions of lexical density and semantic weight are
+based on the division of words into
+closed and open classes, and on intuition.  This paper develops a
+computationally tractable definition of semantic weight,
+concentrating on what it means for a word to be semantically light;
+the definition involves looking at the frequency of a word in particular
+syntactic constructions which are indicative of lightness.
+Verbs such as make and take, when they function as
+support verbs, are often considered to be semantically light.  To test
+our definition, we carried out an experiment based on that of
+Grefenstette and Teufel (1995), where we automatically identify light
+instances of these words in a corpus; this was done by incorporating
+our frequency-related definition of semantic weight into a statistical
+approach similar to that of Grefenstette and Teufel.  The results show
+that this is a plausible definition of semantic lightness for verbs,
+which can possibly be extended to defining semantic lightness for
+other classes of words.

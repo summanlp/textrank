@@ -1,0 +1,10 @@
+
+We present some variations affecting the association measure and
+thresholding on a technique for learning Selectional Restrictions from
+on-line corpora. It uses a wide-coverage noun taxonomy and a
+statistical measure to generalize the appropriate semantic
+classes. Evaluation measures for the Selectional Restrictions learning
+task are discussed. Finally, an experimental evaluation of these
+variations is reported.
+Subject Areas: corpus-based language modeling, computational
+lexicography

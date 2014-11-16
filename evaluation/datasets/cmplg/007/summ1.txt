@@ -1,0 +1,14 @@
+
+This paper describes an abstract machine for linguistic formalisms
+that are based on typed feature structures, such as HPSG.  The core
+design of the abstract machine is given in detail, including the
+compilation process from a high-level language to the abstract machine
+language and the implementation of the abstract instructions.  The
+machine's engine supports the unification of typed, possibly cyclic,
+feature structures.  A separate module deals with control structures
+and instructions to accommodate parsing for phrase structure grammars.
+We treat the linguistic formalism as a high-level declarative
+programming language, applying methods that were proved useful in
+computer science to the study of natural languages: a grammar
+specified using the formalism is endowed with an operational
+semantics. 

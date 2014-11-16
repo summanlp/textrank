@@ -1,0 +1,19 @@
+
+The Spoken Language Translator (SLT) is a prototype for practically
+useful systems capable of translating continuous spoken language
+within restricted domains. The prototype system translates air travel
+(ATIS) queries from spoken English to spoken Swedish and to French. It
+is constructed, with as few modifications as possible, from existing
+pieces of speech and language processing software.
+The speech recognizer and language understander are connected by a
+fairly conventional pipelined N-best interface.  This paper focuses on
+the ways in which the language processor makes intelligent use of the
+sentence hypotheses delivered by the recognizer. These ways include
+(1) producing modified hypotheses to reflect the possible presence of
+repairs in the uttered word sequence; (2) fast parsing with a version
+of the grammar automatically specialized to the more frequent
+constructions in the training corpus; and (3) allowing syntactic and
+semantic factors to interact with acoustic ones in the choice of a
+meaning structure for translation, so that the acoustically preferred
+hypothesis is not always selected even if it is within linguistic
+coverage.

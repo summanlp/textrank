@@ -1,0 +1,9 @@
+
+Vijay-Shanker and Weir  show that Linear Indexed
+Grammars (lig) can be processed in polynomial time by exploiting
+constraints which make possible the extensive use of
+structure-sharing. This paper describes a formalism that is more
+powerful than lig, but which can also be processed in polynomial time
+using similar techniques. The formalism, which we refer to as Partially
+Linear PATR (plpatr) manipulates feature structures rather than
+stacks.

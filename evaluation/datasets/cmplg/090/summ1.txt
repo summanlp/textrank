@@ -1,0 +1,10 @@
+
+The paper describes a parser for Categorial Grammar which provides
+  fully word by word incremental interpretation. The parser does not
+  require fragments of sentences to form constituents, and thereby
+  avoids problems of spurious ambiguity. The paper includes a brief
+  discussion of the relationship between basic Categorial Grammar and
+  other formalisms such as HPSG, Dependency Grammar and the Lambek
+  Calculus. It also includes a discussion of some of the issues which
+  arise when parsing lexicalised grammars, and the possibilities for
+  using statistical techniques for tuning to particular languages.

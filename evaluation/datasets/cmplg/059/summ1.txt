@@ -1,0 +1,12 @@
+
+A discovery system for detecting correspondences in data is described,
+based on the familiar induction methods of J. S. Mill. Given a set of
+observations, the system induces the ``causally'' related facts in these
+observations.  Its application to empirical linguistic discovery is
+described.  The paper is organized as follows.  I begin the discussion by
+revealing two developments, the transformationalists' critique of ``discovery
+procedures'' and naive inductivism, which have led to the neglect of discovery
+issues, arguing that more attention needs to be paid to discovery in
+linguistics.  Then, Mill's methods are introduced, and the system,
+incorporating them, is described, using as one illustration the discovery of (a
+part of) the famous Germanic Consonant Shift, known as Grimm's Law.

@@ -1,0 +1,17 @@
+
+Most spoken language translation systems developed to date rely on a
+pipelined architecture, in which the main stages are speech
+recognition, linguistic analysis, transfer, generation and speech
+synthesis. When making projections of error rates for systems of this
+kind, it is natural to assume that the error rates for the individual
+components are independent, making the system accuracy the product of
+the component accuracies.
+The paper reports experiments carried out using the SRI-SICS-Telia
+Research Spoken Language Translator and a 1000-utterance sample of
+unseen data. The results suggest that the naive performance model
+leads to serious overestimates of system error rates, since there are
+in fact strong dependencies between the components. Predicting the
+system error rate on the independence assumption by simple
+multiplication resulted in a 16% proportional overestimate for all
+utterances, and a 19% overestimate when only utterances of length 1-10
+words were considered.

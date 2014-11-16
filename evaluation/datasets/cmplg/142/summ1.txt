@@ -1,0 +1,8 @@
+
+This paper is an attempt to bring together two approaches to
+  language analysis. The possible use of probabilistic
+  information in principle-based grammars and parsers is considered,
+  including discussion on some theoretical and computational problems
+  that arise. Finally a partial implementation of these ideas is
+  presented, along with some preliminary results from testing on a
+  small set of sentences.

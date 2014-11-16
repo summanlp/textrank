@@ -1,0 +1,26 @@
+
+The paradigm for  NLP known as  STATISTICAL LANGUAGE
+LEARNING ( SLL) has flourished in recent times, being seen
+as a quick and easy way to get off the ground.
+Research systems have been launched at many  NLP
+problems including sense disambiguation (Yarowsky, 1992),
+anaphora resolution (Dagan and Itai, 1990),
+prepositional phrase attachment (Hindle and Rooth, 1993)
+and lexical acquisition (Brent, 1993).  This has all been fueled by
+the large text corpora which are
+increasingly available (Marcus et al., 1993).
+Since these systems learn to navigate language by consuming
+text, they are critically dependent on the data that
+drives them.
+In this paper I address the practical concern of predicting
+how much training data is sufficient for a given system.  First,
+I briefly review earlier results and show how these can be
+combined to bound the expected accuracy of a mode-based
+learner as a function of the volume of training data.
+I then develop a more accurate estimate of the expected
+accuracy function under the assumption that inputs
+are uniformly distributed.  Since this estimate is expensive
+to compute, I also give a close but cheaply computable
+approximation to it.  Finally, I report on a series of simulations
+exploring the effects of inputs that are not uniformly
+distributed.

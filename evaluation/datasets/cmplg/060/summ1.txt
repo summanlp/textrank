@@ -1,0 +1,6 @@
+
+This paper presents an algorithm for tagging words whose
+part-of-speech properties are unknown. Unlike previous work,
+the algorithm categorizes word tokens in context
+instead of word types.  The algorithm is
+evaluated on the Brown Corpus.

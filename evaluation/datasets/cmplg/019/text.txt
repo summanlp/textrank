@@ -1,0 +1,303 @@
+
+A text is not just a sequence of words, but it has
+coherent structure.  The meaning of each word can
+not be determined until it is placed in the
+structure of the text.  Recognizing the structure of
+text is an essential task in text understanding,
+especially in resolving anaphora and ellipsis.
+
+One of the constituents of the text structure is a
+text segment.  A text segment, whether or not it is
+explicitly marked, as are sentences and paragraphs,
+is defined as a sequence of clauses or sentences
+that display local coherence.  It resembles a scene
+in a movie, which describes the same objects in the
+same situation.
+
+This paper proposes an indicator, called the lexical
+cohesion profile (LCP), which locates segment
+boundaries in a narrative text.  LCP is a record of
+lexical cohesiveness of words in a sequence of text.
+Lexical cohesiveness is defined as word similarity
+(Kozima and Furugori, 1993) computed by spreading
+activation on a semantic network.  Hills and valleys
+of LCP closely correlate with changing of segments.
+
+Several methods to capture segment boundaries have
+been proposed in the studies of text structure.  For
+example, cue phrases play an important role in
+signaling segment changes. (Grosz and Sidner, 1986)
+ However, such clues are not directly based on
+coherence which forms the clauses or sentences into
+a segment.
+
+Youmans (1991) proposed VMP (vocabulary management
+profile) as an indicator of segment boundaries.  VMP
+is a record of the number of new vocabulary terms
+introduced in an interval of text.  However, VMP
+does not work well on a high-density text.  The
+reason is that coherence of a segment should be
+determined not only by reiteration of words but also
+by lexical cohesion.
+
+Morris and Hirst (1991) used Roget's thesaurus to 
+determine whether or not two words have lexical 
+cohesion.  Their method can capture almost all the 
+types of lexical cohesion, e.g. systematic and 
+non-systematic semantic relation.  However it does 
+not deal with strength of cohesiveness which 
+suggests the degree of contribution to coherence 
+of the segment.
+
+Kozima and Furugori (1993) defined lexical 
+cohesiveness as semantic similarity between words, 
+and proposed a method for measuring it.  
+Similarity between words is computed by spreading 
+activation on a semantic network which is 
+systematically constructed from an English 
+dictionary (LDOCE).
+
+The similarity 
+
+
+between words w,w' is computed in the following 
+way: (1) produce an activated pattern by activating 
+the node w; (2) observe activity of the node w' 
+in the activated pattern.  The following examples 
+suggest the feature of the similarity :
+		 
+(cat, 		 pet) 		 = 		 0.133722 , 
+
+(cat, 		 hat) 		 = 		 0.001784 , 
+
+(waiter, 		 restaurant) 		 = 		 0.175699 , 
+
+(painter, 		 restaurant) 		 = 		 0.006260 .
+
+The similarity 
+depends on the significance
+
+,
+i.e. normalized information of
+the word w in West's corpus (1953).  For example:
+		 s(red) = 0.500955 , 		 s(and) = 0.254294 .
+The following examples show the relationship 
+between the word significance and the similarity:
+		 
+(waiter, 		 waiter) 		 = 		 0.596803 , 
+
+(red, 		 blood) 		 = 		 0.111443 , 
+
+(of, 		 blood) 		 = 		 0.001041 .
+
+LCP of the text 
+
+
+is a sequence 
+
+
+of 
+lexical cohesiveness c(Si).  Si is the word 
+list which can be seen through a fixed-width 
+window centered on the i-th word of T:
+		 Si=,
+		 		 l = 
+(if ,
+then ),
+		 		 r = 
+(if ,
+then ).
+LCP treats the text T as a word list without any 
+punctuation or paragraph boundaries.
+
+
+
+Lexical cohesiveness c(Si) of the word list 
+Si is defined as follows:
+
+
+,
+where 
+
+a(P(Si),w) is the activity value of the 
+node w in the activated pattern P(Si).  
+P(Si) is produced by activating each node 
+
+
+with strength 
+
+.
+Figure 1 shows a sample pattern of {red, 
+alcoholic, drink}.  (Note that it has 
+highly activated nodes like bottle and wine.)
+
+The definition of c(Si) above expresses that 
+c(Si) represents semantic homogeneity of Si, 
+since P(Si) represents the average meaning of 
+
+.
+For example:
+		c		(		 "Molly saw a cat.  It was her family 		 		 		 pet.  She wished to keep a lion." 		 		 = 0.403239   (cohesive), 
+		c		(		 "There is no one but me.  Put on 
+		 		 		 your clothes.  I can not walk more." 		 		 = 0.235462   (not cohesive). 
+
+
+Figure 2.  
+
+Correlation between LCP
+and text segments.
+
+
+
+A graph of LCP, which plots c(Si) at the text 
+position i, indicates changing of segments:
+If Si is inside a segment, it tends to be 
+cohesive and makes c(Si) high.
+If Si is crossing a segment boundary, it 
+tends to semantically vary and makes c(Si) low.
+As shown in Figure 2, the segment boundaries can 
+be detected by the valleys (minimum points) of LCP.
+
+The LCP, shown in Figure 3, has large hills and
+valleys, and also meaningless noise.  The graph is
+so complicated that one can not easily determine
+which valley should be considered as a segment
+boundary.
+
+
+
+The shape of the window, which defines weight of 
+words in it for pattern production, makes LCP 
+smooth.  Experiments on several window shapes 
+(e.g. triangle window, etc.) shows that Hanning 
+window is best for clarifying the macroscopic 
+features of LCP.
+
+The width of the window also has effect on the 
+macroscopic features of LCP, especially on 
+separability of segments.  Experiments on several 
+window widths (
+
+)
+reveals 
+that the Hanning window of 
+
+
+gives 
+the best correlation between LCP and segments.
+
+This section inspects the correlation between LCP 
+and segment boundaries perceived by the human 
+judgments. The curve of Figure 4 shows the LCP of  
+the simplified version of O.Henry's ``Springtime 
+ la Carte'' (Thornley, 1960).  The solid bars 
+represent the histogram of segment boundaries 
+reported by 16 subjects who read the text without 
+paragraph structure.
+
+It is clear that the valleys of the LCP correspond 
+mostly to the dominant segment boundaries.  For 
+example, the clear valley at 
+
+
+exactly 
+corresponds to the dominant segment boundary (and 
+also to the paragraph boundary shown as a dotted 
+line).
+
+Note that LCP can detect segment changing of a 
+text regardless of its paragraph structure.  For 
+example, 
+
+
+is a paragraph boundary, 
+but neither a valley of the LCP nor a segment 
+boundary;  
+
+
+is both a segment 
+boundary and approximately a valley of the LCP, 
+but not a paragraph boundary.
+
+However, some valleys of the LCP do not exactly 
+correspond to segment boundaries.  For example, 
+the valley near 
+
+
+disagree with the 
+segment boundary at 
+
+.
+The reason is 
+that lexical cohesion can not cover all aspect of 
+coherence of a segment;  an incoherent piece of 
+text can be lexically cohesive.
+
+This paper proposed LCP, an indicator of segment 
+changing, which concentrates on lexical cohesion 
+of a text segment.  The experiment proved that LCP 
+closely correlate with the segment boundaries 
+captured by the human judgments, and that lexical 
+cohesion plays main role in forming a sequence of 
+words into segments.
+
+Text segmentation described here provides basic 
+information for text understanding:
+Resolving anaphora and ellipsis: 
+Segment boundaries provide valuable restriction 
+for determination of the referents.
+Analyzing text structure: 
+Segment boundaries can be considered as segment 
+switching (push and pop) in hierarchical structure 
+of text.
+The segmentation can be applied also to text 
+summarizing. (Consider a list of average meaning 
+of segments.)
+
+In future research, the author needs to examine
+validity of LCP for other genres -- Hearst (1993)
+segments expository texts.  Incorporating other
+clues (e.g. cue phrases, tense and aspect, etc.) is
+also needed to make this segmentation method more
+robust.
+
+The author is very grateful to Dr. Teiji Furugori,
+University of Electro-Communications, for his
+insightful suggestions and comments on this work.
+
+
+Grosz, Barbara J., and Sidner, Candance L. (1986).
+  ``Attention, intentions, and the structure of discourse.''
+  Computational Linguistics, 12, 175-204.
+
+Halliday, Michael A. K., Hasan, Ruqaiya (1976).
+  Chesion in English. Longman.
+
+Hearst, Marti, and Plaunt, Christian (1993).  
+  ``Subtopic structuring for full-length document access,'' 
+  to appear in SIGIR 1993, Pittsburgh, PA.
+
+Kozima, Hideki, and Furugori, Teiji (1993).
+  ``Similarity between words computed by spreading activation 
+  on an English dictionary.''
+  to appear in Proceedings of EACL-93.
+
+Morris, Jane, and Hirst, Graeme (1991).
+  ``Lexical cohesion computed by thesaural relations as an indicator of
+  the structure of text.''
+  Computational Linguistics, 17, 21-48.
+
+Thornley, G. C. editor (1960).
+  British and American Short Stories, 
+  (Longman Simplified English Series). Longman.
+
+West, Michael (1953).
+  A General Service List of English Words.
+  Longman.
+
+Youmans, Gilbert (1991).
+  ``A new tool for discourse analysis: The vocabulary-management profile.''
+  Language, 67, 763-789.
+
+
+

@@ -1,0 +1,6 @@
+
+A logic formalism is presented which increases the expressive power of the
+ID/LP format of GPSG by enlarging the inventory of ordering relations and
+extending the domain of their application to non-siblings.  This allows a
+concise, modular and declarative statement of intricate word order
+regularities.

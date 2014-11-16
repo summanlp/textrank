@@ -1,0 +1,19 @@
+
+The relationship between Lexical-Functional Grammar (LFG) functional structures (f-structures) for sentences and their semantic
+interpretations can be expressed directly in a fragment of linear
+logic in a way that explains correctly the constrained interactions
+between quantifier scope ambiguity and bound anaphora.
+The use of a deductive framework to account for the compositional
+properties of quantifying expressions in natural language obviates the
+need for additional mechanisms, such as Cooper storage, to represent
+the different scopes that a quantifier might take.  Instead, the
+semantic contribution of a quantifier is recorded as an ordinary
+logical formula, one whose use in a proof will establish the scope of
+the quantifier.  The properties of linear logic ensure that each
+quantifier is scoped exactly once.
+Our analysis of quantifier scope can be seen as a recasting of
+ Pereira's analysis , which was expressed in higher-order intuitionistic logic.  But our use of LFG and linear
+logic provides a much more direct and computationally more
+flexible interpretation mechanism for at least the same range of
+phenomena.  We have developed a preliminary Prolog implementation
+of the linear deductions described in this work.

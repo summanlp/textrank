@@ -1,0 +1,8 @@
+
+This paper discusses the lexicographical concept of lexical
+ functions () and their potential exploitation in the development of a machine translation lexicon designed to handle
+collocations. We show how lexical functions can be thought to reflect
+cross-linguistic meaning concepts for collocational structures and
+their translational equivalents, and therefore suggest themselves as
+some kind of language-independent semantic primitives from which
+ translation strategies can be developed. 

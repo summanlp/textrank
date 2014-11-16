@@ -1,0 +1,7 @@
+
+We present a methodology to extract Selectional Restrictions at a
+variable level of abstraction from phrasally analyzed corpora. The
+method relays in the use of a wide-coverage noun taxonomy and a
+statistical measure of the co-occurrence of linguistic items. Some
+experimental results about the performance of the method are
+provided.

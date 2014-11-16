@@ -1,0 +1,16 @@
+
+ Intelligent Voice Prosthesis is a communication tool which reconstructs the meaning of an ill-structured sequence of icons or symbols, and expresses this meaning
+into sentences of a Natural Language (French). It has been developed for the
+use of people who cannot express themselves orally in natural language, and
+further, who are not able to comply to grammatical rules such as those of
+natural language. We describe how available corpora of iconic communication by
+children with Cerebral Palsy has led us to implement a simple and relevant
+semantic description of the symbol lexicon. We then show how a
+unification-based, bottom-up semantic analysis allows the system to uncover
+the meaning of the user's utterances by computing proper dependencies between
+the symbols. The result of the analysis is then passed to a lexicalization
+module which chooses the right words of natural language to use, and builds a
+linguistic semantic network. This semantic network is then generated into
+French sentences via hierarchization into trees, using a lexicalized Tree
+Adjoining Grammar. Finally we describe the modular, customizable interface
+which has been developed for this system.

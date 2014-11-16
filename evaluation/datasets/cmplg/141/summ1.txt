@@ -1,0 +1,12 @@
+
+This paper describes work performed withing the CRATER (Corpus
+Resources And Terminology ExtRaction,
+MLAP-93/20) project, funded by the Commission of the European
+Communities.  In particular, it addresses the issue of adapting the
+Xerox Tagger to Spanish in order to tag the Spanish version of the ITU
+(International Telecommunications Union) corpus.  The model implemented
+by this tagger is briefly presented along with some modifications
+performed on it in order to use some parameters not probabilistically
+estimated.  Initial decisions, like the tagset, the lexicon and the
+training corpus are also discussed.  Finally, results are presented and
+the benefits of the mixed model justified.
