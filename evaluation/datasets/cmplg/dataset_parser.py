@@ -1,23 +1,46 @@
+import os
+import os.path
 from lxml import etree
 
 ''' Script that parses the xml datasource files to text. '''
 
-SRC_DIR = 'sources/'
+SRC_DIR = 'sources'
 ELEM_TITLE = 'TITLE'
 ELEM_ABSTRACT = 'ABSTRACT'
 ELEM_BODY = 'BODY'
+TEXT_FILENAME = 'text.txt'
+SUMM_FILENAME = 'summ1.txt'
 
-parser = etree.XMLParser(remove_comments=True)
-doc = etree.parse(SRC_DIR + '9404003.xml', parser)
-tree = doc.getroot()
+# Reads every file in the sources directory.
+for i, filename in enumerate(os.listdir(SRC_DIR)):
+    # Opens the source file.
+    filepath = os.path.join(SRC_DIR, filename)
+    parser = etree.XMLParser(remove_comments=True)
+    doc = etree.parse(filepath, parser)
+    tree = doc.getroot()
 
-#tree.tostring()
+    # Validates the xml content.
+    assert tree[0].tag == ELEM_TITLE
+    assert tree[1].tag == ELEM_ABSTRACT
+    assert tree[2].tag == ELEM_BODY
 
-# Validates the xml file.
-#assert tree[0].tag == ELEM_TITLE
-#assert tree[1].tag == ELEM_ABSTRACT
-#assert tree[2].tag == ELEM_BODY
+    # Creates a directory for every source file.
+    directory_name = "{:0>2d}".format(i)
+    assert not os.path.exists(directory_name)
+    os.makedirs(directory_name)
 
-for element in tree[2].iter('P'):
-    for a in element.itertext():
-        print a.strip(),
+    # Creates a file for the content and a file for the abstract.
+    text_filename = os.path.join(SRC_DIR, TEXT_FILENAME)
+    f_text = open(text_filename, 'w')
+    summary_filename = os.path.join(SRC_DIR, SUMM_FILENAME)
+    f_summ = open(summary_filename, 'w')
+
+    # Parses the text.
+    for element in tree[1].iter('P'):
+        for paragraph in element.itertext():
+            f_summ.write(paragraph)
+
+    for element in tree[2].iter('P'):
+        for paragraph in element.itertext():
+            f_text.write(paragraph)
+
