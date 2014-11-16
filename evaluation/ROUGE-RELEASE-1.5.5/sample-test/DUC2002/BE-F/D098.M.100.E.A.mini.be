@@ -1,0 +1,44 @@
+elated|scientists|obj
+launch|successful|mod
+elated|launch|with
+discovery|space|nn
+discovery|shuttle|nn
+launch|discovery|of
+hst|(|punc
+hubble space telescope|hst|abbrev
+hst|)|punc
+deployment|april 24 , 1990|nn
+deployment|telescope|of
+scheduled|originally|mod
+scheduled|1983|for
+problems|technical|mod
+delayed|problems|by
+although|challenger|nn
+although|accident|nn
+communications|and|punc
+systems|electronics|nn
+communications|systems|conj
+systems|hst|of
+presented|still|mod
+some|presented|mod
+was|april 28|by
+was|in|guest
+was|orbit|in
+miles|380|amount-value
+was|miles|pred
+atmosphere|earth|gen
+atmosphere|potential|with
+potential|providing|of
+times|10|amount-value
+resolution|times|nn
+resolution|better|mod
+providing|resolution|obj
+resolution|and|punc
+resolution|25|conj
+sensitivity|times|nn
+sensitivity|more|mod
+observatories|ground-based|mod
+sensitivity|observatories|than
+astronauts|discovery|nn
+permitted|return|to
+return|earth|to

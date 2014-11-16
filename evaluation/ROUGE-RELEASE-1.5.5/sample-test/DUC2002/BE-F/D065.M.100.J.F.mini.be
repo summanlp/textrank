@@ -1,0 +1,49 @@
+choice|george bush|gen
+choice|dan quayle|of
+running mate|his|gen
+dan quayle|running mate|as
+surprised|choice|subj
+surprised|most|obj
+observers|political|mod
+supported|quickly|mod
+supported|many|by
+fellow|quayle|gen
+many|fellow|of
+senators|republican|mod
+senators|quayle|person
+lightweight|and|punc
+lightweight|questions|conj
+service|his|gen
+service|military|nn
+resume|service|about
+service|and|punc
+service|errors|conj
+errors|his|in
+resume|official|subj
+resume|his|obj
+attributes|main|mod
+loyalty|party|nn
+were|loyalty|pred
+loyalty|and|punc
+loyalty|identification|conj
+family|devoted|mod
+identification|family|as
+quayle|man|nn
+contributed|quayle|subj
+contributed|little|mod
+little|campaign|to
+()|elected|after
+president|political|mod
+president|scene|nn
+disappeared|president|from
+president|bush|person
+support|voice|nn
+continued|support|to
+confidence|quayle|in
+friends|his|gen
+town|his|gen
+town|home|nn
+especially|town|in
+town|called|vrel
+called|town|obj1
+called|him|desc

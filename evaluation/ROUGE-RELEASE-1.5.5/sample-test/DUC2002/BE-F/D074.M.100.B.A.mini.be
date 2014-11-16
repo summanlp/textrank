@@ -1,0 +1,55 @@
+questioned|senate judiciary committee|subj
+questioned|supreme|obj
+clarence thomas thomas|court|nn
+clarence thomas thomas|nominee|nn
+refusal|clarence thomas thomas|gen
+answer|refusal|subj
+questions|certain|mod
+answer|questions|obj
+complaints|but|punc
+complaints|it|conj
+appeared|complaints|subj
+appeared|early|mod
+approve|that|on
+approve|committee|subj
+nomination|end|by
+end|questioning|of
+vote|affirmative|mod
+vote|10-4|of
+10-4|or|punc
+10-4|9-5|conj
+there|predicted|mod
+attention|media|nn
+was|attention|pred
+virginia|thomas|gen
+virginia|wife|nn
+attention|virginia|to
+lawyer|washington|nn
+taken|she|subj
+positions|strong|mod
+positions|conservative|mod
+taken|positions|obj
+positions|antagonized|rel
+antagonized|positions|obj
+antagonized|that|subj
+groups|certain|mod
+groups|and|punc
+groups|fact|conj
+fact|that|c
+was|white|pred
+white|and|punc
+white|he|conj
+black|groups|subj
+questions|raised|mod
+black|questions|obj
+questions|some|for
+lobbyists|hearings|nn
+blacks|lobbyists|during
+side|either|nn
+lobbyists|side|on
+worked|blacks|subj
+worked|influence|mod
+influence|black|subj
+influence|ensuing|obj
+senate|full|mod
+vote|senate|of

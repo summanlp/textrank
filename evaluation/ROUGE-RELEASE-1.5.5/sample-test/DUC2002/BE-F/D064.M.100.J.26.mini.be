@@ -1,0 +1,67 @@
+world|communist|mod
+gets|world|subj
+'s|its|gen
+'s|first|post
+gets|'s|obj
+week|next|post
+gets|week|mod
+wondering|here|mod-before
+wondering|people|subj
+wondering|whether|c
+hamburgers|its|gen
+hamburgers|american|mod
+be|as|pred
+treat|local|mod
+treat|fast-food|mod
+popular|treat|as
+treat|pljeskavica|appo
+'s|04/12/1988|nn
+'s|)|punc
+flourishing|'s|subj
+flourishing|in|guest
+flourishing|11|in
+nations|other|mod
+flourishing|nations|obj
+nations|region|in
+hamburgers|10/08/1990|nn
+hamburgers|)|punc
+hamburgers|'s|nn
+hamburgers|fries|conj
+fries|and|punc
+arches|golden|mod
+fries|arches|conj
+came to|hamburgers|subj
+came to|china|obj
+china|10/08/1990|on
+came to|when|wha
+chain|fast-food|mod
+opened|chain|subj
+restaurant|its|gen
+restaurant|first|post
+opened|restaurant|obj
+restaurant|nation|in
+nation|famed|pnmod
+cuisine|its|gen
+cuisine|distinctive|mod
+famed|cuisine|for
+hundreds|10/08/1990|nn
+hundreds|)|punc
+hundreds|chinese|of
+waited|hundreds|subj
+waited|hours|for
+waited|restaurant|outside
+restaurant|shenzhen|in
+town|economic|mod
+town|boom|nn
+shenzhen|town|conj
+hong kong|near|mod
+fries|for|mod-before
+taste|their|gen
+taste|first|post
+fries|taste|for
+hamburger|'s|nn
+taste|hamburger|of
+town|fries|rel
+fries|hong kong|subj
+town|or|punc
+town|shake|conj

@@ -1,0 +1,45 @@
+emperor hirohito|japan|of
+died|emperor hirohito|subj
+died|1989|in
+died|age|at
+age|87|of
+ascended|he|subj
+throne|1926|in
+one|over|num-mod
+eras|japan|gen
+tumultuous|most|mod
+eras|tumultuous|mod
+one|eras|of
+last|world war ii|of
+generation|leaders|of
+figure|controversial|mod
+was|figure|pred
+figure|even|pnmod
+western|death|nn
+western|while|nn
+even|western|in
+leaders|asian|mod
+countries|leaders|gen
+leaders|countries|whn
+suffered|countries|subj
+military|japanese|mod
+suffered|military|under
+were|cool|pred
+were|while|mod
+while|regard|comp1
+regard|historians|subj
+regard|him|obj
+figurehead|powerless|mod
+regard|figurehead|as
+believe|others|subj
+believe|that|c
+was|complicit|pred
+crimes|japanese|mod
+crimes|war|nn
+complicit|crimes|in
+crimes|died|rel
+died|hirohito|subj
+died|cancer|of
+illness|long|mod
+akihito|his|gen
+akihito|son|nn

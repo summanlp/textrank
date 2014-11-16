@@ -1,0 +1,54 @@
+iowa|battleship|nn
+turret|iowa|gen
+turret|no.2|nn
+explosion|turret|in
+turret|wednesday , april 19 , 1989 ,|on
+ne|training|nn
+ne|exercise|nn
+ne|puerto rico|of
+investigators|47|num
+investigators|naval|mod
+explosion|occurred|vrel
+occurred|explosion|obj
+occurred|while|mod
+while|was|comp1
+was|in|pred
+was|transit|in
+transit|powder|from
+hoist|explosion|subj
+hoist|thousands|obj
+home|iowa|nn
+home|norfolk|to
+norfolk|sunday|on
+lining|black|mod
+lining|arm bands|nn
+sailors|lining|with
+rails|ship|gen
+rails|and|punc
+members|surviving|mod
+members|guncrew|nn
+rails|members|conj
+standing|rails|subj
+standing|atop|guest
+turret|blackened|mod
+turret|no.2|nn
+standing|turret|obj
+spoke|monday|on
+president|bush|person
+spoke|president|subj
+spoke|mourners|to
+a|norfolk|nn
+a|memorial|nn
+a|service|nn
+mourners|a|at
+placed|moratorium|obj
+firing|moratorium|subj
+guns|wwii-era|mod
+guns|16-inch|nn
+firing|guns|obj
+guns|which|whn
+criticized|guns|obj
+outdated|and|punc
+outdated|dangerous|conj
+hold|senate armed services committee|subj
+hold|hearings|obj

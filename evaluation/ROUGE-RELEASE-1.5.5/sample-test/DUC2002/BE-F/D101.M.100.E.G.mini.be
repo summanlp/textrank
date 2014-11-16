@@ -1,0 +1,51 @@
+president|soviet|nn
+president|mikhail gorbachev|person
+returned to|president|subj
+returned to|power|obj
+power|coup|as
+coup|him|against
+coup|collapsed|vrel
+collapsed|coup|obj
+unraveling|swiftly|mod
+unraveling|as|mod
+as|was|comp1
+was|unable|pred
+unable|cope|fc
+cope|junta|subj
+cope|thousands|with
+thousands|people|of
+people|who|whn
+created|people|subj
+created|barricades|obj
+parliament|russian|nn
+president|russian|mod
+stronghold|president|gen
+president|yeltsin|person
+legislature|national|mod
+'s|reinstatement|pred
+reinstatement|and|punc
+reinstatement|communist party|conj
+'s|seeking|mod
+seeking|gorbachev|subj
+seeking|salvage|mod
+image|its|gen
+salvage|image|obj
+issue|real|mod
+failure|coup|nn
+issue|failure|for
+was|not|neg
+was|gorbachev|pred
+gorbachev|but|punc
+culture|new|mod
+culture|political|mod
+gorbachev|culture|conj
+culture|democracy|of
+initiated|he|subj
+gorbachev|first|post
+initiated|gorbachev|at
+appeared|yeltsin|subj
+appeared|equals|as
+equals|but|punc
+equals|yeltsin|conj
+people|russian|mod
+close|people|to
