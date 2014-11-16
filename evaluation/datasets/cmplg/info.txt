@@ -1,0 +1,3 @@
+Dataset taken from:
+
+http://www-nlpir.nist.gov/related_projects/tipster_summac/cmp_lg.html

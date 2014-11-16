@@ -1,0 +1,533 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Free-ordered CUG on Chemical Abstract Machine</TITLE>
+<ABSTRACT>
+<P>
+We propose a paradigm for concurrent natural language generation. In
+order to represent grammar rules distributively, we adopt categorial
+unification grammar (CUG) where each category owns its functional
+type. We augment typed lambda calculus with several new combinators,
+to make the order of 
+lambda-conversions free for partial / local
+processing. The concurrent calculus is modeled with Chemical Abstract Machine.  We show an example of a Japanese causative auxiliary verb that requires a drastic rearrangement of
+case domination.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+Parallel and distributed computation is expected to be the main stream
+of information processing.
+In the conventional generation, the rules for composition are given
+from the outside and those rules control all the behavior of the
+symbols or the objects, for assembling a hierarchical tree
+structure. For example, all the linguistic objects, such as words
+and phrases must be applied to so-called grammar rules to form
+grammatical structures or rational semantic representations, under a
+strict controller process. However, this kind of formalization
+obviously contradicts the partial / distributed processing that
+would be required in parallel architecture in future.
+</P>
+<P>
+In order to represent grammar rules
+distributively, we adopt categorial grammar,
+where we can an attach local grammar
+rule to each word and phrase. What we aim in this paper is to
+propose a paradigm that enables partial / local generation through
+decompositions and reorganizations of tentative local structures.
+</P>
+<P>
+In the following section, we introduce the extended lambda-calculus.
+Thereafter we introduce the ChAM model and we reinterpret the model in
+terms of natural language processings.  Then we show the model of
+membrane interaction model with the example of Japanese
+causative sentence that requires drastic change of domination
+of cases. Finally we will discuss the future of the model.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER> 
+   Extended typed lambda-calculus   </HEADER>
+<P>
+CUG (Categorial Unification Grammar)
+ <REF/> is advantageous, compared to other phrase structure grammars, for parallel architecture, because
+we can regard categories as functional types and we can represent
+grammar rules locally.
+This means that we do not need
+externally-given grammar rules but those rules reside within each word
+or each phrase.
+In this section, we
+regard categories as polymorphic types and consider the
+type calculus. In later sections we denote categories by DAG
+ (directed acyclic graph) of PATR grammar <REF/>. 
+</P>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Lambda-calculus of polymorphic type </HEADER>
+<P>
+We use greek letters, for type schemas. For type constants we use
+<!-- MATH: $\sigma, \tau, \cdots$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+while for type variables we use 
+<!-- MATH: $\alpha, \beta,
+\cdots$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+represents that the object a is of type
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+If 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are types, then 
+<!-- MATH: $\alpha \rightarrow
+\beta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a type.
+</P>
+<P>
+The purpose of type inference is to infer the type of an object from a
+set of objects whose types are known. We presuppose that two type
+variables 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are unified with a unifier 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+We
+use 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+for this set of type-known objects. The most important
+two rules are as follows:
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\frac{\Gamma\theta_{1} \cup \{x:\alpha\theta_{1} \} \vdash t:\beta}
+{\Gamma\theta_{1} \vdash \lambda x^{\alpha}.t: \alpha\theta_{1} \rightarrow
+\beta}
+\end{equation} -->
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+<!-- MATH: \begin{equation}
+\frac{\Gamma\theta_{2}\theta_{3}\theta_{4} \vdash t:\alpha\theta_{4}
+\rightarrow \beta\theta_{4} \hspace{9mm}
+\Gamma\theta_{2}\theta_{3}\theta_{4} \vdash s:\alpha\theta_{4}}
+{\Gamma\theta_{2}\theta_{3}\theta_{4} \vdash t(s):\beta\theta_{4}}
+\end{equation} -->
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+ The rule (<CREF/>) corresponds to   beta-conversion of the ordinary lambda-calculus 
+ <REF/>. 
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  Extended combinators </HEADER>
+<P>
+In this subsection, we introduce two combinators that enable us to
+change the order of 
+ lambda-conversion, proposed by Steedman
+ <REF/>, as a kind of type change <REF/>. The ordinary 
+ lambda-calculus requires a strict order of
+conversion. However, in a concurrent model, this kind of strict
+order is a hindrance and contingent conversions are required.
+</P>
+<P>
+C-combinator changes the order of 
+lambda-variables as
+follows:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Another requirement for exchanges of the order of 
+lambda-conversion
+is the following case.
+Suppose that we are required to compose all the following typed objects:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+In such a case, we need to concatenate g and a first, and then g(a)becomes applicable to f. However, with the help of the following B-combinator:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The 
+lambda-variable in g can be shifted beyond the scope of fso that we can concatenate f and g first, and, thus, have a become
+ applicable as in Fig. <CREF/>. 
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+</DIV>
+<DIV ID="2.3" DEPTH="2" R-NO="3"><HEADER>  Cost of unification </HEADER>
+<P>
+The repeated use of  C- and  B-combinators is still
+problematic if we consider implementing it as an actual system
+because the termination of processing is not guaranteed.  We have
+modeled the process of a partial decomposition as an abstraction of
+an argument of the first-order term. If this abstraction occurs
+randomly, the process easily falls into a loop.  In order to avoid
+this, we assume the unification cost.  If a compound term (a
+subtree) were to be decomposed once, the element with the longer
+distance should be abstracted first.  We can regard the whole
+sentence structure as more grammatical if the sum of these
+unification costs is smaller.  We introduce the heuristic costs
+ <REF/>, considering the parallelism between syntactic cases and semantic roles, as follows:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+where 
+<!-- MATH: $\theta_{(x,y)}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+represents a unifier of two DAG's: one's syntactic
+case is x and the other's semantic role is y.
+k is some constant larger than 1 (k ] 1).
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  Chemical Abstract Machine </HEADER>
+<P>
+ Chemical Abstract
+ Machine (ChAM, for short) <REF/> is a paradigm of concurrent lambda-calculus. In this paper, we will
+mention our principles on natural language processing with regard to
+the ChAM model.
+</P>
+<P>
+We assume the process of natural language recognition as follows.
+Whenever a linguistic object is recognized, it is thrown into the
+ solution of ChAM, and acts as a  molecule. Verbs and some
+other auxiliary verbs introduces  membranes. These membranes
+becomes their scopes for case (or role) domination; namely, each verb
+searches for molecules (noun phrases) that are necessary to satisfy
+each verb's case (role) frame, within its membrane. In some
+occasions, if multiple verbs exist in one sentence, they may conflict
+as to which verb dominates which noun phrase. In such a
+case, two membranes can interact and can exchange some molecules.
+</P>
+<P>
+We use 
+<!-- MATH: $s_{1}, s_{2}, s_{3}, \cdots$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ for membranes. When a membrane si contains a molecule 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+we
+denote as 
+<!-- MATH: $s_{i} \models \alpha.$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ The supporting relation (
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ )
+can be interpreted as an
+inclusion relation (
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ )
+in this case. Two membranes can
+interact when they contact with the notation `
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ', as 
+<!-- MATH: $s_{1} \| s_{2}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+If there is a floating molecule (that which is not yet concatenated
+with other molecules) on one side, it can move through the porous
+membranes. Valences for concatenation of each molecule are
+represented by typed lambda-variables. If one membrane contains only one
+composite structure, and it still has surplus valences, we can regard
+that whole the membrane has those surplus valences as follows.
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Now, we will apply our notions above to the actual problem of sentence
+generation.
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Example: Japanese causative sentence </HEADER>
+<P>
+In the Japanese
+language, the causative and the change of voice are realized by
+agglutinations of those auxiliary verbs at the tail of current verbs.
+These auxiliary verbs as well as ordinary verbs can dominate some
+ cases so that these agglutinations may change the whole syntax <REF/>. Namely the scope of the operation of these auxiliary verbs is
+not the operated verb but the whole sentence.
+In order to illustrate these role changes, we show the alternation of
+ the agent of the main verb in Table  <CREF/> with a short tip to Japanese lexicon.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+As an example, we will take the
+sentence:
+Ken-wa Naomi-ni hon-wo yom-aseru.
+(Ken makes Naomi read the book.)
+ First, we give DAG's for each lexical items in Fig <CREF/>. 
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+ The last DAG in Fig. <CREF/> represents that the verb `yomu (read)' requires two roles `the reader' and `the object to be read', and one optional role `the counter-agent' who hears what the
+reader reads. In that figure, `
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ' means that each word is
+recognized in the general world however a verb `yomu'
+introduced a special membrane s1 as a subworld of W. Each DAG
+means a polymorphic type of the lexical item.
+</P>
+<P>
+Assume that there is a parser that constructs partial tree structures,
+as recognizing each word from the head sequentially. Then, when the
+first four words are recognized, they can form a complete sentence of
+ (<CREF/>). 
+</P>
+<P>
+<!-- MATH: \begin{equation}
+s_{1} \models \{read(K|_{\theta_1},N|_{\theta_2},B|_{\theta_3}):
+\left[\begin{array}{ll}catS\end{array}\right]\}
+\end{equation} -->
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+Because all the three nouns are adequately concatenated by `read', a
+sentential representation is made in the subworld of s1. In
+ (<CREF/>),  
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ 's are the records of unification,
+that contain the costs and the original types; they become necessary when they
+are backtracked, and in that meaning, those bindings are transitive.
+</P>
+<P>
+Now, let us recapitulate what has occurred in the membrane s1. There
+were four lexical items in the set, and they are duly organized to a
+sentence and s1 becomes a singleton.
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Then, the problematic final word `-aseru (causative)' arrives;
+ its DAG representation is as in Fig. <CREF/>. 
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+ The DAG in Fig. <CREF/> requires a sentential form (category S) as an argument, and in
+addition, it subcategorizes an item of category N as an agent of the
+subsentence.
+</P>
+<P>
+ Now, the process becomes as in Fig. <CREF/>. 
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+ All through the process in Fig. <CREF/>, C- and B-combinators are used repeatedly as well as ordinary type inference  (<CREF/>) and (<CREF/>).  The second membrane s2 requires an agent role (the variable x' of make). There is a record in
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+that it bit agent, so that the comparison should be
+made between 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+<!-- MATH: $\theta_4 (= \theta_{(K, x')})$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+However,
+because both of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+unifies nominative case and
+agent role, the costs are equivalent.  In such a case, linguistic
+heuristics will solve the problem. In this case, the agent of makeshould be the nominative of the whole sentence, and the co-agent of
+make is the dative of the whole sentence, so that K and N are
+bit by newly arrived make. B remains bound to read, because
+there is no 
+lambda-variable of that type in make.  The process is
+ depicted in fig. <CREF/>. 
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Conclusion </HEADER>
+<P>
+Introducing free-ordered typed 
+lambda-calculus, together with the
+notion of unification costs in types, we have shown the structuring of
+natural language syntax, by distributively represented types in random
+orders.  We adopted a model of Chemical Abstract Machine for the
+partial/ concurrent computation model.
+</P>
+<P>
+Although we introduced the concept of costs and termination was
+assured, the efficiency of constructing
+a parsing tree would be far slower than sequential processing.
+However our objective is not to propose a faster algorithm, but is to
+show the possibility of distributed processing of natural languages.
+We could show that natural language syntax is self-organizable, in
+that each linguistic objects do not need to be poured into `molds',
+viz., externally given grammar.
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+G. Berry and G. Boudol.
+The chemical abstract machine.
+In 17th Annual ACM Symposium on Principles of Programming
+  Languages, pages 81-93, 1990.
+</P>
+<P>
+H. B. Curry and R. Feys.
+Combinatory Logic, volume 1.
+North Holland, Amsterdam, Netherlands, 1968.
+</P>
+<P>
+D. Dowty.
+Type Raising, Functional Composition, and Non-constituent
+  Conjunction - in Categorial Grammars and Natural Language Structures, pages
+  153-197.
+D. Reidel, 1988.
+</P>
+<P>
+J. R. Hindley and Seldin J. P.
+Introduction to Combination and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -Calculus.
+Cambridge University Press, 1986.
+</P>
+<P>
+S. M. Shieber.
+An Introduction to Unification-Based Approaches to Grammar.
+CSLI, Stanford University, 1986.
+</P>
+<P>
+M. Steedman.
+Combinators and grammars - in Categorial Grammars and
+  Natural Language Structures, pages 417-442.
+D. Reidel, 1988.
+</P>
+<P>
+S. Tojo.
+Categorial analysis of sentence generation.
+In The Logic Programming Conference (LPC '91), pages 229-238.
+  Institute of New Generation Computer (ICOT), 1991.
+</P>
+<P>
+H. Uszkoreit.
+Categorial unification grammars.
+In Proc. of COLING '86, pages 187-194, 1986.
+</P>
+<P>
+T. Gunji.
+Japanese Phrase Structure Grammar.
+D. Reidel, 1987.
+</P>
+<DIV ID="5.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+<!-- MATH: $\theta_{2}, \theta_{3}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are for 
+<!-- MATH: $\Gamma\theta_{2} \vdash t:\alpha
+\rightarrow \beta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and for 
+<!-- MATH: $\Gamma\theta_{3} \vdash s:\alpha$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+respectively. 
+<!-- MATH: $\theta_{4}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+unifies
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+which appears in both type declarations.
+<!-- MATH: $\theta_{2}, \theta_{3}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are for 
+<!-- MATH: $\Gamma\theta_{2} \vdash t:\alpha
+\rightarrow \beta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and for 
+<!-- MATH: $\Gamma\theta_{3} \vdash s:\alpha$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+respectively. 
+<!-- MATH: $\theta_{4}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+unifies
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+which appears in both type declarations.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

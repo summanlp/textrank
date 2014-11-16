@@ -1,0 +1,705 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>AUTOMATED TONE TRANSCRIPTION</TITLE>
+<ABSTRACT>
+<P>
+In this paper I report on an investigation into the problem of assigning
+tones to pitch contours.  The proposed model is intended to serve as a
+tool for phonologists working on instrumentally obtained pitch
+data from tone languages.  Motivation and exemplification for the model
+is provided by data taken from my fieldwork on Bamileke Dschang (Cameroon).
+Following recent work by Liberman and others, I provide a parametrised
+F0 prediction function <EQN/>
+which generates F0 values from a
+tone sequence, and I explore the asymptotic behaviour of downstep.
+Next, I observe that transcribing a sequence X of pitch
+(i.e. F0) values
+amounts to finding a tone sequence T such that 
+<!-- MATH: ${\cal P}(T) \approx X$ -->
+<EQN/>.
+This is a combinatorial optimisation problem, for which two
+non-deterministic search techniques are provided:
+a genetic algorithm and a simulated annealing algorithm.
+Finally, two implementations--one for each technique--are described
+and then compared using both
+artificial and real data for sequences of up to 20 tones.
+These programs can be adapted to other tone languages by adjusting
+the F0 prediction function.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  INTRODUCTION </HEADER>
+<P>
+The wealth of literature on tone and intonation has amply demonstrated
+that voice pitch (F0) in speech is under independent linguistic
+control.  In English, voice pitch alone can signal the distinction
+between a statement and a question.  Similarly, in many tone
+languages,voice pitch alone signals the tense of a verb.  Phonologists
+usually describe a pitch contour much as they describe speech more
+generally, namely as a sequence of discrete units (i.e. a
+transcription).  This is illustrated in Figure 1, where L indicates
+a low tone and 
+<!-- MATH: $\downarrow$ -->
+<EQN/>
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  TONE TRANSCRIPTION </HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Generation and Recognition </HEADER>
+<P>
+A promising way of generating contours from tone sequences is to
+specify one or more pitch targets per tone and then to interpolate
+between the targets; the task then becomes one of providing a suitable
+ sequence of targets <REF/>. It is perhaps less clear
+how we should go about recognising tone sequences from pitch contours.
+Hidden Markov Models (HMMs) Huang90 offer a powerful
+statistical approach to this problem, though it is unclear how they
+could be used to recognise the units of interest to phonologists.
+HMMs do not encode timing information in a way that would allow them
+to output, say, one tone per syllable (or vowel).
+Moreover, the same section
+of a pitch contour may correspond to either H or L tones.  For
+example, a H between two Hs looks just like an L between two Ls.
+There is no principled upper bound on the amount of context that needs
+to be inspected in order to resolve the ambiguity, leading to a
+multiplication of state information required by the HMM and problems
+for training it.
+</P>
+<P>
+In the present context, the emphasis is not on automatic speech
+recognition but on a tool to support phonologists working with tone.
+As we shall see in the next section, once the phonologist has
+identified the salient location to measure the `F0 value' of a
+syllable (or some other phonological unit), the task will be
+to automatically map a string of these values to a string of tones.
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  A Tool for Phonologists </HEADER>
+<P>
+Connell and Ladd have devised a set of heuristics for identifying key
+points in an F0 contour to record F0 values
+ <REF/>, 21ff]. In the absence of a
+program which enshrines these heuristics, it was decided to develop
+a system for producing a tone transcription from a sequence of
+F0 values.
+Apart from the obvious benefits of automating the process, such as speed
+and accuracy, it could show up cases where there is more than one
+possible tone transcription, possibly with different parameter settings for
+the F0 scaling function.  Having the set
+of tone transcriptions that are
+compatible with an utterance has considerable
+value to an analyst searching for invariances in the tonal assignments
+to individual morphemes.
+</P>
+<P>
+To exemplify this point, it is worth considering a recent example
+where an alternative transcription of some data proved valuable in
+providing a fresh analysis of the data.  In their analyses of tone
+in Bamileke Dschang, Hyman gives the
+ transcription in (<CREF/>) while Stewart gives  the one in (<CREF/>), for the phrase meaning machete of dogs.
+ <EQN/> These two possibilities exist because of different
+F0 scaling parameters.  These parameters determine
+the way in which the different tones are scaled relative to each other
+and to the speaker's pitch range.  This is illustrated in
+ (<CREF/>), adapting Hyman's earlier notation  <REF/>. 
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+ Example (<CREF/>) displays a kind of phonetic interpretation function.
+Immediately below the two rows of tones we see a row of numbers
+corresponding to the tones.  For Hyman, L=3 and H=1, while for
+Stewart, L=2 and H=1.  Observe in Hyman's example that a rising
+tone--symbolised by a wedge above the i--is modelled as an LH
+sequence in keeping with standard practice in African tone analysis.
+</P>
+<P>
+The second row of numbers corresponds to downstep (
+<!-- MATH: $\downarrow$ -->
+<EQN/>
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    F0 SCALING
+</HEADER>
+<P>
+Consider again the F0 contour in Figure 1.  In particular, note
+that the F0 decay seems to be to a non-zero asymptote, and that H
+and L appear to have different asymptotes which we symbolise as hand l respectively.  These observations are
+clearer in Figure 2, which (roughly speaking) displays the peaks and
+valleys from Figure 1.
+</P>
+<P>
+Although this is admittedly a rather artificial example,
+it remains true that there is no principled upper limit
+on the number of downsteps that can occur in an utterance
+ <REF/>, 540], and so the asymptotic behaviour of F0 scaling still needs to be addressed.
+</P>
+<P>
+Now suppose that we have a sequence T of tones where
+ti is the ith tone (H or L) and a sequence X of
+F0 values where xi is the F0 value corresponding
+to ti.
+Then we would like a formula which predicts xi given
+xi-1, ti and ti-1 (i]1).  We express this as
+follows:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The question, now, is what should this function look like?
+Suppose for sake of argument that the ratio of L to the immediately
+preceding H in Figure 2 is constant, with respect to the
+baselines for H and L, namely h and l.  Then we have:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+More generally, suppose that we have a sequence of two arbitrary
+tones.  Ignoring the possibility of downstep for the present,
+we have a static two-tone system where HH and LL sequences
+are level and sequences like HLHLHL are realised as simple oscillation
+between two pitches.  We can write the following formula, where
+<!-- MATH: $\bar{t}_{i}=h$ -->
+<EQN/>
+if ti = H and
+<!-- MATH: $\bar{t}_{i}=l$ -->
+<EQN/>
+if ti = L.
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The situation becomes more interesting when we allow for
+downdrift and downstep.
+Downdrift is the automatic lowering of the second of
+two H tones when an L intervenes, so HLH is realised
+as [---]
+rather than as [---],
+while downstep is the lowering of the second of two
+tones when an intervening L is lost,
+so H
+<!-- MATH: $\downarrow$ -->
+<EQN/>
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  TONE AND F0 IN  BAMILEKE DSCHANG </HEADER>
+<P>
+In a recent field trip to Western Cameroon to study the
+ Bamileke Dschang noun associative construction, I was able
+to collect a small amount of data relating to F0 scaling
+throughout a particular informant's pitch range.  Following
+Liberman et al., voice pitch was
+varied by getting the informant to speak at different volumes
+and by adjusting the recording level appropriately.  However,
+rather than asking the informant to imagine speaking to a subject
+at different distances, I controlled the volume by having the
+informant wear headphones and played white noise from a detuned
+radio.  Thus, I could set the informant's voice pitch by using
+the volume control on my radio.  My hypothesis is that this
+technique produces more consistent volume (and hence, pitch scaling)
+over long utterances and may make informants less self-conscious
+about speaking loudly than simply asking them
+to imagine speaking to subjects at various distances away.
+Measurements were taken from the following data.
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+Regrettably, the LL data was only available from isolated disyllables,
+and other sequences such as LH and H
+<!-- MATH: $\downarrow$ -->
+<EQN/>
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  IMPLEMENTATIONS </HEADER>
+<P>
+In this section, I show how it is possible to get two programs to
+produce a sequence of tones T (i.e. a tone transcription)
+given a sequence of n F0 values X.
+The programs make crucial use of the prediction function <EQN/>in evaluating candidate tone transcriptions.
+</P>
+<P>
+Both programs involve search, and in general,
+the aim in searching is to discover the
+values for 
+<!-- MATH: $x_1, \ldots, x_n$ -->
+<EQN/>
+so
+as to optimise the value of a specified
+evaluation function 
+<!-- MATH: $f(x_1, \ldots, x_n)$ -->
+<EQN/>.
+When f has many local optima, deterministic methods such
+as hill-climbing perform poorly.  This is because they
+terminate in a local optimum and the particular one found
+depends heavily on the starting point in the search, and there
+is usually no way of choosing a good starting point.
+</P>
+<P>
+Exhaustive search for the global optimum is not an option
+when the search space is prohibitively large.  In the
+present context, say for
+a sequence of 20 tones, the search space contains 
+<!-- MATH: $6^{20} \approx
+10^{15}$ -->
+<EQN/>
+possible tone transcriptions, and for each of these there are
+thousands of possible parameter settings, too large a search space for
+exhaustive search in a reasonable amount of computation time.
+</P>
+<P>
+Non-deterministic search methods have been devised as a way of
+tackling large-scale combinatorial optimisation problems,
+problems that involve finding optima of functions of discrete variables.
+These methods are only designed to yield an approximate solution, but
+they do so in a reasonable amount of computation time.  The best
+known such methods are
+ genetic search <REF/>  and annealing search <REF/>. Recently, annealing search has been successfully applied to the learning
+of phonological constraints expressed as finite-state automata
+ <REF/>.  In the following sections I describe a genetic algorithm and an annealing algorithm for the
+tone transcription problem.
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>  A Genetic Algorithm </HEADER>
+<P>
+For a cogent introduction to genetic search and an explanation of why
+it works, the reader is referred to South93.
+Before presenting the version of the algorithm used in
+the implementation, I shall informally define
+the key data types it uses along with the standard operations on
+those types.
+</P>
+<P>
+gene
+A linear encoding of a solution.
+In the present setting, it is an array of n tones, where each tone
+  is one of H, 
+<!-- MATH: $\downarrow$ -->
+<EQN/>
+</P>
+</DIV>
+<DIV ID="5.2" DEPTH="2" R-NO="2"><HEADER>  An Annealing Algorithm </HEADER>
+<P>
+ As with genetic algorithms, simulated annealing <REF/> is a combinatorial optimisation
+technique based on an analogy with a natural process.
+Annealing is the heating and slow cooling of a solid
+which allows the formation of regular crystalline structure
+having a minimum of excess energy.
+In its early stages when the temperature is high,
+annealing search resembles random search.
+There is so much free energy in the system that
+a transition to a higher energy state is highly probable.
+As the temperature decreases the search begins to resemble
+hill-climbing.  Now there is much less free energy and
+so transitions to higher energy states are less and
+less likely.
+In what follows, I explain some of
+the parameters of annealing search as used in the
+current implementation.
+temperature
+At the start of the search the temperature, t is
+set to 1.  During the search, the temperature is
+reduced at a rate set by the `cooling rate' parameter,
+until it reaches a value less than 10[-6].
+perturbation
+At each step of the search, the current state is
+perturbed by an amount which depends on the temperature.
+The temperature determines the fraction of the search
+space that is covered by a single perturbation step.  For a tone sequence
+of length n,
+we randomly reset the worst n.t tones according to
+<!-- MATH: $({\cal P}_{t_{i-1} t_i}(x_{i-1}) - x_i)^2$ -->
+<EQN/>.
+For the
+parameters we proceed as follows, here exemplified for h.
+First, set
+<!-- MATH: $\rho = t(h_{\mbox{\scriptsize max}} - h_{\mbox{\scriptsize min}})$ -->
+<EQN/>.
+Now, add to h a random number in the range 
+<!-- MATH: $[-\rho, \rho]$ -->
+<EQN/>and check that the result is still in the range
+<!-- MATH: $[h_{\mbox{\scriptsize min}}, h_{\mbox{\scriptsize max}}]$ -->
+<EQN/>.
+</P>
+<P>
+equilibrium
+At each temperature, the system is required to
+reach `thermal equilibrium' before the temperature
+is lowered.  In the present context,
+equilibrium is reached if no more than one of the
+last eight perturbations yielded a new state that
+was accepted.
+</P>
+<P>
+free energy function
+This is the amount of available energy for
+transitions to higher energy states.
+In the current system, it is the distribution
+<!-- MATH: $-1000.t.log(p)$ -->
+-1000.t.log(p), where p is
+a uniform random variable in the range (0,1].
+If the energy difference <EQN/>
+between an old and a new
+state is less than the available energy, then
+the transition is accepted.  The factor of 1000 is
+intended to scale the energy distribution to typical
+values of the evaluation function.
+Now the algorithm itself is presented:
+</P>
+<P>
+procedure annealing_search                      begin                                                  		 initialise Trans, NewTrans, BestTrans;        		 randomise Trans;                              		 t := 1;                                             		 while t ] 0.000001 do                             		 begin                                               				 repeat                                            						 NewTrans := perturb(Trans, t);            						 <EQN/>
+:= evaluate(NewTrans)            								 - evaluate(Trans);                    						 if <EQN/>
+or                               								 exp(<EQN/>/1000.t) ] random(0,1) then    								 Trans := NewTrans;                              						 if evaluate(Trans) [ evaluate(BestTrans) 								 BestTrans := Trans;                             				 until equilibrium_reached;                   				 Trans := BestTrans;                                 				 temperature := temperature / 1.2;                   		 end                                                   		 write Trans;                                          end
+</P>
+<P>
+The program is made up of two loops.  The outer loop simply
+iterates through the temperature range, beginning with a
+temperature of 1 and steadily decreasing it until it gets
+very close to zero.  The nested loop performs the task of
+reaching thermal equilibrium at each temperature.
+The first step is to perturb the previous transcription to
+make a new one.  Notice that the temperature t is a parameter
+of the perturb function.  Next, the difference <EQN/>
+between
+the old and new evaluations is calculated.  If the new transcription
+has a better evaluation than the old one, then <EQN/>
+is negative.
+Next, the program accepts the new transcription if (i) <EQN/>
+is negative
+or (ii) <EQN/>
+is positive and there is sufficient free energy in
+the system to allow the worse transcription to be accepted.
+Finally, we check if the new transcription is better than the best
+transcription found so far (BestTrans) and if so, we set BestTrans
+to be the new transcription.  Once equilibrium is reached, the current
+transcription is set to be the best transcription found so far, and
+the search continues.
+</P>
+</DIV>
+<DIV ID="5.3" DEPTH="2" R-NO="3"><HEADER>  Performance Results </HEADER>
+<P>
+Both the genetic and annealing search algorithms have been implemented
+in C<EQN/>++.  In this section, the performance of the two implementations
+is compared.  Performance statistics are based on 1,200 executions
+of each program.  Search parameters were set so that each execution took
+around 5 seconds on a Sun Sparc 10.
+Three performance trials were undertaken.
+</P>
+<P>
+Trial 1: Artificial Data.
+In the first trial, both programs generated random sequences of
+tones, then computed the corresponding F0 sequence using
+<EQN/>,
+then set about transcribing the F0 sequence.
+Since these sequences were ideal, the best possible evaluation
+for a transcription was zero.  The performance of the programs
+could then be measured to see how close they came to
+finding the optimal solution.  Each program was tested on
+F0 sequences of length 5, 10, 15 and 20.  For each length,
+each program transcribed 100 randomly-generated sequences.
+The results are displayed in Figure 6.  Each pair of bars
+corresponds to a given transcription length.  The left member
+of each pair is for the genetic search program, while the
+right member is for the annealing search program.
+</P>
+<P>
+The heavily shaded bars corresponding to evaluations less than 1 are the
+most important.  These indicate the number of times out of 100 that
+the programs found a transcription with an evaluation less than 1.
+This evaluation means that the average
+of the squared difference between the predicted
+F0 values and the actual F0 values was less than 1Hz.
+Observe that the annealing search program performs significantly
+better in all cases.
+Note that the mutation operation in the
+genetic search program treats each bit in
+the parameter encodings equally, while the perturbation
+operation in the annealing search program is sensitive
+to the distinction between more significant vs. less
+significant bits.  This may explain the better
+convergence behaviour of the annealing search.
+</P>
+<P>
+Notice also in Figure 6 that performance does not degrade
+with transcription length as the length doubles from 10 to 20.
+This is probably because a randomly generated sequence will
+contain downsteps on every second tone (on average)
+causing a general downtrend in the F0 values and
+severely limiting the combinatorial explosion of possible transcriptions.
+</P>
+<P>
+Trial 2: Artificial Data with Upstep.
+Trial 2 was the same as trial 1 except that this time upstep was
+permitted as well.  The results are displayed in Figure 7.
+Again the annealing program fares better than the genetic program.
+Consider again the bars corresponding to evaluations less than 1.
+For both programs, however, observe that the performance degrades
+more uniformly than in trial 1, probably because the inclusion
+of upstep greatly increases the number of possible transcriptions
+(and hence, the number of local optima).
+</P>
+<P>
+Trial 3: Actual Data.
+The final trial involved real data, including data from the utterance given
+in Figure 1.  This trial involved four subtrials.  The first and second had
+F0 sequences of length 10, while the third and fourth had length
+18 and 19.  The first and second sequences were taken by extracting
+the initial 10 F0 values from the third and fourth sequences,
+thereby avoiding the asymptotic behaviour of the longer sequences.
+The data is tabulated below, and it
+ comes from the sentences in (<CREF/>). 
+</P>
+<P>
+Performance results are given in Figure 8.
+Notice that the interpretation of the shading in this figure
+is different from that in previous figures.  This is because
+evaluations near zero were less likely with real data.
+In fact, the annealing program never found an evaluation less than 3
+while the genetic program never found an evaluation less than 4.
+</P>
+<P>
+Since the programs performed about equally on finding transcriptions
+with an evaluation less than 7, I shall display these transcriptions
+along with an indication of how many times each program found the
+transcription (G = genetic, A = annealing).
+I give transcriptions which occurred at least twice
+in one of the programs, during 100 executions of each.
+</P>
+<P>
+The results from trial 1 deserve special attention.
+In trial 1, three transcriptions were found by both programs.
+The best evaluations found are given below:
+</P>
+<P>
+It is striking to note that the first two transcriptions above
+are what Hyman and Stewart (respectively) would have given as transcriptions
+for the abstract F0 sequence 1 3 2 4 3 5 4 6 5 7.
+ This is demonstrated in (<CREF/>,b).  The third transcription  points to another possibility, given in (<CREF/>). 
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+Therefore, there are encouraging signs that the
+program is living up to its promise of producing alternative,
+equally acceptable transcriptions, as desired from an analytical
+standpoint.
+</P>
+</DIV>
+<DIV ID="5.4" DEPTH="2" R-NO="4"><HEADER>  Multiple Solutions </HEADER>
+<P>
+Although we have seen more than one transcription for a given
+F0 sequence, it is inconvenient to be required to run the programs
+several times in order to see if more than one solution can be
+found.  Furthermore, the programs are designed not to get caught
+in local optima, which is a problem since
+interesting alternative transcriptions may
+actually be local optima.  Therefore, both programs are set up to
+report the k best solutions, where the user specifies the number of
+solutions desired.  The program ensures that the same area of
+the search space is not re-explored by subsequent searches.
+This is done by defining a distance metric on transcriptions
+which counts the number of tones in one transcription that have
+to be changed in order to make it identical to the other transcription.
+That part of the search space within a distance of n/3 from any
+previously found solution is not explored again.  The programs
+give up before finding k solutions if 5
+randomly generated transcriptions all fall within
+distance n/3 of previous solutions.
+</P>
+<P>
+Now, consider the following randomly generated
+sequence of tones:
+</P>
+<P>
+The annealing program was set the task of finding ten transcriptions
+of this tone sequence.  The program was run only twice, and it reported
+the following solutions with evaluations less than or equal to 1.
+Both runnings of the program found the same solutions, and in
+the same order.  (Note that two transcriptions are taken to be
+the same if one or both begin with an initial upstep or downstep;
+this has no effect on the phonetic interpretation).
+In the following displays, the predicted F0 values are given below
+each solution to facilitate comparison with the input sequence.
+</P>
+<P>
+Since all executions to this point have been based on the first
+table of R values, it was decided to try a test with the second
+table of R values to see if the performance was different.
+Interestingly, the third solution in both of the above executions
+was not found, though two new solutions were found.
+</P>
+<P>
+Observe that the value of d in the above solutions clusters around
+0.66 and 0.87.  Similar clustering may be occurring with the ratio
+h/l.  However, an analysis of the relationship between the
+kinds of solutions found, the two R tables and the parameter
+values h, l and d has not been attempted.
+</P>
+</DIV>
+<DIV ID="5.5" DEPTH="2" R-NO="5"><HEADER>  Areas for Further Improvement </HEADER>
+<P>
+It is rather unsatisfying that the performance of the two
+programs is heavily dependent on the setting of several
+search parameters, and it seems to be a combinatorial
+optimisation problem in itself to find good parameter settings.
+My trial-and-error approach will not necessarily have found optimal
+parameter values, and so it would be premature to conclude
+from the performance comparison that annealing search is
+better than genetic search for the problem of tone transcription.
+A more thoroughgoing comparison of these two approaches to
+the problem needs to be undertaken.
+</P>
+<P>
+Since the parameters are continuous variables, and since
+the evaluation function--which we could write as
+<!-- MATH: ${\cal E}_{T,X}(h, l, d)$ -->
+<EQN/>--is a smoothly
+continuous function in h, l, d,
+it would be worthwhile to try other (deterministic)
+search methods for optimising h, l and d, once
+a candidate tone transcription T has been found.
+</P>
+<P>
+Finally, it would be interesting to integrate a system like
+either of the ones presented here into a speech workstation.
+As the phonologist identifies salient points with a cursor the system
+would do the transcription, incrementally and interactively.
+</P>
+</DIV>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  CONCLUSION </HEADER>
+<P>
+This paper began with a discussion of the problem of relating tone
+transcriptions to their physical counterparts, namely F0 traces.  I
+showed that it is desirable for phonologists working on tone to use
+sequences of F0 values as their primary data, rather than
+impressionistic transcriptions which make (usually implicit)
+assumptions about F0 scaling.
+I provided an F0 prediction function <EQN/>
+which
+estimated the F0 value of a tone, given the F0 value of the
+previous tone and the identities of the two tones.  I presented
+instrumental data from Bamileke Dschang and showed how the
+function could be specialised for this language.
+The function was then incorporated into the evaluation functions of
+two implemented non-deterministic search algorithms.
+The performance results were encouraging and
+demonstrate the promise of automated tone transcription.
+</P>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>  ACKNOWLEDGEMENTS </HEADER>
+<P>
+This research is funded by the UK Economic and Social Research
+Council, under grant R00023 4439 A Computational Model for the
+Phonology-Phonetics Interface in Tone Languages.  I am indebted to
+SIL Cameroon for their logistical support on my field trip
+in September and October of 1993,
+during which the data presented in the paper (and much other data
+besides) was gathered, and especially to
+Nancy Haynes, Gretchen Harro for helping me collect the
+data and Jean-Claude Gnintedem who endured many recording
+sessions.
+I am grateful to John Coleman, Michael Gasser and Marie South
+for helpful comments on an earlier version of this paper.
+The F0 data was extracted using the ESPS Waves+
+package in the Edinburgh University Phonetics Laboratory.
+</P>
+<DIV ID="7.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Bird, S.  Stegen, O. (1993).
+Tone in the Bamileke Dschang Associative Construction: An
+  Electrolaryngographic Study and Comparison with Hyman (1985).
+RP 57, University of Edinburgh, Centre for Cognitive Science.
+</P>
+<P>
+Clements, G. N. (1979).
+The description of terraced-level tone languages.
+Language, 55, 536-558.
+</P>
+<P>
+Connell, B.  Ladd, D. R. (1990).
+Aspects of pitch realisation in Yoruba.
+Phonology, 7, 1-29.
+</P>
+<P>
+Ellison, T. M. (1992).
+Machine Learning of Phonological Structure.
+PhD thesis, University of Western Australia.
+</P>
+<P>
+Goldberg, D. E. (1989).
+Genetic Algorithms in Search, Optimization, and Machine
+  Learning.
+Addison-Wesley.
+</P>
+<P>
+Huang, X. D., Ariki, Y.,  Jack, M. (1990).
+Hidden Markov Models for Speech Recognition.
+Edinburgh Information Technology Series. Edinburgh University Press.
+</P>
+<P>
+Hyman, L. M. (1979).
+A reanalysis of tonal downstep.
+Journal of African Languages and Linguistics, 1, 9-29.
+</P>
+<P>
+Hyman, L. M. (1985).
+Word domains and downstep in Bamileke-Dschang.
+Phonology Yearbook, 2, 45-83.
+</P>
+<P>
+Hyman, L. M.  Schuh, R. G. (1974).
+Universals of tone rules: evidence from West Africa.
+Linguistic Inquiry, 5, 81-115.
+</P>
+<P>
+Liberman, M., Schultz, J. M., Hong, S.,  Okeke, V. (1993).
+The Phonetic Interpretation of Tone in Igbo.
+Phonetica, 50, 147-160.
+</P>
+<P>
+Pierrehumbert, J.  Beckman, M. (1988).
+Japanese Tone Structure.
+Cambridge Mass.: MIT Press.
+</P>
+<P>
+South, M. C., Wetherill, G. B.,  Tham, M. T. (1993).
+Hitch-hiker's guide to genetic algorithms.
+Journal of Applied Statistics, 20, 153-175.
+</P>
+<P>
+Stewart, J. M. (1993).
+Dschang and Ebri as Akan-type total downstep languages.
+In H. van der Hulst  K. Snider (Eds.), The Phonology of Tone
+  - The Representation of Tonal Register  (pp. 185-244). Berlin; New York:
+  Mouton de Gruyter.
+Linguistic models, Volume 17.
+</P>
+<P>
+van Laarhoven, P. J. M.  Aarts, E. H. L. (1987).
+Simulated Annealing.
+Dordrecht:Reidel.
+</P>
+<DIV ID="7.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+Bamileke Dschang is a grassfields Bantu language spoken in the
+Western Province of Cameroon.  The name `Bamileke'
+(pron: <EQN/>[bmileke]<EQN/>)
+represents both an
+ethnic grouping and a language cluster; Dschang
+(pron: <EQN/>[t]<EQN/>)
+is an important town
+around which one of the Bamileke languages is spoken.  The data here
+is from the Bafou dialect.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

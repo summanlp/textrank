@@ -1,0 +1,1282 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>A Deductive Account of Quantification in LFG</TITLE>
+<ABSTRACT>
+<P>
+The relationship between Lexical-Functional Grammar (LFG) functional structures (f-structures) for sentences and their semantic
+interpretations can be expressed directly in a fragment of linear
+logic in a way that explains correctly the constrained interactions
+between quantifier scope ambiguity and bound anaphora.
+The use of a deductive framework to account for the compositional
+properties of quantifying expressions in natural language obviates the
+need for additional mechanisms, such as Cooper storage, to represent
+the different scopes that a quantifier might take.  Instead, the
+semantic contribution of a quantifier is recorded as an ordinary
+logical formula, one whose use in a proof will establish the scope of
+the quantifier.  The properties of linear logic ensure that each
+quantifier is scoped exactly once.
+Our analysis of quantifier scope can be seen as a recasting of
+ Pereira's analysis <REF/>, which was expressed in higher-order intuitionistic logic.  But our use of LFG and linear
+logic provides a much more direct and computationally more
+flexible interpretation mechanism for at least the same range of
+phenomena.  We have developed a preliminary Prolog implementation
+of the linear deductions described in this work.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+This paper describes part of our ongoing investigation on the use of
+formal deduction in linear logic to explicate the relationship between
+syntactic analyses in Lexical-Functional Grammar (LFG) and semantic
+interpretations. The use of formal deduction in semantic
+interpretation was implicit in deductive systems for categorial syntax
+ <REF/>, and has been made explicit through applications of the Curry-Howard parallelism between proofs and terms
+in more recent work on categorial semantics
+ <REF/>,<REF/>, labeled deductive  systems <REF/> and flexible categorial systems  <REF/>. Accounts of the syntax-semantics interface in the categorial tradition require that syntactic and
+semantic analyses be formalized in parallel algebraic structures of
+similar signatures, based on generalized application and abstraction
+(or residuation) operators, and structure-preserving relations between
+them.  Those accounts therefore force the adoption of categorial
+syntactic analyses, with their strong dependence on phrase structure
+and linear order.
+</P>
+<P>
+ In contrast, our approach uses linear logic <REF/> to represent the connection between two dissimilar levels of
+representation, LFG f-structures and their semantic interpretations.
+F-structures provide a crosslinguistically uniform representation of
+syntactic information relevant to semantic interpretation that
+abstracts away from the details of phrase structure and linear order
+in particular languages. This generality is in part achieved by using
+grammatical functions rather than functor-argument relations to
+represent syntactic predicate-argument relationships.  As
+<REF/> notes, however, the flatter,
+unordered, grammatical function structure of LFG does not fit well
+with traditional semantic compositionality, based on functional
+abstraction and application, which mandates a rigid order of semantic
+composition.  We are thus forced to use a more relaxed form of
+compositionality, in which, as in more traditional ones, the semantics
+of each lexical entry in a sentence is used exactly once in
+interpretation, but without imposing a rigid order of composition. It
+turns out that linear logic offers exactly what is required for a
+calculus of semantic composition for LFG, in that it can represent
+directly the constraints on the creation and use of semantic units in
+sentence interpretation without forcing a particular hierarchical
+order of composition except as required by the properties of
+particular lexical entries.
+</P>
+<P>
+We have shown previously that the linear-logic formalization of the
+syntax-semantics interface for LFG provides simple and general
+analyses of modification, functional completeness and coherence, and
+ complex predicate formation <REF/>,<REF/>.  In the present paper, the analysis is extended to the interpretation of
+quantified noun phrases.  After an overview of the approach, we
+present our analysis of the compositional properties of quantifiers,
+and we conclude by showing that the analysis correctly accounts for
+scope ambiguity and its interactions with bound anaphora.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  LFG and Linear Logic </HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Syntactic Framework </HEADER>
+<P>
+LFG assumes two syntactic levels of representation: constituent
+structure (c-structure) represents phrasal dominance and
+precedence relations, while functional structure (f-structure) represents syntactic predicate-argument structure.
+For example, the f-structure for sentence <CREF/> is given
+in <CREF/>.
+As illustrated, a functional structure consists of a collection
+of attributes, such as , , and , whose values can, in
+turn, be other functional structures.  The following annotated
+phrase-structure rules can generate the f-structure in <CREF/>.
+<EQN/>
+These two phrase structure rules do not encode semantic
+information; they specify only how grammatical functions such as
+ are expressed in English.  The f-structure metavariables
+ and  refer, respectively, to the f-structure of the mother
+of the current node and to the f-structure of the current node
+ <REF/>.  The annotations on the S rule indicate, then, that the f-structure for the S has a  attribute
+whose value is the f-structure for the NP daughter, and that the
+f-structure for the S is the same as the one for the VP daughter.  The
+relation between the nodes of the c-structure and the f-structure for
+the sentence <CREF/> is expressed by means of arrows in (1):
+<EQN/>
+</P>
+<DIV ID="2.1.1" DEPTH="3" R-NO="1"><HEADER>  Lexically-Specified Semantics </HEADER>
+<P>
+Unlike phrase structure rules, lexical entries specify semantic
+as well as syntactic information.  Here are the lexical entries
+for the words in the sentence:
+Just like phrase structure rules, lexical entries are
+instantiated for a particular utterance.  The metavariable <EQN/>
+in a
+lexical entry represents the f-structure of the c-structure mother of
+(an instance of) the entry in a c-structure.  The syntactic information
+given in lexical entries consists of equality statements about the
+f-structure, while the semantic information consists of assertions
+about how the meaning of the f-structure participates in various
+semantic relations.
+</P>
+<P>
+The semantic information in a lexical entry, which we will call the
+semantic contribution of the entry, is a linear-logic formula
+that constrains the association between semantic structures
+projected from the f-structures mentioned in the lexical entry
+ <REF/>,<REF/> and their semantic interpretations.  The semantic projection function <EQN/>
+maps an
+f-structure to a semantic structure encoding information about its
+meaning, in the same way as the functional projection function <EQN/>maps c-structure nodes to the associated f-structures.  The
+association between <EQN/>
+and a meaning P is represented by the
+atomic formula 
+<!-- MATH: $f_\sigma \means P$ -->
+<EQN/>,
+where <EQN/>
+is an otherwise
+uninterpreted binary predicate symbol.  (In fact, we use not one but a
+family of relations 
+<!-- MATH: $\meansub{\tau}$ -->
+<EQN/>
+indexed by the semantic type of
+the intended second argument, although for simplicity we will omit the
+type subscript whenever it is determinable from context.)  We will
+often informally say that P is f's meaning without referring to
+the role of the semantic structure <EQN/>
+in 
+<!-- MATH: $f_\sigma \means
+P$ -->
+<EQN/>.
+We will see, however, that f-structures and their semantic
+projections must be distinguished, because in general semantic
+projections carry more information than just the association to the
+meaning for the corresponding f-structure.
+</P>
+<P>
+We can now explain the semantic contributions in <CREF/>.
+If a particular occurrence of `Bill' in a sentence is
+associated with f-structure f, the syntactic constraint in the
+lexical entry Bill will be instantiated as
+<!-- MATH: $\attr{f}{\pred} = \mbox{`Bill'}$ -->
+<EQN/>
+and the semantic constraint will be
+instantiated as 
+<!-- MATH: $f_\sigma
+\means \IT{Bill}$ -->
+<EQN/>,
+representing the association between <EQN/>
+and the
+constant <EQN/>
+representing its meaning.
+</P>
+<P>
+The semantic contribution of the appointed entry is more
+complex, as
+it relates the meanings of the subject and object of a clause
+to the clause's meaning. Specifically, if f is the
+f-structure for a clause with predicate (<EQN/>)
+`appoint', the
+semantic contribution asserts that if f's subject 
+<!-- MATH: $\attr{f}{\subj}$ -->
+<EQN/>
+has
+meaning X and (linear conjunction <EQN/>)
+f's object
+<!-- MATH: $\attr{f}{\obj}$ -->
+<EQN/>
+has meaning Y, then (linear implication
+<EQN/>)
+f has meaning 
+<!-- MATH: $\IT{appoint}(X,Y)$ -->
+ <EQN/>. 
+</P>
+<DIV ID="2.1.1.1" DEPTH="4" R-NO="1"><HEADER>  Logical Representation of Semantic Compositionality </HEADER>
+<P>
+In the semantic contribution for appointed in <CREF/>,
+the linear-logic connectives of multiplicative conjunction <EQN/>and linear implication <EQN/>
+are used to specify how the meaning
+of a clause headed by the verb is composed from the meanings of the
+arguments of the verb. For the moment, we can think of the linear
+connectives as playing the same role as the analogous classical
+connectives conjunction and implication, but we will soon see that the
+specific properties of the linear connectives are essential to
+guarantee that lexical entries bring into the interpretation process
+all and only the information provided by the corresponding words.  The
+semantic contribution of appointed asserts that if the subject
+of a clause with main verb appointed means X and its object
+means Y, then the whole clause means 
+<!-- MATH: $\IT{appoint}(X,Y)$ -->
+<EQN/>.
+The
+semantic contribution can thus be thought of as a linear definite
+clause, with the variables X and Y playing the same role as Prolog
+variables.
+</P>
+<P>
+It is worth noting that the form of the semantic contribution of
+appointed parallels the type 
+<!-- MATH: $e\times e \rightarrow t$ -->
+<EQN/>
+which, in
+its curried form 
+<!-- MATH: $e\rightarrow{e}\rightarrow{t}$ -->
+<EQN/>
+</P>
+</DIV>
+<DIV ID="2.1.1.2" DEPTH="4" R-NO="2"><HEADER>  Meaning and glue </HEADER>
+<P>
+Our approach shares the order-independence of representations of
+semantic information by attribute-value matrices
+ <REF/>,<REF/>,<REF/>, while still allowing a well-defined treatment of variable binding and scope.
+We do this by distinguishing (1) a language of meanings and (2) a
+language for assembling meanings or glue language.
+</P>
+<P>
+The language of meanings could be that of any appropriate logic, for
+ instance Montague's intensional logic <REF/>.  The glue language, described below, is a fragment of linear logic.  The
+semantic contribution of each lexical entry is represented by a
+linear-logic formula that can be understood as instructions in the
+glue language for combining the meanings of the lexical entry's
+syntactic arguments into the meaning of the f-structure headed by the
+entry.  Glue formulas may also be contributed by some syntactic
+constructions, when properties of a construction as a whole and not
+just of its lexical elements are responsible for the interpretation of
+the construction; these cases include the semantics of relative
+clauses.  We will not discuss construction-specific interpretation
+rules in this paper.
+</P>
+<P>
+ Appendix <CREF/> gives further details on the syntax of the meaning and glue languages used in this paper.
+</P>
+</DIV>
+<DIV ID="2.1.1.3" DEPTH="4" R-NO="3"><HEADER>  Linear logic </HEADER>
+<P>
+ As we have just outlined, we
+use deduction in linear logic to assign meanings to sentences,
+starting from information about their functional structure and about
+the semantics of the words they contain.  An approach based on linear
+logic, which crucially allows premises to commute, appears to be more
+compatible with the shallow and relatively free-form functional
+structure than are compositional approaches, which rely on deeply
+nested binary-branching immediate dominance relationships.  As noted
+above, the use of linear logic as the system for assembling meanings
+permits a uniform treatment of a range of natural language phenomena
+described by <REF/>, including modification, completeness
+ and coherence, and complex predicate formation.
+</P>
+<P>
+An important motivation for using linear logic is that it allows us to
+to capture directly the intuition that lexical items and phrases each
+contribute exactly once to the meaning of a sentence.  As noted by
+<REF/>,
+Translation rules in Montague semantics have the property that the
+translation of each component of a complex expression occurs exactly
+once in the translation of the whole.  ...That is to say, we do
+not want the set S [of semantic representations of a phrase] to
+contain all meaningful expressions of IL which can be built up
+from the elements of S, but only those which use each element exactly
+once.
+</P>
+<P>
+In our terms, the semantic contributions of the constituents
+of a sentence are not context-independent assertions that may be used
+or not in the derivation of the meaning of the sentence depending on
+the course of the derivation. Instead, the semantic contributions are
+occurrences of information which are generated and used exactly
+once.  For example, the formula 
+<!-- MATH: $g_{\sigma}\means
+\IT{Bill}$ -->
+<EQN/>
+can be thought of as providing one occurrence of the meaning
+<EQN/>
+associated to the semantic projection 
+<!-- MATH: $g_{\sigma}$ -->
+<EQN/>.
+That
+meaning must be consumed exactly once (for example, by appointed in
+<CREF/>) in the derivation of a meaning of the entire utterance.
+</P>
+<P>
+It is this ``resource-sensitivity'' of natural language semantics--an
+expression is used exactly once in a semantic derivation--that linear
+logic can model. The basic insight underlying linear logic is that
+logical formulas are resources that are produced and consumed in
+the deduction process.  This gives rise to a resource-sensitive notion
+of implication, the linear implication <EQN/>:
+the formula 
+<!-- MATH: $A
+\linimp B$ -->
+<EQN/>
+can be thought of as an action that can consume (one
+copy of) A to produce (one copy of) B. Thus, the formula 
+<!-- MATH: $A
+\otimes (A \linimp B)$ -->
+<EQN/>
+linearlyentails B.  It does not entail 
+<!-- MATH: $A
+\otimes B$ -->
+<EQN/>
+(because the deduction consumes A), and it does not entail
+<!-- MATH: $(A \linimp B) \otimes B$ -->
+<EQN/>
+(because the linear implication is also
+consumed in doing the deduction).  This resource-sensitivity not only
+disallows arbitrary duplication of formulas, but also disallows
+arbitrary deletion of formulas. Thus the linear multiplicative
+conjunction <EQN/>
+is sensitive to the multiplicity of formulas: 
+<!-- MATH: $A
+\otimes A$ -->
+<EQN/>
+is not equivalent to A (the former has two copies of the
+formula A).  For example, the formula 
+<!-- MATH: $A \otimes A \otimes (A
+\linimp B)$ -->
+<EQN/>
+linearly entails 
+<!-- MATH: $A \otimes B$ -->
+<EQN/>
+(there is still one Aleft over) but does not entail B (there must still be one
+A present).  In this way, linear logic checks that a formula is used
+once and only once in a deduction, enforcing the requirement that
+each component of an utterance contributes exactly once to the
+assembly of the utterance's meaning.
+</P>
+<P>
+To handle quantification, our glue language needs to be only a
+fragment of higher-order linear logic, the tensor fragment, that
+is closed under conjunction, universal quantification, and implication
+(with at most one level of nesting of implication in antecedents).  In
+fact, all but the determiner lexical entries are in the first-order
+subset of this fragment.  This fragment arises from transferring to
+linear logic the ideas underlying the concurrent constraint
+programming scheme of <REF/>. An explicit formulation
+for the higher-order version of the linear concurrent constraint
+programming scheme is given in
+<REF/>.  A nice tutorial introduction
+to linear logic itself may be found in
+<REF/>; see also <REF/>.
+</P>
+</DIV>
+<DIV ID="2.1.1.4" DEPTH="4" R-NO="4"><HEADER>  Relationship with Categorial Syntax and Semantics </HEADER>
+<P>
+As suggested above, there are interesting connections between our
+approach and various systems of categorial syntax and semantics. The
+Lambek calculus
+ <REF/>, introduced as a logic of syntactic combination, turns out to be a fragment of noncommutative
+multiplicative linear logic.  If permutation is added to Lambek's
+system, its left- and right-implication connectives (<EQN/>
+and
+/) collapse into a single implication connective with behavior
+identical to <EQN/>.
+This undirected version of the Lambek calculus
+was developed by
+van Benthem <REF/> to account
+for the semantic combination possibilities of phrase meanings.
+</P>
+<P>
+Those systems and related ones
+ <REF/>,<REF/>,<REF/> were developed as calculi of syntactic/semantic types, with propositional
+formulas representing syntactic categories or semantic types. Given
+the types for the lexical items in a sentence as assumptions, the
+sentence is syntactically well-formed in the Lambek calculus if the
+type of the sentence can be derived from the assumptions arranged as
+an ordered list. Furthermore, the Curry-Howard isomorphism between
+ proofs and terms <REF/> allows the extraction of a term representing the meaning of the sentence from the proof that the
+ sentence is well-formed <REF/>. However, the Lambek calculus and its variants carry with them a particular view of
+syntactic structure that is not obviously compatible with the flatter
+f-structures proposed by LFG.
+</P>
+<P>
+On the other hand, categorial semantics in the undirected Lambek
+calculus and other related commutative calculi provides an analysis of
+the possibilities of meaning combination independently of the
+syntactic realizations of those meanings, but does not provide a
+mechanism for relating semantic combination possibilities to
+the corresponding syntactic combination possibilities.
+</P>
+<P>
+In more recent work, multidimensional and labeled deductive systems
+ <REF/>,<REF/> have been proposed as refinements of the Lambek systems that are able to represent
+synchronized derivations involving multiple levels of representation,
+for instance a level of head-dependent representations and a level of
+syntactic functor-argument representations. However, these systems do
+not yet seem able to represent the connection between a flat syntactic
+representation in terms of grammatical functions and a
+function-argument semantic representation. As far as we can see, the
+problem in those systems is that at the type level it is not possible
+to express the link between particular syntactic structures
+(f-structures in our case) and particular contributions to
+meaning. The extraction of meanings from derivations following the
+Curry-Howard isomorphism that is standard in categorial systems
+demands that the order of syntactic combination coincide with the
+order of semantic combination so that functor-argument relations at
+the syntactic and semantic level are properly aligned.
+</P>
+<P>
+Thus, while the ``propositional skeleton'' of an analysis in our
+system can be seen as a close relative of the corresponding categorial
+semantics derivation in the undirected Lambek calculus, the
+first-order part of our analysis (notably the f, g, and h in the
+example above) explicitly carries the connection between f-structures
+and their contributions to meaning. In this way, we can take advantage
+of the principled description of potential meaning combinations of
+categorial semantics without losing track of the constraints imposed
+by syntax on the possible combinations of those meanings.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  Quantification </HEADER>
+<P>
+Our treatment of quantification, and in particular of quantifier scope
+ambiguity and of the interactions between scope and bound anaphora,
+follows the approach of Pereira
+<REF/>.  It turns out, however, that
+the linear-logic formulation is simpler and easier to justify than
+the earlier analysis, which used an intuitionistic type assignment
+logic.
+</P>
+<P>
+The basic idea for the analysis can be seen as a logical
+counterpart at the glue level of the standard type
+assignment for generalized quantifiers
+ <REF/>. The generalized quantifier meaning of a natural language determiner has the following type, a
+function from two properties, the quantifier's restriction and scope,
+to a proposition:
+<!-- MATH: $(e\rightarrow
+t)\rightarrow (e\rightarrow t) \rightarrow t$ -->
+ <EQN/> At the semantic glue level, we can understand
+that type as follows. For any determiner, if for arbitrary x we can
+construct a meaning R x for the quantifier's restriction, and again
+for arbitrary x we can construct a meaning S x for the
+quantifier's scope, where R and S are properties (functions from
+entities to propositions), then we can construct the meaning Q R Sfor the whole sentence containing the determiner, where Q is the
+meaning of the determiner.  In the following we
+will notate Q R S meaning more perspicuously as 
+<!-- MATH: $Q(z,Rz,Sz)$ -->
+Q(z,Rz,Sz).
+</P>
+<P>
+Assume that we have determined the following semantic structures:
+<!-- MATH: $\IT{restr}$ -->
+<EQN/>
+for the restriction (a common noun phrase),
+<!-- MATH: $\IT{restr-arg}$ -->
+<EQN/>
+for its implicit argument, 
+<!-- MATH: $\IT{scope}$ -->
+<EQN/>
+for the scope
+of quantification, and 
+<!-- MATH: $\IT{scope-arg}$ -->
+<EQN/>
+for the grammatical function
+filled by the quantified noun phrase.  Then the foregoing analysis can
+be represented in linear logic by the following schematic formula:
+ <EQN/> Given the equivalence between 
+<!-- MATH: $A\otimes B\linimp C$ -->
+<EQN/>
+and 
+<!-- MATH: $A\linimp
+(B\linimp C)$ -->
+<EQN/>,
+the propositional part of <CREF/>
+parallels the generalized quantifier type <CREF/>.
+</P>
+<P>
+In addition to providing a semantic type assignment for determiners,
+<CREF/> uses glue language quantification to express how
+the meanings of the restriction and scope of quantification are
+determined and combined into the meaning of the quantified clause.
+The condition 
+<!-- MATH: $\All{ x}\IT{restr-arg} \means x \linimp
+\IT{restr} \means R x$ -->
+<EQN/>
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>    Quantified noun phrase meanings
+</HEADER>
+<P>
+We first demonstrate how the semantic contribution of a quantified
+noun phrase such as every voter is derived.  The following
+annotated phrase structure rule is necessary:
+<EQN/>
+</P>
+<P>
+This rule states that the determiner Det and noun N each contribute to
+the f-structure for the NP.  Lexical specifications ensure that the
+noun contributes the  attribute and its value, and the
+determiner contributes the  attribute and its value.  The
+f-structure for the noun phrase every voter is:
+The semantic contributions of common nouns and determiners were
+described in the previous section.
+</P>
+<P>
+Given those entries, the semantic contributions of every and
+voter in <CREF/> are
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+From these two premises, the semantic contribution for every voter follows:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The propositional part of this contribution corresponds to the
+standard type for noun phrase meanings, 
+<!-- MATH: $(e\rightarrow t)\rightarrow
+t$ -->
+<EQN/>.
+Informally, the whole contribution can be read as follows: if by
+giving the arbitrary meaning x of type e to the argument position
+filled by the noun phrase we can derive the meaning S x of type tfor the semantic structure scope of quantification H, then
+S can be the property that the noun phrase meaning requires as its
+scope, yielding the meaning 
+<!-- MATH: $\IT{every}(z, \IT{voter}(z), Sz)$ -->
+<EQN/>
+for
+H. The quantified noun phrase can thus be seen as providing
+two contributions to an interpretation: locally, a referential
+import x, which must be discharged when the scope of quantification
+is established; and globally, a quantificational import of type
+<!-- MATH: $(e\rightarrow t)\rightarrow t$ -->
+<EQN/>,
+which is applied to the meaning of
+the scope of quantification to obtain a quantified proposition.
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>  Simple example of quantification </HEADER>
+<P>
+Before we look at quantifier scope ambiguity and interactions between
+scope and bound anaphora, we demonstrate the basic operation of our
+proposed representation of the semantic contribution of a determiner.
+We use the  following sentence with a single quantifier and no
+scope ambiguities:
+The premises for the derivation are the semantic
+contributions for Bill and convinced together with the
+contribution derived above for the quantified noun phrase every
+voter:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Giving the name bill-convinced to the formula
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+we have the derivation:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+No derivation of a different formula 
+<!-- MATH: $f_{\sigma} \means_t P$ -->
+<EQN/>
+is
+possible.  The formula bill-convinced represents the semantics of
+the scope of the determiner `every'. The derivable formula 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+could at
+first sight be considered another possible, but erroneous,
+scope. However, the type subscripting of the  relation used in
+the determiner lexical entry requires the scope to represent a
+dependency of a proposition on an individual, while this formula
+represents the dependency of an individual on an individual
+(itself). Therefore, it does not provide a valid scope for the
+quantifier.
+</P>
+</DIV>
+<DIV ID="3.3" DEPTH="2" R-NO="3"><HEADER>  Quantifier scope ambiguities </HEADER>
+<P>
+When a sentence contains more than one quantifier, scope ambiguities
+are of course possible. In our system, those ambiguities will appear
+as alternative successful derivations. We will take as our example the
+ sentence 
+We can derive semantic contributions
+for every candidate and a manager in the way shown in
+ Section <CREF/>.  Further derivations proceed from those contributions together with the contribution of appointed:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+As of yet, we have not made any commitment about the scopes
+of the quantifiers; the <EQN/>'s have not been instantiated.
+Scope ambiguities are manifested in two different ways in our system:
+through the choice of different semantic structures H,
+corresponding to different syntactic choices for where to scope the
+quantifier, or through different relative orders of quantifiers that
+scope at the same point.  For this example, the second case is
+relevant, and we must now make a choice to proceed. The two possible
+choices correspond to two equivalent rewritings of appointed:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+These two equivalent forms correspond to the two possible
+ways of ``currying'' a two-argument function  
+<!-- MATH: $f: \alpha\times
+\beta\rightarrow \gamma$ -->
+<EQN/>
+as one-argument functions: 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We select a manager to take
+narrower scope by using universal instantiation and
+transitivity of implication to combine the
+first form with a-manager to yield
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We have thus the following derivation
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+of the 
+<!-- MATH: $\forall\exists$ -->
+<EQN/>
+reading of ae.
+</P>
+<P>
+Alternatively, we could have chosen every candidate to take
+narrow scope, by combining the second equivalent form of appointed
+with every-candidate to produce:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+This gives the derivation
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+for the 
+<!-- MATH: $\exists\forall$ -->
+<EQN/>
+reading. These are the only two possible
+outcomes of the derivation of a meaning for ae, as required. We
+have used our implementation to verify that no other outcomes are
+possible, since manual verification would be rather laborious.
+</P>
+</DIV>
+<DIV ID="3.4" DEPTH="2" R-NO="4"><HEADER>    Constraints on quantifier scoping
+</HEADER>
+<P>
+ Sentence (<CREF/>) contains two quantifiers and therefore might be expected to show a two-way ambiguity analogous to the one described
+in the previous section:
+</P>
+<P>
+ Every candidate appointed an admirer of his. 
+</P>
+<P>
+However, no such ambiguity is found if the pronoun his
+is taken to corefer with the subject every candidate. In this
+case, only one reading is available, in which an admirer of his
+takes narrow scope.  Intuitively, this noun phrase may not take wider
+scope than the quantifier every candidate, on which its
+restriction depends.
+</P>
+<P>
+As we will soon see, the lack of a wide scope a reading follows
+automatically from our formulation of the semantic contributions of
+quantifiers without further stipulation. In Pereira's earlier work on
+ deductive interpretation <REF/>,<REF/>, the same result was achieved through constraints on the relative scopes of
+glue-level universal quantifiers representing the dependencies between
+meanings of clauses and the meanings of their arguments. Here,
+although universal quantifiers are used to support the extraction of
+properties representing the meanings of the restriction and scope (the
+variables R and S in the determiner lexical entries), the blocking
+of the unwanted reading follows from the propositional structure of
+the glue formulas, specifically the nested linear implications. This
+is more satisfactory, since it does not reduce the problem of proper
+quantifier scoping in the object language to the same problem in the
+metalanguage.
+</P>
+<P>
+The lexical entry for admirer is:
+<EQN/>
+Here, admirer is a relational noun
+taking as its oblique argument a phrase with prepositional marker of, as indicated in the f-structure by the attribute
+OF.  The semantic contribution for a relational noun
+has, as expected, the same propositional form as the binary relation
+type 
+<!-- MATH: $e\times e\rightarrow t$ -->
+<EQN/>:
+one argument is the admirer, and the
+other argument is the admiree.
+</P>
+<P>
+We assume that the semantic projection for the antecedent of the
+pronoun his has been determined by some separate mechanism and
+recorded as the <EQN/>
+attribute of the pronoun's semantic
+ projection. The semantic contribution of the pronoun is, then, a formula that consumes the meaning of its antecedent and then
+reintroduces that meaning, simultaneously assigning it to its own
+semantic projection:
+<EQN/>
+In other words, the semantic contribution of a pronoun
+copies the meaning X of its antecedent as the meaning of the pronoun
+itself.  Since the left-hand side of the linear implication
+``consumes'' the antecedent meaning, it must be reinstated in the
+consequent of the implication.
+</P>
+<P>
+ The f-structure for example (<CREF/>) is, then: 
+<EQN/>
+We will begin by illustrating the derivation of the meaning of an
+admirer of his, starting from the following premises:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+First, we rewrite admirer into the equivalent form
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We can use this formula to rewrite the
+the second conjunct in the consequent of his,
+yielding
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+In turn, the second conjunct in the consequent of admirer-of-his
+matches the first conjunct in the antecedent of a given
+appropriate variable substitutions, allowing us to derive
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+At this point the other formulas available are:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We have thus the meanings of the two quantified noun phrases.  The
+antecedent implication of every-candidate has an atomic
+conclusion and hence cannot be satisfied by
+an-admirer-of-his, which has a conjunctive conclusion.
+Therefore, the only possible move is to combine appointed
+and an-admirer-of-his. We do this by first
+putting appointed in the equivalent form
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+After universal instantiation of Z with X, this
+can be used to rewrite the first conjunct in the consequent of an-admirer-of-his to derive
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Universal instantiation of H and S together with modus
+ponens with the two conjuncts in the consequent as premises yield
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Finally, this formula can be combined with every-candidate
+to give the meaning of the whole sentence:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+In fact, this is the only derivable conclusion, showing that our
+analysis blocks those putative scopings in which variables occur
+outside the scope of their binders.
+</P>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Conclusion </HEADER>
+<P>
+Our approach exploits the f-structure of LFG for syntactic information
+needed to guide semantic composition, and also exploits the
+resource-sensitive properties of linear logic to express the semantic
+composition requirements of natural language.  The use of linear logic
+as the glue language in a deductive semantic framework allows a natural
+treatment of quantification which automatically gives the right
+results for quantifier scope ambiguities and interactions with bound
+anaphora.
+</P>
+<P>
+The analyses discussed here show that our linear-logic encoding of
+semantic compositionality captures the interpretation constraints
+between quantified noun phrases, their scopes and bound
+anaphora. The same basic facts are also accounted for in
+other recent treatments of compositionality, in particular categorial
+analyses with discontinuous constituency connectives
+ <REF/>.  However, we show elsewhere  <REF/> that our approach has advantages over those accounts, in that certain available
+readings of sentences with intensional verbs and quantified noun
+phrases that current categorial analyses cannot derive are readily
+produced in our analysis.
+</P>
+<P>
+Recently, <REF/> independently proposed a
+multidimensional categorial system with types indexed so as to keep
+track of the syntax-semantic connections that we represent with
+<EQN/>.
+Using proof net techniques due to
+<REF/> and <REF/>,
+he maps categorial formulas to first-order clauses similar to our
+semantic contributions, except that the formulas arising from
+determiners lack the embedded implication. Oehrle's system models
+quantifier scope ambiguities in a way similar to ours, but it is not
+clear that it can account correctly for the interactions with
+anaphora, given the lack of implication embedding in the clausal
+representation used.  A full comparison of the two systems is left for
+future work.
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Acknowledgments </HEADER>
+<P>
+We thank Johan van Benthem, Bob Carpenter, Jan van Eijck, Angie
+Hinrichs, David Israel, Ron Kaplan, John Maxwell, Michael Moortgat,
+John Nerbonne, Stanley Peters, Henriette de Swart and an anonymous
+reviewer for discussions and comments.  They are not responsible
+for any remaining errors, and we doubt that they will endorse all our
+analyses and conclusions, but we are sure that the end result is much
+improved for their help.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>    Syntax of the Meaning and Glue Languages
+</HEADER>
+<P>
+The meaning language is based on Montague's
+intensional higher-order logic. In fact, in the present paper we just
+use an extensional fragment with the following syntax:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Terms are typed in the usual way;
+logical connectives such as every and a are
+represented by constants of appropriate type.
+For readability, we will often ``uncurry'' 
+<!-- MATH: $M N_1 \cdots N_m$ -->
+<EQN/>
+as
+<!-- MATH: $M(N_1, \ldots, N_m)$ -->
+<EQN/>.
+Note that we allow variables in the glue
+language to range over meaning terms.
+</P>
+<P>
+The glue language refers to three kinds of terms: meaning terms,
+f-structures, and semantic or <EQN/>-structures. f- and
+<EQN/>-structures are feature structures in correspondence (through
+projections) with constituent structure. Conceptually, feature
+structures are just functions which, when applied to attributes (a set
+of constants), return constants or other feature structures.  In the
+following we let A range over some pre-specified set of attributes.
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Glue-language formulas are built up using linear connectives from
+atomic formulas of the form 
+<!-- MATH: $S \means_{\tau} M$ -->
+<EQN/>,
+whose intended
+interpretation is that the meaning associated with <EQN/>-structure
+S is denoted by term M of type <EQN/>.
+We omit the type subscript
+<EQN/>
+when it can be determined from context.
+</P>
+<P>
+<EQN/>
+</P>
+<DIV ID="6.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Alsina, Alex.
+1993.
+Predicate Composition: A Theory of Syntactic Function
+  Alternations.
+Ph.D. thesis, Stanford University.
+</P>
+<P>
+Barwise, Jon and Robin Cooper.
+1981.
+Generalized quantifiers and natural language.
+Linguistics and Philosophy, 4:159-219.
+</P>
+<P>
+Bresnan, Joan and Jonni M. Kanerva.
+1989.
+Locative inversion in Chichewa: A case study of factorization
+  in grammar.
+Linguistic Inquiry, 20(1):1-50.
+Also in E. Wehrli and T. Stowell, eds., Syntax and Semantics 26:
+  Syntax and the Lexicon. New York: Academic Press.
+</P>
+<P>
+Butt, Miriam.
+1993.
+The Structure of Complex Predicates.
+Ph.D. thesis, Stanford University.
+</P>
+<P>
+Dalrymple, Mary.
+1993.
+The Syntax of Anaphoric Binding.
+Number 36 in CSLI Lecture Notes. Center for the Study of Language and
+  Information.
+</P>
+<P>
+Dalrymple, Mary, John Lamping, and Vijay Saraswat.
+1993.
+LFG semantics via constraints.
+In Proceedings of the Sixth Meeting of the European ACL,
+  University of Utrecht, April. European Chapter of the Association for
+  Computational Linguistics.
+</P>
+<P>
+Dalrymple, Mary, Angie Hinrichs, John Lamping, and Vijay Saraswat.
+1993.
+The resource logic of complex predicate interpretation.
+In Proceedings of the 1993 Republic of China Computational
+  Linguistics Conference (ROCLING), Hsitou National Park, Taiwan, September.
+  Computational Linguistics Society of R.O.C.
+</P>
+<P>
+Dalrymple, Mary, John Lamping, Fernando C. N. Pereira, and Vijay Saraswat.
+1994.
+Intensional verbs without type-raising or lexical ambiguity.
+In Conference on Information-Oriented Approaches to Logic,
+  Language and Computation, Moraga, California. Saint Mary's College.
+To appear.
+</P>
+<P>
+Fenstad, Jens Erik, Per-Kristian Halvorsen, Tore Langholm, and Johan van
+  Benthem.
+1987.
+Situations, Language and Logic.
+D. Reidel, Dordrecht.
+</P>
+<P>
+Gamut, L. T. F.
+1991.
+Logic, Language, and Meaning, volume 2: Intensional Logic and
+  Logical Grammar.
+The University of Chicago Press, Chicago.
+</P>
+<P>
+Girard, J.-Y.
+1987.
+Linear logic.
+Theoretical Computer Science, 45:1-102.
+</P>
+<P>
+Halvorsen, Per-Kristian.
+1983.
+Semantics for Lexical-Functional Grammar.
+Linguistic Inquiry, 14(4):567-615.
+</P>
+<P>
+Halvorsen, Per-Kristian.
+1988.
+Situation Semantics and semantic interpretation in
+  constraint-based grammars.
+In Proceedings of the International Conference on Fifth
+  Generation Computer Systems, FGCS-88, pages 471-478, Tokyo, Japan,
+  November.
+Also published as CSLI Technical Report CSLI-TR-101, Stanford
+  University, 1987.
+</P>
+<P>
+Halvorsen, Per-Kristian and Ronald M. Kaplan.
+1988.
+Projections and semantic description in Lexical-Functional
+  Grammar.
+In Proceedings of the International Conference on Fifth
+  Generation Computer Systems, pages 1116-1122, Tokyo, Japan. Institute for
+  New Generation Systems.
+</P>
+<P>
+Hendriks, Herman.
+1993.
+Studied Flexibility: Categories and Types in Syntax and
+  Semantics.
+ILLC dissertation series 1993--5, University of Amsterdam,
+  Amsterdam, Holland.
+</P>
+<P>
+Hepple, Mark.
+1990.
+The Grammar and Processing of Order and Dependency: a Categorial
+  Approach.
+Ph.D. thesis, University of Edinburgh.
+</P>
+<P>
+Howard, W.A.
+1980.
+The formulae-as-types notion of construction.
+In J.P. Seldin and J.R. Hindley, editors, To H.B. Curry: Essays
+  on Combinatory Logic, Lambda Calculus and Formalism. Academic Press, London,
+  England, pages 479-490.
+</P>
+<P>
+Kaplan, Ronald M.
+1987.
+Three seductions of computational psycholinguistics.
+In Peter Whitelock, Harold Somers, Paul Bennett, Rod Johnson, and
+  Mary McGee Wood, editors, Linguistic Theory and Computer Applications.
+  Academic Press, London, pages 149-188.
+</P>
+<P>
+Kaplan, Ronald M. and Joan Bresnan.
+1982.
+Lexical-Functional Grammar: A formal system for grammatical
+  representation.
+In Joan Bresnan, editor, The Mental Representation of
+  Grammatical Relations. The MIT Press, Cambridge, MA, pages 173-281.
+</P>
+<P>
+Klein, Ewan and Ivan A. Sag.
+1985.
+Type-driven translation.
+Linguistics and Philosophy, 8:163-201.
+</P>
+<P>
+Lambek, Joachim.
+1958.
+The mathematics of sentence structure.
+American Mathematical Monthly, 65:154-170.
+</P>
+<P>
+Miller, Dale A.
+1990.
+A logic programming language with lambda abstraction, function
+  variables and simple unification.
+In Peter Schroeder-Heister, editor, Extensions of Logic
+  Programming, Lecture Notes in Artificial Intelligence. Springer-Verlag.
+</P>
+<P>
+Montague, Richard.
+1974.
+The proper treatment of quantification in ordinary English.
+In Richmond H. Thomason, editor, Formal Philosophy. Yale
+  University Press, New Haven, Connecticut.
+</P>
+<P>
+Moortgat, Michael.
+1988.
+Categorial Investigations: Logical and Linguistic Aspects of the
+  Lambek Calculus.
+Ph.D. thesis, University of Amsterdam, Amsterdam, The Netherlands,
+  October.
+</P>
+<P>
+Moortgat, Michael.
+1992a.
+Generalized quantifiers and discontinuous type constructors.
+In W. Sijtsma and H. van Horck, editors, Discontinuous
+  Constituency. Mouton de Gruyter, Berlin, Germany.
+To appear.
+</P>
+<P>
+Moortgat, Michael.
+1992b.
+Labelled deductive systems for categorial theorem proving.
+In P. Dekker and M. Stokhof, editors, Proceedings of the Eighth
+  Amsterdam Colloquium, pages 403-423, Amsterdam. Institute for Logic,
+  Language and Computation.
+</P>
+<P>
+Morrill, Glyn.
+1990.
+Intensionality and boundedness.
+Linguistics and Philosophy, 13(6):699-726.
+</P>
+<P>
+Morrill, Glyn V.
+1993.
+Type Logical Grammar: Categorial Logic of Signs.
+Studies in Linguistics and Philosophy. Kluwer Academic Publishers,
+  Dordrecht, Holland.
+To appear.
+</P>
+<P>
+Neale, Stephen.
+1990.
+Descriptions.
+The MIT Press, Cambridge, MA.
+</P>
+<P>
+Oehrle, Richard T.
+1993.
+String-based categorial type systems.
+Workshop ``Structure of Linguistic Inference: Categorial and
+  Unification-Based Approaches,'' European Summer School in Logic, Language and
+  Information, Lisbon, Portugal.
+</P>
+<P>
+Pereira, Fernando C. N.
+1990.
+Categorial semantics and scoping.
+Computational Linguistics, 16(1):1-10.
+</P>
+<P>
+Pereira, Fernando C. N.
+1991.
+Semantic interpretation as higher-order deduction.
+In Jan van Eijck, editor, Logics in AI: European Workshop
+  JELIA'90, pages 78-96, Amsterdam, Holland. Springer-Verlag.
+</P>
+<P>
+Pollard, Carl and Ivan A. Sag.
+1987.
+Information-Based Syntax and Semantics, Volume I.
+Number 13 in CSLI Lecture Notes. Center for the Study of Language and
+  Information, Stanford University.
+</P>
+<P>
+Pollard, Carl and Ivan A. Sag.
+1993.
+Head-Driven Phrase Structure Grammar.
+The University of Chicago Press, Chicago.
+</P>
+<P>
+Roorda, Dirk.
+1991.
+Resource Logics: Proof-theoretical Investigations.
+Ph.D. thesis, University of Amsterdam.
+</P>
+<P>
+Saraswat, Vijay A.
+1989.
+Concurrent Constraint Programming Languages.
+Ph.D. thesis, Carnegie-Mellon University.
+Reprinted by MIT Press, Doctoral Dissertation Award and Logic
+  Programming Series, 1993.
+</P>
+<P>
+Saraswat, Vijay A.
+1993.
+A brief introduction to linear concurrent constraint programming.
+Technical report, Xerox Palo Alto Research Center, April.
+</P>
+<P>
+Saraswat, Vijay A. and Patrick Lincoln.
+1992.
+Higher-order, linear concurrent constraint programming.
+Technical report, Xerox Palo Alto Research Center, August.
+</P>
+<P>
+Scedrov, Andre.
+1993.
+A brief guide to linear logic.
+In G. Rozenberg and A. Salomaa, editors, Current Trends in
+  Theoretical Computer Science, pages 377-394. World Scientific Publishing
+  Co.
+</P>
+<P>
+van Benthem, Johan.
+1986.
+Categorial grammar and lambda calculus.
+In D. Skordev, editor, Mathematical Logic and its Application.
+  Plenum Press, New York, New York, pages 39-60.
+</P>
+<P>
+van Benthem, Johan.
+1988.
+The Lambek calculus.
+In Richard T. Oehrle, Emmon Bach, and Deirdre Wheeler, editors,   Categorial Grammars and Natural Language Structures. D. Reidel, Dordrecht,
+  pages 35-68.
+</P>
+<P>
+van Benthem, Johan.
+1991.
+Language in Action: Categories, Lambdas and Dynamic Logic.
+North-Holland, Amsterdam.
+</P>
+<DIV ID="6.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  Xerox Palo
+Alto Research Center Technical Report ISTL-NLTT-1993-06-01. To appear
+in Quantifiers, Deduction, and Context, ed. Makoto Kanazawa,
+Christopher J. Pin, and Henriette de Swart.  Stanford,
+California: Center for the Study of Language and Information, 1994.
+  Xerox PARC, Palo Alto, California.
+  ATT Bell Laboratories, Murray Hill, New Jersey.
+  In fact, we believe
+that the correct
+treatment of the relation between a verb and its arguments requires
+the use of mapping principles specifying the relation between
+the array of semantic arguments required by a verb and their possible
+syntactic realizations
+ <REF/>,<REF/>,<REF/>.  A verb like appoint, for example, might specify that one of its arguments is an agent and the other is a theme.  Mapping principles would then specify
+that agents can be realized as subjects and themes as objects.
+</P>
+<P>
+Here we make the simplifying assumption that the arguments of verbs have
+already been linked to syntactic functions and that this linking is
+represented in the lexicon, since for the examples we will discuss this
+assumption is innocuous.  However, in the case of complex predicates
+this assumption produces incorrect results, as shown by
+<REF/>.  Mapping principles are very naturally incorporated
+into the framework discussed here; see
+<REF/> and <REF/>
+for discussion and illustration.
+  ``An f-structure is locally complete if
+and only if it contains all the governable grammatical functions that
+its predicate governs.  An f-structure is complete if and only
+if all its subsidiary f-structures are locally complete. An
+f-structure is locally coherent if and only if all the
+governable grammatical functions that it contains are governed by a
+local predicate.  An f-structure is coherent if and only if
+all its subsidiary f-structures are locally coherent.''
+ <REF/>, pages 211-212]. 
+  In order to allow for apparent scope ambiguities, we
+adopt a scoping analysis of indefinites, as proposed, for example, by
+<REF/>.
+  The determination of appropriate values for
+<EQN/>
+requires a more more detailed analysis of other linguistic
+constraints on anaphora resolution, which would need further
+projections to give information about, for example, discourse
+relations and salience.
+<REF/> discusses in detail LFG analyses of
+anaphoric binding.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

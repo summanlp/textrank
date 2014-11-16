@@ -1,0 +1,694 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Parsing for Semidirectional Lambek Grammar is NP-Complete</TITLE>
+<ABSTRACT>
+<P>
+We study the computational complexity of the parsing problem
+  of a variant of Lambek Categorial Grammar that we call     semidirectional. In semidirectional Lambek calculus SDL there
+  is an additional non-directional abstraction rule allowing the formula
+  abstracted over to appear anywhere in the premise sequent's
+  left-hand side, thus
+  permitting non-peripheral extraction.
+  SDL grammars are able to generate each context-free language and
+  more than that. We show that the parsing problem for semidirectional
+  Lambek Grammar is NP-complete by a reduction of the 3-Partition
+  problem.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+Categorial Grammar (CG) and in particular Lambek Categorial Grammar
+(LCG) have their well-known benefits for the formal treatment of
+natural language syntax and semantics. The most outstanding of these
+benefits is probably the fact that the specific way, how the complete
+grammar is encoded, namely in terms of `combinatory potentials' of its
+words, gives us at the same time recipes for the construction of
+meanings, once the words have been combined with others to form larger
+linguistic entities. Although both frameworks are equivalent in weak
+generative capacity -- both derive exactly the context-free
+languages --, LCG is superior to CG in that it can cope in a 
+natural way with extraction and unbounded dependency phenomena. For
+instance, no special category assignments need to be stipulated to
+handle a relative clause containing a trace, because it is analyzed,
+via  hypothetical reasoning, like a traceless clause with the trace
+being the hypothesis to be discharged when combined with the relative
+pronoun.
+  Figure <CREF/> illustrates this proof-logical behaviour. Notice that this natural-deduction-style proof in the type
+logic corresponds very closely to the phrase-structure tree one
+would like to adopt in an analysis with traces. We thus can derive
+Bill misses <EQN/>
+as an s from the hypothesis that there
+is a ``phantom'' np in the place of the trace. Discharging the
+hypothesis, indicated by index 1, results in Bill misses being
+analyzed as an s/np from zero hypotheses. Observe, however, that
+such a bottom-up synthesis of a new unsaturated type is only required,
+if that type is to be consumed (as the antecedent of an
+implication) by another type. Otherwise there would be a simpler proof
+without this abstraction. In our example the relative pronoun has such
+a complex type triggering an extraction. 
+</P>
+<P>
+A drawback of the pure Lambek Calculus LMBK is
+that it only allows for so-called `peripheral extraction', i.e., in
+our example the trace should better be initial or final in the
+relative clause. 
+</P>
+<P>
+This inflexibility of Lambek Calculus is one of the reasons why many
+researchers study richer systems today.  
+ For instance, the recent work by Moortgat <REF/> gives a systematic in-depth study of mixed Lambek systems, which integrate the
+systems LMBK, NL, NLP, and LP. These ingredient systems are
+obtained by varying the Lambek calculus along two dimensions: adding
+the permutation rule (P) and/or dropping the assumption that the type
+combinator (which forms the sequences the systems talk about) is
+associative (N for non-associative).
+</P>
+<P>
+Taken for themselves these variants of LMBK are of little use in
+linguistic descriptions. But in Moortgat's mixed system all the
+different resource management modes of the different systems are left
+intact in the combination and can be exploited in different parts of
+the grammar. The relative pronoun which would, for instance,
+receive category 
+<!-- MATH: $(np\bsl np)/(np\llimp s)$ -->
+<EQN/>
+with llimp being
+implication in LP,
+  i.e., it requires as an argument ``an s lacking an npsomewhere''.
+ . 
+</P>
+<P>
+The present paper studies the computational complexity of a variant of
+the Lambek Calculus that lies between LMBK and LP,
+the Semidirectional Lambek Calculus SDL.
+  Since LP derivability is known to be NP-complete, it is interesting
+to study restrictions on the use of the LP operator llimp. A
+restriction that leaves its proposed linguistic applications intact is
+to admit a type <EQN/>
+only as the argument type in functional
+applications, but never as the functor. Stated prove-theoretically
+for Gentzen-style systems, this amounts to disallowing the left rule
+for llimp. Surprisingly, the resulting system SDL can be stated
+without the need for structural rules, i.e., as a monolithic system
+with just one structural connective, because the ability of the
+abstracted-over formula to permute can be directly encoded in the
+right rule for llimp.
+</P>
+<P>
+Note that
+our purpose for studying SDL is not that it might be in any sense
+better suited for a theory of grammar (except perhaps, because of its
+simplicity), but rather, because it exhibits a core of logical
+behaviour that any richer system also needs to include, at least if it
+should allow for non-peripheral extraction. The sources of complexity
+uncovered here are thus a forteriori present in all these richer
+systems as well.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  Semidirectional Lambek Grammar </HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Lambek calculus </HEADER>
+<P>
+The semidirectional Lambek calculus (henceforth SDL) is a variant of
+ J. Lambek's original <REF/> calculus of syntactic types. We start by defining the Lambek calculus and extend it to obtain SDL.
+</P>
+<P>
+Formulae (also called ``syntactic types'') are built 
+from a set of propositional variables (or ``primitive types'') 
+<!-- MATH: $\Bas =
+\{b_1,b_2,\ldots\}$ -->
+<EQN/>
+and the three binary connectives <EQN/>,
+<!-- MATH: $\backslash$ -->
+<EQN/>,
+/, called product, left implication, and   right implication. We use generally capital letters A, B, C,
+...to denote formulae and capitals towards the end of the alphabet
+T, U, V, ...to denote sequences of formulae. The
+concatenation of sequences U and V is denoted by (U,V).
+</P>
+<P>
+The (usual) formal framework of these logics is a Gentzen-style
+sequent calculus. Sequents are pairs (U,A), written as <EQN/>,
+where A is a type and U is a sequence of types.
+  The claim embodied by sequent <EQN/>
+can be read as ``formula A  is derivable from the structured database U''.
+ Figure <CREF/> shows Lambek's original calculus LMBK.  
+</P>
+<P>
+First of all, since we don't need products to obtain our results and
+since they only complicate matters, we eliminate products from
+consideration in the sequel.
+</P>
+<P>
+In Semidirectional Lambek Calculus we add as additional connective the
+LP implication llimp, but equip it only with a right rule.
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Let us define the polarity of a subformula of a sequent 
+<!-- MATH: $A_1,\ldots,A_n\seq A$ -->
+<EQN/>as follows: A has positive polarity, each of Ai have negative
+polarity and if B/C or <EQN/>
+has polarity p, then B also has
+polarity p and C has the opposite polarity of p in the sequent.
+</P>
+<P>
+A consequence of only allowing the 
+<!-- MATH: $\rname{\llimp R}$ -->
+<EQN/>
+rule, which is
+easily proved by induction, is that in any derivable sequent llimp
+may only appear in positive polarity. Hence, llimp may not occur in
+the (cut) formula A of a 
+<!-- MATH: $\rname{Cut}$ -->
+<EQN/>
+application and any
+subformula <EQN/>
+which occurs somewhere in the prove must also
+occur in the final sequent. When we assume the final sequent's RHS to
+be primitive (or llimp-less), then the 
+<!-- MATH: $\rname{\llimp R}$ -->
+<EQN/>
+rule will
+be used exactly once for each (positively) occuring
+llimp-subformula. In other words, 
+<!-- MATH: $\rname{\llimp R}$ -->
+<EQN/>
+may only do
+what it is supposed to do: extraction, and we can directly read off
+the category assignment which extractions there will be. 
+</P>
+<P>
+We can show Cut Elimination for this calculus by a straight-forward
+adaptation of the Cut elimination proof for LMBK. We omit the proof
+for reasons of space.
+<EQN/>
+</P>
+<P>
+The cut-free system enjoys, as usual for Lambek-like logics, the   Subformula Property: in any proof only subformulae of the goal
+sequent may appear.
+</P>
+<P>
+In our considerations below we will make heavy use of the well-known
+ count invariant for Lambek systems <REF/>, which is an expression of the resource-consciousness of these logics. 
+Define <EQN/>
+(the b-count of A), a function counting
+positive and negative occurrences of primitive type b in an
+arbitrary type A, to be 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The invariant now states that for any primitive b, the b-count of
+the RHS and the LHS of any derivable sequent are the same. By noticing
+that this invariant is true for Ax and is preserved by the
+rules, we immediately can state:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Let us in parallel to SDL consider the fragment of it in which
+<!-- MATH: $\rname{/R}$ -->
+<EQN/>
+and 
+<!-- MATH: $\rname{\bsl R}$ -->
+<EQN/>
+are disallowed. We call this
+fragment SDLM. Remarkable about this fragment is that any positive
+occurrence of an implication must be llimp and any negative one
+must be / or <EQN/>.
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  Lambek Grammar </HEADER>
+<P>
+<EQN/>
+</P>
+<P>
+We extend the lexical map l to nonempty strings of terminals by
+setting 
+<!-- MATH: $l(w_1 w_2 \ldots w_n) := l(w_1) \times l(w_2) \times \ldots
+\times l(w_n)$ -->
+<EQN/>
+for 
+<!-- MATH: $w_1 w_2 \ldots w_n\in\Sigma^+$ -->
+<EQN/>.
+</P>
+<P>
+The language generated by a Lambek grammar
+<!-- MATH: $G=\tup{\Sigma,\F,b_S,l}$ -->
+<EQN/>
+is defined as the set of all strings 
+<!-- MATH: $w_1
+w_2\ldots w_n\in\Sigma^+$ -->
+<EQN/>
+for which there exists a sequence of types
+<!-- MATH: $U\in l(w_1 w_2 \ldots w_n)$ -->
+<EQN/>
+and 
+<!-- MATH: $\lprove
+U\seq b_S$ -->
+<EQN/>.
+We denote this language by L(G).
+</P>
+<P>
+An SDL-grammar is defined exactly like a Lambek grammar, except that
+<EQN/>
+replaces <EQN/>.
+</P>
+<P>
+Given a grammar G and a string 
+<!-- MATH: $w=w_1 w_2 \ldots w_n$ -->
+<EQN/>,
+the parsing (or recognition) problem asks the 
+question, whether w is in L(G).
+</P>
+<P>
+It is not immediately obvious, how the generative capacity of
+SDL-grammars relate to Lambek grammars or nondirectional Lambek
+grammars (based on calculus LP). Whereas Lambek grammars generate
+exactly the context-free languages (modulo the missing empty word)
+ <REF/>, the latter generate all permutation closures of  context-free languages <REF/>. This excludes many context-free or even regular languages, but includes some
+context-sensitive ones, e.g., the permutation closure of 
+<!-- MATH: $a^n b^n
+c^n$ -->
+a[n] b[n]
+c[n]. 
+</P>
+<P>
+Concerning SDL, it is straightforward to show that all context-free
+languages can be generated by SDL-grammars.
+</P>
+<P>
+<EQN/>
+We can use a the standard transformation of an arbitrary cfr. grammar 
+<!-- MATH: $G=\tup{N,T,P,S}$ -->
+<EQN/>
+to a categorial grammar G'. Since llimp does
+not appear in G' each SDL-proof of a lexical assignment must be
+also an LMBK-proof, i.e. exactly the same strings are judged grammatical
+by SDL as are judged by LMBK.
+</P>
+<P>
+Note that since 
+the 
+<!-- MATH: $\{\rname{Ax},\rname{/L},\rname{\bsl L}\}$ -->
+<EQN/>
+subset of LMBK already
+accounts for the cfr. languages, this observation extends to SDLM.
+</P>
+<P>
+Moreover, some languages which are not context-free can also be
+generated. 
+</P>
+<P>
+Example.
+Consider the following grammar G for the language 
+<!-- MATH: $a^n b^n c^n$ -->
+a[n] b[n] c[n].
+We use primitive types 
+<!-- MATH: $\Bas=\{b,c,x,y,z\}$ -->
+<EQN/>
+and define the lexical map
+for 
+<!-- MATH: $\Sigma=\{a,b,c\}$ -->
+<EQN/>
+as follows:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The distinguished primitive type is x. To simplify the
+argumentation, we abbreviate types as indicated above.
+</P>
+<P>
+Now, observe that a sequent <EQN/>,
+where U is the image of some
+string over <EQN/>,
+only then may have balanced primitive counts, if
+U contains exactly one occurrence of each of A2, B2 and C2(accounting for the one supernumerary x and balanced y and zcounts) and for some number <EQN/>,
+n occurrences of each of
+A1, B1, and C1 (because, resource-oriented speaking, each
+Bi and Ci ``consume'' a b and c, resp., and each Ai``provides'' a pair b, c). Hence, only strings containing the same
+number of a's, b's and c's may be produced. Furthermore, due to
+the Subformula Property we know that in a cut-free proof of <EQN/>,
+the main formula in abstractions (right rules) may only be either
+<!-- MATH: $c\llimp(b\llimp X)$ -->
+<EQN/>
+or 
+<EQN/>,
+where 
+<!-- MATH: $X\in\{x,y\}$ -->
+<EQN/>,
+since all other implication types
+have primitive antecedents. 
+Hence, the LHS of any sequent in the proof must be a subsequence of
+U, with some additional b types and c types interspersed. But
+then it is easy to show that U can only be of the form
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+since any / connective in U needs to be introduced via
+<!-- MATH: $\rname{/L}$ -->
+<EQN/>.
+</P>
+<P>
+It remains to be shown, that there is actually a proof for such a
+ sequent. It is given in Figure <CREF/>. 
+</P>
+<P>
+The sequent marked with <EQN/>
+is easily seen to be derivable without
+abstractions.
+</P>
+<P>
+A remarkable point about SDL's ability to cover this language is
+that neither LMBK nor LP can generate it. Hence, this example
+ substantiates the claim made in <REF/> that the inferential capacity of mixed Lambek systems may be greater than the sum of its
+component parts. Moreover, the attentive reader will have noticed that
+our encoding also extends to languages having more groups of nsymbols, i.e., to languages of the form 
+<!-- MATH: $a_1^n a_2^n\ldots a_k^n$ -->
+<EQN/>.
+</P>
+<P>
+Finally, we note in passing that for this grammar the rules
+<!-- MATH: $\rname{/R}$ -->
+<EQN/>
+and 
+<!-- MATH: $\rname{\bsl R}$ -->
+<EQN/>
+are irrelevant, i.e. that it is at
+the same time an SDLM grammar.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  NP-Completeness of the Parsing Problem </HEADER>
+<P>
+We show that the Parsing Problem for SDL-grammars is NP-complete by a
+reduction of the 3-Partition Problem to it.
+</P>
+<P>
+Here is our reduction. Let 
+<!-- MATH: $\Gamma=\tup{\A,m,N,s}$ -->
+<EQN/>
+be a given 3-Partition
+instance. For notational convenience we abbreviate
+<!-- MATH: $(\ldots((A/B_1)/B_2)/\ldots)/B_n$ -->
+<EQN/>
+by 
+<!-- MATH: $A/B_n\bullet
+\ldots\bullet B_2\bullet B_1$ -->
+<EQN/>
+and similarly 
+<!-- MATH: $B_n\llimp(\ldots
+(B_1\llimp A)\ldots)$ -->
+<EQN/>
+by 
+<!-- MATH: $B_n\bullet
+\ldots\bullet B_2\bullet B_1\llimp A$ -->
+<EQN/>,
+but note that this is just an
+abbreviation in the product-free fragment. Moreover the notation A[k]stands for
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We then define the SDL-grammar 
+<!-- MATH: $G_{\Gamma}=\tup{\Sigma,\F,b_S,l}$ -->
+<EQN/>
+as
+follows: 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The word we are interested in is 
+<!-- MATH: $v\, w_1\, w_2\, \ldots w_{3m}$ -->
+<EQN/>.
+We
+do not care about other words that might be generated by 
+<!-- MATH: $G_{\Gamma}$ -->
+<EQN/>.
+Our claim now is that a given 3-Partition problem <EQN/>
+is solvable
+if and only if 
+<!-- MATH: $v\, w_1 \ldots w_{3m}$ -->
+<EQN/>
+is in 
+<!-- MATH: $L(G_{\Gamma})$ -->
+<EQN/>.
+We consider each direction in turn.
+</P>
+<P>
+<EQN/>
+We have to show, when given a solution to <EQN/>,
+how to choose a
+type sequence 
+<!-- MATH: $U\in l(v w_1 \ldots w_{3m})$ -->
+<EQN/>
+and construct an SDL proof
+for <EQN/>.
+Suppose 
+<!-- MATH: $\A=\{a_1,a_2,\ldots,a_{3m}\}$ -->
+<EQN/>.
+From a given
+solution (set of triples) 
+<!-- MATH: $\A_1, \A_2, \ldots, \A_m$ -->
+<EQN/>
+we can compute in
+polynomial time a mapping k that sends the index of an element to
+the index of its solution triple, i.e., k(i)=j iff 
+<!-- MATH: $a_i\in \A_j$ -->
+<EQN/>.
+To
+obtain the required sequence U, we simply choose for the witerminals the type 
+<!-- MATH: $d/d\bullet b_{k(i)}\bullet c_{k(i)}^{s(a_i)}$ -->
+<EQN/>(resp. 
+<!-- MATH: $d/b_{k(3m)}\bullet c_{k(3m)}^{s(a_{3m})}$ -->
+<EQN/>
+for w3m).
+Hence the complete sequent to solve is:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Let 
+<!-- MATH: $a/B_0, B_1,\ldots B_{3m}\seq a$ -->
+<EQN/>
+be a shorthand for (*), and let
+X stand for the sequence of primitive types 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Using rule 
+<!-- MATH: $\rname{/L}$ -->
+<EQN/>
+only, we can obviously prove 
+<!-- MATH: $B_1,\ldots
+B_{3m},X\seq d$ -->
+<EQN/>.
+Now, applying 
+<!-- MATH: $\rname{\llimp R}$ -->
+<EQN/>
+3m+Nm times we can obtain
+<!-- MATH: $B_1,\ldots B_{3m}\seq B_0$ -->
+<EQN/>,
+since there are in total, for each i, 3 bi and N ci in X.
+As final step we have
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+which completes the proof.
+</P>
+<P>
+<EQN/>
+Let 
+<!-- MATH: $v\, w_1 \ldots w_{3m}\in L(G_{\Gamma})$ -->
+<EQN/>
+and 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+be a witnessing derivable sequent, i.e., for 
+<!-- MATH: $1\leq i\leq 3m$ -->
+<EQN/>,
+<!-- MATH: $B_i\in
+l(w_i)$ -->
+<EQN/>.
+Now, since the counts of this sequent must be balanced, the
+sequence 
+<!-- MATH: $B_1,\ldots B_{3m}$ -->
+<EQN/>
+must contain for each 
+<!-- MATH: $1\leq j\leq m$ -->
+<EQN/>
+exactly 3 bj and exactly N cj as subformulae.
+Therefore we 
+can read off the solution to <EQN/>
+from this sequent by including
+in <EQN/>
+(for 
+<!-- MATH: $1\leq j\leq m$ -->
+<EQN/>)
+those three ai for which Bihas an occurrence of bj, say these are aj(1), aj(2) and
+aj(3). We verify, again via balancedness of the primitive counts,
+that 
+<!-- MATH: $s(a_{j(1)})+s(a_{j(2)})+s(a_{j(3)})=N$ -->
+s(aj(1))+s(aj(2))+s(aj(3))=N holds, 
+because these are the numbers of positive and negative occurrences of
+cj in the sequent. This completes the proof.
+</P>
+<P>
+The reduction above proves NP-hardness of the parsing problem. We need
+strong NP-completeness of 3-Partition here, since our 
+reduction uses a unary encoding. Moreover, the
+parsing problem also lies within NP, since for a given grammar Gproofs are linearly bound by the length of the string and hence, we
+can simply guess a proof and check it in polynomial time. Therefore we
+can state the following:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Finally, we observe that for this reduction  the rules
+<!-- MATH: $\rname{/R}$ -->
+<EQN/>
+and 
+<!-- MATH: $\rname{\bsl R}$ -->
+<EQN/>
+are again irrelevant and that we can
+extend this result to SDLM.
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Conclusion </HEADER>
+<P>
+We have defined a variant of Lambek's original calculus of types that
+allows  abstracted-over categories to freely permute. Grammars based
+on SDL can generate any context-free language and more than that.
+The parsing problem for SDL, 
+however, we have shown to be NP-complete. This result indicates that
+efficient parsing for grammars that allow for large numbers of
+unbounded dependencies from within one node may be problematic, even
+in the categorial framework. 
+Note that the fact, that this problematic case doesn't show up in
+the correct analysis of normal NL sentences, doesn't mean that a
+parser wouldn't have to try it, unless some arbitrary bound to that
+number is assumed. 
+For practical grammar engineering one can devise the motto avoid
+  accumulation of unbounded dependencies by whatever means.
+</P>
+<P>
+On the theoretical side we think that this result for SDL is
+also of some importance, since SDL exhibits a core of
+logical behaviour that any (Lambek-based) logic must have which accounts
+for non-peripheral extraction by some form of permutation. And hence,
+this result increases our understanding of the necessary computational
+properties of such richer systems. To
+  our knowledge the question, whether the Lambek 
+  calculus itself or its associated parsing problem are NP-hard, are
+  still open.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+J. van Benthem.
+The Lambek Calculus.
+In R. T. O. et al. (Ed.), Categorial Grammars and Natural
+  Language Structures, pp. 35-68. Reidel, 1988.
+</P>
+<P>
+M. R. Garey and D. S. Johnson.
+Computers and Intractability--A Guide to the Theory
+  of NP-Completeness.
+Freeman, San Francisco, Cal., 1979.
+</P>
+<P>
+J.-Y. Girard.
+Linear Logic.
+Theoretical Computer Science, 50(1):1-102, 1987.
+</P>
+<P>
+E. Knig.
+LexGram - a practical categorial grammar formalism.
+In Proceedings of the Workshop on Computational Logic for
+  Natural Language Processing. A Joint COMPULOGNET/ELSNET/EAGLES Workshop,
+  Edinburgh, Scotland, April 1995.
+</P>
+<P>
+J. Lambek.
+The Mathematics of Sentence Structure.
+American Mathematical Monthly, 65(3):154-170, 1958.
+</P>
+<P>
+P. Lincoln and T. Winkler.
+Constant-Only Multiplicative Linear Logic is NP-Complete.
+Theoretical Computer Science, 135(1):155-169, Dec. 1994.
+</P>
+<P>
+M. Moortgat.
+Residuation in Mixed Lambek Systems.
+In M. Moortgat (Ed.), Lambek Calculus. Multimodal and
+  Polymorphic Extensions, DYANA-2 deliverable R1.1.B. ESPRIT, Basic Research
+  Project 6852, Sept. 1994.
+</P>
+<P>
+G. Morrill.
+Type Logical Grammar: Categorial Logic of Signs.
+Kluwer, 1994.
+</P>
+<P>
+M. Pentus.
+Lambek grammars are context free.
+In Proceedings of Logic in Computer Science, Montreal,
+  1993.
+</P>
+<DIV ID="4.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  The Lambek calculus with permutation LP is also called
+ the ``nondirectional Lambek calculus'' <REF/>. In it the leftward and rightward implication collapse.
+   Morrill <REF/> achieves the same effect with a   permutation modality <EQN/>
+applied to the np gap:
+<!-- MATH: $(s/\triangle np)$ -->
+<EQN/>
+  This name was coined by Esther Knig-Baumer, who employs a
+   variant of this calculus in her LexGram system <REF/> for   practical grammar development.
+   It should be pointed out
+ that the resource management in this calculus is very closely
+ related to the handling and interaction of local valency and
+ unbounded dependencies in HPSG.
+ The latter being handled with set-valued features  SLASH, 
+   QUE and  REL essentially emulates the permutation
+ potential of abstracted categories in semidirectional Lambek
+ Grammar. A more detailed analysis of the relation between HPSG and
+  SDL is given in <REF/>. 
+   In contrast to Linear Logic <REF/> the order of   types in U is essential, since the structural rule of permutation
+  is not assumed to hold. Moreover, the fact that only a single
+  formula may appear on the right of <EQN/>,
+make the Lambek calculus
+  an intuitionistic fragment of the multiplicative fragment of
+  non-commutative propositional Linear Logic.
+   A similar reduction has been used in <REF/> to show   that derivability in the multiplicative fragment of propositional
+  Linear Logic with only the connectives llimp and lltensor
+  (equivalently Lambek calculus with permutation LP) is
+  NP-complete.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

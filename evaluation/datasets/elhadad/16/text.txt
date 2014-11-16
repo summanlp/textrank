@@ -1,0 +1,213 @@
+
+
+                     In Victorian time Michael Faraday gingerly
+                     liquefied gase inside thick-walled glass
+                     tube. By World War I, ingenuity and
+                     boldness of design allowed Harvard' Percy W.
+                     Bridgman to reach much higher pressure along
+                     semi-industry lines. His large press
+                     disclosed innumerable new phase in familiar
+                     condensed matter, most famously several new
+                     crystalline phase of H2O.  Eventually he came
+                     to water ice VI, which at the highest
+                     pressure of the time remained an ice solid
+                     even at the temperature of a very hot kitchen
+                     oven.
+
+                     The price of this mastery was not low: in
+                     1922 a pressure container failed, steel flew
+                     like shrapnel and two men were killed,
+                     although the Harvard laboratory went on
+                     safely for decade more. Step by step,
+                     industry developed high-pressure technology
+                     for large-scale synthes. The most important
+                     early product was ammonia, made in the
+                     million of ton by reacting hydrogen and
+                     nitrogen gase at modest pressure. The most
+                     celebrated is synthes diamond, by now a
+                     high-pressure commodity.
+
+                     Set some simple marker along the pressure
+                     scale. Infant breath and puff their cheeks,
+                     displaying small change in local air
+                     pressure. Mountaintop lure other among us
+                     into pressure lower by a factor of two or
+                     so. The weather bring stay-at-homes
+                     incessant , less noticeable variation in
+                     pressure, but sea-level air still afford us
+                     a meaningful natural unit. Call the typical
+                     pressure at sea level one atmosphere.
+
+                     Like many another kid, I was disappointed
+                     year ago by the poor result of taking a
+                     long rubber tube into the pool, in an attempt
+                     to tap surface air for breath on the
+                     bottom. No way! The added weight of even a
+                     foot of water is too much for chest muscles.
+                     To breath at any depth underwater, you need
+                     either to be housed within some sealed
+                     submersible or to sip breath of air fed from
+                     a portable tank at regulated matching
+                     pressure. That is SCUBA-self-contained
+                     underwater breath apparatus.
+
+                     The ocean define a second natural pressure
+                     marker. Call 1,000 atmosphere one "ocean,"
+                     by analogy. That value is a ballpark fit to
+                     seawater pressure six mile down in the
+                     deepest undersea trenches. The earliest
+                     physical successe called for pressures
+                     reaching one ocean or so, and the ice for
+                     pressure half a dozen time greater. The
+                     diamond appeared after World War II up at 50
+                     or 100 oceans, at which graphite dissolved in
+                     molten metal at white heat crystallize to
+                     diamond. Such condition have become routine
+                     in the special multiton presse that yield
+                     synthetic diamond around the world.
+
+                     Solid rock is denser than water, and our
+                     planet' center lie a decisive 1,000 times
+                     deeper than the average-depth sea bottom. We
+                     can plausibly define a third natural
+                     benchmark for core pressures, one equal to
+                     1,000 ocean of 1,000 atmosphere each, or a
+                     million atmospheres. Calling one atmosphere
+                     by the crisper name "bar," it informal
+                     equivalent, we use it multiple, one megabar,
+                     as a convenient unit for describing the
+                     tremendou pressure at the core.
+
+                     It turn out to be surprisingly easy to
+                     estimate the pressure so deep down. The
+                     symmetrical Newtonian pull of all the
+                     interior part on all the layer above
+                     compact Earth into a near sphere. Even the
+                     expected increase in density as depth
+                     approache the center has at most a modest
+                     effect on a calculation that treat the globe
+                     as a uniform fluid. The central pressure
+                     approximate the simple product of three
+                     well-known quantities: the average density of
+                     Earth; the planet' radius; and the familiar
+                     constant g, the value of surface gravity
+                     signaled by every apple that falls. That
+                     central pressure is reliably estimated at
+                     about four megabar whatever the internal
+                     composition, if only all the strata are both
+                     stable (not undermined by vast buried
+                     caverns) and uniform from place to place,
+                     differing only as their depth differs. What
+                     is down there anyhow? This rich question
+                     bear strongly on the literal root of all
+                     geology.
+
+                     Can we proceed with theory alone as guide?
+                     Can we ignore unknown minerals and fluids,
+                     some sure to be as strange as hot ice was?
+                     The geophysicist wisely chose to experiment.
+                     One megabar of pressure was first reached 20
+                     year ago at the Geophysical Laboratory of
+                     the Carnegie Institution of Washington. That
+                     lab and other can now summon the conditions
+                     of Hade itself right to the bench top.
+
+                     The megabar apparatu in no way resemble the
+                     heavy, house-size hydraulic presse of old,
+                     stowed behind safety wall and served by a
+                     team of cautiou engineers. It resemble more
+                     a top-of-the-line research microscope in the
+                     precision machining of it minute, elegant
+                     part and is not unlike it as well in bulk,
+                     weight and cost. No monster machine at all,
+                     this device is mostly made in house by a few
+                     master machinist as the prized tool of a few
+                     physicists.
+
+                     How do they evade danger, weight and expense?
+                     Pressure is a local quantity. Even a handheld
+                     steel sewing needpushed firmly into a surface
+                     can exert oceanic pressure if only over a
+                     tiny area. Megabar of pressure in a minute
+                     container, a tenth of a millimeter on edge,
+                     store up something like the energy released
+                     by a pencil falling off the workbench. If
+                     that holder fractures, expect only a small
+                     pop, a source more of sharp fiscal pain than
+                     of physical injury. Work small; a
+                     miniature-scale apparatu produce pressure
+                     to match a planet' core simply by
+                     hand-tightening a single bolt!
+
+                     But can you learn about Earth' center from
+                     so small a sample? Indeed you can, for matter
+                     is atomic. Its propertie are well developed
+                     whenever sufficient atom are present long
+                     enough to arrange themselve as the laws
+                     require. That small pressure vessel holds
+                     some million billion atoms, more than enough
+                     to allow matter to fulfill its subtlest
+                     intentions. A few microgram are ineffective
+                     for making diamond commercially but
+                     brilliantly suited to yield knowledge.
+
+                     How will you learn what happen to matter
+                     compressed under megabar? First, use a
+                     transparent container, just as Faraday did.
+                     Probe it adroitly with infrared and optical
+                     lasers, with x-rays, neutrons, microwaves,
+                     even sound. Tight, high-intensity beam may
+                     be needed for a scant sample; for x-ray
+                     diffraction studies, the geophysicist often
+                     subject their pressure cell to a fierce
+                     synchrotron source. The limit are set mainly
+                     by the changing state of condensed-matter
+                     physics.
+
+                     How to contain the sample? Squeeze it inside
+                     a tiny box of the hardest stuff known,
+                     diamond. Find two flawless gems-single
+                     crystal selected for purity and
+                     extratransparency-then cut in facet to
+                     order. Less than one carat in weight, they
+                     will be dear but affordable. Align the tip
+                     end of the two truncated diamond cone with
+                     a thin ring gasket of steel alloy held
+                     between the two tiny flattened tips. The
+                     sample is confined within the hole in the
+                     gasket. Press diamond hard against diamond,
+                     and the whole assembly seal tight.
+
+                     Megabar come easily. A diamond-diamond total
+                     force of only a couple of hundred kilograms
+                     is adequate, for that force is concentrated
+                     over an extremely small area. Up-to-date
+                     diamond-anvil cell may have contact faces
+                     only a thirtieth of a millimeter across.
+                     Sophisticated mounting design and virtuoso
+                     fabrication keep the gem nearly parallel for
+                     final optical alignment. Cryogenic cooling
+                     and resistance heating are both quite
+                     manageable.
+
+                     The theorist opine that at about 12
+                     megabar, diamond undergoe a change in
+                     phase, and some anvil will break. That limit
+                     is still ahead. About half that pressure is
+                     expected to be enough to press molecular
+                     hydrogen into hydrogen metal, a goal that has
+                     long eluded the labs. In the past few months
+                     there has been a credible report of making
+                     the metal hydrogen using a big, noisy gas
+                     gun, but the stuff lasted the mere
+                     microsecond it took a shock wave to cross
+                     the cryogenic hydrogen target.
+
+                     Fortune may favor us with some new anvil
+                     substance harder than pure diamond, so we
+                     will be able to see the luster of that
+                     simplest of metals. In this subtle corner of
+                     condensed-matter physics, the pressure of a
+                     planet's core is literally at hand, through
+                     an art once awkward but now as harmonious as
+                     a quiet song.

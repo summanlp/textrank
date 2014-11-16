@@ -1,0 +1,765 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>The Semantics of Resource Sharing inLexical-Functional
+Grammar</TITLE>
+<ABSTRACT>
+<P>
+We argue that the resource sharing that is commonly manifest
+  in semantic accounts of coordination is instead appropriately
+  handled in terms of structure-sharing in LFG
+  f-structures.  We provide an extension to the previous
+   account of LFG semantics <REF/> according to which   dependencies between f-structures are viewed as
+  resources; as a result a one-to-one correspondence between uses
+  of f-structures and meanings is maintained.  The
+  resulting system is sufficiently restricted in cases where
+  other approaches overgenerate; the very property of
+  resource-sensitivity for which resource sharing appears to be
+  problematic actually provides explanatory advantages over
+  systems that more freely replicate resources during derivation.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+The resource-based approach to semantic composition in
+Lexical-Functional Grammar (LFG) obtains the interpretation for a
+phrase via a logical deduction, beginning with the
+ interpretations of its parts as premises <REF/>.  The resource-sensitive system of linear logic is used to
+compute meanings in accordance with relationships manifest in LFG
+f-structures.  The properties of the system ensure that
+meanings are used exactly once, allowing coherence and completeness conditions on f-structures
+ <REF/> to be maintained. 
+</P>
+<P>
+However, there are cases where a single constituent appears to
+yield more than one contribution to the meaning of an utterance.
+This is most obvious in, but is not limited to, sentences
+ involving coordination.  In example (<CREF/>), for instance, NAFTA is the object of two different verbs:
+</P>
+<P>
+Bill supported, and Hillary opposed, NAFTA.
+   Since the hallmark of the linear logic approach is to ensure that
+f-structure contributions are utilized exactly once in a
+derivation, such constructions would at first glance appear to be
+problematic for the approach.
+</P>
+<P>
+We argue that the resource sharing that is commonly manifest in
+the treatment of coordination in other approaches is
+appropriately handled by exploiting the structure-sharing in LFG
+f-structures. We refine our previous analysis to account
+for cases where an f-structure is reached by multiple
+paths from an enclosing f-structure.
+</P>
+<P>
+Dalrymple et al. <REF/> provides an account of LFG
+semantics that represents the meaning of lexical items with
+linear logic formulas.  These formulas manipulate basic
+assertions of the form 
+<!-- MATH: $f_{\sigma} \makebox[1.2em]{$\leadsto$ }M$ -->
+<EQN/>,
+for f-structures f and meaning logic terms M.  Here
+<EQN/>
+is a mapping, the semantic projection, that
+relates f-structures to semantic structures. To
+distinguish between multiple paths entering an
+f-structure, we now take <EQN/>
+to map from sets of
+paths in f-structures to semantic structures.  Further,
+the paths between f-structures are made available in the
+semantic space as resources.  This makes it possible for the
+semantic formulas to exploit information about the multiple paths
+into an f-structure in order to account for the multiple
+uses of the f-structure's semantic contribution.  The
+resulting system is sufficiently restricted in cases where other
+approaches overgenerate; the very property of
+resource-sensitivity for which resource sharing appears to be
+problematic actually provides explanatory advantages over systems
+that more freely replicate resources during derivation.
+</P>
+<P>
+ In Section <CREF/>, we review previous approaches to the semantics of coordination and argument sharing, and make note of some
+of their drawbacks.  We describe the revised semantic framework in
+ Section <CREF/>, and work through several examples of non-constituent coordination (specifically, right-node raising) in
+ Section <CREF/>.  We discuss examples involving intensional  verbs in Section <CREF/>. 
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    Previous Work
+</HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Combinatory Categorial Grammar </HEADER>
+<P>
+Steedman
+<REF/>,
+working in the framework of Combinatory Categorial Grammar (CCG),
+presents what is probably the most adequate analysis of
+non-constituent coordination to date.  As noted by Steedman and
+discussed by Oehrle <REF/>, the addition of the rule
+of function composition to the inventory of syntactic rules in
+Categorial Grammar enables the formation of constituents with
+right-peripheral gaps, providing a basis for a clean treatment of
+cases of right node raising as exemplified by sentence
+ (<CREF/>).  Such examples are handled by a coordination schema which allows like categories to be conjoined, shown in
+ (<CREF/>). 
+</P>
+<P>
+Coordination: X  CONJ X 
+<!-- MATH: $\Rightarrow$ -->
+<EQN/>
+X
+  This schema gives rise to various actual rules whose semantics depends
+on the number of arguments that the shared material takes.  For the
+cases of RNR considered here, the rule has the form shown in
+ (<CREF/>). (coordination)
+ X/Y:F   CONJ:   X/Y:G  
+<!-- MATH: $\Rightarrow$ -->
+<EQN/>X/Y:
+<!-- MATH: $\lambda x.(Fx \ Gx)$ -->
+<EQN/>
+   The contraction from 
+<!-- MATH: $\lambda x.Fx$ -->
+<EQN/>
+and 
+<!-- MATH: $\lambda x.Gx$ -->
+<EQN/>
+to 
+<!-- MATH: $\lambda x.(Fx
+\ Gx)$ -->
+<EQN/>
+in this rule allows for the single argument to be utilized
+twice.
+</P>
+<P>
+As noted by Hudson <REF/>, however, not all
+examples of RNR involve coordinate structures:
+</P>
+<P>
+Citizens who support, paraded against politicians who
+ oppose, two trade bills.  Obviously, such cases fall outside of the purview of the coordination
+schema.  An analysis for this sentence is available in the CCG
+framework by the addition of the xsubstitute combinator
+(Steedman, p.c.), as defined in Steedman
+<REF/>.
+([xsubstitute)
+Y/Z:G (X
+<!-- MATH: $\backslash$ -->
+<EQN/>Y)/Z:F 
+<!-- MATH: $\Rightarrow$ -->
+<EQN/>
+X/Z: 
+<!-- MATH: $\lambda x.(Fx (Gx))$ -->
+<EQN/>
+The use of this combinator assimilates cases of noncoordinate RNR to
+cases involving parasitic gaps.
+</P>
+<P>
+ While this approach has some drawbacks, we do not offer a competing analysis of  the syntax of sentences like (   <CREF/>) here.  Rather, we seek an analysis of RNR (and of resource sharing in general) that is
+uniform in the semantics; such a treatment isn't available in CCG
+because of its tight integration between syntax and semantics.
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>    Partee and Rooth
+</HEADER>
+<P>
+Perhaps the most influential and widely-adopted semantic treatment of
+coordination is the approach of Partee and Rooth
+<REF/>.
+They propose a generalized conjunction scheme in which conjuncts of
+the same type can be combined.  As is the case with Steedman's
+operators, contraction inherent in the schema allows for a single
+shared argument to be distributed as an argument of each conjunct.
+Type-lifting is allowed to produce like types when necessary; the
+combination of the coordination scheme and type-lifting can have the
+effect of `copying' an argument of higher type, such as a quantifier
+in the case of coordinated intensional verbs.  They propose a
+`processing strategy' requiring that expressions are interpreted at
+the lowest possible type, with type-raising taking place only where
+necessary.
+</P>
+<P>
+To illustrate, Partee and Rooth assume that extensional verbs such as
+find are entered in the lexicon with basic type 
+<!-- MATH: $\langle e,
+\langle e, t\rangle \rangle$ -->
+<EQN/>,
+whereas intensional verbs like want, which require a quantifier as an argument, have type 
+<!-- MATH: $\langle
+\langle
+\langle e, t\rangle , t\rangle , \langle e, t\rangle \rangle$ -->
+<EQN/>(ignoring intensionality).  Two
+extensional verbs such as find and support are
+coordinated at their basic types:
+</P>
+<P>
+find and support (type 
+<!-- MATH: $\langle e, \langle e,
+t\rangle \rangle$ -->
+<EQN/>):
+</P>
+<P>
+<!-- MATH: $\lambda y. \lambda x. [find(x, y) \wedge support(x, y)]$ -->
+<EQN/>
+Two intensional verbs such as want and seek are also
+coordinated at their basic (higher) types:
+</P>
+<P>
+want and seek (type 
+<!-- MATH: $\langle \langle \langle e, t\rangle ,
+t\rangle , \langle e, t\rangle \rangle$ -->
+<EQN/>):
+</P>
+<P>
+<!-- MATH: $\lambda {\cal P}. \lambda x. [want(x, {\cal P}) \wedge seek(x, {\cal
+P})]$ -->
+<EQN/>
+The argument to this expression is a quantified NP.  When an
+intensional and an extensional verb are coordinated, the extensional
+verb must be type-raised to promote it to the type of the intensional
+verb:
+</P>
+<P>
+want and find (type 
+<!-- MATH: $\langle \langle \langle e, t\rangle
+, t\rangle , \langle e, t\rangle \rangle$ -->
+<EQN/>):
+</P>
+<P>
+<!-- MATH: $\lambda {\cal P}. \lambda x. [want(x, {\cal P}) \wedge {\cal
+P}(\lambda y. find(x, y))]$ -->
+<EQN/>
+Again, this leads to the desired result.  However, an unwelcome
+consequence of this approach, which appears to have gone unnoticed in
+the literature, arises in cases in which more than two verbs are
+conjoined.  If an intensional verb is coordinated with more than one
+extensional verb, a copy of the quantifier will be
+distributed to each verb in the coordinate structure.  For instance,
+ in (<CREF/>), two extensional verbs and an intensional verb are coordinated.
+  want, find, and support: 
+</P>
+<P>
+<!-- MATH: $\lambda {\cal P}. \lambda x. [
+\begin{array}[t]{@{\strut}l@{\strut}l@{\strut}}
+ want(x, {\cal P})\\
+\wedge  \hspace{.04in} {\cal P}(\lambda y.find(x, y))\\
+\wedge  \hspace{.04in} {\cal P}(\lambda y.support(x, y)) \hspace{.07in} ]
+\end{array}$ -->
+<EQN/>
+Application of this expression to a quantifier results in two
+quantifiers being scoped separately over the extensional verbs.  This
+is the wrong result; in a sentence such as Hillary wanted, found,
+and supported two candidates, the desired result is where one
+quantifier scopes over both extensional verbs (that is, Hillary found and
+supported the same two candidates), just as in the case where all the
+verbs are extensional.  Further, there does not seem to be an obvious
+way to modify the Partee and Rooth proposal so as to produce the
+correct result, the problem being that the ability to copy
+quantifiers inherent in their schema is too unrestricted.
+</P>
+<P>
+A second problem with the account is that, as with Steedman's
+coordination schema, Partee and Rooth's type-raising strategy only
+applies to coordinate structures.  However, the need to type-raise
+extends to cases not involving coordination, as in sentence
+ (<CREF/>). 
+</P>
+<P>
+ Citizens who seek, paraded against politicians who have, a decent health insurance policy.
+</P>
+<P>
+We will present an analysis that preserves the intuition underlying Partee
+and Rooth's processing strategy, but that predicts and generates the
+ correct reading for cases such as (<CREF/>).  Furthermore, the account applies equally to examples not involving coordination, as is
+ the case in sentence (<CREF/>). 
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    LFG and Linear Logic
+</HEADER>
+<P>
+LFG assumes two syntactic levels of representation: constituent
+ structure (c-structure) encodes phrasal dominance and precedence relations, and functional structure (f-structure)
+encodes syntactic predicate-argument structure.  The f-structure for
+ sentence (<CREF/>) is given in (<CREF/>): 
+</P>
+<P>
+Lexical entries specify syntactic constraints on f-structures as well
+as semantic information:
+</P>
+<P>
+Semantic information is expressed in (1) a meaning
+language and (2) a language for assembling meanings, or glue
+language.  The meaning language could be that of any appropriate
+logic; for present purposes, higher-order logic will suffice.
+Expressions of the meaning language (such as Bill) appear on the
+right side of the meaning relation <EQN/>.
+</P>
+<P>
+The glue language is the tensor fragment of linear
+ logic <REF/>. The semantic contribution of each lexical entry, which we will refer to as a meaning constructor,
+is a linear-logic formula consisting of instructions in the glue
+language for combining the meanings of the lexical entry's syntactic
+arguments to obtain the meaning of the f-structure headed by the
+entry.  For instance, the meaning constructor for the verb supported is a glue language formula paraphrasable as: ``If my 
+SUBJ means X and (<EQN/>)
+my  OBJ means Y, then
+(
+<!-- MATH: $\;\mbox{$-\hspace*{-.4ex}\circ$ }\;$ -->
+<EQN/>)
+my sentence means 
+<!-- MATH: $\mbox{\it supported\/}\/(X, Y)$ -->
+<EQN/>''.
+</P>
+<P>
+In the system described in Dalrymple et al. <REF/>,
+the <EQN/>
+relation associates expressions in the meaning
+language with f-structures.  As a result, each
+f-structure contributed a single meaning constructor as a
+resource to be used in a derivation.  Because linear logic does
+not have any form of logical contraction (as is inherent in the
+approaches discussed earlier), cases where resources are shared
+appear to be problematic in this framework.  Intuitively,
+however, the need for the multiple use of an f-structure
+meaning results not from the appearance of a particular lexical
+item (e.g., a conjunction) or a particular syntactic construction
+(e.g., parasitic gap constructions), but instead results from
+multiple paths to it from within the f-structure that
+contains it, where structure sharing is motivated on syntactic
+grounds.  We therefore revise the earlier framework to model what
+we will term occurrences of f-structures as
+resources explicitly in the logic.
+</P>
+<P>
+F-structures can mathematically be regarded as (finite)
+functions from a set of attributes to a set of atomic values,
+semantic forms and (recursively) f-structures. We will
+identify an occurrence of an f-structure with a path (from
+the root) to that occurrence; sets of occurrences of an
+f-structure can therefore be identified with path sets in
+the f-structure. We take, then, the domain of the <EQN/>projection to be path sets in the root f-structure.  Only
+those path sets S are considered which satisfy the property
+that the extensions of each path in S are identical.  Therefore
+the f-structure reached by each of these paths is
+identical. Hence from a path set S, we can read off an
+f-structure Sf.  In the examples discussed in Dalrymple et
+al. <REF/> there is a one-to-one correspondence
+between the set of path sets S and the set of
+f-structures Sf picked out by such path sets, so the
+two methods yield the same predictions for those cases.
+</P>
+<P>
+Relations between path sets are represented explicitly as
+resources in the logic by R-relations.  R-relations
+are represented as three-place predicates of the form
+<!-- MATH: $\mbox{$R\/(F,\;$ {\sc {\it P}}$,\;G)$ }$ -->
+<EQN/>
+which indicate that (the path set) Gappears at the end of a path P (of length 1) extending (the
+path set) F. That is, the f-structure  Gf appears at
+the end of the singleton path P in the f-structure
+Ff.  For example, the f-structure given in
+ (<CREF/>) results in two R-relations: 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Because f and g represent path sets entering an
+f-structure that they label, R-relation (i)
+indicates that the set of paths 
+<!-- MATH: $\langle f\;\sc subj \rangle$ -->
+<EQN/>
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>    Examples
+</HEADER>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>  RNR with Coordination </HEADER>
+<P>
+First we consider the derivation of the basic case of right-node raising
+ (RNR) illustrated in sentence (<CREF/>), repeated in  (<CREF/>). 
+</P>
+<P>
+ ) is shown in  (   <CREF/>). 
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+The meaning constructors contributed by the lexical items are as
+follows:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Here, we treat and as a binary relation.  This suffices for this
+example, but in general we will have to allow for cases where more
+than two constituents are conjoined.  Therefore, a second meaning
+constructor and2 is also contributed by the appearance of and, prefixed with the linear logic operator `!', so that it may be
+used as many times as necessary (and possibly not at all, as is the
+case in this example).
+</P>
+<P>
+The R-relations resulting from the feature-value relationships
+ manifest in the f-structure in (<CREF/>) are: 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+There are several equivalent derivation orders; here we step through
+ one.  Using the meanings for Bill, supported, Hillary, and opposed, R-relations (iii) and (v), and
+Axiom I, we can derive meanings for Bill supported and
+ Hillary opposed in the fashion described in Section <CREF/>: 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We combine the antecedents and consequents of the foregoing formulae to yield:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Consuming the meaning of and and R-relations (i) and (ii), and
+using Axiom I, we derive:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Using Axiom I and  R-relations (iv) and (vi), the following
+implication can be derived:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Using these last two formulae, by transitivity we obtain:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Finally, consuming the contribution of NAFTA, by universal
+instantiation and modus
+ponens we obtain a meaning for the whole sentence:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+At this stage, all accountable resources have been consumed, and
+the deduction is complete.
+</P>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>  RNR with Coordination and Quantified NPs </HEADER>
+<P>
+ We now consider sentence (<CREF/>), where a quantified NP is shared. 
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+Partee and Rooth <REF/> observe,
+and we agree, that the quantifier in such cases only scopes once,
+resulting in the reading where Bill supported and Hillary opposed the
+ same two bills.  Our analysis predicts this fact in the same way as Partee and Rooth's analysis
+does.
+</P>
+<P>
+The meanings contributed by the lexical items and f-structure
+dependencies are the same as in the previous example, except for that
+of the object NP.  Following Dalrymple et
+al. <REF/>, the meaning derived using the
+contributions from an f-structure h for two trade bills
+is:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The derivation is just as before, up until the final step, where we
+have derived the formula labeled
+bill-supported-and-hillary-opposed2.  This formula matches the
+antecedent of the quantified NP meaning, so by universal instantiation
+and modus ponens we derive:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+With this derivation, there is only one quantifier meaning which
+scopes over the meaning of the coordinated material.  A result where
+the quantifier meaning appears twice, scoping over each conjunct
+separately, is not available with the rules we have given thus far; we
+ return to this point in Section <CREF/>. 
+</P>
+<P>
+The analysis readily extends to cases of noncoordinate RNR such as
+ example (<CREF/>), repeated as example  (<CREF/>). 
+ <EQN/> In our analysis, the f-structure for two trade bills is
+resource-shared as the object of the two verbs, just as it is in the
+coordinated case.
+</P>
+<P>
+Space limitations preclude our going through the derivation; however,
+it is straightforward given the semantic contributions of the lexical
+items and R-relations.  The fact that there is no coordination
+involved has no bearing on the result, since the semantics of
+resource-sharing is distinct from that of coordination in our
+analysis.  As previously noted, this separation is not possible in
+CCG because of the tight integration between syntax
+and semantics.  In LFG, the syntax/semantics interface is more loosely
+coupled, affording the flexibility to handle coordinated and
+non-coordinated cases of RNR uniformly in the semantics.  This also
+allows for our semantics of coordination not to require schemas nor
+entities of polymorphic type; our meaning of and is type 
+<!-- MATH: $t
+\times t \rightarrow t$ -->
+<EQN/>.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>    Intensional Verbs
+</HEADER>
+<P>
+We now return to consider cases involving intensional verbs.
+ The preferred reading for sentence (<CREF/>), in which only one quantifier scopes over the two extensional predicates, is
+shown below:
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+ The f-structure for example (<CREF/>) is given in  (<CREF/>). 
+</P>
+<P>
+The meaning constructors for the lexical items are given in Figure
+ <CREF/>.  Recall that a second meaning constructor and2 is introduced by and in order to handle cases where there are more
+than two conjuncts; this contribution will be used once in the
+ derivation of the meaning for sentence (<CREF/>). The following R-relations result from the f-structural
+relationships:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Following the analysis given in Dalrymple et al. <REF/>, the lexical entry for want takes a
+quantified NP as an argument.  This requires that the quantified NP
+meaning be duplicated, since otherwise no readings result.  We provide
+a special rule for duplicating quantified NPs when necessary:
+<EQN/>
+</P>
+<P>
+In the interest of space, again we only show a few steps of the derivation.
+Combining the meanings for Hillary, found, supported, and and,
+Axiom I, and R-relations (ii), (iii),
+(v), (vi), (viii), and (ix), we can derive:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We duplicate the meaning of two candidates using QNP
+Duplication, and combine one
+copy with the foregoing formula to yield:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We then combine the other meaning of two candidates with the
+meanings of Hillary and
+wanted, and using Axiom I and R-relations (i), (iv), and
+(vii) we obtain:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Finally, using and2 with the two foregoing formulae, we deduce
+the desired result:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We can now specify a Partee and Rooth style processing strategy, which
+is to prefer readings which require the least use of QNP duplication.
+This strategy predicts the readings generated for the examples in
+ Section <CREF/>.  It also predicts the desired reading for  sentence (<CREF/>), since that reading requires two quantifiers.  While the reading generated by Partee and Rooth is
+derivable, it requires three quantifiers and thus uses QNP duplication
+twice, which is less preferred than the reading requiring two
+quantifiers which uses QNP duplication once.  Also, it allows some
+flexibility in cases where pragmatics strongly suggests that
+quantifiers are copied and distributed for multiple extensional verbs;
+unlike the Partee and Rooth account, this would apply equally to the
+case where there are also intensional verbs and the case where there
+are not.  Finally, our account readily applies to cases of intensional
+ verbs without coordination as in example (<CREF/>), since it applies more generally to cases of resource sharing.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>    Conclusions and Future Work
+</HEADER>
+<P>
+We have given an account of resource sharing in the syntax/semantics
+interface of LFG.  The multiple use of semantic contributions results
+from viewing dependencies in f-structures as resources; in this way
+the one-to-one correspondence between f-structure relations and
+meanings is maintained.  The resulting account does not suffer from
+overgeneration inherent in other approaches, and applies equally to
+cases of resource sharing that do not involve coordination.
+Furthermore, it lends itself readily to an extension for the
+intensional verb case that has advantages over the widely-assumed
+account of Partee and Rooth <REF/>.
+</P>
+<P>
+Here we have separated the issue of arriving at the appropriate
+f-structure in the syntax from the issue of deriving the correct
+semantics from the f-structure.  We have argued that this is the
+correct distinction to make, and have given a treatment of the second
+issue.  A treatment of the first issue will be articulated in a future
+forum.
+</P>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>  Acknowledgements </HEADER>
+<P>
+We would like to thank Sam Bayer, John Maxwell, Fernando Pereira, Dick
+Oehrle, Stuart Shieber, and especially Ron Kaplan for helpful
+discussion and comments.  The first author was supported in part by
+National Science Foundation Grant IRI-9009018, National Science
+Foundation Grant IRI-9350192, and a grant from the Xerox Corporation.
+</P>
+<DIV ID="7.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Mary Dalrymple, Angie Hinrichs, John Lamping, and Vijay Saraswat.
+1993a.
+The resource logic of complex predicate interpretation.
+In Proceedings of the 1993 Republic of China Computational
+  Linguistics Conference (ROCLING), Hsitou National Park, Taiwan, September.
+  Computational Linguistics Society of R.O.C.
+</P>
+<P>
+Mary Dalrymple, John Lamping, and Vijay Saraswat.
+1993b.
+LFG semantics via constraints.
+In Proceedings of the Sixth Meeting of the European ACL,
+  University of Utrecht, April. European Chapter of the Association for
+  Computational Linguistics.
+</P>
+<P>
+Mary Dalrymple, John Lamping, Fernando C. N. Pereira, and Vijay Saraswat.
+1994a.
+A deductive account of quantification in LFG.
+In Makoto Kanazawa, Christopher J. Pin, and Henriette
+  de Swart, editors, Quantifiers, Deduction, and Context. Center for the
+  Study of Language and Information, Stanford, California.
+To appear.
+</P>
+<P>
+Mary Dalrymple, John Lamping, Fernando C. N. Pereira, and Vijay Saraswat.
+1994b.
+Intensional verbs without type-raising or lexical ambiguity.
+In Conference on Information-Oriented Approaches to Logic,
+  Language and Computation, Moraga, California. Saint Mary's College.
+</P>
+<P>
+J.-Y. Girard.
+1987.
+Linear logic.
+Theoretical Computer Science, 45:1-102.
+</P>
+<P>
+Herman Hendriks.
+1993.
+Studied Flexibility: Categories and Types in Syntax and
+  Semantics.
+ILLC dissertation series 1993--5, University of Amsterdam,
+  Amsterdam, Holland.
+</P>
+<P>
+Richard A Hudson.
+1976.
+Conjunction reduction, gapping, and right-node raising.
+Language, 52(3):535-562.
+</P>
+<P>
+Ronald M. Kaplan and Joan Bresnan.
+1982.
+Lexical-Functional Grammar: A formal system for grammatical
+  representation.
+In Joan Bresnan, editor, The Mental Representation of
+  Grammatical Relations, pages 173-281. The MIT Press, Cambridge, MA.
+</P>
+<P>
+Richard T. Oehrle.
+1990.
+Categorial frameworks, coordination, and extraction.
+In Aaron Halpern, editor, Proceedings of the Ninth West Coast
+  Conference on Formal Linguistics, pages 411-425.
+</P>
+<P>
+Barbara Partee and Mats Rooth.
+1983.
+Generalized conjunction and type ambiguity.
+In Bauerle, Schwarze, and von Stechow, editors, Meaning, Use,
+  and Interpretation of Language, pages 361-383. de Gruyter.
+</P>
+<P>
+Mark J. Steedman.
+1985.
+Dependency and coordination in the grammar of Dutch and English.
+Language, 61:523-568.
+</P>
+<P>
+Mark J. Steedman.
+1987.
+Combinatory grammars and parasitic gaps.
+Natural Language and Linguistic Theory, 5:403-439.
+</P>
+<P>
+Mark J. Steedman.
+1989.
+Constituency and coordination in a combinatory grammar.
+In Mark Baltin and Anthony Kroch, editors, Alternative
+  Conceptions of Phrase Structure, pages 201-231. Chicago University Press.
+</P>
+<P>
+Mark J. Steedman.
+1990.
+Gapping as constituent coordination.
+Linguistics and Philosophy, 13(2):207-263.
+</P>
+<DIV ID="7.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+   kehler@das.harvard.edu
+   {dalrymple,lamping,saraswat}@parc.xerox.com
+  We find two problems
+with the approach as it stands.  First, the intuition that one gap is
+ `parasitic' upon the other in cases like (<CREF/>) is not strong, whereas the CCG analysis suggests an asymmetry between the two
+gaps.  Second, the combinator appears to cause overgeneration.  While
+ it allows sentence (<CREF/>), it also allows sentence (b), where two trade bills is analyzed as the object of both
+verbs:
+[(b)]*Politicians who oppose, paraded
+against, two trade bills.
+  For discussion of c-structure
+and its relation to f-structure, see, for example, Kaplan and Bresnan
+<REF/>.
+  We
+treat the  CONJ features as unordered, as they are in the
+f-structure set.
+  In the interest of space, we will skip some intermediate
+steps in the derivation.
+  We therefore disagree with Hendricks
+<REF/>, who claims that such sentences
+readily allow a reading involving four trade bills.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

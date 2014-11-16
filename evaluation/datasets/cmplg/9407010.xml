@@ -1,0 +1,416 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Combining Knowledge Sources to Reorder N-Best Speech Hypothesis Lists</TITLE>
+<ABSTRACT>
+<P>
+A simple and general method is described that can combine different
+knowledge sources to reorder N-best lists of hypotheses produced by a
+speech recognizer. The method is automatically trainable, acquiring
+information from both positive and negative examples.  Experiments are
+described in which it was tested on a 1000-utterance sample of unseen
+ATIS data.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction
+</HEADER>
+<P>
+During the last few years, the previously separate fields of speech
+and natural language processing have moved much closer together, and
+it is now common to see integrated systems containing components for
+both speech recognition and language processing. An immediate problem
+is the nature of the interface between the two. A popular solution has
+ been the N-best list e.g. <REF/>; for some N, the speech recognizer hands the language processor the N utterance
+hypotheses it considers most plausible. The recognizer chooses the
+hypotheses on the basis of the acoustic information in the input
+signal and, usually, a simple language model such as a bigram grammar.
+The language processor brings more sophisticated linguistic knowledge
+sources to bear, typically some form of syntactic and/or semantic
+analysis, and uses them to choose the most plausible member of the
+N-best list. We will call an algorithm that selects a member of the
+N-best list a preference method. The most common preference
+method is to select the highest member of the list that receives a
+valid semantic analysis. We will refer to this as the
+``highest-in-coverage'' method.  Intuitively, highest-in-coverage
+seems a promising idea. However, practical experience shows that it is
+surprisingly hard to use it to extract concrete gains. For example, a
+ recent paper <REF/> concluded that the highest-in-coverage candidate was in terms of the word error rate only very marginally
+better than the one the recognizer considered best. In view of the
+considerable computational overhead required to perform linguistic
+analysis on a large number of speech hypotheses, its worth is dubious.
+</P>
+<P>
+In this paper, we will describe a general strategy for constructing a
+preference method as a near-optimal combination of a number of different
+knowledge sources. By a ``knowledge source'', we will mean any
+well-defined procedure which associates some potentially meaningful
+piece of information with a given utterance hypothesis H. Some examples
+of knowledge sources are
+<ITEMIZE>
+<ITEM>The plausibility score originally assigned to H by the
+recognizer.
+</ITEM>
+<ITEM>The sets of surface unigrams, bigrams and trigrams present in H.
+</ITEM>
+<ITEM>Whether or not H receives a well-formed syntactic/semantic
+analysis.
+</ITEM>
+<ITEM>If so, properties of that analysis.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+The methods described here were tested on a 1001-utterance unseen
+subset of the ATIS corpus; speech recognition was performed using the
+ DECIPHER (TM) recognizer <REF/>,<REF/>, and linguistic analysis by a version of the Core Language Engine (CLE;
+ <REF/>).  For 10-best hypothesis lists, the best method yielded a proportional reductions of 13% in the word error rate, and 11% in
+the sentence error rate; if sentence error was scored in the context
+of the task, the reduction was about 21%.  By contrast, the
+corresponding figures for the highest-in-coverage method were a 7%
+reduction in word error rate, a 5% reduction in sentence error rate
+(strictly measured) and a 12% reduction in the sentence error rate in
+the context of the task.
+</P>
+<P>
+The rest of the paper is laid out as follows.  In
+ Section <CREF/>, we describe a method that allows
+different knowledge sources to be merged into a near-optimal
+combination.
+ Section <CREF/> describes the
+experimental results in more detail.
+ Section <CREF/> concludes.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    Combining knowledge sources
+</HEADER>
+<P>
+This section describes how different knowledge sources (KSs) can be
+combined. We start by assuming the existence of a training corpus of
+N-best lists produced by the recognizer, each list tagged with a
+``reference sentence'' that determines which (if any) of the
+hypotheses in it was correct. We analyse each hypothesis H in the
+corpus using a set of possible KSs, each of which associates some form
+of information with H.  Information can be of two different kinds.
+Some KSs may directly produce a number which can be viewed as a
+measure of H's plausibility.  Typical examples are the score which
+the recognizer assigned to H, and the score for whether or not Hreceived a linguistic analysis (1 or 0 respectively). More commonly,
+however, the KS will produce a list of one or more ``linguistic
+items'' associated with H, for example surface N-grams in H or the
+grammar rules occurring in the best linguistic analysis of H, if
+there was one. A given linguistic item L is associated with a
+numerical score through a ``discrimination function'' (one function
+for each type of linguistic item), that summarizes the relative
+frequencies of occurrence of L in correct and incorrect hypotheses
+respectively.  Discrimination functions are discussed in more detail
+shortly. The score assigned to H by a KS of this kind will be the
+sum of the discrimination scores for all the linguistic items it
+finds. Thus each KS will eventually contribute a numerical score,
+possibly via a discrimination function derived from an analysis of the
+training corpus.
+</P>
+<P>
+The total score for each hypothesis is a weighted sum of the scores
+contributed by the various KSs. The final requirement is to use the
+training corpus a second time to compute optimal weights for the
+different KSs.  This is an optimization problem which can be
+approximately solved using the method described in
+ <REF/>. 
+</P>
+<P>
+The most interesting role in the above is played by the discrimination
+functions. The intent is that linguistic items which tend to occur
+more frequently in correct hypotheses than incorrect ones will get
+positive scores; those which occur more frequently in incorrect
+hypotheses than correct ones will get negative scores.  To take an
+example from the ATIS domain, the trigram a list of is
+frequently misrecognized by DECIPHER as a list the. Comparing
+the different hypotheses for various utterances, we discover that if
+we have two distinct hypotheses for the same utterance, one of which
+is correct and the other incorrect, and the hypotheses differ by one
+of them containing a list of while the other contains a
+list the, then the hypothesis containing a list of is nearly
+always the correct one. This justifies giving the trigram a list
+of a positive score, and the trigram a list the a negative one.
+</P>
+<P>
+We now define formally the discrimination function dT for a given
+type T of linguistic item. We start by defining dT as a function
+on linguistic items. As stated above, it is then extended in a natural
+way to a function on hypotheses by defining dT(H) for a hypothesis
+H to be 
+<!-- MATH: $\sum d_T(L)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where the sum is over all the linguistic
+items L of type T associated with H.
+</P>
+<P>
+dT(L) for a given linguistic item L is computed as follows. (This
+ is a slight generalization of the method given in <REF/>). The training corpus is analyzed, and each hypothesis is tagged with
+its set of associated linguistic items. We then find all possible
+4-tuples 
+<!-- MATH: $(U, H_1, H_2, L)$ -->
+(U, H1, H2, L) where
+<ITEMIZE>
+<ITEM>U is an utterance,
+</ITEM>
+<ITEM>H1 and H2 are hypotheses for U exactly one of
+which is correct,
+</ITEM>
+<ITEM>L is a linguistic item of type T which is associated with exactly
+one of H1 and H2.
+</ITEM>
+</ITEMIZE>
+If L occurs in the correct hypothesis of the pair 
+<!-- MATH: $(H_1, H_2)$ -->
+(H1, H2), we
+call this a ``good'' occurrence of L; otherwise, it is a ``bad''
+one.  Counting occurrences over the whole set, we let g be the total
+number of good occurrences of L, and b be the total number of bad
+occurrences. The discrimination score of type T for L, dT(L),
+is then defined as a function d(g,b). It seems sensible to demand that
+d(g,b) has the following properties:
+<ITEMIZE>
+<ITEM>
+<!-- MATH: $d(g,b) > 0$ -->
+d(g,b) ] 0 if g ] b
+</ITEM>
+<ITEM>
+<!-- MATH: $d(g,b) = -d(b,g)$ -->
+d(g,b) = -d(b,g) (and hence 
+<!-- MATH: $d(g,b) = 0$ -->
+d(g,b) = 0 if g = b).
+</ITEM>
+<ITEM>
+<!-- MATH: $d(g_1,b) > d(g_2,b)$ -->
+d(g1,b) ] d(g2,b) if g1 ] g2
+</ITEM>
+</ITEMIZE>
+We have experimented with a number of possible such functions, the
+best one appearing to be the following.
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+This formula is a symmetric, logarithmic transform of the function 
+<!-- MATH: $(g
++ 1)/(g + b + 2)$ -->
+(g
++ 1)/(g + b + 2), which is the expected a posteriori
+probability that a new 
+<!-- MATH: $(U, H_1, H_2, L)$ -->
+(U, H1, H2, L) 4-tuple will be a good
+occurrence, assuming that, prior to the quantities g and b being
+known, this probability has a uniform a priori distribution on
+the interval [0,1].
+</P>
+<P>
+One serious problem with corpus-based measures like discrimination
+functions is data sparseness; for this reason, it will often be
+advantageous to replace the raw linguistic items L with equivalence
+classes of such items, to smooth the data. We will discuss this
+further in
+ Section <CREF/>. 
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    Experiments
+</HEADER>
+<P>
+This section describes experiments carried out to test
+the general methods outlined in the previous section.
+ Section <CREF/> describes the general
+experimental set-up, and
+ Section <CREF/> the specific knowledge sources used.
+ Section <CREF/> gives the results.
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>  Experimental set-up
+</HEADER>
+<P>
+The experiments were run on the 1001 utterance subset of the ATIS
+corpus used for the December 1993 evaluations, which was previously
+unseen data for the purposes of the experiments. The corpus,
+originally supplied as waveforms, was processed into N-best lists by
+the DECIPHER (TM) recognizer. The recognizer used a class bigram
+language model. Each N-best hypothesis received a numerical
+plausibility score; only the top 10 hypotheses were retained.  The
+1-best sentence error rate was about 34%, the 5-best error rate (i.e. the frequency with which the correct hypothesis was not in the top 5)
+about 19%, and the 10-best error rate about 16%.  Linguistic
+processing was performed using a version of the Core Language Engine
+customized to the ATIS domain, which was developed under the
+SRI-SICS-Telia Research Spoken Language Translator project
+ <REF/>,<REF/>,<REF/>. The CLE normally assigns a hypothesis several different possible linguistic analyses, scoring each one with
+a plausibility measure. The plausibility measure is highly optimized
+ <REF/>, and for the ATIS domain has an error rate of about 5%. Only the most plausible linguistic analysis was used.
+</P>
+<P>
+The general CLE grammar was specialized to the domain using the
+ Explanation-Based Learning (EBL) algorithm <REF/> and the  resulting grammar parsed using an LR parser <REF/>, giving a decrease in analysis time, compared to the normal CLE
+left-corner parser, of about an order of magnitude. This made it
+possible to impose moderately realistic resource limits: linguistic
+analysis was allowed a maximum of 12 CPU seconds per hypothesis,
+running SICStus Prolog on a Sun SPARC station 10/41.  Analysis that
+overran the time-limit was cut off, and corresponding data replaced by
+null values.  Approximately 1.2% of all hypotheses timed out during
+linguistic analysis; the average analysis time required per hypothesis
+was 2.1 seconds.
+</P>
+<P>
+Experiments were carried out by first dividing the corpus into five
+approximately equal pools, in such a way that sentences from any given
+ speaker were never assigned to more than one pool. Each pool was then in turn held out as test data, and the other four used as training
+data. The fact that utterances from the same speaker never occurred
+both as test and training data turned out to have an important effect
+on the results, and is discussed in more detail later.
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>  Knowledge sources used
+</HEADER>
+<P>
+The following knowledge sources were used in the experiments:
+Recognizer score:
+The numerical score assigned to each
+hypothesis by the DECIPHER (TM) recognizer. This is typically a large
+negative integer.
+In coverage:
+Whether or not the CLE assigned the
+hypothesis a linguistic analysis (1 or 0).
+Unlikely grammar construction:
+1 if the most plausible
+linguistic analysis assigned to the hypothesis by the CLE was
+``unlikely'', 0 otherwise. In these experiments, the only analyses
+tagged as ``unlikely'' are ones in which the main verb is a form of
+be, and there is a number mismatch between subject and
+predicate, e.g. ``what is the fares?''.
+Class N-gram discriminants
+(four distinct knowledge sources):
+Discrimination scores for 1-, 2-, 3- and 4-grams of classes of surface
+linguistic items. The class N-grams are extracted after first grouping
+some surface words into multi-word phrases, and then replacing some
+common words and groups with classes; the dummy words *START*
+and *END* are also added to the beginning and end of the list
+respectively.  Thus, for example, the utterance one way flights to
+d f w would after this phase of processing be *START*
+flight_type_adj flights to airport_name *END*.
+Grammar rule discriminants:
+Discrimination scores for the grammar rules
+used
+in the most plausible linguistic analysis of the hypothesis, if there
+was one.
+Semantic triple discriminants:
+Discrimination scores for ``semantic
+triples'' in the most plausible linguistic analysis of the hypothesis,
+if there was one. A semantic triple is of the form
+<!-- MATH: $(Head_1,Rel,Head_2)$ -->
+(Head1,Rel,Head2), where Head1 and Head2 are head-words of
+phrases, and Rel is a grammatical relation obtaining between them.
+Typical values for Rel are ``subject'' or ``object'', when Head1is a verb and Head2 the head-word of one of its arguments;
+alternatively, Rel can be a preposition, if the relation is a PP
+modification of an NP or VP. There are also some other possibilities,
+ cf. <REF/>. 
+</P>
+<P>
+The knowledge sources naturally fall into three groups. The first is
+the singleton consisting of the ``recognizer score'' KS; the second
+contains the four class N-gram discriminant KSs; the third consists of the
+ remaining ``linguistic'' KSs. The method of <REF/> was used to calculate near-optimal weights for three combinations of
+KSs:
+1.
+Recognizer score + class N-gram discriminant KSs
+2.
+Recognizer score + linguistic KSs
+3.
+All available KSs
+In order to facilitate comparison, some other methods were tested as
+well. Two variants of the ``highest-in-coverage'' method provided a
+lower limit: the ``straight'' method, and one in which the hypotheses
+were first rescored using the optimized combination of recognizer
+score and N-gram discriminant KSs. This is marked in the tables as
+``N-gram/highest-in-coverage'', and is roughly the strategy described
+ in <REF/>. An upper limit was set by a method which selected the hypothesis in the list with the lower number of insertions,
+deletions and substitutions. This is marked as ``lowest WE in 10-best''.
+</P>
+</DIV>
+<DIV ID="3.3" DEPTH="2" R-NO="3"><HEADER>  Results
+</HEADER>
+<P>
+ Table <CREF/> shows the sentence error rates for different preference methods and utterance lengths, using 10-best
+ lists; Table <CREF/> shows the word error rates for each method on the full set.  The absolute decrease in the
+sentence error rate between 1-best and optimized 10-best with all KSs
+is from 33.7% to 29.9%, a proportional decrease of 11%. This is
+nearly exactly the same as the improvement measured when the lists
+were rescored using a class trigram model, though it should be
+stressed that the present experiments used far less training data. The
+word error rate decreased from 7.5% to 6.4%, a 13% proportional
+decrease. Here, however, the trigram model performed significantly
+better, and achieved a reduction of 22%.
+</P>
+<P>
+It is apparent that nearly all of the improvement is coming from the
+linguistic KSs; the difference between the lines ``recognizer +
+linguistic KSs'' and ``all available KSs'' is not significant.  Closer
+inspection of the results also shows that the improvement, when
+evaluated in the context of the spoken language translation task, is
+ rather greater than Table <CREF/> would appear to indicate. Since the linguistic KSs only look at the abstract semantic
+analyses of the hypotheses, they often tend to pick harmless syntactic
+variants of the reference sentence; for example all of the can
+be substituted for all the or what are ... for which
+are .... When syntactic variants of this kind are scored as correct,
+ the figures are as shown in Table <CREF/>. The improvement in sentence error rate on this method of evaluation is
+from 28.8% to 22.8%, a proportional decrease of 21%. On either type
+of evaluation, the difference between ``all available KSs'' and any
+other method except ``recognizer + linguistic KSs'' is significant at
+ the 5% level according to the McNemar sign test <REF/>). 
+</P>
+<P>
+One point of experimental method is interesting enough to be worth a
+diversion. In earlier experiments, reported in the notebook version of
+the paper, we had not separated the data in such a way as to ensure
+that the speakers of the utterances in the test and training data were
+always disjoint. This led to results which were both better and also
+qualitatively different; the N-gram KSs made a much larger
+contribution, and appeared to dominate the linguistic KSs. This
+presumably shows that there are strong surface uniformities between
+utterances from at least some of the speakers, which the N-gram KSs
+can capture more easily than the linguistic ones. It is possible that
+the effect is an artifact of the data-collection methods, and is
+wholly or partially caused by users who repeat queries after system
+misrecognitions.
+</P>
+<P>
+There were a total of 88 utterances for which there was some
+acceptable 10-best hypothesis, but where the hypothesis chosen by the
+method which made use of all available KSs was unacceptable. In order
+to get a more detailed picture of where the preference methods might
+be improved, these utterances were inspected and categorized into
+different apparent causes of failure. Four main classes of failures
+were considered:
+Apparently impossible:
+There is no apparent
+reason to prefer the correct hypothesis to the one chosen without
+access to intersentential context or prosody. There were two main
+subclasses: either some important content word was substituted by
+an equally plausible alternative (e.g. ``Minneapolis'' instead of
+``Indianapolis''), or the utterance was so badly malformed that
+none of the alternatives seemed plausible.
+Coverage problem:
+The correct hypothesis was not in implemented
+linguistic coverage, but would probably have been chosen if it had
+been; alternately, the selected hypothesis was incorrectly classed
+as being in linguistic coverage, but would probably not have been
+chosen if it had been correctly classified as ungrammatical.
+Clear preference failure:
+The information needed to make the
+correct choice appeared intuitively to be present, but had not been
+exploited.
+Uncertain:
+Other cases.
+ The results are summarized in Table <CREF/>. 
+</P>
+<P>
+</P>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

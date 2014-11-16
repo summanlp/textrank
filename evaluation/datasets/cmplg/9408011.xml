@@ -1,0 +1,894 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>DISTRIBUTIONAL CLUSTERING OF ENGLISH WORDS</TITLE>
+<ABSTRACT>
+<P>
+We describe and experimentally evaluate a method for automatically
+clustering words according to their distribution in particular
+syntactic contexts. Deterministic annealing is used to find lowest
+distortion sets of clusters. As the annealing parameter increases,
+existing clusters become unstable and subdivide, yielding a
+hierarchical ``soft'' clustering of the data. Clusters are used as the
+basis for class models of word coocurrence, and the models evaluated
+with respect to held-out test data.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  INTRODUCTION </HEADER>
+<P>
+Methods for automatically classifying words according to their
+contexts of use have both scientific and practical interest. The
+scientific questions arise in connection to distributional views of
+linguistic (particularly lexical) structure and also in relation to
+the question of lexical acquisition both from psychological and
+computational learning perspectives. From the practical point of view,
+word classification addresses questions of data sparseness and
+generalization in statistical language models, particularly
+models for deciding among alternative analyses proposed by a grammar.
+</P>
+<P>
+It is well known that a simple tabulation of frequencies of certain
+words participating in certain configurations, for example of
+frequencies of pairs of a transitive main verb and the head noun of
+its direct object, cannot be reliably used for comparing the
+likelihoods of different alternative configurations. The problem is
+that for large enough corpora the number of possible joint events is
+much larger than the number of event occurrences in the corpus, so
+many events are seen rarely or never, making their frequency counts
+unreliable estimates of their probabilities.
+</P>
+<P>
+Hindle <REF/> proposed dealing with the sparseness
+problem by estimating the likelihood of unseen events from that of
+``similar'' events that have been seen. For instance, one may estimate
+the likelihood of a particular direct object for a verb from the
+likelihoods of that direct object for similar verbs. This
+requires a reasonable definition of verb similarity and a similarity
+estimation method.  In Hindle's proposal, words are similar if we have
+strong statistical evidence that they tend to participate in the same
+events. His notion of similarity seems to agree with our intuitions
+in many cases, but it is not clear how it can
+be used directly to construct word classes and corresponding models of
+association.
+</P>
+<P>
+Our research addresses some of the same questions and uses similar
+raw data, but we investigate how to factor word association
+tendencies into associations of words to certain hidden senses classes and associations between the classes themselves. While
+it may be worthwhile to base such a model on preexisting sense classes
+ <REF/>, in the work described here we look at how to derive the classes directly from distributional data. More
+specifically, we model senses as probabilistic concepts or clusters c with
+corresponding cluster membership probabilities p(c|w) for each
+word w. Most other class-based modeling techniques for natural
+language rely instead on ``hard'' Boolean classes
+ <REF/>. Class construction is then combinatorially very demanding and depends on frequency counts for joint events involving
+particular words, a potentially unreliable source of information as we
+noted above. Our approach avoids both problems.
+</P>
+<DIV ID="1.1" DEPTH="2" R-NO="1"><HEADER>    Problem Setting
+</HEADER>
+<P>
+In what follows, we will consider two major word classes, <EQN/>and <EQN/>,
+for the verbs and nouns in our experiments, and a
+single relation between them, in our experiments relation between a
+transitive main verb and the head noun of its direct object. Our raw
+knowledge about the relation consists of the frequencies fvn of
+occurrence of particular pairs (v,n) in the required configuration
+in a training corpus. Some form of text analysis is required to
+collect such a collection of pairs. The corpus used in our first
+experiment was derived from newswire text automatically parsed by
+ Hindle's parser Fidditch <REF/>. More recently, we have constructed similar tables with the help of a statistical
+part-of-speech tagger
+ <REF/> and of tools for regular expression pattern  matching on tagged corpora <REF/>. We have not yet compared the accuracy and coverage of the two methods, or what
+systematic biases they might introduce, although we took care to filter
+out certain systematic errors, for instance the misparsing of the
+subject of a complement clause as the direct object of a main verb for
+report verbs like ``say''.
+</P>
+<P>
+We will consider here only the problem of classifying nouns according
+to their distribution as direct objects of verbs; the converse problem
+is formally similar. More generally, the theoretical basis for our
+method supports the use of clustering to build models for any n-ary
+relation in terms of associations between elements in each coordinate
+and appropriate hidden units (cluster centroids) and associations
+between those hidden units.
+</P>
+<P>
+For the noun classification problem, the empirical distribution of a
+noun n is then given by the conditional density
+<!-- MATH: $p_n(v)=f_{vn}/\sum_v f_{vn}$ -->
+<EQN/>.
+The problem we study is how to use the
+pn to classify the 
+<!-- MATH: $n\in {\cal N}$ -->
+<EQN/>.
+Our classification method will
+construct a set <EQN/>
+of clusters and cluster membership
+probabilities p(c|n). Each cluster c is associated to a cluster
+centroid pc, which is discrete density over <EQN/>obtained by averaging appropriately the pn.
+</P>
+</DIV>
+<DIV ID="1.2" DEPTH="2" R-NO="2"><HEADER>  Distributional Similarity </HEADER>
+<P>
+To cluster nouns n according to their conditional verb distributions
+pn, we need a measure of similarity between distributions. We use
+for this purpose the relative entropy or Kullback-Leibler (KL)
+distance between two distributions
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+This is a natural choice for a variety of reasons, which we will just
+ sketch here. 
+</P>
+<P>
+First of all, 
+<!-- MATH: $D(p\parallel q)$ -->
+<EQN/>
+is zero just in case p=q, and it
+increases as the probability decreases that p is the relative
+frequency distribution of a random sample drawn according to p. More
+formally, the probability mass given by q to the set of all samples
+of length n with relative frequency distribution p is bounded by
+<!-- MATH: $2^{-nD(p\parallel q)}$ -->
+<EQN/>
+ <REF/>. Therefore, if we are trying to distinguish among hypotheses qi when p is the relative
+frequency distribution of observations, 
+<!-- MATH: $D(p\parallel q_i)$ -->
+<EQN/>
+gives the
+relative weight of evidence in favor of qi. Furthermore, a similar
+relation holds between 
+<!-- MATH: $D(p \parallel p')$ -->
+<EQN/>
+for two empirical
+distributions p and p' and the probability that p and p' are
+drawn from the same distribution q. We can thus use the relative
+entropy between the context distributions for two words to measure how
+likely they are to be instances of the same cluster centroid.
+</P>
+<P>
+From an information theoretic perspective 
+<!-- MATH: $D(p\parallel q)$ -->
+<EQN/>measures how inefficient on average it would be to use a code based on
+q to encode a variable distributed according to p. With respect to
+our problem, 
+<!-- MATH: $D(p_n\parallel p_c)$ -->
+<EQN/>
+thus gives us the loss of
+information in using cluster centroid pc instead of the actual
+distribution for word pn when modeling the distributional
+properties of n.
+</P>
+<P>
+Finally, relative entropy is a natural measure of similarity between
+distributions for clustering because its minimization leads to cluster
+centroids that are a simple weighted average of member distributions.
+</P>
+<P>
+One technical difficulty is that 
+<!-- MATH: $D(p\parallel p')$ -->
+<EQN/>
+is not defined
+when p'(x) = 0 but p(x) ] 0. We could sidestep this problem (as we
+did initially) by smoothing zero frequencies appropriately
+ <REF/>.  However, this is not very satisfactory because one of the goals of our work is precisely to avoid the problems of
+data sparseness by grouping words into classes. It turns out that the
+problem is avoided by our clustering technique, since it does not need
+to compute the KL distance between individual word distributions, but
+only between a word distribution and average distributions, the
+current cluster centroids, which are guaranteed to be nonzero whenever
+the word distributions are.  This is a useful advantage of our method
+compared with agglomerative clustering techniques that need to compare
+individual objects being considered for grouping.
+</P>
+</DIV>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    THEORETICAL BASIS
+</HEADER>
+<P>
+In general, we are interested on how to organize a set of linguistic
+objects such as words according to the contexts in which they occur,
+for instance grammatical constructions or n-grams.  We will show
+elsewhere that the theoretical analysis outlined here applies to that
+more general problem, but for now we will only address the more
+specific problem in which the objects are nouns and the contexts are
+verbs that take the nouns as direct objects.
+</P>
+<P>
+Our problem can be seen as that of learning a joint distribution of
+pairs from a large sample of pairs. The pair coordinates come from two
+large sets <EQN/>
+and <EQN/>,
+with no preexisting topological
+or metric structure, and the training data is a sequence S of Nindependently drawn pairs
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+From a learning perspective, this problem falls somewhere in between
+unsupervised and supervised learning. As in unsupervised learning, the
+goal is to learn the underlying distribution of the data. But in contrast
+to most unsupervised learning settings, the objects involved
+have no internal structure or attributes allowing them to be compared
+with each other. Instead, the only information about the objects is
+the statistics of their joint appearance. These statistics can thus be
+seem as a weak form of object labelling analogous to supervision.
+</P>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Distributional Clustering </HEADER>
+<P>
+While clusters based on distributional similarity are interesting on
+their own, they can also be profitably seen as a means of summarizing
+a joint distribution. In particular, we would like to find a set of
+clusters <EQN/>
+such that each conditional
+distribution pn(v) can be approximately decomposed as
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+where p(c | n ) is the membership probability of n in c and 
+<!-- MATH: $p_c(v) = p(v|c)$ -->
+pc(v) = p(v|c) is v's conditional probability given by the
+centroid distribution for cluster c.
+</P>
+<P>
+The above decomposition can be written in a more symmetric form as
+\hat{p}(n,v)  = \sum_{c \in \cal C} p(c,n) p(v|c) \nonumber \\
+ =  \sum_{c \in \cal C} p(c) p(n|c) p(v|c)
+\end{eqnarray} -->
+assuming that p(n) and 
+<!-- MATH: $\hat{p}(n)$ -->
+<EQN/>
+coincide.
+ We will take (<CREF/>) as our basic clustering model. 
+</P>
+<P>
+To determine this decomposition we need to solve the two connected
+problems of finding find suitable forms for the cluster membership and
+centroid distributions p(v|c), and of maximizing the goodness of fit
+between the model distribution 
+<!-- MATH: $\hat{p}(n,v)$ -->
+<EQN/>
+and the observed data
+</P>
+<P>
+Goodness of fit is determined by the model's likelihood of the
+observations. The maximum likelihood (ML) estimation principle is thus
+the natural tool to determine the centroid distributions pc(v).
+</P>
+<P>
+As for the membership probabilities, they must be determined solely by
+the relevant measure of object-to-cluster similarity, which in the
+present work is the relative entropy between object and cluster
+centroid distributions.  Since no other information is available, the
+membership is determined by maximizing the configuration entropy
+subject for a fixed average distortion.  With the
+maximum entropy (ME) membership distribution, ML estimation is
+equivalent to the minimization of the average distortion of the data.
+The combined entropy maximization entropy and distortion minimization
+is carried out by a two-stage iterative process similar to the
+EM method
+ <REF/>. The first stage of an iteration is a maximum likelihood, or minimum distortion, estimation of the cluster centroids
+given fixed membership probabilities.  In the second iteration stage,
+the entropy of the membership distribution is maximized with a fixed
+average distortion.  This joint optimization searches for a saddle point in the distortion-entropy parameters, which is
+equivalent to minimizing a linear combination of the two
+known as free energy in statistical mechanics. This analogy with
+statistical mechanics is not coincidental, and provide us with a
+better understanding of the clustering procedure.
+</P>
+<DIV ID="2.1.1" DEPTH="3" R-NO="1"><HEADER>  Maximum Likelihood Cluster Centroids </HEADER>
+<P>
+For the maximum likelihood argument, we start by estimating the
+likelihood of the sequence S of N independent observations of
+pairs 
+<!-- MATH: $(n_i , v_i )$ -->
+(ni , vi ).  Using
+ (<CREF/>), the sequence's model log likelihood is 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Fixing the number of clusters (model size) <EQN/>,
+we want to
+maximize l(S) with respect to the distributions
+p(n | c ) and p(v|c).  The variation of l(S) with
+respect to these distributions is
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\delta { l} (S) = \sum_{i=1}^{N} \frac{1}{\hat{p}(n_i , v_i )}
+\sum_{c \in {\cal C}} p(c) \left( \begin{array}{c} p(v_i | c)
+\delta p( n_i | c) \\+ \\
+p(n_i | c) \delta p( v_i |c )\end{array} \right)
+\end{equation} -->
+</P>
+<P>
+with p(n|c) and p(v|c) kept normalized.  Using Bayes's
+ formula, we have  
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+or
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+ for any c, which we substitute into (<CREF/>) to obtain 
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\delta { l} (S) =   \sum_{i=1}^{N}
+\sum_{c \in {\cal C}} p(c | n_i , v_i )
+\left(\begin{array}{c}\delta \log p( n_i | c) \\+ \\
+ \delta \log p(v_i |c)\end{array}\right)
+\end{equation} -->
+</P>
+<P>
+since 
+<!-- MATH: $\delta \log p = \delta p / p$ -->
+<EQN/>.
+This expression is particularly useful when the cluster distributions
+p(n|c) and p(v|c) are of exponential form,
+precisely what will be provided by the ME step described below.
+</P>
+<P>
+At this point we need to specify the clustering model in more detail.
+In the derivation so far we have treated p(n|c) and p(v|c)symmetrically, corresponding to clusters not of verbs or nouns but of
+verb-noun associations. In principle such a symmetric model may be
+more accurate, but in this paper we will concentrate on asymmetric models in which cluster memberships are associated to just
+one of the components of the joint distribution and the cluster
+centroids are specified only by the other component.  In particular,
+the model we use in our experiments has noun clusters with cluster
+memberships determined by p(n|c) and centroid distributions
+determined by p(v|c).
+</P>
+<P>
+The asymmetric model simplifies the estimation significantly by
+dealing with a single component, but it has the disadvantage that the
+joint distribution, p(n,v) has two different and not necessarily
+consistent expressions in terms of asymmetric models for the two
+coordinates.
+</P>
+</DIV>
+<DIV ID="2.1.2" DEPTH="3" R-NO="2"><HEADER>  Maximum Entropy  Cluster Membership </HEADER>
+<P>
+While variations of p(n|c) and p(v|c) in equation
+ (<CREF/> are not independent, we can treat them separately. First, for fixed average distortion between the cluster centroid
+distributions p(v|c) and the data p(v|n), we find the
+cluster membership probabilities, which are the Bayes's inverses of
+the  p(n|c), that maximize the entropy of the cluster distributions.
+With the membership distributions thus obtained, we then look
+for the p(v|c) that maximize the log likelihood l(S). It turns out
+that this will also be the values of p(v|c) that minimize the
+average distortion between the asymmetric cluster model and the data.
+</P>
+<P>
+Given any similarity measure d(n,c) between nouns and cluster
+centroids, the
+average cluster distortion is
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\langle D \rangle = \sum_{n \in {\cal N}}  \sum_{c\in {\cal C}}
+p( c | n ) d(n,c)
+\end{equation} -->
+</P>
+<P>
+If we maximize the cluster membership entropy
+</P>
+<P>
+<!-- MATH: \begin{equation}
+H = - \sum_{n \in {\cal N}}\sum_{c\in {\cal C}} p(c|n) \log p(n|c)
+\end{equation} -->
+</P>
+<P>
+ subject to normalization of p(n|c) and fixed (<CREF/>), we obtain the following standard exponential forms for the class and membership
+distributions
+</P>
+<P>
+<!-- MATH: \begin{equation}
+p(n |c ) = \frac{1}{Z_c} \exp  - \beta d(n,c)
+\end{equation} -->
+</P>
+<P>
+<!-- MATH: \begin{equation}
+p(c |n ) = \frac{1}{Z_n} \exp  - \beta d(n,c)
+\end{equation} -->
+</P>
+<P>
+where the normalization sums (partition functions) are 
+<!-- MATH: $Z_c = \sum_n
+\exp - \beta d(n,c)$ -->
+<EQN/>
+and 
+<!-- MATH: $Z_n = \sum_c \exp - \beta d(n,c)$ -->
+<EQN/>.
+Notice
+that d(n,c) does not need to be symmetric for this derivation, as
+the two distributions are simply related by Bayes's rule.
+</P>
+<P>
+ Returning to the log-likelihood variation (<CREF/>),  we can now use (<CREF/>) for p(n|c) and the assumption for the asymmetric model that the cluster membership
+stays fixed as we adjust the centroids, to obtain
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\delta { l} (S) = -  \sum_{i=1}^{N}
+\sum_{c \in {\cal C}} p(c | n_i ) \delta \beta d(n_i,c)
++ \delta \log Z_c
+\end{equation} -->
+</P>
+<P>
+where the variation of p(v|c) is now included in the variation of
+d(n,c).
+</P>
+<P>
+For a large enough sample, we may replace the sum over observations in
+ (<CREF/>) by the average over <EQN/>
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+which, applying Bayes's rule, becomes
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\delta {l} (S) = -  \sum_{c \in {\cal C}}
+\frac{1}{p(c)} \sum_{n\in N} p(n | c ) \delta \beta d(n,c)
++ \delta \log Z_c
+\end{equation} -->
+</P>
+<P>
+At the log-likelihood maximum, the
+ variation (<CREF/>) must vanish. We will see below that the use of relative entropy for similarity measure makes
+<!-- MATH: $\delta \log Z_c$ -->
+<EQN/>
+vanish at the maximum as well, so the
+log likelihood can be maximized by minimizing the average distortion
+with respect to the class centroids while class
+membership is kept fixed
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+or, sufficiently, if each of the inner sums vanish
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\sum_{c\in{\cal C}} \sum_{n\in {\cal N}}  p( n |c ) \delta d(n, c) = 0
+\end{equation} -->
+</P>
+</DIV>
+<DIV ID="2.1.3" DEPTH="3" R-NO="3"><HEADER>  Minimizing the Average KL Distortion </HEADER>
+<P>
+We first show that the minimization of the relative entropy yields the
+natural expression for cluster centroids
+</P>
+<P>
+<!-- MATH: \begin{equation}
+p(v|c) = \sum_{n\in {\cal N}}p(n|c)p(v|n)
+\end{equation} -->
+</P>
+<P>
+To minimize the
+ average distortion (<CREF/>), we observe that the variation of the KL distance between noun and centroid distributions with respect
+to the centroid distribution p(v|c), with
+each centroid distribution normalized by the Lagrange multiplier
+<EQN/>,
+is given by
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Substituting this expression into (<CREF/>), we obtain 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Since the 
+<!-- MATH: $\delta p(v|c)$ -->
+<EQN/>are now independent, we obtain immediately the desired centroid
+ expression (<CREF/>), which is the desired weighted average of noun distributions.
+</P>
+<P>
+We can now see that the variation 
+<!-- MATH: $\delta \log Z_c$ -->
+<EQN/>
+vanishes for
+ centroid distributions given by  (<CREF/>), since it follows  from (<CREF/>) that 
+</P>
+<P>
+<EQN/>
+</P>
+</DIV>
+<DIV ID="2.1.4" DEPTH="3" R-NO="4"><HEADER>  The Free Energy Function </HEADER>
+<P>
+The combined minimum distortion and maximum entropy optimization is
+equivalent to the minimization of a single function,
+the free energy
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+where 
+<!-- MATH: $\langle D\rangle$ -->
+<EQN/>
+is the average distortion
+ (<CREF/>) and H is the cluster membership entropy  (<CREF/>). 
+</P>
+<P>
+The free energy determines both the distortion and the membership entropy
+through
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+with temperature 
+<!-- MATH: $T = \beta^{-1}$ -->
+<EQN/>.
+</P>
+<P>
+The most important property of the free energy is that its minimum
+determines the balance between the ``disordering'' maximum entropy and
+``ordering'' distortion minimization in which the system is most
+likely to be found. In fact
+the probability to find the system at a given configuration is
+exponential in F
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+so a system is most likely to be found in its minimal free energy
+configuration.
+</P>
+</DIV>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  Hierarchical Clustering </HEADER>
+<P>
+The analogy with statistical mechanics suggests a deterministic
+ annealing procedure for clustering <REF/>, in which the number of clusters is determined through a sequence of phase
+transitions by continuously increasing the parameter <EQN/>following an annealing schedule.
+</P>
+<P>
+The higher <EQN/>,
+the more local is the
+influence of each noun on the definition of centroids.  The
+dissimilarity plays here the role of distortion.  When the scale
+parameter <EQN/>
+is close to zero, the dissimilarities are almost
+irrelevant, all words contribute about equally to each centroid, and
+so the lowest average distortion solution involves just one cluster
+which is the average of all word densities. As <EQN/>
+is slowly
+increased, a point (phase transition) is eventually reached which the
+natural solution involves two distinct centroids. We say then that the
+original cluster has split into the two new clusters.
+</P>
+<P>
+In general, if we take any cluster c and a twin c' of csuch that the centroid pc' is a small random pertubation of
+pc, below the critical <EQN/>
+at which c splits the membership
+and centroid reestimation procedure given by equations
+ (<CREF/>) and (<CREF/>) will make pc and pc'converge, that is, c and c' are really the same cluster. But with <EQN/>
+above the critical value for c, the two centroids will
+diverge, giving rise to two daughters of c.
+</P>
+<P>
+Our clustering procedure is thus as follows.  We start with very low
+<EQN/>
+and a single cluster whose centroid is the average of all noun
+distributions. For any given <EQN/>,
+we have a current set of leaf clusters corresponding to the current free energy (local)
+minimum. To refine such a solution, we search for the lowest <EQN/>which is the critical value for some current leaf cluster splits.
+Ideally, there is just one split at that critical value, but
+for practical performance and numerical accuracy reasons we may have
+several splits at the new critical point. The splitting procedure can
+then be repeated to achieve the desired number of clusters or model
+cross-entropy.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    CLUSTERING EXAMPLES
+</HEADER>
+<P>
+All our experiments involve the asymmetric model described in the
+previous section. As explained there, our clustering procedure yields
+for each value of <EQN/>
+a set <EQN/>
+of clusters minimizing the
+free energy F, and the asymmetric model for <EQN/>
+estimates the
+conditional verb distribution for a noun n by
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+where p(c|n) also depends on <EQN/>.
+</P>
+<P>
+As a first experiment, we used our method to classify the 64 nouns
+appearing most frequently as heads of direct objects of the verb
+``fire'' in one year (1988) of Associated Press newswire. In this
+corpus, the chosen nouns appear as direct object heads of a total of
+2147 distinct verbs, so each noun is represented by a density over
+the 2147 verbs.
+</P>
+<P>
+ Figure <CREF/> shows the five words most similar to the each cluster centroid for the four clusters resulting from the first two
+cluster splits.  It can be seen that first split separates the objects
+corresponding to the weaponry sense of ``fire'' (cluster 1) from the
+ones corresponding to the personnel action (cluster 2). The second
+split then further refines the weaponry sense into a projectile sense
+(cluster 3) and a gun sense (cluster 4). That split is
+somewhat less sharp, possibly because not enough distinguishing
+contexts occur in the corpus.
+</P>
+<P>
+ Figure <CREF/> shows the four closest nouns to the centroid of each of a set of hierarchical clusters derived from verb-object pairs
+involving the 1000 most frequent nouns in the June 1991 electronic
+version of Grolier's Encyclopedia (10 million words).
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  MODEL EVALUATION </HEADER>
+<P>
+The preceding qualitative discussion provides some indication of what
+aspects of distributional relationships may be discovered by
+clustering. However, we also need to evaluate clustering more
+rigorously as a basis for models of distributional relationships. So,
+far, we have looked at two kinds of measurements of model quality: (i)
+relative entropy between held-out data and the asymmetric model, and
+(ii) performance on the task of deciding which of two verbs is more
+likely to take a given noun as direct object when the data relating
+one of the verbs to the noun has been witheld from the training data.
+</P>
+<P>
+The evaluation described below was performed on the largest data set
+we have worked with so far, extracted from 44 million words of 1988
+Associated Press newswire with the pattern matching techniques
+mentioned earlier. This collection process
+yielded 1112041 verb-object pairs. We selected then the subset
+involving the 1000 most frequent nouns in the corpus for clustering,
+and randomly divided it into a training set of 756721 pairs and a test
+set of 81240 pairs.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>  Relative Entropy </HEADER>
+<P>
+ Figure <CREF/> plots the average relative entropy of several data sets to asymmetric clustered models of different sizes, given by
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+where tn is the relative frequency distribution of verbs taking nas direct object in the test set. For each critical value of <EQN/>,
+we
+show the relative entropy with respect to the asymmetric model
+based on <EQN/>
+of the training set (set train), of
+randomly selected held-out test set (set test), and of held-out
+data for a further 1000 nouns that were not clustered (set new).
+Unsurprisingly, the training set
+relative entropy decreases monotonically. The test set relative
+entropy decreases to a minimum at 206 clusters, and then starts
+increasing, suggesting that larger models are overtrained.
+</P>
+<P>
+The new noun test set is intended to test whether clusters based on
+the 1000 most frequent nouns are useful classifiers for the
+selectional properties of nouns in general. As the figure shows, the
+cluster model provides over one bit of information about the
+selectional properties of the new nouns, but the overtraining effect
+is even sharper than for the held-out data involving the 1000
+clustered nouns.
+</P>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>  Decision Task </HEADER>
+<P>
+We also evaluated asymmetric cluster models on a verb decision task
+closer to possible applications to disambiguation in language
+analysis. The task consists judging which of two verbs v and v' is
+more likely to take a given noun n as object, when all occurrences
+of (v,n) in the training set were deliberately deleted. Thus this
+test evaluates how well the models reconstruct missing data in the
+verb distribution for n from the cluster centroids close to n.
+</P>
+<P>
+The data for this test was built from the training data for the
+previous one in the following way, based on a suggestion by
+Dagan et al. <REF/>. A small
+number (104) of (v,n) pairs with a fairly frequent verb (between 500
+and 5000 occurrences) was randomly picked, and all occurrences of each
+pair in the training set were deleted. The resulting training set was
+used to build a sequence of cluster models as before. Each model was
+used to decide which of two verbs v and v' are more likely to
+appear with a noun n where the (v,n) data was deleted from the
+training set, and the decisions compared with the corresponding ones
+derived from the original event frequencies in the initial data set.
+More specifically, for each deleted pair (v,n) and each verb v'that occurred with n in the initial data either at least twice as
+frequently or at most half as frequently as v, we compared the
+sign of 
+<!-- MATH: $\log \hat{p}_n(v)/\hat{p}_n(v')$ -->
+<EQN/>
+with that of 
+<!-- MATH: $\log
+p_n(v)/p_n(v')$ -->
+<EQN/>
+for the initial data set. The error rate for each
+model is simply the proportion of sign disagreements in the selected
+(v,n,v') triples. Figure
+ <CREF/> shows the error rates for each model for all the selected (v,n,v') (all) and for just those exceptional
+triples in which the log frequency ratio of (n,v) and (n,v')differs from the log marginal frequency ratio of v and v'. In
+other words, the exceptional cases are those in which predictions
+based just on the marginal frequencies, which the initial one-cluster
+model represents, would be consistently wrong.
+</P>
+<P>
+Here too we see some overtraining for the largest models considered,
+although not for the exceptional verbs.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  CONCLUSIONS </HEADER>
+<P>
+We have demonstrated that a general divisive clustering procedure for
+probability distributions can be used to group words according to
+their participation in particular grammatical relations with other
+words. The resulting clusters are intuitively informative, and can be
+used to construct class-based word coocurrence models with substantial
+predictive power.
+</P>
+<P>
+While the clusters derived by the proposed method seem in many cases
+semantically significant, this intuition needs to be grounded in a
+more rigorous assessment. In addition to predictive power evaluations
+of the kind we have already carried out, it might be worth comparing
+automatically-derived clusters with human judgements in a suitable
+experimental setting.
+</P>
+<P>
+Moving further in the direction of class-based language models, we
+plan to consider additional distributional relations (for instance,
+adjective-noun) and apply the results of clustering to the grouping of
+lexical associations in lexicalized grammar frameworks such as
+stochastic lexicalized tree-adjoining grammars
+ <REF/>. 
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  ACKNOWLEDGMENTS </HEADER>
+<P>
+ We would like to thank Don Hindle for making
+available the 1988 Associated Press verb-object data set, the Fidditch
+parser and a verb-object structure filter, Mats Rooth for selecting
+the objects of ``fire'' data set and many discussions, David Yarowsky
+for help with his stemming and concordancing tools, and Ido Dagan for
+suggesting ways of testing cluster models.
+</P>
+<DIV ID="6.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Peter F. Brown, Vincent J. Della Pietra, Peter V. deSouza, Jenifer C. Lai, and
+  Robert L. Mercer.
+1990.
+Class-based n-gram models of natural language.
+In Proceedings of the IBM Natural Language ITL, pages
+  283-298, Paris, France, March.
+</P>
+<P>
+Kenneth W. Church and William A. Gale.
+1991.
+A comparison of the enhanced Good-Turing and deleted estimation
+  methods for estimating probabilities of English bigrams.
+Computer Speech and Language, 5:19-54.
+</P>
+<P>
+Kenneth W. Church.
+1988.
+A stochastic parts program and noun phrase parser for unrestricted
+  text.
+In Proceedings of the Second Conference on Applied Natural
+  Language Processing, pages 136-143, Austin, Texas. Association for
+  Computational Linguistics, Morristown, New Jersey.
+</P>
+<P>
+Thomas M. Cover and Joy A. Thomas.
+1991.
+Elements of Information Theory.
+Wiley-Interscience, New York, New York.
+</P>
+<P>
+Ido Dagan, Shaul Markus, and Shaul Markovitch.
+1992.
+Contextual word similarity and the estimation of sparse lexical
+  relations.
+Submitted for publication.
+</P>
+<P>
+A. P. Dempster, N. M. Laird, and D. B. Rubin.
+1977.
+Maximum likelihood from incomplete data via the EM algorithm.
+Journal of the Royal Statistical Society, Series B,
+  39(1):1-38.
+</P>
+<P>
+Richard O. Duda and Peter E. Hart.
+1973.
+Pattern Classification and Scene Analysis.
+Wiley-Interscience, New York, New York.
+</P>
+<P>
+Donald Hindle.
+1990.
+Noun classification from predicate-argument structures.
+In 28th Annual Meeting of the Association for Computational
+  Linguistics, pages 268-275, Pittsburgh, Pennsylvania. Association for
+  Computational Linguistics, Morristown, New Jersey.
+</P>
+<P>
+Donald Hindle.
+1993.
+A parser for text corpora.
+In B.T.S. Atkins and A. Zampoli, editors, Computational
+  Approaches to the Lexicon. Oxford University Press, Oxford, England.
+To appear.
+</P>
+<P>
+Philip Resnik.
+1992.
+WordNet and distributional analysis: A class-based approach to
+  lexical discovery.
+In AAAI Workshop on Statistically-Based
+  Natural-Language-Processing Techniques, San Jose, California, July.
+</P>
+<P>
+Kenneth Rose, Eitan Gurewitz, and Geoffrey C. Fox.
+1990.
+Statistical mechanics and phase transitions in clustering.
+Physical Review Letters, 65(8):945-948.
+</P>
+<P>
+Yves Schabes.
+1992.
+Stochastic lexicalized tree-adjoining grammars.
+In Proceeedings of the 14th International Conference on
+  Computational Linguistics, Nantes, France.
+</P>
+<P>
+David Yarowsky.
+1992.
+Personal communication.
+</P>
+<DIV ID="6.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  A more formal discussion will appear in our paper
+Distributional Clustering, in preparation.
+  As usual in clustering models
+ <REF/>, we assume that the model distribution and the empirical distribution are interchangeable at the solution of the
+parameter estimation equations, since the model is assumed to be able
+to represent correctly the data at that solution point. In practice,
+the data may not come exactly from the chosen model class, but
+the model obtained by solving the
+estimation equations may still be the closest one to the data.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

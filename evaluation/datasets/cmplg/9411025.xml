@@ -1,0 +1,522 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Multi-Dimensional Inheritance</TITLE>
+<ABSTRACT>
+<P>
+In this paper, we present an alternative approach to multiple inheritance
+for typed feature structures.
+In our
+approach, a feature structure can be associated with several types coming
+from different hierarchies (dimensions). In case of multiple inheritance, a
+type
+has supertypes from different hierarchies. We contrast this approach
+with approaches based on a single type hierarchy where a feature structure
+has only one unique most general type, and multiple inheritance
+involves computation of greatest lower bounds in the hierarchy.
+The proposed approach supports current linguistic
+analyses in constraint-based formalisms like HPSG, inheritance in
+the lexicon, and knowledge representation for NLP systems. Finally,
+we show that multi-dimensional inheritance hierarchies can be
+compiled into a Prolog term representation, which allows to compute
+the conjunction of two types efficiently by Prolog term unification.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+In the past years, multiple inheritance has been
+increasingly used for the  description of natural languages.
+Some examples are the work in Head-driven Phrase Structure Grammar
+( HPSG) on the structure of the lexicon
+ <REF/>,<REF/>,  semantic sorts for selectional restrictions <REF/>, derivational morphology
+ <REF/>,<REF/>,  and the syntax of English relative clauses <REF/>.  As an example of this type of analysis, figure <CREF/> shows a recent  HPSG description of English clauses.
+</P>
+<P>
+In the example, relative
+clauses are cross-classified according to two ``dimensions'';
+on the one hand according to the Phrase-Type (Headed or Non-Headed),
+and on the other hand according to the Clause-Type (Interrogative,
+Declarative, or Relative). The choices within one dimension are
+mutually exclusive: no structure can be described as both Headed and
+Non-Headed, or as more than one of {Int, Decl, Rel}. However, a
+structure can be assigned types from different dimensions, without
+the need for a subtype that inherits from both dimensions.
+</P>
+<P>
+ In  section <CREF/>, we present a concept of typing, which provides direct support for
+multi-dimensional inheritance, and compare it to the type hierarchies
+in Carpenter's typed feature logic.
+ Section <CREF/> shows that unification in multi-dimensional inheritance hierarchies can be implemented
+efficiently as unification of a Prolog term representation of
+ the types. Section <CREF/> applies multi-dimensional inheritance to the problem of systemic classification.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>   Multi-Dimensional Inheritance
+</HEADER>
+<P>
+We follow the Carpenter's formalisation of typed feature logic, but
+modify the conception of the type hierarchy. In Carpenter's logic
+ <REF/>, the type hierarchy is required to be a bounded complete partial
+order ( BCPO), which means that any two types which do
+have a common subtype
+must have a unique most general common subtype. A type hierarchy
+ as in figure <CREF/> fails this requirement because the types Headed-Ph and Rel have two common subtypes, but none of them
+is more general than the other. In order to make the type
+hierarchy a  BCPO, additional types must be introduced,
+ resulting in a hierarchy like the one in figure <CREF/>. In Carpenter's system, every feature structure has only one unique
+most general type, so that it is not possible to assign a feature
+structure two types neither of which subsumes the other unless
+they have a common subtype.
+</P>
+<P>
+ Carpenter <REF/> describes a conjunctive type construction by which
+ a type hierarchy like the one in figure <CREF/> can be converted into a bounded complete partial order like in figure
+ <CREF/>. Once this is done, efficient algorithms for the  calculation of greatest lower bounds can be used <REF/>. We argue that such a conjunctive type construction is neither necessary
+for theoretical reasons nor for reasons of efficient implementation.
+</P>
+<P>
+In our system, a feature structure can have different types
+as long as they are chosen from different dimensions. Our syntax
+ for subtype declarations, given in (<CREF/>), combines information about subtyping and disjointness. All the Yi are subtypes of X,
+and all Yi are disjoint.
+</P>
+<P>
+<!-- MATH: \begin{equation}
+X > [Y_1,\ldots,Y_n].
+\end{equation} -->
+</P>
+<P>
+Multi-dimensional inheritance
+arises in the case where there is more
+than one declaration with the same supertype on the left-hand side,
+ as in  (<CREF/>). 
+</P>
+<P>
+X  >  [Y_{1.1},...,Y_{1.n}]. \\
+\vdots  \vdots    \vdots       \nonumber \\
+X  >  [Y_{m.1},\ldots,Y_{m.k}]. \nonumber
+\end{eqnarray} -->
+</P>
+<P>
+Instead of writing a separate subtype declaration for each dimension,
+multiple dimensions are conventionally connected with the product
+ operator *, as in declaration (<CREF/>), which is equivalent  to the declarations in (<CREF/>). 
+</P>
+<P>
+<!-- MATH: \begin{equation}
+X >  [Y_{1.1},...,Y_{1.n}] * \ldots * [Y_{m.1},...,Y_{m.k}].
+\end{equation} -->
+</P>
+<P>
+Multiple inheritance is the case where some Y type occurs
+in the right-hand side of more than one type declaration. In this case,
+the type has several supertypes, which must be chosen from different
+dimensions in order to be consistent with each other.
+</P>
+<P>
+We now turn to the semantics of type declarations.
+The denotation of each type is a subset of the domain. The semantics
+ of the type declaration in (<CREF/>) is given by the axioms (<CREF/>), which states that the denotation of any of the Yi is a subset of the
+ denotation of X, and (<CREF/>), which states that all the Yiare disjoint. No additional axioms are needed in case of multi-dimensional inheritance.
+</P>
+<P>
+\forall Y_i ([ \hspace{-.5mm} [Y_i ] \hspace{-.5mm} ] \subseteq [ \hspace{-.5mm} [X ] \hspace{-.5mm} ])\\
+\forall Y_i \forall Y_j (Y_i \neq Y_j \Rightarrow
+   [ \hspace{-.5mm} [Y_i ] \hspace{-.5mm} ] \cap [ \hspace{-.5mm} [Y_j ] \hspace{-.5mm} ] = \emptyset)
+\end{eqnarray} -->
+</P>
+<P>
+Our system has an open-world semantics for type hierarchies.
+A feature structure can be described by two types from different hierarchies,
+but there need not be a common subtype of these two types. This
+ is in contrast with a system like ALE <REF/> with a closed-world semantics
+where the conjunction of two types is inconsistent
+unless one subsumes the other or they have a common subtype.
+</P>
+<P>
+Our notion of feature typing and appropriateness is based on
+Carpenter's feature logic. Every feature is introduced for a
+unique most general type, and is appropriate for all subtypes
+of that type. In case of multiple inheritance, a type can
+inherit different features from its supertypes in different dimensions.
+A difference arises with type restrictions for feature values.
+In Carpenter's system, the value of a feature has one type as
+the type restriction, whereas in our system, the type restriction
+can be a conjunction of types from different dimensions.
+</P>
+<P>
+ In our system, the type hierarchy from figure <CREF/> can be expressed  directly with the declarations given in figure <CREF/>. 
+</P>
+<P>
+Our notion of typing is similar to the one adopted
+in the Comprehensive Unification Formalism ( CUF
+ <REF/>), in that it adopts an open-world semantics, and two types are
+considered as consistent unless they are explicitly declared to
+be disjoint.
+However,  CUF allows to state more general type axioms
+using the full power of propositional logic. In our system, the
+type axioms are restricted to subtyping (which corresponds to
+implication) and disjointness. This restriction allows the
+efficient compilation of multi-dimensional inheritance hierarchies
+to Prolog terms, which will be described in the next section.
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>   Compilation into a Prolog Term Representation
+</HEADER>
+<P>
+Multi-dimensional type hierarchies have the favourable property that
+the types can be compiled to a Prolog term representation. With this
+representation, Prolog's built-in term unification is all that is
+required to compute the conjunction of two types. The Prolog term
+representation given here builds on and extends the representation
+ introduced by Mellish <REF/>,<REF/> and used  in the Core Langauge Engine <REF/> and the ALEP grammar  development system <REF/>,<REF/>. 
+</P>
+<P>
+We start out by describing how the translation of
+type hierarchies into Prolog terms works, and then give an
+example. The translation to terms must be able to handle different
+dimensions of typing, mutually exclusive choices in a dimension,
+subtyping, multiple inheritance, features, and equality.
+</P>
+<P>
+Different dimensions:
+Each dimension occupies a different
+argument position in the resulting term representation, so that
+information
+       from different dimensions can be combined by unification.
+</P>
+<P>
+Mutually exclusive types:
+Mutually exclusive types in the same
+      dimension have different functors at the same argument position,
+      so that their unification fails.
+</P>
+<P>
+Subtype:
+The term which corresponds to the subtype is a further
+      instantiation of the term corresponding to its supertype.
+</P>
+<P>
+Multiple inheritance:
+The term which corresponds to the subtype
+       is a further instantiation of the unification of the terms which
+       correspond to its supertypes.
+</P>
+<P>
+Feature:
+The term representation has an argument position
+       for each feature
+       introduced for a type. If a feature is introduced for a subtype,
+       then an argument position is provided in that argument which
+       further instantiates the supertype.
+  Equality:
+In order to be able to distinguish structures that
+       are identical from those which just happen to have the same
+       value (i.e. their term representation is instantiated to the
+       same ground term), an extra variable is introduced in the term
+       representation
+       (preventing instantiation to a ground term),
+       which is only equal for two structures if they have been made
+       identical by unification.
+</P>
+<P>
+Given this kind of representation, two typed feature structures can
+be unified simply by unification of the corresponding Prolog terms.
+ In figure <CREF/>, we provide an encoding of the types in the  hierarchy from figure <CREF/> by Prolog terms. For simplicity, we leave out the argument position used to establish the equality
+of feature structures, and any argument positions used to encode
+features. Note that the type Su-Wh-Rel makes a choice in both dimensions.
+</P>
+<P>
+If the type Su-Wh-Rel has any subtypes, a choice must be made which of
+the two occurences of su_wh_rel in the Prolog terms should
+get argument positions for carrying this information.
+  We always choose the leftmost occurence in a term for representing
+subtypes (and features). Further occurences then only serve to
+make a choice in a particular dimension of the hierarchy, and for that
+purpose, an
+atom which is distinct from other terms that can occur as alternatives
+in the same dimension is sufficient.
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>   Application to Systemic Classification
+</HEADER>
+<P>
+In this section, we apply the conception of multi-dimensional
+inheritance to systemic classification networks, which have been
+ discussed in <REF/>. 
+</P>
+<P>
+Systemic classification networks
+are an interesting formalism for such an encoding because they
+ offer considerable expressive power. Figure <CREF/> shows a systemic classification network for
+ English pronouns taken from <REF/>. 
+</P>
+<P>
+ Figure <CREF/> shows the connectives, and the translation of the first three in our system. The
+final connective (disjunctive entry condition) has no simple
+translation. This is not surprising, given the complexity
+ analysis by Brew <REF/> who shows systemic classification to be NP-hard by giving an encoding of the 3SAT-problem in a
+systemic network with disjunctive entry conditions.
+</P>
+<P>
+We treat disjunctive entry conditions by introduction of new
+types into the hierarchy. For each type X at the right-hand side
+of a disjunctive entry condition, we introduce two new types,
+X' for the original type, and <EQN/>
+for its negation. These
+pairs of new types are introduced in different dimensions at
+the top of the choice system containing the disjunctive
+entry conditions. All types Y which have subtypes
+that are on the left-hand side of the disjuntive entry condition
+for X become subtypes of X', and all other types become
+subtypes of <EQN/>.
+In effect, this is an expansion of the
+disjunctive entry conditions to disjunctive normal form.
+</P>
+<P>
+In the worst case, this method can lead to translations which
+are exponentially larger than the original classification network,
+as for the 3SAT problem.
+We show by an example that this need not be the case in practice
+by converting the classification of pronouns
+ given in figure <CREF/> into our system (figure <CREF/>). 
+</P>
+<P>
+In this case, our translation is more efficient than the
+``brute-force translation''
+ described in <REF/> for networks with disjunctive entry conditions. In Winograd's systemic network, there are 54 possibilities
+(6 for interrogative pronouns, 36 for personal pronouns, and
+4 for demonstrative pronouns), resulting in a brute-force
+translation with 55 arguments.
+</P>
+<P>
+In contrast, in our type system, the Prolog term translation has at
+most 8 nodes in the worst case, as in the following term which
+encodes the subjective case masculine (third person singular)
+personal pronoun.
+</P>
+<P>
+<EQN/>
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Conclusion </HEADER>
+<P>
+We have presented a concept of inheritance which provides direct support
+for current linguistic descriptions making use of
+``cross-classification'', and can be compiled into an efficient Prolog
+term representation.
+</P>
+<P>
+Given the need for multiple dimensions in lingistic descriptions, we
+believe that multi-dimensional type hierarchies will remain important
+even when their compilation into Prolog terms is not needed any longer
+because unification of typed feature terms will be built-in in future logic
+programming languages.
+</P>
+<P>
+For the time being, however, the combination of multi-dimensional
+inheritance and compilation into Prolog terms appears to give both the
+efficiency and the expressive power needed to develop larger-scale
+grammars and lexicons, and use existing Prolog-based technology
+(DCG parsers, left-corner, head-corner, or chart parsers,
+semantic-head driven or tabular generators) to build
+NLP systems. Such an approach can benefit from all the advantages
+of modern Prolog compilers (indexing, coroutining facilities,
+module systems etc.) that would need considerable effort to
+duplicate in a dedicated grammar formalism.
+</P>
+<P>
+The multi-dimensional inheritance described in this paper is
+ implemented in the system ProFIT <REF/>, which translates programs containing
+typed feature terms to ordinary Prolog programs.
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Hassan At-Kaci and Patrick Lincoln.
+ LIFE, a natural language for natural language.
+T. A. Informations, 30(1-2):37 - 67, 1989.
+</P>
+<P>
+Hassan At-Kaci and Roger Nasr.
+ LOGIN: A logical programming language with built-in
+  inheritance.
+In Proceedings of the 13th ACM Symposium an Principles of
+  Programming Languages, pages 219-228, St. Petersburg, Florida, 1986.
+</P>
+<P>
+Hassan At-Kaci and Andreas Podelski.
+Towards a meaning of  LIFE.
+Technical Report 11, DEC Paris Research Laboratory, Paris, June 1991.
+</P>
+<P>
+H. Alshawi, D. J. Arnold, R. Backofen, D. M. Carter, J. Lindop, K. Netter,
+  J. Tsujii, and H. Uszkoreit.
+Eurotra 6/1: Rule formalism and virtual machine design study. final
+  report.
+Technical report, SRI International, Cambridge, 1991.
+</P>
+<P>
+Hiyan Alshawi, editor.
+The Core Language Engine.
+MIT Press, 1991.
+</P>
+<P>
+BIM-SEMA.
+ALEP System Documentation: The ALEP Linguistic Subsystem,
+  Version 1.0.
+Commission of the European Communities, March 1993.
+</P>
+<P>
+Chris Brew.
+Systemic classification and its efficiency.
+Computational Linguistics, 17(4):375 - 408, 1991.
+</P>
+<P>
+Bob Carpenter.
+The logic of typed feature structures.
+Cambridge Tracts in Theoretical Computer Science. Cambridge
+  University Press, Cambridge, 1992.
+</P>
+<P>
+Bob Carpenter.
+ALE Version <EQN/>: User Manual.
+University of Pittsburgh, 1993.
+</P>
+<P>
+Michael Covington.
+GULP 2.0: an extension of Prolog for unification-based grammar.
+Technical Report AI-1989-01, Advanced Computational Methods Center,
+  University of Georgia, 1989.
+</P>
+<P>
+Jochen Drre and Michael Dorna.
+CUF - A formalism for linguistic knowledge representation.
+In Jochen Drre, editor, Computational Aspects of
+  Constraint-Based Linguistic Description. Deliverable R1.2.A. DYANA-2 -
+  ESPRIT Basic Research Project 6852, 1993.
+</P>
+<P>
+Gregor Erbach.
+ProFIT User's Manual - Version 1.05.
+Universitt des Saarlandes, Saarbrcken, July 1994.
+</P>
+<P>
+Dan Flickinger and John Nerbonne.
+Inheritance and complementation: a case study of easy adjectives and
+  related nouns.
+Computational Linguistics, 18(3):269 - 309, 1992.
+</P>
+<P>
+Susan Beth Hirsh.
+P-PATR: A compiler for unification-based grammars.
+Master's thesis, Stanford University, Stanford, CA, December 1986.
+</P>
+<P>
+Hans-Ulrich Krieger and John Nerbonne.
+Feature-based inheritance networks for computational lexicons.
+In Ted Briscoe, Anne Copestake, and Valeria de Paiva, editors,   Default Inheritance within Unification-Based Approaches to the Lexicon.
+  Cambridge University Press, 1992.
+</P>
+<P>
+Christopher S. Mellish.
+Implementing systemic classification by unification.
+Computational Linguistics, 14(1):40-51, 1988.
+</P>
+<P>
+Christopher S. Mellish.
+Term-encodable description spaces.
+In D. R. Brough, editor, Logic Programming: New Frontiers,
+  pages 189 - 207. Intellect, Oxford, 1992.
+</P>
+<P>
+M. Andrew Moshier.
+A rational reconstruction of the domain of feature structures.
+Universitt des Saarlandes, Saarbrcken, 1994.
+</P>
+<P>
+Carl J. Pollard and Ivan A. Sag.
+Information-Based Syntax and Semantics. Volume 1: Fundamentals.
+CSLI Lecture Notes. Center for the Study of Language and Information,
+  Stanford, CA, 1987.
+</P>
+<P>
+Susanne Riehemann.
+Word formation in lexical type hierarchies: A case study of   bar-adjectives in german.
+Master's thesis, University of Tbingen, Department of
+  Linguistics, 1992.
+</P>
+<P>
+Ivan Sag.
+Relative clauses: A multiple inheritance analysis.
+Stanford, 1994.
+</P>
+<P>
+Andreas P. Schter.
+Compiling feature structures into terms: A case study in Prolog.
+Technical Report RP-55, University of Edinburgh, Centre for Cognitive
+  Science, 1993.
+</P>
+<P>
+Terry Winograd.
+Language as a Cognitive Process, volume I: Syntax.
+Addison Wesley, Reading, MA, 1983.
+</P>
+<DIV ID="5.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  This work was supported by the Deutsche Forschungsgemeinschaft,
+Special Research Division 314 ``Artificial Intelligence - Knowledge-Based
+Systems'' through project N3 ``Bidirectional Linguistic Deduction'' (BiLD),
+the Commission of the European Communities through the project
+LRE-61-061 ``Reusable Grammatical Resources,'' and Cray Systems.
+Part of the work was done during a visit at the Human Communication
+Research Centre, University of Edinburgh.
+I would like to thank the members of the Language Technology Group at
+HCRC, Chris Brew, Suresh Manandhar, Drew Moshier
+and Hans Uszkoreit for their comments.
+  This figure is taken from a slide presented by Ivan Sag
+          at the 1993 EACL meeting in Utrecht. The use of horizontal
+          lines in the hierarchy to indicate a split into several
+          dimensions has been adopted from the book on the Core
+           Language Engine <REF/>. 
+  A similar point holds for the type system of the logic
+          programming language  LIFE
+           <REF/>,<REF/>, with the           difference that the unification of two types need not
+          have a unique result;
+          the unification of the types Headed-Ph
+          and Rel would create a choice point and
+          produce the two alternative solutions
+          Su-Wh-Rel and That-Rel.
+  We ignore the case where one of the supertypes subsumes the
+          other since such declarations are redundant.
+  The compilation of feature structures to Prolog terms has
+           been described in <REF/>,<REF/>,<REF/>,           but these works assume untyped feature structures. One may
+          wonder what the difference is between features and multiple
+          typing dimensions, since they have very similar term
+          representations. A technical answer would be that equality
+          constraints (coreferences) can be stated over feature values,
+          but not over type dimensions. Work by Moshier
+           <REF/> on a rational           reconstruction of typed feature structures in domain theory
+          approaches the question from a more fundamental perspective.
+  From the correctness of the translation, it would be no
+          problem representing the subtypes in both occurences, but
+          such an encoding is clearly redundant.
+  The ``brute-force translation'' works by encoding n possibilities
+          into a term with n+1 arguments, whose first and last
+          argument are different (either instantiated to different atoms
+          or related by an inequality constraint). For encoding a value
+          that excludes the n[th] possilibity, the n[th] and
+          n+1[st] argument position are unified. If a combination of
+          values excludes all possibilities, then all arguments are
+          unified with each other, including the first and the last,
+          which are different, so that the unification fails.
+          There is limited use for this type
+          of translation to avoid creation of choice points in
+          disjunctions with a small number of possible values. This
+          can be regarded as a Prolog implementation of finite domains.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

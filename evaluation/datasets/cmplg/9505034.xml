@@ -1,0 +1,2455 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Semantic Ambiguity and Perceived Ambiguity1</TITLE>
+<ABSTRACT>
+<P>
+I explore some of the issues that arise when trying to establish a connection
+between the underspecification hypothesis pursued in the NLP literature and
+work on ambiguity in semantics and in the psychological literature.  A theory
+of underspecification is developed `from the first principles', i.e., starting
+from a definition of what it means for a sentence to be semantically ambiguous
+and from what we know about the way humans deal with ambiguity. An
+underspecified language is specified as the translation language of a grammar
+covering sentences that display three classes of semantic ambiguity: lexical
+ambiguity, scopal ambiguity, and referential ambiguity. The expressions of this
+language denote sets of senses. A formalization of defeasible reasoning with
+underspecified representations is presented, based on Default Logic.  Some
+issues to be confronted by such a formalization are discussed.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  The Combinatorial Explosion Puzzle </HEADER>
+<P>
+The alternative syntactic readings of a sentence such as synamb probably
+number in the hundreds, whereas sentences such as hobbs would have
+hundreds of thousands scopally distinct readings if all permutations of
+scope-taking sentence constituents were considered admissible readings. Yet,
+human beings appear able to deal with these sentences effortlessly.
+</P>
+<P>
+<EQN/>
+This Combinatorial Explosion Puzzle is one of the most fundamental
+questions to be addressed by a theory of language processing, and a substantial
+problem for developers of Natural Language Processing () systems.  
+systems which have to perform non-linguistic actions like booking a flight in
+response to an user's utterance must arrive at the preferred interpretation of
+their input in the context of the conversation, if one exists; otherwise, they
+must realize that their input is ambiguous and request a clarification.
+Examples such as synamb and hobbs indicate that such systems
+cannot adopt the sentence processing strategy of generating all the readings of
+an ambiguous sentence and choosing one of them, because there are too many such
+ readings. In order to develop such systems, a theory of ambiguity processing is needed that is consistent both
+with linguistic facts and with what is known about the way humans disambiguate.
+</P>
+<P>
+Work on underspecified representations such as
+ <REF/>,<REF/>,<REF/>,,<REF/> because it is explicitly motivated by the Combinatorial Explosion Puzzle, and aims at a unified account of all interpretation
+processes, including those that occur before the scope of all operators has
+been determined. The work on underspecified representations holds the promise
+of yielding a better account of the way interpretive processes such as scope
+disambiguation and reference resolution affect each other.
+</P>
+<P>
+The existing theories of underspecification, however, have been motivated
+almost exclusively by computational considerations. For example, the semantics
+assigned to underspecified representations is designed so as to support those
+inferences that are deemed useful for an economical approach to disambiguation,
+rather than being motivated by an analysis of the phenomenon of ambiguity.  In
+this paper I explore some of the issues that arise when trying to establish a
+connection between work on underspecification and, on the one side, work on
+ambiguity in semantics; on the other side, work on ambiguity in the
+psychological literature. A theory of underspecification is developed `from the
+first principles', i.e., starting from a definition of what it means for a
+sentence to be semantically ambiguous and from what we know about the way
+humans deal with ambiguity. The goal is to arrive at a linguistically and
+cognitively plausible theory of ambiguity and underspecification that, in
+addition to computational gains, may provide a better understanding of how
+ humans process language. 
+</P>
+<P>
+Many of the issues discussed in this paper arose from work on the 
+project at the University of Rochester, in which the issues of language
+comprehension, planning, and reasoning encountered in task-oriented natural
+ language conversations are studied <REF/>. The theory of ambiguity proposed in this paper is the basis for the implemented surface
+discourse interpretation system -93, used in the -93 demo
+ system. -93 is described in <REF/>. 
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  Ambiguity in Natural Language </HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Ambiguity and Grammar </HEADER>
+<DIV ID="2.1.1" DEPTH="3" R-NO="1"><HEADER>  Characterizing Ambiguity </HEADER>
+<P>
+The dictionary definitions of the terms ambiguity and
+ambiguous try to capture the intuition that an expression is
+ambiguous if `it has multiple meanings'. An example are the following entries,
+from Webster's:
+<EQN/>
+A more precise
+characterization of the notion of ambiguity is required to differentiate
+ambiguity from vagueness or indeterminacy, for example, or
+to clarify notions such as homonimy and polysemy (see
+ below). 
+</P>
+<P>
+An early attempt at making the notion of ambiguity more precise was presented
+ in <REF/>. Lakoff proposed linguistic tests that could be used to tell whether a sentence was ambiguous or
+ not. (Lakoff's tests were meant to provide a way for distinguishing ambiguous
+sentences from indeterminate ones.)  Zwicky and Sadock
+<REF/> showed, however, that such tests do not result in
+an unambiguous classification of sentences, and that a formal characterization
+of the concepts of ambiguity and indeterminacy was required even to understand
+ what these `ambiguity tests' really test. 
+</P>
+</DIV>
+<DIV ID="2.1.2" DEPTH="3" R-NO="2"><HEADER>  Meaning, Sense, and Ambiguity </HEADER>
+<P>
+One problem to be tackled in attempting to make precise the definition of
+ambiguity is to say what `meanings' and `senses' are.  In modern semantic
+theory, the meaning assigned to an expression by a grammar is a function from
+contexts (or discourse situations) to senses.  Roughly
+speaking, the discourse situation provides a value for all context-dependent
+aspects of the sentence; the sense of a sentence (what we get once we resolve
+its context-dependent aspects) tells us under which circumstances in the world
+ the sentence is true or false. 
+</P>
+<P>
+Not all notions of `sense' employed in the literature can serve as the basis
+for a definition of ambiguity. For example, of the various notions of
+proposition (the sense of sentences), the simplest is the one
+according to which propositions are truth values. But if we were to use this
+notion of sense, the sentence Kermit croaked, ambiguous between a
+reading in which Kermit utters a frog-like sound and a reading in which he
+dies, would be classified as unambiguous with respect to all models in which
+Kermit has both the property of dying and the property of producing a frog-like
+sound, or he (it) has neither property. In other words, in providing a
+definition of ambiguity we find the same need for a fine-grained notion of
+sense that has been observed in connection with the semantics of attitude
+ reports. A model-theoretic definition of ambiguity requires a finer-grained notion of
+proposition than simply truth values. In most recent semantic theories, senses
+are intensional objects; the simplest way of achieving intensionality is to use
+functions from possible worlds or situations to referents as one finds in
+Montague Grammar, where, for example, propositions are functions from possible
+worlds to truth values. This simple form of intensionality will be sufficient
+ for the purposes of the present paper. 
+</P>
+</DIV>
+<DIV ID="2.1.3" DEPTH="3" R-NO="3"><HEADER>  A Semantic Theory of Ambiguity </HEADER>
+<P>
+The notions of `meaning' and `sense' just discussed are the starting point for
+the semantic account of the notion of ambiguity and its relation with vagueness
+ developed by Pinkal <REF/> introduces the notion of indefiniteness to subsume both
+ambiguity and vagueness. He defines indefiniteness as follows:
+</P>
+<P>
+<EQN/>
+Pinkal formalizes the notion of indefiniteness in terms of
+ precisification.  According to Pinkal, a linguistic expression is semantically indefinite if it has the
+potential for being made precise in distinct ways. For example, the
+sentence The Santa Maria is a fast ship containing the degree
+adjective fast can be `made precise' (and assigned a definite truth
+value) either with respect to a context in which `fast' is interpreted as `fast
+for a modern ship', in which case the sentence is false; or with respect to a
+context in which `fast' is interpreted as `fast for a ship of her age', in
+which case the sentence can be true or false, depending on the class of
+comparison.  Let p and q be two propositions. Proposition p is
+more precise than q iff (i) p is true (false) under all states of
+the world under which q is true (false), and (ii) p is true or false under
+certain circumstances under which q is indefinite. The idea of
+precisification is defined as follows:
+</P>
+<P>
+<EQN/>
+The connection between indefiniteness and precisification is provided by the
+following Precisification Principle:
+</P>
+<P>
+Precisification Principle
+:
+A sentence is of indefinite truth value in a context if and only if
+  it can be precisified alternatively to ``true'' or to ``false''.
+which Pinkal also reformulates as follows:
+Extended Precisification Principle
+An expression is semantically
+indefinite in a context iff it can assume different senses in that context.
+Pinkal does not equate ambiguity with vagueness.  His theory includes,
+in addition to the notion of precisification, additional criteria to
+differentiate different forms of ambiguity, as well as differentiating `pure'
+ambiguity from `pure' vagueness. The intuition he is trying to capture is that
+``...whether an expression is ambiguous or only vague is a question that
+cannot be cleared once and for all. Indefiniteness is perceived as ambiguity
+when alternative precisifications are predominant, as vagueness when an
+unstructured continuum presents itself:''
+</P>
+<P>
+Ambiguity (Pinkal)
+:
+If the precisification spectrum of an expression is perceived as discrete,
+  we may call it ambiguous; if it is perceived as continuous, we may call
+  it vague.
+Pinkal identifies two fundamental
+types of ambiguity, according to whether an expression has, or does not have, a
+`wider' sense that could be taken as most `basic'. For example, ball
+does not have a wide sense of `round object and dancing party', whereas
+American may either mean `person from the US' or `person from the
+American continent'. He classifies expressions like American
+which have a wider sense as having a multiplicity of use, whereas
+expressions such as ball or green which do require
+precisification are called narrowly ambiguous. The cases of ambiguity
+in the narrow sense are further distinguished in two classes, depending on
+whether they are subject to the Precisification Imperative. Although
+the two interpretations of green are distinct, it is possible of an
+object to be both green in the `ripe' sense and green in the `color' sense: for
+example, a green apricot. An object cannot, however, be a `band' both in the
+musical group sense and in the piece of tape sense. Pinkal proposes that
+polysemous expressions behave like green, and calls all of these
+expressions P-type ambiguous; expressions like band,
+however, are true homonyms, and therefore he calls them H-type
+ambiguous. These latter are defined as follows:
+</P>
+<P>
+Precisification Imperative
+: An expression is H-type ambiguous
+iff its base level is inadmissible, i.e., if it requires precisification.
+For my purposes,  it's
+not particularly important whether the difference between homonimy and polysemy
+is completely captured by the Precisification Imperative; what is important is
+the claim that H-type ambiguous expressions need precisification, and
+furthermore, that the Precisification Imperative ``is a second order phenomenon
+...that lies beyond the scope of a strictly truth-conditional approach.''
+ (<REF/>, p. 86-87). I will provide below independent reasons for including a formalization of reasoning in context in a treatment of ambiguity,
+and I will argue that such formalization provides the necessary tools to
+express the Precisification Imperative.
+</P>
+<P>
+To summarize, a sentence is H-type ambiguous iff the grammar assigns to it
+distinct precisifications (senses) in a given discourse situation, and if the
+`base level' of the expression requires precisification.  Thus, the sentence
+Kermit croaked is considered ambiguous since in the `empty context'
+that provides all the senses of the expression according to the grammar G for
+English, that sentence has two senses: the proposition that attributes to
+Kermit the property of producing the sound that frogs produce, and the
+proposition that attributes to Kermit the property of dying.  (I am assuming
+here that terms like Kermit refer unambiguously.) On the other hand,
+the sentence Kermit kissed Miss Piggy would be considered
+unambiguous with respect to the same context.
+</P>
+<P>
+Although Pinkal is only concerned with lexical ambiguity, the precisification
+approach can also be used to classify as ambiguous sentences which have more
+than one structural analysis (like the sentence They saw her duck)
+or are scopally ambiguous (cfr. the sentence Everybody didn't leave)
+whenever the grammar assigns to them more than one sense. I will discuss below
+how Pinkal's system can be extended to scopal and referential
+ ambiguity. 
+</P>
+</DIV>
+<DIV ID="2.1.4" DEPTH="3" R-NO="4"><HEADER>  The Disjunction Fallacy </HEADER>
+<P>
+It is important to realize that saying that a sentence is ambiguous in a
+context if it has distinct precisifications is not the same as saying that an
+ambiguous sentence is equivalent to the disjunction of its distinct
+precisifications. Intuitively, in uttering S, whose two precisifications are
+the propositions P and Q, a speaker may have meant P or she may have meant Q,
+but the following does not hold:
+</P>
+<P>
+[[A means that P] [A means that Q]] 
+[A means that [P Q]]
+To treat an ambiguous sentence in such a way would be tantamount to propose
+that an ambiguous sentence has a single sense in any given discourse situation,
+namely, the proposition that is true at a situation if either of the distinct
+interpretations of the sentence is true at that situation; but according to the
+definition above, an ambiguous sentence is one which has more than one sense at
+a discourse situation.  For example, according to the definition of ambiguity
+discussed above, the listener of an utterance of They saw her duck
+could either interpret the speaker as saying that the contextually determined
+set of individuals denoted by the pronoun they saw a contextually
+specified female person lowering herself, or as saying that that set of
+individuals saw the pet waterfowl of that female person. According to the
+disjunction theory, instead, the listener would attribute to the speaker of
+that sentence a single meaning, albeit a disjunctive one; namely, that it was
+either the case that they saw a contextually specified female person
+lowering herself, or it was the case that they saw the pet waterfowl
+ of that female person. 
+</P>
+<P>
+I will refer to the idea that a semantically ambiguous sentence denotes the
+disjunction of its alternative interpretations as the disjunction
+fallacy. The disjunction fallacy can be found in the literature in two forms.
+Its `purest' form is the hypothesis that the interpretation process literally
+involves generating all of the senses of an expression and putting them
+together in a disjunction. In this form, the disjunction 'theory' is not simply
+counterintuitive; it doesn't explain the combinatorial explosion puzzle at
+all. As far as I know, this `explicit' form of the theory has only been
+discussed jokingly.CHECK HOBBS REFERENCE FROM STALLARD. One can find
+in the literature, however, an `implicit' form of the disjunction theory, in
+theories of underspecification that assign to underspecified expressions a
+semantics that makes them equivalent to the disjunction of their readings. One
+ such proposal is <REF/>; the semantics of UDRSs is also disjunctive <REF/>.
+</P>
+<P>
+The Role of Syntactic and Semantic
+Constraints
+</P>
+<P>
+Although the number of logical form permutations that one can obtain for a
+particular sentence by, e.g., considering all the permutations of its operators
+may be rather large, constraints of a syntactic and/or semantic nature
+drastically reduce this number.
+</P>
+<P>
+In the case of scopal ambiguity, for example, permutations may not correspond
+to actual readings for at least three reasons. First of all, some of these
+permutations result in logical expressions that are either ill-formed or
+contradictory,as noted by, e.g., Hobbs an Shieber <REF/>.
+For example, samb-ex:impossiblea, in the interpretation in which the
+pronoun he is anaphoric on the  every man, does not
+have a reading in which the  the woman hei married outscopes
+the  every mani. There is no well-formed logical expression
+that may represent this reading.  Hobbs and Shieber point out that this
+constraint also prevents a quantifier to scope between a noun and its
+complement: for example, a meeting may not scope inside
+most but outside each in <CREF/>.
+ 
+</P>
+<P>
+<EQN/>
+Another reason why the number of actual readings of a sentence is much
+smaller than the number of permutations of its operators is that two distinct
+permutations may correspond to semantically equivalent readings. For example,
+<CREF/> has only one reading, even though (at least) two equivalent
+logical expressions can be obtained as the translation of the
+ sentence. 
+</P>
+<P>
+<EQN/>
+Finally, the readings corresponding to certain permutations may be
+unavailable because of syntactic constraints.  Much work on uncovering readings
+that are absent due to constraints on syntactic trasformations and/or
+conditions on syntactic levels of representation has been done in the
+ generative tradition <REF/>. 
+</P>
+<P>
+Some of the constraints proposed in this literature have been proved to yield
+quite robust predictions.  Perhaps the best known example of syntactic
+constraint is the observation that a quantifier cannot take scope outside the
+clause in which it appears.  The observation that clauses serve as `scope
+islands' goes back at least to Rodman <REF/>, but was discussed
+most extensively by May <REF/>; the constraint was called
+Scope Constraint by Heim <REF/>. The Scope Constraint
+is exemplified by the contrast in sc-1: whereas sc-1a has a
+reading in which every department is allowed to take wide scope over
+a student, this reading is not available for sc-1b, even
+though arguably from every department and who was from every
+department have the same denotation.
+<EQN/>
+Although syntactic and semantic constraints do not rule out all possible
+readings--for example, a sentence like They saw her duck still has
+more than one interpretation under all of these theories--a theory of
+disambiguation must be such that these constraints can play a role.
+</P>
+</DIV>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  Perceived  Ambiguity </HEADER>
+<P>
+As noted by Hirst <REF/>, the discussions of
+ambiguity processing in the  literature tend to ignore the fact that
+humans are aware that sentences can be ambiguous, and that they can exploit the
+ambiguity of sentences for rhetorical effect.  Raskin, for example, claims
+<REF/> that humor crucially relies on ambiguity. He
+discusses examples such as the following (p.  25-26):
+</P>
+<P>
+<EQN/>
+The joke relies on two assumptions about human processing: first, that
+the clause the first thing that strikes a stranger in New York gets
+interpreted before the end of the sentence, with strikes receiving
+the `surprise' interpretation; and second, that the reader, upon reading
+is a big car, will go back, produce a second interpretation, and
+entertain both interpretations simultaneously. The joke could not be understood
+unless the hearer were able to entertain the two interpretations of the
+sentence simultaneously. These jokes can exploit other forms of ambiguity,
+e.g., scopal ambiguity, as in Statistics show that every 11 seconds a
+man is mugged here in New York City. We are here today to interview him.
+</P>
+<P>
+The reader's ability to entertain more than one interpretation simultaneously
+is exploited in poetry, as well <REF/>.  The linguistic articles
+discussing ambiguity are another literary form that exploits this
+possibility. Examples such as They saw her duck are a clear case of
+deliberate ambiguity; the whole point of these examples is to show that a
+sentence can have more than one interpretation. The writer relies on the reader
+being able to entertain more than one interpretation at once.
+</P>
+<P>
+The opposite is true, as well: when clarity is a goal, writers and speakers
+tend to construct their sentences in such a way as to avoid ambiguity. Thus,
+most sentences one runs across in scientific texts or in transcripts of
+task-oriented conversations have a clearly preferred interpretation.  This
+interpretation is sometimes suggested by the context, sometimes by means of
+disambiguation markers--expressions such as each,
+a different, or the same that suggest which interpretation
+is preferred. Thus, a writer will use sentences such as Every kid
+climbed the same tree, rather than Every kid climbed a tree, when
+we/she wants to make sure that the reader arrives at the interpretation in
+ which there is a single tree. 
+</P>
+<P>
+I will call the situation in which a listener arrives at more than one
+interpretation for an utterance perceived ambiguity.  A situation in
+which B perceives an utterance as ambiguous may result in B's appreciating the
+joke, the poetic phrase, or the point of the linguistic example; if the
+ambiguity is not perceived as intended, B may say saying something like
+This is not very clear, or perhaps This sentence is
+ambiguous. This situation can be informally characterized as follows:
+</P>
+<P>
+<EQN/>
+The phenomenon of deliberate ambiguity  suggests that the solution to the
+Combinatorial Explosion Puzzle cannot be that humans either generate only one
+interpretation at a time by using some clever heuristics, or do not generate
+any interpretation at all. Humans entertain more than one interpretation at a
+time, and they may not be able to choose one among them. This conclusion is
+also supported by psychological results. There is evidence, for example, that
+during both lexical processing and syntactic processing several hypotheses are
+generated in parallel, and only later filtered on the basis of contextual
+information
+<REF/>. Kurtzman and MacDonald <REF/> suggest a similar model for scope
+disambiguation. As far as reference interpretation is concerned, there is some
+evidence that all pragmatically available referents become active before a
+ referent is identified (see, e.g., <REF/>). 
+</P>
+<P>
+These facts are consistent with the view of discourse interpretation taken in
+Artificial Intelligence, in which processes such as reference resolution or
+lexical disambiguation are modeled in terms of defeasible inference, which may
+result in alternative hypotheses. Examples include the theories of the effects
+of semantic priming on lexical disambiguation, as formalized, e.g., in Hirst's
+ABSITY system <REF/> or, more recently, in
+statistically based terms; the theories about the effects of local focusing on
+ the choice of pronoun antecedents such as <REF/>; the work on temporal interpretation by Asher, Lascarides, and Oberlander (see, e.g.,
+ <REF/>); and work on scopal disambiguation such as  [,<REF/>. 
+</P>
+</DIV>
+<DIV ID="2.3" DEPTH="2" R-NO="3"><HEADER>  Semantic Ambiguity versus Perceived Ambiguity </HEADER>
+<P>
+A preliminary and, I hope, uncontroversial conclusion I intend to draw from the
+discussion on deliberate ambiguity and ambiguity processing is that a theory of
+ambiguity that aims at explaining the Combinatorial Explosion Puzzle needs to
+be concerned both with the interpretation that the grammar assigns to a
+sentence--i.e., what it means for a sentence to be semantically
+ambiguous--and with the process by which interpretations are generated, i.e.,
+with what it means for an utterance to be perceived as ambiguous.  On the one
+hand, the theory must explain why the disambiguation process will not generate
+all semantically available interpretations; on the other hand, it must predict
+that more than one interpretation will be generated. This conclusion is the
+central idea of this paper, indeed, what gives the paper its title. The
+inclusion of a theory of disambiguation will also remedy one of the omissions
+in Pinkal's theory, namely, how to formalize the Precisification Imperative.
+</P>
+<P>
+The discussion of perceived ambiguity supports a stronger claim, namely, that
+semantic ambiguity and perceived ambiguity are distinct notions, in the sense
+that whereas a model of semantic ambiguity has to express the truth-conditional
+properties of an expression, the reasoning processes involved in
+disambiguation, and that may lead to a perceived ambiguity, consist of
+defeasible inferences that are not supported by the semantics of ambiguous
+expressions.
+</P>
+<P>
+The distinction I intend to draw, then, is as follows. Semantic ambiguity is
+part of the specification of the grammar of a language; most, if not all,
+sentences are semantically ambiguous, but their ambiguity need not be noticed
+by listeners, and in fact it is typically discovered only by linguistic
+research. Perceived ambiguity, on the other hand, is a result of the
+interpretation process, that is defeasible in nature, and may therefore result
+in more than one interpretation in cases of miscommunication or when the
+speaker constructs the context appropriately to serve a rhetorical purpose, as
+in the puns presented above.
+</P>
+<P>
+Some readers may wonder why the developer of a  system should be
+concerned with perceived ambiguity, i.e., with generating all of the
+contextually available interpretations of a sentence. The answer is that
+certain applications need this information. Consider the following example,
+again from the  domain. Say that the user utters move the
+engine to Avon, and say that two different engines have been discussed during
+the elaboration of the current part of the plan. Clearly, we do not want the
+system to just come out with a plausible guess about which engine was meant:
+instead, we want it to recognize the ambiguity and ask for clarification. In
+general, all systems that engage in conversations with their users need to be
+able to recognize an ambiguity, to ask for clarifications when necessary rather
+than guess one possible interpretation, and to make their own output
+unambiguous. (Of course, the theory of contextual disambiguation must be such
+that no spurious ambiguities are obtained.)
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  The Underspecification Hypothesis </HEADER>
+<P>
+All theories of semantic interpretation based on Montague's general program as
+exposed in Universal Grammar <REF/> assume that the grammar
+of a language <EQN/>
+specifies two homomorphisms: one between syntactic trees
+and a disambiguated language <EQN/>,
+and a second one between
+the disambiguated language and objects of the model M (the senses). These two
+homomorphisms can be composed, thus making the intermediate level of the
+disambiguated language dispensable. The grammar assigns to an ambiguous
+expression of <EQN/>
+distinct expressions of <EQN/>,
+each of which has
+a unique interpretation.
+</P>
+<P>
+A direct implementation of this strategy in an  system would require
+generating all senses of an ambiguous sentence-string, which would be clearly
+problematic.  Many  systems, instead, make use of heuristic methods that
+generate only one interpretation and ignore the alternatives. These heuristics
+work fairly well fairly often; such systems, however, won't be able to perceive
+an ambiguity even when it would be helpful to do so. Other systems therefore
+split the semantic problem of computing all the interpretations of a sentence
+from the processing problem of generating these interpretations in context, by
+making use of an intermediate, underspecified level of
+representation.  One of the earliest examples of underspecified representations
+is the `Logical Form' of Schubert and Pelletier
+<REF/>. The representation for <REF/>
+proposed by Schubert and Pelletier, shown in <CREF/>, is a typical
+example of these underspecified representations: quantifiers are left in place
+and the referent for the definite description the tree is not
+specified.
+<EQN/>
+In more recent years,
+underspecified representations similar to Schubert and Pelletier's have been
+used by [], Fenstad  <REF/>,
+in Allen's textbook <REF/> and, most recently, in the Core
+Language Engine <REF/>; the `uninterpreted conditions'
+produced during the intermediate steps of the  construction algorithm in
+[] can be considered underspecified representations as well.
+</P>
+<P>
+Underspecified representations were originally conceived as a way to solve a
+problem in system implementation, namely, separating `context-independent' from
+`context dependent' aspects of the interpretation, thus making either part
+ reusable for different applications. Since the motivation was strictly computational, the underspecified representations used in most  systems
+are little more than data structures, in the sense that they do not have a
+interpretation other than the one provided by the procedures that interpret
+them. These representations `encode' the ambiguity of a sentence in the sense
+that that sentence has the reading r iff that reading can be generated by
+repeatedly applying `construction rules' to the underspecified representation.
+</P>
+<P>
+In recent years, there has been growing interest for the hypothesis that the
+ability to encode multiple interpretations in an underspecified language may be
+(part of) the explanation of the Combinatorial Explosion Puzzle. The idea is
+that humans, as well, make use of an underspecified language that can encode
+distinct meanings implicitly, and therefore do not need to generate all of
+these meanings.  A semantically ambiguous sentence, therefore, need not cause
+problems for a human to process, because it is not necessarily perceived
+as ambiguous in the sense discussed in the previous section. I will call this
+assumption the Underspecification Hypothesis:
+</P>
+<P>
+Underspecification Hypothesis
+:
+Human beings represent semantic ambiguity implicitly by means of
+underspecified representations that leave some aspects of
+interpretation unresolved.
+My goal in the rest of the paper is to  spell out  the
+Underspecification Hypothesis both as a theory of grammar and as a theory of
+discourse interpretation. I assume, that is, that the hypothesis is correct,
+and try to answer questions such as: what kind of language are underspecified
+representations?  what is their semantics? and, what kind of inferences are
+done with them?
+</P>
+<P>
+The novel aspect of this work is that the answers I give are based on the
+discussion of semantic ambiguity and perceived ambiguity in the previous
+section.  I hypothesize that underspecified representations are used by humans
+as the translation of expressions that are indefinite in the sense of Pinkal,
+and assign them a semantics that reflects this hypothesis. I assume that the
+disambiguation process is consists of defeasible inferences, and examine the
+characteristics of defeasible reasoning with underspecified
+representations. Although the same position towards disambiguation and
+defeasible has been adopted in the Core Language Engine, most of the issues I
+discuss have not been mentioned so far in the discussion on underspecified
+representations.
+</P>
+<P>
+In the literature on underspecification, one often finds the argument that
+providing a semantics to underspecified representations is necessary because
+disambiguation requires inference, and therefore a `logic of
+underspecification' is needed
+<REF/>.  However, it is not at all
+clear whether the process of disambiguation involves much semantically
+justified reasoning; disambiguation seems to consist mostly of defeasible
+inferences. It is fair to say that the debate on this issue is very open at the
+moment, as certified by a number of recent panels on the subject.  But whatever
+the final conclusion on this topic will be, it is clear that under the
+perspective that the grammar of a language <EQN/>
+is a mapping from elements
+of <EQN/>
+to underspecified representations, the semantics of these
+underspecified representations becomes a central aspect of the specification of
+the grammar. Furthermore, it also becomes clear that the semantics of
+underspecified representations must be based on an analysis of semantic
+ambiguity, otherwise we wouldn't even know whether the form of underspecified
+representation we develop does the job it is supposed to do.
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  An Underspecified Theory of Ambiguity, Part I:  Lexical           Ambiguity </HEADER>
+<P>
+The simplest way to illustrate my implementation of the Underspecification
+Hypothesis is to start with lexical ambiguity. I present in this section a
+theory of grammar which makes use of an underspecified language to encode the
+`ambiguity potential' of lexically ambiguous expressions, as well as a simple
+formalization of lexical disambiguation as defeasible inference over
+underspecified representations. In the next section I will show how to extend
+the approach presented here to deal with expressions that exhibit other forms
+of semantic ambiguity.
+</P>
+<P>
+I want to emphasize that I start with lexical disambiguation for expository
+purposes only. Lexical ambiguity is the one case of ambiguity for which a
+`generate and test' strategy may well be compatible with the psychological
+results, therefore the one for which the need for underspecified
+representations is less clear. Furthermore, I will only discuss cases of
+lexical ambiguity in the narrow sense, which is perhaps the least interesting
+case of lexical indefiniteness. Discussing lexical disambiguation, however, is
+the simplest way to explain how underspecified representations can be given a
+semantics related to Pinkal's proposals about ambiguity, and how to defeasible
+reasoning with underspecified representations. In the next sections I will
+generalize the approach introduced here to cases of ambiguity for which the
+underspecified approach is much more plausible.  Furthermore, at least one
+theory of lexical disambiguation, Hirst's proposal
+<REF/>, makes use of `Polaroid words' which are
+essentially underspecified interpretations of lexical items.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>  A Lexically Underspecified Grammar </HEADER>
+<P>
+The presentation of a lexically underspecified grammar below is centered on the
+example of (H-type) lexical ambiguity discussed above, the verb
+croak, which can take two precisifications. Let <EQN/>
+be the
+language which consists of the single sentence Kermit croaked. This
+sentence is H-type ambiguous because it admits of two precisifications and it
+is subject to the precisification imperative. A `Montagovian' grammar MG would
+map (syntactic analyses of) the sentence into distinct expressions of a
+`disambiguated language' <EQN/>,
+each of which denotes a function from
+discourse situations into intensional objects of the appropriate type (in this
+case, propositions). A grammar UHG that subscribes to the Underspecification
+Hypothesis, on the other hand, maps syntactic analyses of expressions of <EQN/>
+into a single expression of a `lexically underspecified language' 
+<!-- MATH: ${\cal
+LXUL}$ -->
+<EQN/>.
+The semantics of 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>
+is based on the Precisification
+Principle: expressions of 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>
+denote at each discourse situation a
+set of senses of the type they would be assigned by a Montagovian
+ grammar. 
+</P>
+<P>
+The lexically underspecified language 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>
+has the following
+ingredients:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Note that in addition to two predicates croak1 and croak2,
+corresponding to the disambiguated senses of croak, the language
+includes an `underspecified' predicate croakU.  The interpretation
+function for 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>,
+, is defined as follows.  Let M
+= UF be a model just like the one that would be used for a
+disambiguated language <EQN/>.
+The interpretation function
+ assigns to an expression  of 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>
+a value
+with respect to M and a discourse situation d.
+<EQN/>
+The language 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>
+has been deliberately kept  simple
+to make it clear that the underspecified languages I propose have two basic
+properties: (i) the value of an expression at a discourse situation is a set of
+senses of the type that a sense of that expression would have in a
+disambiguated language <EQN/>;
+and (ii) expressions can be divided into
+expressions whose denotation at a discourse situation is a singleton set, such
+as k or croak1, and expressions such as croakU that
+denote a non-singleton set.  The latter expressions provide the interpretation
+ for ambiguous expressions of <EQN/>. 
+</P>
+<P>
+The clauses for application and the connectives show how ambiguity `percolates
+up' from lexical items. The value of an expression like ()
+is obtained by taking the cross-product of the values of  and ,
+and it includes one function f per distinct pair of functions
+11 in the denotations of  and . The
+value assigned by the function f to the situation s is defined by
+applying a certain operation (in this case, application) to the values assigned
+to s by the functions <EQN/>
+and <EQN/>.
+Thus, if both the
+denotation of  and the denotation of  are singleton sets, the
+denotation of () is also a singleton set; otherwise, ambiguity
+ `multiplies,' as it where. The same `multiplication' technique is also used to define the denotation of
+ connectives. 
+</P>
+<P>
+The following grammar generates an underspecified representation of
+Kermit croaked by mapping the semantically ambiguous predicate
+croaked into an `ambiguous' predicate of 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>
+as follows:
+</P>
+<P>
+<EQN/>
+The underspecified translation of Kermit croaked in 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>,
+croakU(k), denotes a set of two propositions at a situation d:
+the function that assigns 1 to a situation iff Kermit produced a frog-like
+sound in that situation, and the function that assigns 1 to a situation iff
+Kermit died in that situation.  This makes the sentence indefinite in Pinkal's
+ sense. By contrast, an indeterminate sentence such as Kermit is the
+Ruritanian secretary of state would have a single sense at a given discourse
+situation.
+</P>
+<P>
+Pinkal's Precisification Imperative is an attempt at making more precise the
+observation that human beings don't seem to have good intuitions concerning
+what follows from a H-type ambiguous sentence.  Even when subjects are able to
+pass judgments about what follows from an ambiguous sentence, it's arguable
+that they do not give judgments concerning what follows from the underspecified
+representation: rather, they first generate one interpretation, then decide
+what follows from that.  The conclusion that I would be inclined to draw is
+that a relation of semantic entailment capturing human intuitions can only be
+defined, if at all, between expressions whose interpretation is not subject to
+the Precisification Imperative. So, although it would be possible to define,
+for example, a `strong' notion of entailment as what follows from all senses,
+this definition would be rather artificial. For this reason I will not attempt
+to define a notion of entailment between expressions of 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>;
+the
+readers interested in the issue are referred to Pinkal's book and to the
+discussion in van Deemter's dissertation <REF/>.
+</P>
+<P>
+Discourse Interpretation and Perceived Ambiguity
+</P>
+<DIV ID="4.1.1" DEPTH="3" R-NO="1"><HEADER>  Discourse Interpretation and Defeasible Reasoning </HEADER>
+<P>
+A theory of ambiguity processing solves the Combinatorial Explosion Puzzle if
+it does not require that all distinct interpretations of a semantically
+ambiguous sentence are actually generated. A grammar consistent with the
+Underspecification Hypothesis such as the one just discussed moves us one step
+towards that goal, since it only imposes the constraint that a single
+underspecified interpretation be generated.
+</P>
+<P>
+On the other hand, we can conclude from the discussion of deliberate ambiguity
+and of the psychological work on ambiguity that a psychologically plausible
+theory of ambiguity must also predict that more than one interpretation may
+become available in a given context, although the number of such
+interpretations will in general be much smaller than the number of possible
+semantic interpretations.
+</P>
+<P>
+As discussed above, the view of discourse interpretation that I am going to
+take is the one typically found in the AI literature, according to which
+disambiguation involves the generation of (possibly distinct) hypotheses in
+parallel by means of defeasible inference. This perspective is found, for
+example, in the work on abductive discourse interpretation by Hobbs and
+colleagues <REF/>, in the work on Bayesian
+disambiguation by, e.g., Charniak and his students <REF/>
+and in the work on DICE and discourse interpretation by Asher, Lascarides, and
+Oberlander <REF/>. Some of the formal models of
+defeasible reasoning that can be used to formalize the situation in which
+conflicting hypotheses are generated include Reiter's default logic
+<REF/>, the abductive model
+<REF/>, Bayesian Nets, and DICE
+ <REF/>,]. 
+</P>
+</DIV>
+<DIV ID="4.1.2" DEPTH="3" R-NO="2"><HEADER>  Lexical Disambiguation Using Defaults </HEADER>
+<P>
+As a model of defeasible reasoning, I adopt Reiter's Default Logic.  In
+default logic, the process that generates defeasible hypotheses is seen as the
+computation of the extensions of a default theory (D,W)
+where D is a set of default inference rules and W is a set of formulas. I will
+formalize discourse interpretation as the process of generating the extensions
+of the theory (DI,UF), where DI--the Discourse Interpretation
+Principles--are default inference rules, and UF is a set of expressions of an
+underspecified language like 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>.
+Let us ignore for the moment the
+fact that the formulas in UF are underspecified representations. The Discourse
+Interpretation Principles formalize the defeasible inferences that take place
+in discourse interpretation, such as disambiguating inferences. These rules are
+operations that map a set of wffs that allow of a certain number of
+interpretations into a new set of wffs with a more restricted number of
+interpretations. An example of Discourse Interpretation Principle is the
+following:
+</P>
+<P>
+<EQN/>
+ This inference rule  reads: if the set of wffs UF includes the fact that the object x has the property croakU
+and the property frog, and if it is consistent to assume that the
+interpretation croak1 of croakU was intended, then the
+inference rule CROAK1-IF-FROG produces a new set of wffs that includes the fact
+croak1(x). The application of CROAK1-IF-HUMAN-LIKE would be
+blocked by the presence in UF of the wff croak1k. Using
+Reiter's definition of extension in an `intuitive' fashion, we can see that the
+default theory
+</P>
+<P>
+<EQN/>
+has the  following (unique) extension:
+</P>
+<P>
+<EQN/>
+The denotation of a set of wffs {1 ...n} will be defined as
+the denotation of the conjunction 1 ...n of these
+wffs. I also assume that the empty set of wffs denotes the function TRUE that
+is true at every situation. With this definition, and under the assumption that
+each `unambiguous' interpretation of the word croak is incompatible
+with the others (i.e., under the assumption that croak1x <EQN/>croak2x), the extension of (DF,UI) admits of only one
+denotation, the one under which the denotation of k produced a sound
+ like the one frogs produce. 
+</P>
+<P>
+A default theory always has an extension as long as all defaults are
+ normal, but it may have more than one extension if the set of Discourse Interpretation Principles contains
+two inference rules that both apply but generate a conflict. Consider, for
+example, the default theory consisting of a set of discourse interpretation
+principles DI that includes, in addition to CROAK1-IF-FROG, a second
+discourse interpretation principle (let's call it CROAK2-IF-HUMAN-LIKE) stating
+that the croak2 interpretation is plausible for human-like beings;
+and of a set of wffs UF including the fact that Kermit is a human-like
+being.
+</P>
+<P>
+<EQN/>
+this theory would have two extensions:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Perceived ambiguity can now be redefined more precisely as the state that
+obtains when the default theory `encoding' the listener's discourse
+interpretation processes has more than one extension; and the cases of
+deliberate ambiguity discussed in section ambiguity_section can be
+formalized as cases in which the speaker has `reasoned about the other agent's
+reasoning,' as it were.
+</P>
+</DIV>
+<DIV ID="4.1.3" DEPTH="3" R-NO="3"><HEADER>  Constraints on Discourse Interpretation and the               Anti-Random Hypothesis </HEADER>
+<P>
+Once we start allowing discourse interpretation processes like those just
+discussed, the Underspecification Hypothesis is not sufficient to explain the
+Combinatorial Explosion Puzzle anymore. The UH does not rule out a theory of
+discourse interpretation in which after an underspecified interpretation has
+been obtained, all possible senses of a sentence are generated. In fact, a lot
+of  systems work this way, as well as interpretation procedures such as
+Hobbs and Shieber's scoping algorithm <REF/>. In the
+framework for discourse interpretation just presented, theories of this kind
+could be formalized by including discourse interpretation principles that
+generate all the semantically justified interpretations at random. For the case
+of lexical disambiguation, for example, we could have a theory that includes
+the two following inference rules:
+</P>
+<P>
+<EQN/>
+<EQN/>
+</P>
+<P>
+A theory of lexical disambiguation of this kind would simply produce all
+semantically justified interpretations of a sentence, and the Combinatorial
+Explosion Puzzle would remain a puzzle. To solve the puzzle, a theory of
+disambiguation must therefore supplement the Underspecification Hypothesis with
+constraints on discourse interpretation that ensure that only a few extensions
+are generated.
+</P>
+<P>
+The constraints need not be the same for all classes of ambiguity. For certain
+ classes of ambiguity, including perhaps lexical ambiguity,  the explanation may simply be that the disambiguation process is incremental, i.e., it takes place as the text
+is processed word by word or constituent by constituent, and each ambiguity is
+resolved locally; in this way, only a small number of alternative
+hypotheses have to be considered every time. For other classes of ambiguity,
+however, such as scopal ambiguity and referential ambiguity, incremental
+ processing does not seem to be the solution, and  different constraints must apply. In <REF/>, the following constraint was proposed:
+</P>
+<P>
+Anti-Random Hypothesis (Informal)
+Humans do not randomly generate alternative interpretations of an ambiguous
+sentence; only those few interpretations are obtained that (i) are consistent
+with syntactic and semantic constraints and (ii) are suggested by the context.
+The Anti-Random Hypothesis should be thought of as a `meta-constraint' on
+theories of interpretation: if we intend to account for the Combinatorial
+Explosion Puzzle, we have to develop theories of interpretation (e.g., theories
+of parsing, or theories of definite description interpretation) that satisfy
+this constraint, i.e., in which discourse interpretation principles like
+CROAK1-AT-RANDOM and CROAK2-AT-RANDOM are not allowed.
+</P>
+<P>
+ In order to illustrate more concretely the difference between theories
+of discourse interpretation that satisfy the Anti-Random Hypothesis, and
+theories that do not, let us consider how one could formalize a theory of
+pronominal interpretation. A `random' theory of pronoun interpretation would go
+as follows: first, compute all possible antecedents of the pronoun in the
+discourse. Then, generate an hypothesis for each of them, stating that the
+pronoun refers to that antecedent. Finally, rank these hypotheses according to
+their plausibility. A random hypothesis generation process usually leaves the
+task of choosing one hypothesis to plan recognition; the problem is that most
+often, the alternatives are equally plausible.
+</P>
+<P>
+In contrast, centering theory <REF/> is an example of
+non-random pronoun interpretation theory.  According to centering theory, each
+utterance establishes a `backward looking center' (Cb), and a pronoun is by
+default interpreted to refer to the Cb. (I am glossing over a number of
+complexities here.)  Such a theory would generate a single (or a few)
+hypothesis concerning the antecedent of a pronoun; the other possibilities,
+although semantically possible, would simply never come up. Examples of
+theories of definite description interpretation, tense interpretation, the
+interpretation of modals in discourse, and scope disambiguation that satisfy
+ the Anti-Random Hypothesis are discussed in <REF/>. 
+</P>
+<P>
+The Anti-Random Hypothesis can be made more formal in the framework for
+discourse interpretation adopted here by introducing a slightly different
+syntax for default inference rules, one in which the underspecified condition
+is syntactically separated from additional contextual requirements such as the
+requirement in CROAK1-IF-FROG that the object in question be a frog:
+</P>
+<P>
+<EQN/>
+Except for the fact that one of the prerequisite wffs is `singled out', an
+inference rule thus rewritten has the same interpretation as one of Reiter's
+default rules. We can then require the contextual requirements to be
+non-trivial (i.e., not satisfied in every situation) as follows:
+</P>
+<P>
+Anti-Random Hypothesis
+A discourse interpretation theory (DI,UF) is Anti-Random iff
+for all  discourse interpretation principles ::/  in
+DI,  is not satisfied in every situation.
+</P>
+</DIV>
+<DIV ID="4.1.4" DEPTH="3" R-NO="4"><HEADER>  The Condition on Discourse Interpretation </HEADER>
+<P>
+The framework just introduced can also be used to formalize the `second order'
+aspects of Pinkal's theory, such as the Precisification Imperative. The
+Precisification Imperative can be seen as imposing a constraint on the
+extensions of a discourse interpretation theory, namely, as the requirement
+that extensions include a `disambiguating wff' like croak1k for
+each H-type ambiguous constituent of the set UF such as croakUk. I
+will call this constraint Condition on Discourse
+Interpretation. In first instance, the Condition on Discourse
+Interpretation might be formulated as follows, for the case of lexical
+ambiguity:
+</P>
+<P>
+Condition on Discourse Interpretation (Preliminary):
+Each
+extension E of a discourse interpretation theory (DI,UF) must include, for each
+literal L in UF whose predicate is H-type ambiguous, a distinct
+disambiguating literal, i.e., a literal whose denotation is a single
+function among those in the denotation of L.
+The definition of the Condition on Discourse Interpretation just given is not
+very general: it depends on the assumption that all cases of H-type ambiguity
+are originated by predicates. A simpler, and more general, formulation of the
+Condition on Discourse Interpretation can be obtained by generalizing the
+format for the discourse interpretation principles once more.
+</P>
+<P>
+Default inference rules are typically used to augment a set of wffs with
+additional facts inferred by default: the fact that a particular bird flies,
+for example. But the purpose of discourse interpretation rules used for
+disambiguation, like CROAK1-IF-FROG, is to restrict the interpretation by
+eliminating certain readings. In this perspective, leaving the underspecified
+wffs around doesn't make much sense. I propose therefore to allow discourse
+interpretation principles to rewrite their `triggering wff' whenever this
+wff encodes an H-type ambiguity, in addition to adding new wffs to a set. The
+more general format for discourse interpretation principles is as follows:
+</P>
+<P>
+<EQN/>
+A  rule of this form is an operation from sets of wffs into sets of wffs that
+given a set W of wffs containing  and  and not containing
+ , produces a set W of wffs containing , and in which  has been replaced by . I will call  the
+triggering condition. For example, a version of CROAK1-IF-FROG in
+which the triggering condition croakUx is rewritten by the
+consequent croak1x is as follows:
+</P>
+<P>
+<EQN/>
+If all disambiguation rules are rewritten in this format,
+a completely disambiguated extension can simply be characterized as one which
+doesn't contain any H-type ambiguous wffs. The notion of H-type
+ambiguous wff can be characterized either syntactically (by identifying certain
+syntactic constituents as specifying H-type ambiguity, and by classifying as
+ H-type ambiguous a wff that contains one of these constituents) or model-theoretically, e.g., by means of a function <EQN/>
+such that if X is a set of senses, <EQN/>(X) is 1 if the set
+of senses is admissible, 0 if it is inadmissible in Pinkal's sense.  Whatever
+way we choose to define a H-type ambiguous wff, the Condition on Discourse
+Interpretation can now be formulated as follows:
+</P>
+<P>
+Condition on Discourse Interpretation
+: An
+extension E of a discourse interpretation theory (DI,UF) cannot contain an
+H-type ambiguous wff.
+Notice that the statement of the Condition on Discourse Interpretation as a
+condition on pragmatic reasoning gives it the status of a felicity condition
+rather than of a hard constraint on interpretation.
+</P>
+</DIV>
+<DIV ID="4.1.5" DEPTH="3" R-NO="5"><HEADER>  Extensions, closure and consistency checking in an  underspecified default theory </HEADER>
+<P>
+So far, I've been using the terminology from default logic as if the shift to
+an underspecified representation had no side effects, but this is not the
+case. Consider the way in which Reiter defines the notion of extension of a
+ (closed) default theory, for example:
+</P>
+<P>
+<EQN/>
+This definition crucially relies on the notion of deductive closure Th(S),
+defined as the set of wffs {w | S <EQN/>
+w}; but what we said with
+semantic entailment holds for provability, as well: no clear notion exists of
+what it means for an expression of an underspecified language to follow from a
+set of wffs of the same language.  Two routes are open to us. One is to define
+a notion of `underspecified provability' <EQN/>,
+and to use <EQN/>
+to
+define an `underspecified' notion of closure ThU(S). For example, we could
+say that w <EQN/>
+w iff for each expression w that
+denotes a single one of the interpretations of w, w <EQN/>w.  This route is not very appealing, however, if for no other reason
+that it's not clear that any way of defining an underspecified notion of
+provability will do.
+</P>
+<P>
+The alternative is to adopt a new notion of extension that does not rely on
+deductive closure, i.e., one in which an extension is a fixed point of the
+operator <EQN/>,
+which does not include condition D2 of the definition of
+<EQN/>:
+</P>
+<P>
+<EQN/>
+Replacing <EQN/>
+with <EQN/>
+in the definition of extension has several
+consequences. First and foremost, dropping the requirement of deductive closure
+makes the test of whether it is consistent to assume 1, ...,
+m essentially syntactic: i.e., it is possible for j not to be
+included in <EQN/>(S) even though it is derivable from <EQN/>(S). (In
+general, this definition of extension is a much closer description of the
+behavior of actual implementations of non-monotonic reasoning than the original
+definition.) And therefore, a logic defined in this way does not have the
+property of Reiter's logic that a (closed) default theory (D,W) has an
+inconsistent extension iff W is inconsistent.
+</P>
+<P>
+In fact, each extension of a discourse interpretation theory under this new
+definition will, in general, be H-type ambiguous, some of the interpretations
+being inconsistent. However, if we adopt the `rewriting' version of
+disambiguation discussed above, and impose the Condition on Discourse
+Interpretation, each extension will have a single interpretation, and therefore
+its consistency can be checked. I propose therefore to define the notion of
+extension of a discourse interpretation theory as follows:
+</P>
+<P>
+Extension:
+A set of closed wffs E L is an
+extension for the discourse interpretation theory <EQN/>iff E is a fixed point of the operator <EQN/>
+and satisfies the Condition on
+Discourse Interpretation.
+</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Other Forms of Ambiguity </HEADER>
+<P>
+The theory of ambiguity introduced in the previous sections can be
+straightforwardly extended to obtain a treatment of two other classes of
+semantic ambiguity: scopal ambiguity and referential ambiguity. These
+extensions preserve the basic ideas of the theory, semantic ambiguity as
+multiplicity of meanings, and perceived ambiguity as multiple extensions of a
+default theory; what changes is that on the one hand, a more complex
+underspecified language is introduced, capable of encoding other forms of
+ambiguity; on the other hand, more complex inference rules are used.
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>  Scopal Ambiguity </HEADER>
+<P>
+I will call the sentence constituents that modify the parameters of evaluation,
+and therefore affect the interpretation of other sentence constituents `in
+their scope', operators. Examples of operators are quantifiers
+(that affect the choice of the variable assignment used to evaluate expressions
+in their scope) and modals (that affect the choice of the world / situation at
+which expressions in their scope are evaluated). As it is well-known, one
+cause of semantic ambiguity is that sentences may contain more than one
+operator, and their relative scope is not completely determined by the
+sentence's syntactic structure.  Sentences that have more than one meaning due
+to the interaction between operators are called scopally
+ ambiguous. 
+</P>
+<P>
+Historically, most underspecified representations have been introduced to deal
+with scopal ambiguity.  Typically, an intermediate step of processing is
+assumed in which operators are left `in place,' as well as a subsequent step of
+processing in which their relative scope is determined by contextual
+processing. Schubert and Pelletier's underspecified representation of
+Every kid climbed a tree in <REF/> is an example of
+underspecified representation in which the operators are left `in situ'.
+</P>
+<P>
+These representations are typically justified in terms of ease of processing,
+and their ability to represent `intermediate' readings. It is clear however
+that for the purposes of developing a `principled' theory of ambiguity
+processing, it would be much better to stick to as few new `levels of
+representation' as possible.
+</P>
+<P>
+In fact, there is no need to introduce a new level of representation. The two
+requirements on a scopally underspecified representation--that it allow
+representing the structural information provided by a sentence, and
+representing the intermediate steps of disambiguation--can be satisfied by
+using as an underspecified representation the syntactic structure of the
+sentence, augmented with information about the semantic interpretation of
+word-forms. In this way we can also maintain semantic translation of lexical
+items used in Montague grammar, that determine how they combine with other
+sentence constituents to determine a sentence's meaning.
+</P>
+<P>
+The `lexically and scopally underspecified language' 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>
+I introduce
+to encode scopal ambiguity generalizes the language 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>
+introduced in
+the previous section by allowing for arbitrary functional types. In this way,
+the lexical item every can be given its usual
+etett translation:
+<EQN/>
+The second augmentation to 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>
+is the inclusion of tree-like
+expressions used to translate syntactic phrases. For example, the 
+NPDetevery Ndog translates into the
+expression:
+</P>
+<P>
+<EQN/>
+The
+expression in <CREF/> is the underspecified translation of
+the sentence Every dog saw a frog:
+</P>
+<P>
+<EQN/>
+Besides reducing the
+number of representations floating around, this was of talking about scopal
+underspecification has two additional advantages over underspecified
+representations in which all syntactic information except for the position of
+operators is lost, such as Schubert and Pelletier's underspecified logical
+forms, Reyle's underspecified s or the Core Language Engine's
+s. First of all, the semantics of expressions such as <CREF/>
+--that, for historical reasons, I call logical forms-- can be
+computed in a completely classical fashion using the storage mechanism
+<REF/>, with the result that syntactic constraints on the available
+readings, such as the Scope Constraint <REF/>, can play a role
+in determining the semantics of these objects, without the need for additional
+constraints such as the label ordering constraints used in UDRS
+<REF/>. Secondly, all structural information is preserved, not just
+information about the relative position of operators. Some of this syntactic
+information is used as a clue during disambiguation, for example, for
+interpreting pronouns, but also in certain theories of scopal
+disambiguation. (See, e.g., [] and
+ <REF/> for an account of scope disambiguation which esploits the syntactic information encoded by underspecified expressions such as
+<CREF/>.)
+</P>
+<DIV ID="5.1.1" DEPTH="3" R-NO="1"><HEADER>  A Lexically and Scopally Underspecified Language </HEADER>
+<P>
+The semantics of the underspecified language  
+<!-- MATH: ${\cal
+LSUL}$ -->
+<EQN/>
+is classically based on a set  of semantic types, the smallest
+set such that (i) e and t are types; and (ii) If
+ and  are types,  is a
+type.  The set of meaningful expressions of type  is indicated by
+ME<EQN/>.
+The set of non-logical constant expressions of type  is
+indicated as CE<EQN/>
+ME<EQN/>.
+</P>
+<P>
+The semantics of 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>
+is based on the same idea as the semantics of
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>.
+Natural language expressions are assigned objects of the same
+ type that they would receive in <REF/> (as revised by Partee and Rooth parteero<REF/>), with the difference that, when I talk about
+`meaningful expressions of type ' below, therefore, I am really talking
+about expressions that denote sets of functions from the set of situations
+ to elements of  (the domain of type ). Thus
+for example, sentences are of type t both in Dowty, Wall and Peters'
+system, and in the current proposal; but a meaningful expression of type
+t in 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>
+denotes a (function from a discourse situation to a)
+set of functions from situations to truth values. Or to make another
+example, relations have the same type eet here that they
+have in Dowty, Wall and Peters, but meaningful expressions of type
+eet now denote sets of functions from  to
+eet.
+</P>
+<P>
+The sets of meaningful expressions of 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>
+include all the
+expressions in 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>:
+<EQN/>
+The set ME<EQN/>,
+for any type , includes a denumerably infinite
+set of variables of type . 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>
+also includes
+lambda-abstracts and quantified expressions, defined below. The language also
+includes the new syntactic category of logical forms. The sets of
+logical forms of syntactic category XP, LFXP, are defined as follows:
+<EQN/>
+Meaningful expressions are assigned a value with respect to a universe
+.  I use below the notation s to indicate that a
+`stands for' an object in , i.e., it is part of the metalanguage, as
+opposed to being a meaningful expression of the object language. The models
+with respect to which a  expression is evaluated include a set
+ of situations. The only fact about situations I use here is that
+they have constituents.
+</P>
+<P>
+The interpretation of types with respect to  is defined as usual:
+De,U = ; Dt,U = {0,1}; D
+<!-- MATH: $_{\langle a,b \rangle,U}$ -->
+<EQN/>
+=
+Db[Da]. In the rest of this paper, I generally drop the indication of the
+universe (e.g., I write De instead of De,U).  The model of
+interpretation for  expressions is the triple ,
+, I. The interpretation function `I' assigns an
+interpretation to constants of type .
+</P>
+<P>
+The value of meaningful expressions is specified by a function .
+that includes an assignment function among its parameters, since the terms of
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>
+include variables. The interpretation of variables is specified
+by the following clause:
+</P>
+<P>
+<EQN/>
+The interpretation of constants, connectives and application is as in 
+<!-- MATH: ${\cal
+LXUL}$ -->
+<EQN/>.
+The denotation of the other expressions is discussed below.
+</P>
+</DIV>
+<DIV ID="5.1.2" DEPTH="3" R-NO="2"><HEADER>  An Example of a Scopally and Lexically Underspecified Grammar </HEADER>
+<P>
+The following grammar extends the grammar discussed in section
+lexamb_section by adding determiners and relations as new lexical
+items:
+<EQN/>
+and by adding  phrase structure rules for s and transitive verbs:
+</P>
+<P>
+<EQN/>
+This grammar generates, in addition to lexically ambiguous sentences such as
+Kermit croaked, scopally ambiguous sentences such as Every
+dog saw a frog.
+</P>
+</DIV>
+<DIV ID="5.1.3" DEPTH="3" R-NO="3"><HEADER>  The Denotation of Logical Forms </HEADER>
+<P>
+The denotation of logical forms is specified using the storage method,
+developed by Robin Cooper Cooper, R.  as a way around a problem with
+Montague's quantifying in technique, namely, the fact that in order
+to get all the readings of a scopally ambiguous sentence, one has to stipulate
+ that the sentence is syntactically ambiguous (see <REF/>). 
+</P>
+<P>
+Cooper proposed that the value of a syntactic tree is a set of
+sequences, each sequence representing a distinct `order of
+application' of the operators that may result in a admissible interpretation of
+a sentence. For example, the quantifier a frog can `enter' the
+derivation of the  saw a frog in two different ways. The narrow
+scope reading is obtained by immediately applying the interpretation of the
+quantifier to the translation of saw; but it is also possible to
+apply the predicate to the variable quantified over, and `wait' before applying
+the quantifier, in which case the wide scope reading is obtained. The value of
+the  a frog, then, is the set of two sequences shown in
+<CREF/>. One sequence consists of a single element, the
+`traditional' Montague-style translation of every frog. The second
+sequence consists of two elements: the variable y, and the semantic
+translation of the quantified , put `in storage'.
+</P>
+<P>
+<EQN/>
+Ambiguity `propagates up' as follows. The value of the  saw a
+frog in csex-a also consists of two sequences, one obtained by applying
+the first element of the first sequence in the denotation of every
+frog to the predicate saw, the other obtained by applying the predicate
+saw to the first element of the second sequence (the variable
+y). The result is as in <CREF/>.
+</P>
+<P>
+<EQN/>
+Finally, the value  of a sentence is obtained by combining the value
+of the  with the value of the  in the usual fashion: the value of
+SEvery dog saw a frog is a set of two sequences, each
+representing a distinct reading of the sentence.
+</P>
+<P>
+It's easy to see that Cooper's technique can be used to assign to
+underspecified representations like <CREF/> a `multiple sense'
+denotation like those assigned to lexically ambiguous expressions in the
+previous section. All that is needed is a function CV that assigns to each
+expression of the form XP its `Cooper Value'; the
+denotation of sentence translations like S can then be
+defined in terms of CV as follows:
+</P>
+<P>
+<EQN/>
+(I have taken into account the fact that an expression of our
+underspecified language denotes a set of objects, therefore each scopally
+disambiguated translation of a sentence will still denote a set of
+propositions.)
+</P>
+<P>
+ Cooper discusses in detail in <REF/> how semantic and syntactic constraints on scope can be implemented as requirements that the storage be
+`discharged' at certain positions--, that no element in storage be `carried
+across' syntactic constructions that produce scope islands, such as S. In
+this way, no operator in a clause may take scope over operators in an higher
+clause, or in a sister clause, thus enforcing the Scope Constraint
+ discussed in syn_sem_constr_section. 
+</P>
+<P>
+The CV function used to define the interpretation of logical forms is based on
+an implementation of the storage idea less general than Cooper's, but simpler.
+In order to arrive at a uniform specification of the Cooper Value of all
+constructs, it is useful to define construct-specific versions of application
+in which to `bury' the differences in storage manipulation. These operations
+are defined as follows:
+</P>
+<P>
+<EQN/>
+Next, we need an operation that
+combines two sets of sequences into one. The result of applying this operation
+to two sets of sequences X and Y is the set of sequences obtained by (typed)
+applying the first element of a sequence in X to the first element of a
+sequence in Y and then merging the rest of the sequences, as follows:
+</P>
+<P>
+<EQN/>
+We also need an operation to put operators into store, and one to
+`discharge' them. The  operation takes a set consisting a single
+single-element sequence and a result, and returns a set that consists
+of two sequences: the original sequence, and a new sequence consisting of the
+result and the operator in store.
+</P>
+<P>
+<EQN/>
+The  operation takes a sequence and applies all operators back to
+obtain a set of sequences with a single element and an empty store. For
+simplicity, we will assume that all operators are generalised quantifiers,
+i.e., of type ett. (No other operators are specified in the
+grammar above.)  is defined as follows:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+[*](X), where X is a set of sequences, is the union 
+<!-- MATH: $\bigcup_{x \in
+X}$ -->
+<EQN/>
+(x). We can now specify the Cooper value of logical forms with
+respect to model M, variable assignment g, and discourse situation d as
+ follows: 
+</P>
+<P>
+<EQN/>
+There are three tricky aspects to  the definition of CV: the discharge
+operation in the definition of the Cooper Value of a sentence translation, the
+definition of CV(NPDet N)
+in which an operator is put in store, and the definition of
+CV(VPV NP in which two
+stores are combined, and that has different results depending on whether the
+ is of type e or is a quantifier. I'll illustrate these cases by
+looking at the main steps of the computation of the CV of <CREF/>:
+</P>
+<P>
+<EQN/>
+The Scope Constraint is enforced by requiring a complete discharge
+at the sentential level, which means no operators can `move up' outside the
+sentence in which it occurs, although of course this couldn't occur in this
+grammar since it doesn't cover relative clauses, sentential complements or
+coordination.  I have assumed that discharge only takes place at sentential
+level, i.e., there are no operators taking scope over s; doing this would
+complicate matters a bit in that a `partial' discharge operation should be
+ defined. 
+</P>
+</DIV>
+<DIV ID="5.1.4" DEPTH="3" R-NO="4"><HEADER>  Lambda Abstracts </HEADER>
+<P>
+Some care is required in the system developed here to get a semantics for
+lambda-abstraction that preserves properties such as - and
+<EQN/>-reduction.  The clause specifying the denotation of lambda-abstraction
+in Dowty, Wall and Peters's book is the following:
+</P>
+<P>
+<EQN/>
+If we generalize this clause in the `obvious'  way we get:
+</P>
+<P>
+<EQN/>
+Lambda-abstraction defined in this way does not have the required
+ properties. To show that it does not preserve <EQN/>-reduction,  it is sufficient to consider the following example: let  = {s1,
+s2},  = {a,b}, and let the
+expression  of type  have the following
+denotation:
+</P>
+<P>
+<EQN/>
+Then ()M,g{/a},d is as
+follows:
+<EQN/>
+and ()M,g{/b},dis as
+follows:
+</P>
+<P>
+<EQN/>
+Then, under the definition above, ()
+will contain the following function, that is not part of the denotation of
+ (hence, <EQN/>-reduction is not a sound inference rule):
+</P>
+<P>
+<EQN/>
+Intuitively, the problem with the definition above is that it does not
+`preserve' the functions in the denotation of . A definition of
+lambda-abstraction that does preserve these functions, and therefore preserves
+the soundness of - and <EQN/>-reduction, can be obtained as
+ follows. 
+</P>
+<P>
+The denotation function  used so far assigns a value to
+expression  ME<EQN/>
+in model M with respect to the parameters
+of evaluation g and d,   
+. Another way of specifying the value of expressions is to define
+a function  that assigns as value to  at discourse
+situation d a set of functions of type (Ass (
+)), from assignments to functions in (
+). For example, Dowty, Wall and Peters' clause for
+lambda abstraction could be rewritten as follows:
+</P>
+<P>
+<EQN/>
+This definition can then be generalized as follows:
+</P>
+<P>
+<EQN/>
+Lambda-abstraction defined this way does support
+ <EQN/>-reduction.  Since this more general way of assigning a value is not needed to provide a semantics for the
+other constructs of 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>,
+I will continue using a function
+., but the reader should keep in mind that a denotation function of
+this form is needed to deal with lambda abstraction, hence, with
+quantification. (And for referential ambiguity, as we will see below.)
+</P>
+</DIV>
+<DIV ID="5.1.5" DEPTH="3" R-NO="5"><HEADER>  Quantification </HEADER>
+<P>
+The treatment of quantifiers in 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>
+is based on Generalized
+Quantifiers Theory <REF/>, i.e., the idea that determiners
+denote relations between two sets. The `restricted quantification' notation
+used in the examples above is defined in terms of the two determiners
+every and a, as follows:
+</P>
+<P>
+<EQN/>
+A `single-valued'  semantics for
+every(,) could be
+defined, in first approximation, as in the following clause:
+</P>
+<P>
+<EQN/>
+This definition can be generalized as follows into one that
+works in the case in which . is a set:
+</P>
+<P>
+<EQN/>
+The interpretation of expressions of the form
+a(,) is defined in a
+similar fashion, with the obvious semantics.
+</P>
+</DIV>
+<DIV ID="5.1.6" DEPTH="3" R-NO="6"><HEADER>  Scope Disambiguation by Defeasible Inference </HEADER>
+<P>
+Having extended the language into one that can be used to describe scopal
+underspecification, the framework for discourse interpretation developed in
+section disc_int_section can also be used to formalize the inferences
+involved in scope disambiguation.  Partially disambiguated interpretations can
+be represented by expressions which mix logical forms with `traditional'
+expressions, as done in . For example, one could formalize Ioup's
+<REF/> Grammatical Function Principle, stating that an  in
+subject position by default takes scope over s in other position, as
+follows:
+</P>
+<P>
+<EQN/>
+Logical forms in LFS are sentential expressions, and can therefore
+serve as triggering condition of discourse interpretation principles. They can
+also occur embedded in other expressions of 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>.
+During the scope
+disambiguation process, `less ambiguous' expressions are inferred by deriving
+expressions such as
+ypySNPy
+VP in which some quantifiers have been extracted, by a
+process very similar to the one used in the top-down version of the 
+construction algorithm []. `Partial' scopal disambiguation is
+thus represented by 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>
+expressions which still contain logical
+forms.
+</P>
+<P>
+As some readers will have already observed, the rule
+GRAMMATICAL-FUNCTION-PRINCIPLE does not satisfy the Anti-Random restriction
+proposed in disc_int_section: the rule does not contain a non-trivial
+restriction on the contexts in which it can operate. The already mentioned
+ proposal in <REF/> overcomes this problem by making the activation of scope disambiguation rules depend on whether the appropriate
+domain for the quantifier (its resource situation) has been
+identified; a presentation of that proposal would however require introducing
+too much additional material.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5.2" DEPTH="2" R-NO="2"><HEADER>  Referential Ambiguity </HEADER>
+<DIV ID="5.2.1" DEPTH="3" R-NO="1"><HEADER>  Referential Expressions as Cases of Semantic Ambiguity </HEADER>
+<P>
+Yet another way in which the semantics of sentences is `underspecified' by
+their syntax is in the interpretation of anaphoric expressions and other
+expressions whose interpretation has to be fixed in context. In semantics,
+referential expressions are traditionally translated as free variables whose
+interpretation depends on the choice of an assignment function (for the cases
+of deictic anaphora) or by assigning them the same variable bound by the
+quantifier that serves as their antecedent (for the cases of bound
+anaphora). This translation does capture the intuition that the truth
+conditions of a sentence containing a referential expression can only be
+evaluated after fixing the value of the referential expressions. It is also
+clear, however, that distinct propositions are obtained depending on the value
+assigned to these expressions, much as distinct propositions are obtained
+depending on the choice of an interpretation for lexical items, or of a scope
+for operators: in other words, a sentence which includes a referential
+expression is semantically ambiguous much in the way a sentence containing a
+ lexically ambiguous item is. 
+</P>
+<P>
+A complete discussion of reference interpretation would require introducing a
+formalization of context, so I will only consider here the issue of providing
+an underspecified treatment of intra-clausal and deictic anaphora. I propose
+that referential expressions are cases of semantic ambiguity, and translate
+into a special kind of underspecified object that I will call
+parameters.  Semantically, a parameter is a type e expression
+that, in a discourse situation d, denotes a set of functions from
+situations to elements of e in d. For example, the pronoun
+he would translate into a parameter x which, in a discourse
+situation d with constituents a1 ...an,
+and given the set  of situations, will denote a set of functions
+{f1, ..., fm, ...} from situations in  to
+a1 ...an, including at least the set of all
+constant functions that map each situation s into aj if
+aj is a constituent of that situation (see below), and the set of
+all variable denotations.  The reader will immediately realize that parameters
+are the equivalent for type e expressions of `underspecified predicates'
+ like croakU introduced above. 
+</P>
+<P>
+More formally, I propose to extend the set of terms of 
+<!-- MATH: ${\cal LSUL}$ -->
+<EQN/>
+with a new
+class of parameters, whose interpretation is defined as follows. First of all,
+let us reformulate the semantics of variables given before, and make variables
+functions from assignments to values (rather than the other way around). This
+involves again using as interpretation function one that maps expressions into
+functions from assignments to meanings, as done for lambda-abstracts.
+</P>
+<P>
+<EQN/>
+This definition of the meaning of a variable allows us to abstract
+away from assignments. We can now define the semantics of parameters as
+follows:
+<EQN/>
+For example, if the subset of e in d consists of
+the two atoms j and b, then xe =
+{f1,f2,...fi,...}, where f1, f2 etc. are the functions
+that may serve as the denotation of constants and variables--f1 is the
+function that maps each situation of which j is a constituent into
+j, f2 is the function that maps each situation of which
+b is a constituent into b-- and the other functions
+represent all the possible denotations of objects that the parameter may be
+resolved to. Note that the discourse situations plays here the role played by
+the variable assignment in `free variable' theories of context dependence.
+</P>
+<P>
+The grammar presented in the previous section can be straightforwardly extended
+as follows to generate sentences such as It croaked:
+</P>
+<P>
+<EQN/>
+The definition of the interpretation of logical forms  given above
+already gives the correct results for these cases.
+</P>
+</DIV>
+<DIV ID="5.2.2" DEPTH="3" R-NO="2"><HEADER>  Parameters and Discourse Interpretation </HEADER>
+<P>
+Referential ambiguity gets `resolved' by anchoring a parameter. A
+parameter is anchored if only one among the functions in its
+denotation results in a consistent interpretation of the set of sentences in
+which the parameter occurs; a parameter can be anchored by means of equality
+statements of the form =xa, where a is not
+parametric, or is already anchored: such equality statements make all but one
+of the interpretations of the parameter inadmissible. Once a parameter is
+anchored, it can be `replaced' by a term that denotes the one function among
+those in the interpretation of the parameter that does not result in an
+inconsistent interpretation, much as in the previous discussion of lexical
+disambiguation, an H-type ambiguous predicate could be replaced by a
+disambiguated version. So, the discourse interpretation principles formalizing
+pronoun disambiguation involve a rewriting operation, just as the discourse
+interpretation principles formalizing lexical disambiguation.
+</P>
+<P>
+An apparent disadvantage of the present theory with respect to the `free
+variable' theory of context dependence is that we can derive from the latter
+that the value of referential expressions has to be fixed in order to get the
+meaning of the sentence in which they occur. A conversation is infelicitous
+unless the referents of all pronouns and definite descriptions have been
+identified, the domain of quantification of all quantifiers has been
+appropriately restricted, and so forth: so much so that listeners appear to be
+ready to accomodate new information (e.g., to introduce into the
+discourse some otherwise unspecified antecedent for a pronoun) rather than
+leave the interpretation unspecified <REF/>.  But this
+fact about referential expressions also follows if we treat context dependence
+as a case of (H-type) semantic ambiguity; it is just a corollary of Pinkal's
+precisification imperative, from which I derived the Condition on Discourse
+Interpretation in section lexamb_section. Accomodation procedures can
+then be seen as a way of `precisifying' in lack of sufficient information.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5.3" DEPTH="2" R-NO="3"><HEADER>  Syntactic Ambiguity </HEADER>
+<P>
+The one case of ambiguity that requires extending the framework introduced here
+considerably is syntactic ambiguity, as in They saw her
+duck. Furthermore, I haven't considered the problem of structural
+disambiguation in any detail.  I refer the interested readers to
+ <REF/>,<REF/> for a sketchy discussion of how to encode  encoding syntactic ambiguity in an underspecified representation. 
+</P>
+</DIV>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Discussion </HEADER>
+<P>
+I have suggested that to develop a theory of discourse interpretation that is
+consistent with what we know about the problem of ambiguity, we need to look
+both at the grammar and at discourse interpretation. I proposed a theory of
+grammar consistent with what I have called the Underspecification
+Hypothesis and which is not based on the assumption that all natural language
+expressions can be disambiguated; and a theory of discourse interpretation
+according to which a perceived ambiguity occurs when defeasible interpretation
+principles result in conflicting hypothesis. The interpretation process is
+subject to two constraints: the Anti-Random Hypothesis (interpretations
+are not generated at random) and the Condition on Discourse
+Interpretation, derived from the Precisification Imperative (H-type
+ambiguity has to be resolved). Although treatments of disambiguation based on
+defeasible reasoning have been proposed elsewhere in the literature (e.g., in
+ <REF/>), I am not aware of any discussion of the characteristics of this inferential process, the consequences of reasoning with
+an underspecified representation, or the need for constraints on the inference
+rules.
+</P>
+<P>
+In the theory, semantic ambiguity is characterized model-theoretically in terms
+of multiplicity of sense, whereas perceived ambiguity is characterized in terms
+of inference. One may wonder if the distinction is really necessary; i.e., if
+it is really the case that the meaning of natural language expressions can be
+specified a priori. Two arguments in favor of a distinction are that it
+provides for a clean distinction between the role of grammar and the role of
+discourse interpretation; and that perceived ambiguity may also reflect
+non-semantic distinctions, e.g., distinctions in speech act interpretation;
+this question is not however totally resolved in the paper.
+</P>
+<P>
+There are two obvious directions in which the present model needs to extended:
+to provide a model of syntactic ambiguity, and to account for the effect of
+incrementality in sentence processing. Preliminary work in this direction is
+ discussed in <REF/>. 
+</P>
+<P>
+An issue that deserves further inspection is whether the formal similarity
+between the system used here to assign a denotation to indefinite sentences,
+and the systems developed by Hamblin for dealing with questions
+ <REF/> and by Rooth for its alternative semantics  <REF/> has some significance. In particular, it would be interesting to explore the consequences of using parameters as the translation
+of focused elements.
+</P>
+<DIV ID="6.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Allen, J. F. 1987.
+Natural Language Understanding.
+Menlo Park, CA: Benjamin Cummings.
+</P>
+<P>
+Allen, J. F., L. K. Schubert, G. Ferguson, P. Heeman, C. H. Hwang, T. Kato,
+  M. Light, N. Martin, B. Miller, M. Poesio, and D. R. Traum.
+1995.
+The TRAINS project: a case study in building a conversational
+  planning agent.
+Journal of Experimental and Theoretical AI 7:7-48.
+</P>
+<P>
+Alshawi, H. (ed.). 1992.
+The Core Language Engine.
+The MIT Press.
+</P>
+<P>
+Altmann, G. T. M. (ed.). 1989.
+Parsing and Interpretation.
+Hove, East Sussex, UK: Lawrence Erlbaum.
+</P>
+<P>
+Altmann, G. T. M., and M. Steedman.
+1988.
+Interaction with Context during Human Sentence Processing.
+Cognition 30:191-238.
+</P>
+<P>
+Asher, N., and M. Morreau. 1991.
+Common Sense Entailment: A Modal Theory of Commonsense Reasoning.
+In Proc. 12th IJCAI.
+</P>
+<P>
+Barwise, J., and R. Cooper.
+1981.
+Generalized Quantifiers and Natural Language.
+Linguistics and Philosophy 4(2):159-219.
+</P>
+<P>
+Barwise, J., and R. Cooper. 1993.
+Extended Kamp Notation.
+In Situation Theory and its Applications, v.3, ed. P. Aczel,
+  D. Israel, Y. Katagiri, and S. Peters.
+Chap. 2, 29-54.
+CSLI.
+</P>
+<P>
+Barwise, J., and J. Perry. 1983.
+Situations and Attitudes.
+Cambridge, MA: MIT Press, Cambridge Mass.
+</P>
+<P>
+Charniak, E., and R. P. Goldman. 1988.
+A Logic for Semantic Interpretation.
+In Proc. ACL-88, 87-94.
+Buffalo, NY.
+</P>
+<P>
+Chierchia, G., and S. McConnell-Ginet. 1990.
+Meaning and Grammar: An Introduction to Semantics.
+Cambridge, MA: The MIT Press.
+</P>
+<P>
+Chomsky, N. 1981.
+Lectures on Government and Binding.
+Dordrecht: Foris.
+</P>
+<P>
+Cooper, R. 1983.
+Quantification and Syntactic Theory.
+Dordrecht, Holland: D. Reidel Publishing Company.
+</P>
+<P>
+Crain, S., and M. Steedman. 1985.
+On not being led up the garden path: the use of context by the
+  psychological syntax processor.
+In Natural Language Parsing: Psychological, Computational and
+  Theoretical perspectives, ed. D. R. Dowty, L. Karttunen, and A. M. Zwicky.
+320-358.
+New York: Cambridge University Press.
+</P>
+<P>
+Crouch, R. 1995.
+Ellipsis and Quantification: A Substitutional Approach.
+In Proceedings 7th Conference of the European Chapter of the
+  Association for Computational Linguistics, 229-236.
+Dublin. Dublin City University.
+</P>
+<P>
+Dalrymple, M., S. M. Shieber, and F. C. N. Pereira.
+1991.
+Ellipsis and Higher-Order Unification.
+Linguistics and Philosophy 14(4):399-452.
+</P>
+<P>
+Dowty, D. R., R. E. Wall, and S. Peters. 1981.
+Introduction to Montague Semantics.
+Dordrecht, Holland: D. Reidel.
+</P>
+<P>
+Fenstad, J.E., P.K. Halvorsen, T. Langholm, and J. van Benthem. 1987.
+Situations, Language and Logic.
+Dordrecht: D.Reidel.
+</P>
+<P>
+Fine, K.
+1975.
+Vagueness, Truth, and Logic.
+Synthese 30:265-300.
+</P>
+<P>
+Frazier, L., and J. D. Fodor.
+1978.
+The sausage machine: A new two-stage parsing model.
+Cognition 6:291-295.
+</P>
+<P>
+Gawron, J. M., and S. Peters. 1990.
+Anaphora and Quantification in Situation Semantics.
+Lecture Notes, Vol. 19.
+CSLI.
+</P>
+<P>
+Gibson, E. 1991.
+A Computational Theory of human linguistic processing: memory
+  limitations and processing breakdown.
+Doctoral dissertation, Carnegie Mellon University, Pittsburgh.
+</P>
+<P>
+Gillon, B.
+1990.
+Ambiguity, generality, and indeterminacy: Tests and definitions.
+Synthese 85:391-416.
+</P>
+<P>
+Grosz, B.J., A.K. Joshi, and S. Weinstein. 1983.
+Providing a Unified Account of Definite Noun Phrases in Discourse.
+In Proc. ACL-83, 44-50.
+</P>
+<P>
+Haegeman, L. 1991.
+An Introduction to Government and Binding Theory.
+Basil Blackwell.
+First edition.
+</P>
+<P>
+Hamblin, C.
+1973.
+Questions in Montague English.
+Foundations of Language 10:41-53.
+</P>
+<P>
+Heim, I. 1982.
+The Semantics of Definite and Indefinite Noun Phrases.
+Doctoral dissertation, University of Massachusetts at Amherst.
+</P>
+<P>
+Hirst, G. 1987.
+Semantic Interpretation and the Resolution of Ambiguity.
+Studies in Natural Language Processing.
+Cambridge, UK: Cambridge University Press.
+</P>
+<P>
+Hobbs, J. R. 1983.
+An Improper Treatment of Quantification in Ordinary English.
+In Proc. ACL-83, 57-63.
+Cambridge, MA, June.
+</P>
+<P>
+Hobbs, J. R., and S. M. Shieber.
+1987.
+An Algorithm for Generating Quantifier Scopings.
+Computational Linguistics 13(1-2):47-63.
+</P>
+<P>
+Hobbs, J. R., M. Stickel, P. Martin, and D. Edwards. 1990.
+Interpretation as Abduction.
+Technical Note 499.
+Menlo Park, CA: SRI International, December.
+</P>
+<P>
+Hwang, C. H., and L. K. Schubert. 1993.
+Episodic Logic: A Situational Logic for Natural Language Processing.
+In Situation Theory and its Applications, v.3, ed. P. Aczel,
+  D. Israel, Y. Katagiri, and S. Peters.
+303-338.
+CSLI.
+</P>
+<P>
+Ioup, G. 1975.
+Some Universals for Quantifier Scope.
+In Syntax and Semantics 4, ed. J. Kimball.
+37-58.
+New York: Academic Press.
+</P>
+<P>
+Kamp, H., and U. Reyle. 1993.
+From Discourse to Logic.
+Dordrecht: D. Reidel.
+</P>
+<P>
+Kaplan, D. 1977.
+Demonstratives. An Essay on the Semantics, Logic, Metaphysics and
+  Epistemology of Demonstratives and Other indexicals.
+Unpublished manuscript, University of California, Los Angeles.
+</P>
+<P>
+Keller, W. R. 1988.
+Nested Cooper Storage: The Proper Treatment of Quantification in
+  Ordinary Noun Phrases.
+In Natural Language Parsing and Linguistic Theories, ed.   U. Reyle and C. Rohrer.
+432-447.
+Dordrecht: D. Reidel.
+</P>
+<P>
+Kempson, R., and A. Cormack.
+1981.
+Ambiguity and Quantification.
+Linguistics and Philosophy 4(2):259-310.
+</P>
+<P>
+Kurtzman, H. 1985.
+Studies in Syntactic Ambiguity Resolution.
+Doctoral dissertation, MIT, Cambridge, MA.
+</P>
+<P>
+Kurtzman, H. S., and M. C. MacDonald.
+1993.
+Resolution of Quantifier Scope Ambiguities.
+Cognition 48:243-279.
+</P>
+<P>
+Lakoff, G. P.
+1970.
+A note on vagueness and ambiguity.
+Linguistic Inquiry 1(3):357-359.
+</P>
+<P>
+Lascarides, A., N. Asher, and J. Oberlander. 1992.
+Inferring Discourse Relations in Context.
+In Proc. ACL-92, 1-8.
+University of Delaware.
+</P>
+<P>
+Lewis, D. K.
+1979.
+Scorekeeping in a language game.
+Journal of Philosophical Logic 8:339-359.
+</P>
+<P>
+May, R. 1985.
+Logical Form in Natural Language.
+The MIT Press.
+</P>
+<P>
+Montague, R.
+1970.
+Universal Grammar.
+Theoria 36:373-398.
+ Reprinted in <REF/>. 
+</P>
+<P>
+Partee, B. H., and M. Rooth. 1983.
+Generalized Conjunction and Type Ambiguity.
+In Meaning, Use and Interpretation of Language, ed.   R. Bauerle, C. Schwarze, and A. von Stechow.
+Berlin, West Germany: Walter de Gruyter.
+</P>
+<P>
+Pereira, F. C. N.
+1990.
+Categorial Semantics and Scoping.
+Computational Linguistics 16(1):1-10.
+</P>
+<P>
+Pereira, F. C. N., and M. E. Pollack.
+1991.
+Incremental Interpretation.
+Artificial Intelligence 50:37-82.
+</P>
+<P>
+Pinkal, M. 1985.
+Logik und Lexikon: Die Semantik des Unbestimmten.
+Berlin: de Gruyter.
+</P>
+<P>
+Pinkal, M. 1995.
+Logic and Lexicon.
+London: Oxford.
+</P>
+<P>
+Poesio, M. 1991.
+Relational Semantics and Scope Ambiguity.
+In Situation Semantics and its Applications, vol.2, ed.   J. Barwise, J. M. Gawron, G. Plotkin, and S. Tutiya.
+Chap. 20, 469-497.
+Stanford, CA: CSLI.
+</P>
+<P>
+Poesio, M. 1994.
+Discourse Interpretation and the Scope of Operators.
+Doctoral dissertation, University of Rochester, Department of
+  Computer Science, Rochester, NY.
+</P>
+<P>
+Poesio, M. 1995.
+A Model of Conversation Processing Based on Micro Conversational
+  Events.
+In Proceedings of the Annual Meeting of the Cognitive Science
+  Society.
+Pittsburgh.
+</P>
+<P>
+Raskin, V. 1985.
+Semantic Mechanisms of Humor.
+Dordrecht and Boston: D. Reidel.
+</P>
+<P>
+Reiter, R.
+1980.
+A Logic for Default Reasoning.
+Artificial Intelligence 13(1-2):81-132.
+</P>
+<P>
+Reyle, U.
+1993.
+Dealing with ambiguities by underspecification: Construction,
+  Representation and Deduction.
+Journal of Semantics 3.
+</P>
+<P>
+Rodman, R. 1976.
+Scope Phenomena, ``Movement Transformations,'' and Relative Clauses.
+In Montague Grammar, ed. Barbara Partee.
+165-176.
+Academic Press.
+</P>
+<P>
+Rooth, M. 1985.
+Association with Focus.
+Doctoral dissertation, University of Massachusetts, Amherst.
+</P>
+<P>
+Schubert, L. K. 1986.
+Are There Preference Trade-Offs in Attachment Decisions.
+In Proceedings of the Fifth National Conference on Artificial
+  Intelligence, 601-605.
+Philadelphia, Pennsylvania, August. American Association for
+  Artificial Intelligence.
+</P>
+<P>
+Schubert, L. K., and F. J. Pelletier.
+1982.
+From English to Logic: Context-Free Computation of 'Conventional'
+  Logical Translations.
+American Journal of Computational Linguistics 10:165-176.
+</P>
+<P>
+Spivey-Knowlton, M., J. Sedivy, K. Eberhard, and M. Tanenhaus. 1994.
+Psycholinguistic Study of the Interaction between Language and
+  Vision.
+In Proceedings of 12th National Conference on Artificial
+  Intelligence (AAAI-94).
+Seattle.
+</P>
+<P>
+Stallard, D. 1987.
+The Logical Analysis of Lexical Ambiguity.
+In Proceedings of the 25th Meeting of the ACL, 179-185.
+</P>
+<P>
+Su, S. P. 1994.
+Lexical Ambiguity in Poetry.
+London: Longman.
+</P>
+<P>
+Swinney, D. A.
+1979.
+Lexical Access During Sentence Comprehension: (Re)consideration of
+  Context Effects.
+Journal of Verbal Learning and Verbal Behavior 18:545-567.
+</P>
+<P>
+Thomason, R. H. (ed.). 1974.
+Formal Philosophy: Selected Papers of Richard Montague.
+New York: Yale University Press.
+</P>
+<P>
+Turner, R. 1992.
+Properties, propositions and semantic theory.
+In Computational Linguistics and Formal Semantics, ed.   M. Rosner and R. Johnson.
+CUP, Cambridge.
+</P>
+<P>
+van Deemter, K. 1991.
+On the Composition of Meaning.
+Doctoral dissertation, University of Amsterdam.
+</P>
+<P>
+Verkuyl, H. J. 1992.
+Some Issues in the Analysis of Multiple Quantification with Plural
+  NPs.
+OTS Working Papers OTS-WP-TL-92-005.
+The Netherlands: University of Utrecht, Research Institute for
+  Language and Speech.
+To appear in F. Hamm and E. Hinrichs, editors, Plural
+  Quantification, Kluwer.
+</P>
+<P>
+Zwicky, A., and J. Sadock. 1975.
+Ambiguity Tests and How to Fail Them.
+In Syntax and Semantics 4, ed. J. Kimball.
+1-36.
+New York: Academic Press.
+</P>
+<DIV ID="6.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  This paper will appear
+in K. van Deemter and S. Peters (eds), Semantic Ambiguity and
+Underspecification, CSLI.
+  With current technology, the real problem is not so
+much the size of the search space, but how to choose among these
+interpretations, most of which are plausible.
+  An early attempt
+at a model of discourse interpretation of this kind was made by Hobbs, e.g.,
+ <REF/>. 
+  A recent example of work also
+attempting to exploit the properties of underspecified representations to
+ address linguistic questions is <REF/>. 
+  An example of these tests are the identity tests,
+one of which is the conjunction test. The (presumed) ambiguity of
+sentences such as They say her duck derives from the fact that the
+phrase her duck can either be a NP or a bare infinitival
+complement. The sentence They saw her swallow should have a similar
+ambiguity. If these two sentences were really ambiguous as claimed, a sentence
+such as They saw her swallow and her duck should only have two
+readings instead of four since conjunction requires its two arguments to be of
+the same type, and therefore the 'crossed' readings should not be
+available. This is indeed the case. On the other hand, an indeterminate
+sentence such as My sister is the Ruritanian secretary of state
+maintains all of its indeterminateness once conjoined, as in My
+sister is the Ruritanian secretary of state and a prominent composer.
+  For example, Zwicky
+and Sadock observed that such tests can only identify polar
+ambiguities (such as the ambiguity of game between two entirely
+independent readings), but not privative ambiguities, like those
+displayed by a term like dog which can be used both to indicate
+generic individual of the Canis species and a male element of it.
+  A sentence is indeterminate, or
+unspecified, if it is definitely true or false, but it could be made
+more specific.  Zwicky and Sadock <REF/> bring the
+example of the sentence My sister is the Ruritanian secretary of
+state, which is indeterminate as to whether ``...my sister is older or
+younger than I am, whether she acceeded to her post recently or some time ago,
+whether the post is hers by birth or by merit,'' and so forth. The point is
+that these additional facts do not affect the truth value of the sentence. It
+hardly needs to be pointed out that just about every sentence is indeterminate
+/ unspecific in some respects. I will use the term indeterminate for these
+sentences, and reserve the term underspecified for sentences which
+may have different truth values depending on the way the facts are `filled in'
+(see below).
+  For a discussion of these assumptions,
+ see <REF/>, <REF/>, or chapter 2 of <REF/>. 
+  In the case of attitude reports, the problem is to make sure
+that if John is tall and John is stupid are both true in
+a model, Bill believes that John is tall does not entail
+Bill believes that John is stupid in that model, assuming that
+propositions are the semantic correlate of sentential complements.
+  More complex notions of
+propositions have been introduced in the literature on propositional attitudes,
+such as those used in Situation Semantics <REF/> or Property
+Theory <REF/>.
+  Another way of providing a precise definition of
+ambiguity has been explored in the literature, that we might call structural or syntactic. An example of structural definition is the
+ following, from Gillon (<REF/>, p. 400): 
+</P>
+<P>
+Ambiguity (Gillon)
+: An expression is ambiguous iff the
+expression can accomodate more than one structural analysis.
+This definition relies on the assumption made in transformational theories of
+grammar such as Government and Binding theory
+<REF/>, that each interpretation of a sentence is a
+quadruple <EQN/>PF,DS,SS,LF<EQN/>,
+each of whose elements is a structured
+object: PF characterizes the phonetic interpretation, DS the predicate/argument
+composition of the sentence, SS its surface syntactic analysis, and LF its
+logical analysis.  A sentence (string) is ambiguous iff it can be characterized
+by distinct quadruples, and this may happen not only for phonetical or
+syntactic reasons, but also for semantical reasons, since one of the components
+of a structural characterization of a sentence, the `LF,' encodes the semantic
+interpretation of the sentence.
+</P>
+<P>
+The problem with this definition is that a purely syntactic analysis of meaning
+introduces spurious distinctions: for example, unless something is said about
+invariance under renaming of variables, one would predict from a structural
+definition that even a sentence with a single quantifier such as
+Every man left is infinitely ambiguous, because all structures of
+the form SNPevery x manxleft, for any
+choice of the variable, are appropriate (and distinct) LF constituents of a
+sentence's interpretation. Another case of spurious ambiguity is discussed
+below.  A semantic characterization of ambiguity avoids this problem.
+  A treatment of ambiguity and vagueness in
+ terms of precisifications was proposed early on in <REF/>. 
+  Pereira
+<REF/> argues that this constraint is best formulated as a
+condition on semantic derivations rather than as a condition on the syntax of
+logical expressions.
+  This is one of the reasons for preferring a semantic account
+of ambiguity to a syntactic account which makes ambiguity depend on the
+existence of two distinct logical forms.
+  A cute example of the problems with the theory
+ is presented by  <REF/>. If ambiguous sentences were to denote the disjunction of their readings, then the answer to the question
+Does the butcher have kidneys? should always be 'yes'.
+  Such sentences are used, for example, to
+get a 'baseline' interpretation in psychological work on ambiguity.
+  The results about lexical disambiguation are fairly
+well established, but there is some controversy about syntactic processing. A
+constrasting view on syntactic disambiguation is discussed in
+[].
+  In addition to the
+references above see [].
+  The technique of assigning sets of senses as the denotation
+of sentences dates back at least to Hamblin <REF/>
+who used it to extend Montague's fragment to questions.
+  A lexical item can also be
+ambiguous in that it may be associated with lexical entries of different
+syntactic categories: for example, the word duck can either be
+interpreted as a noun or as an verb, as shown by the example They saw
+her duck. I assume a syntactic ambiguity in these cases, i.e., I assume that
+the grammar would assign two syntactic analyses to the word duck,
+each of which would then get an interpretation in 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>.
+  It is perhaps worth emphasizing a
+difference between the semantics just sketched and virtually all other
+approaches to underspecification I am aware of. In this proposal, the
+underspecified language 
+<!-- MATH: ${\cal LXUL}$ -->
+<EQN/>
+does not serve as a `meta-language' to be
+given a semantics in terms of the values assigned to the expressions of a
+`disambiguated language'; instead, it has a semantics of its own, defined
+bottom-up much in the way the semantics of <EQN/>
+would be defined. In
+other words, the approach just sketched does not rely on the assumption that a
+`disambiguated language' can be defined, which, at the light of Pinkal's
+treatment of indefiniteness, appears to be questionable. For example, for
+Pinkal an expression is `purely vague' is no natural precisification exists.
+  I will ignore in what follows the issue of partiality,
+e.g., what happens when a conjunct has a value other than 0 or 1.
+  The denotation assigned to an indefinite sentence by the
+grammar above is a simplification of the denotation that Pinkal would assign to
+ such a sentence in <REF/>, which, in addition the set of senses associated with a natural language expression, would also include a partial
+order relation of precisification between them. Such an order relation plays an
+important role in the meaning of vague sentences such as Kermit is
+tall is considered, which has distinct senses depending on the degree of
+precision with which the discourse situation is specified, but a less important
+one in the cases of `narrow sense' ambiguity with which I am concerned here.
+  CROAK1-IF-FROG is an open inference
+rule. Such rules act like inference rule schemas.
+  See the discussion below.
+  I.e., of the form :/ .
+  See however
+ <REF/>. 
+  In a sentence such as
+John gave a present to each child, for example, the indefinite
+a present takes narrow scope with respect to the quantifier
+each child. The interpretation of the sentence must therefore either
+remain partially underspecified until the quantifier is processed, or be
+revised when the quantifier is encountered. Similarly, when processing a
+sentence such as John always invites MARY to the movies, whose
+preferred interpretation is that whenever John goes to the movies, he invites
+Mary, the restriction of the adverb of quantification always is not
+encountered until the PP to the movies is encountered.
+</P>
+<P>
+ There is little doubt that part of the solution to the Combinatorial
+Explosion Puzzle is that some forms of ambiguity, at least, are solved locally
+and incrementally. Garden-path phenomena, for example, are commonly interpreted
+as providing evidence for this hypothesis
+  [,,<REF/>, and,
+as discussed above, similar effects can exploit forms of ambiguity other than
+syntactic ambiguity: e.g., scopal ambiguity. The examples just discussed
+suggest however that an incremental account of discourse interpretation, as
+well, must be supplemented with a theory of underspecification.
+  Strictly speaking, one should check that  does
+not occur in the extension itself, not in the intermediate sets of wffs; this
+form makes sense however once we adopt a `syntactic' definition of extension
+(see below).
+  Both
+the treatment of scopal ambiguity and the treatment of referential ambiguity
+proposed below are such that the constituents that introduce H-type ambiguity
+can be identified syntactically.
+  A closed default theory is one in which no default contains
+open variables. All really interesting cases of default inference rules do
+include such variables; but Reiter derives the definition of the extension of
+an `open' default theory from the definition of extension for closed theories.
+  `Ambiguity elimination' solutions to the combinatorial
+explosion puzzle, such as Kempson and Cormack's <REF/>
+or Verkuyl's <REF/> have had some success in showing that
+certain cases of `ambiguity'--especially `ambiguities' associated with plural
+noun phrases or certain classes of scopal ambiguities--are in fact cases of
+indeterminacy.  Zwicky and Sadock noted that the identity tests do not classify
+a sentence as ambiguous if the propositions expressed by the sentence are such
+that one entails the other. This is the case, for instance, with sentences such
+as every-kid
+ <REF/>,,]. 
+</P>
+<P>
+<EQN/>
+[] claim that
+sentences like <CREF/> are not ambiguous, but indeterminate: according to
+them, such sentences semantically denote the weaker reading (the one in which
+the universal quantifier takes scope over the existential).  The stronger
+reading is the result of pragmatic reasoning.
+<EQN/>
+Kempson and Cormack propose in fact that all quantified sentences denote a
+single proposition; in this way, the combinatorial explosion puzzle
+disappears, at least as far as scopal ambiguity is concerned. However, it is
+not true in general that a sentence with two quantifiers has two
+interpretations, one of which entails the other.  <CREF/> does not
+have an interpretation weak enough to be entailed by all others, yet able to
+capture the truth conditions correctly.
+</P>
+<P>
+<EQN/>
+A second  problem with the proposal  of Kempson and Cormack is that if one
+wants to claim that the meaning of a sentences such as <CREF/> is
+something like <CREF/>, as Kempson and Cormack do, then one ends up
+predicting that the meaning of <CREF/> should be something like
+<CREF/>, the strongest interpretation of the sentence. In other
+words, one either has to give up compositionality for sentences like
+<CREF/>, or to abandon the strategy of letting sentences
+denote their weakest interpretation <REF/>.
+</P>
+<P>
+<EQN/>
+It should also be clear that whatever the case for scopal ambiguity, other
+kinds of ambiguity, such as structural and H-type lexical ambiguity, cannot be
+reduced to indeterminacy.
+  The definition of
+storage generates spurious readings in the case of embedded NPs such as
+a representative of every company, that have to be eliminated via a
+separated filter <REF/>. Keller introduced a
+`nesting' technique that obviates the problem
+<REF/>.  More recently, Pereira
+ <REF/> argued that the right scoping properties can be obtained without additional stipulations from the natural deduction approach to parsing.
+I only consider here `basic' NPs that do not create problems for the simplest
+version of Cooper's technique.
+  Some arguments for VP scope are discussed in
+ <REF/>,]. 
+  Strictly speaking, the form CV()(M,g,d) should be
+used. I omit the indices below.
+  I.e.,
+that () .
+  I wish to thank an anonymous reviewer for suggesting this
+solution to the problem just discussed, much simpler than the solution proposed
+ in <REF/>. 
+  The proof is as
+follows. () = {f (Ass 
+(( ))) such
+that for all g Ass, s , a in
+, and for some m ()M,
+f(g)(s)(a) = m(g{/a})(s). }
+Because of the definition of (), this is the set of
+functions f such that f(g)(s)(a) =
+p(g{/a})(s)[q(g{/a})(s)],
+for some p M and some q in M, i.e., of the
+functions which occur in M since
+q(g{/a})(s) = a.
+  Pinkal takes pretty much the same
+ position in <REF/>. He also introduces a distinction there between a `speaker-oriented' perspective on meaning versus a `hearer-oriented'
+perspective. A speaker may well have a single interpretation in mind for a
+particular anaphoric expressions, but the hearer may have to recover this
+interpretation among the many that are possible in that particular
+context. This is of course true of all kinds of ambiguities, also those which
+have a pragmatic rather than a semantic nature, but in the case of referential
+ambiguity, the alternative interpretations correspond to distinct propositions
+in the semantic sense as well.
+  The term `parameter' comes
+from Situation Semantics (e.g., []), where the lexical
+items whose interpretation depends on context are called parametric,
+in the sense that their interpretation depends on the value assigned in context
+to one or more parameters. Parameters are also used in situation theory to
+translate pronouns and other anaphoric expression; but although the name and
+the `dotted' notation is preserved here, the parameters I have just introduced
+are an entirely different type of objects than the parameters of situation
+theory, which are a special sort of objects in the universe, entirely distinct
+from individuals.
+  Most
+systems making use of underspecified representations perform structural
+disambiguation independently from the other forms of disambiguation
+ [,<REF/>,,<REF/>. There is evidence, however, that structural disambiguation interacts at least with
+reference interpretation [,] and a lot
+of the recent work on statistical parsing relies on the hypothesis that lexical
+interpretation affects parsing as well. Nothing in the proposal relies on
+structural disambiguation occurring prior to the other stages of
+disambiguation.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

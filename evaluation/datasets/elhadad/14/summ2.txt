@@ -1,0 +1,5 @@
+SUGAR and spice motivated many an explorer , and the voyages of discovery that resulted from European demand for these products were the basis for building powerful empires . Today , the same resources are still stimulating the development of new trading societies - - but now those societies are growing inside computers , rather than overseas . In it , software ' agents ` of their devising live out their lives .
+
+In the most simple sugar and spice models , the market settles on one price for each commodity .
+
+Sugarscape is not the only agent - based model that has started to explore the pattern of trade . The agents in a model devised by Deborah Duong ( who works at George Mason University , in Fairfax , Virginia ) , can produce a variety of goods ( she calls them ' oats ` , ' peas ` , ' beans ` and ' barley ` ) . 

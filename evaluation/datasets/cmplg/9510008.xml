@@ -1,0 +1,655 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Toward an MT System without Pre-Editing -- Effects of New Methods in ALT-J/E --</TITLE>
+<ABSTRACT>
+<P>
+Recently, several types of Japanese-to-English machine translation
+  systems have been developed, but all of them require an initial
+  process of rewriting the original text into easily translatable
+  Japanese.  Therefore these systems are unsuitable for translating
+  information that needs to be speedily disseminated.  To overcome
+  this limitation, a Multi-Level Translation Method based on the
+  Constructive Process Theory has been proposed.  This paper describes
+  the benefits of using this method in the Japanese-to-English machine
+  translation system ALT-J/E.
+In comparison with conventional compositional methods, the
+  Multi-Level Translation Method emphasizes the importance of the
+  meaning contained in expression structures as a whole.  It is shown
+  to be capable of translating typical written Japanese based on the
+  meaning of the text in its context, with  comparative ease.
+  We are now hopeful of carrying out useful machine translation with
+  no manual pre-editing. 
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+Recently, RD efforts involving machine translation of different
+language families, such as Japanese and English, have become popular
+ <REF/>,<REF/>,<REF/>.  However, differences in perspective and how objects are thought of, in such different
+language families, affect how expressions are structured.  These
+differences in expression structure make it difficult to convert from
+one language to another mechanically.  For example, in
+Japanese-to-English machine translation, the more typical the Japanese
+expression, the more difficult it is to translate into English, due
+to differences in the way that thought processes are expressed
+linguistically.
+</P>
+<P>
+As a means of solving this problem, efforts have been made in the area
+ of sub-languages <REF/> or knowledge-based translation  <REF/>.  But these methods currently require human intervention, that is, Japanese expressions must be rewritten into
+easily translatable Japanese.  In other words, there is a need to
+re-write the text into a more English type of concept before machine
+translation can be performed.
+</P>
+<P>
+This action of re-writing is normally known as pre-editing
+ <REF/>.  Pre-editing techniques include: use of a single word so as to have only one meaning; limiting the use of `joshi'
+(Japanese post-positional words) and of auxiliary verbs and other words
+likely to be interpreted several ways; replacing, in advance, any
+words which may have been omitted; and the re-writing of idiomatic
+expressions to more general expressions.  These all represent efforts
+to re-write the source into unambiguous Japanese which can be
+translated into English, literally.
+</P>
+<P>
+The theory and rationale of pre-editing in Japanese-to-English
+translation would appear to be closely related to the principle of
+elementary compositionality.  Elementary compositionality hypothesizes
+that ``the meaning of the entire expression is the sum of the meanings
+ of the various portions of the expression'' <REF/>.  This principle is taken as basic in existing machine translation systems
+and supports a most effective method between languages of the same
+family.  When seeking high quality machine translation, however, there
+still remain serious problems to be dealt with.
+</P>
+<P>
+Japanese-to-English machine translation has reached the stage where
+sentences that allow word-by-word transfer from Japanese to English,
+followed by assembly into the final sentence form (i.e. where literal
+translation is possible), can be translated by current technology. But
+there is a wide difference in the thought process constituting the
+background of linguistic expression between the Japanese and English
+languages.  Therefore, translations using existing systems require
+pre-editing to re-write the original Japanese sentences into a form
+that will enable application of the elementary compositional method,
+or in other words, a form that can undergo literal translation.
+</P>
+<P>
+To go beyond the limits of conventional translation methods based on
+elementary compositionality, we have proposed the Multi-Level
+ Translation Method, <REF/>,<REF/>,<REF/> based on the Constructive Process Theory of Language
+ <REF/>, and have made the experimental system ALT-J/E, the Automatic Language Translator -- Japanese to English. 
+</P>
+<P>
+This method focuses attention on the fact that many expressions have
+meanings that cannot be deduced directly from the combination of the
+meanings of the individual words.  It is a method of translation which
+grasps the structure and meanings of expressions as a whole.  The
+meanings of words will vary according to the manner and context in
+which the words are used.  Many expressions have meanings that cannot
+be explained directly from the meanings of each individual word.  With
+attention focused on these characteristics, those units having
+structural meanings have been arranged systematically into a form of
+linguistic knowledge. This knowledge is being used in analysis of
+the Japanese language and conversion of the Japanese into English.  As
+such, it represents a big step forward towards the fundamental solution of
+previously existing problems, hitherto only solvable by pre-editing.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  The Constructive Process Theory and the Multi-Level Translation  Method </HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  The Constructive Process Theory of Language </HEADER>
+<DIV ID="2.1.1" DEPTH="3" R-NO="1"><HEADER>  Problems of Conventional Translation Systems </HEADER>
+<P>
+The transfer method and the pivot method have been regarded as the
+ methods most commonly used in machine translation <REF/>. Whereas the pivot method hypothesizes an intermediate language common
+for both the original and the target language, the transfer system
+differs in that it uses an intermediate language for each language in
+order to convert meanings from one language to another.  Both have in
+common the fact that they establish an intermediate language to
+represent meaning that is separate from the surface expression.
+</P>
+<P>
+It is possible to seek the background regarding these methods in the
+dualism of computational linguistics
+ <REF/>,<REF/>,<REF/> that discriminates between surface and deep structures.
+</P>
+<P>
+But the deep structure as suggested by computational linguistics
+cannot be said to have achieved success.  In fact, concepts which deny
+the existence of deep structure have been suggested of late
+ <REF/>,<REF/>,<REF/>. 
+</P>
+<P>
+Computational linguistics can be thought of as derived from
+ computational logic <REF/>.  It hypothesizes that the meanings of expressions do not rely on languages but are a form of
+common existence, and it also hypothesizes that the meaning of the
+expression in its entirety is the sum total of the meanings of
+sections of the expression.  But these hypotheses are only partially
+valid for actual languages.  Thus, it would be difficult to apply this
+theory of computational linguistics to machine translation which deals
+with actual text, particularly to translation involving a pair of
+languages with different origins such as Japanese and English.
+</P>
+</DIV>
+<DIV ID="2.1.2" DEPTH="3" R-NO="2"><HEADER>  The Concept of the Constructive Process Theory of Language </HEADER>
+<P>
+We believe that the key to solving this problem lies with the linguistic
+ evolution theory of Tokieda Grammar <REF/>, one of the main schools of traditional study of the Japanese language.
+Tokieda Grammar is derived from the theory of Norinaga Motoori
+ <REF/> and it was developed from a critique of the  linguistic theory propounded by Saussure <REF/>.  It is regarded as one of the 4 major theories of grammar of Japan.
+</P>
+<P>
+According to the Constructive Process Theory of Language, language is
+to be understood as a compound body of processes as in the field of
+physics, and can be viewed as the relationship between the `object',
+`(speaker's) recognition' and `expression'.  The relationship between
+`object' and `recognition' can be explained by `Epistemology' or
+`Reflection Theory', and between `recognition' and `expression' by
+`Linguistic Norm'.  The sole element that is common between two
+differing languages would be the `object' and since there are
+differences in how the `object' is viewed and understood between
+languages, everything beyond `recognition' will differ depending on
+the language in question.  The very existence of `deep structure'
+which is neither `object' nor `recognition' is denied altogether.
+</P>
+<P>
+ Also, according to Tsutomu Miura <REF/> who built on the Constructive Process Theory, the meaning of linguistic expressions is
+the relationship between `object', `recognition' and `expression'.
+This relationship is objectively connected to the `expression' itself.
+The concept of regarding ``relationship" as meaning resembles the
+ recent work in situation semantics <REF/>.  But where situation semantics confuses ``meanings of expression'' with ``meanings
+of the field where the expression is placed'', Miura Grammar draws a
+distinct line between the two and propounds a theory pertaining to
+``meanings of expression".
+</P>
+<P>
+When language is regarded thus as a compound body of various
+processes, the following two points, placing importance on the
+meaning, are seen as important for machine translation.
+</P>
+<P>
+1.
+ Expressions are classified into   `subjective' which are a direct expression of the emotions,
+  intentions, and judgment of the speaker and `objective' which
+  express the object in the form of a concept, and reproduce it within
+  the framework of the target language.
+</P>
+<P>
+2.
+The structure, which involved with the object, is reflected by
+  its recognition and this is further reflected in the structure of
+  the expression.  Therefore, the structure of an expression is to be
+  considered as a part of its meaning, and the meaning is to be handled
+  accordingly.
+</P>
+</DIV>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  The Multi-Level Translation Method </HEADER>
+<P>
+ALT-J/E has implemented the Multi-Level Translation Method with
+due consideration of the foregoing two points.  The translation
+ process is outlined in Figure <CREF/>.  First, the Japanese expression is analyzed and separated into subjective and objective
+parts.  The subjective part (for example, tense and aspect) is
+translated separately from the objective part.  Second, the objective
+part is translated in three stages (the Multi-Level Transfer Method).
+If there are any idiomatic expressions, these are translated first, in
+the Idiomatic Expression Transfer.  Then any expressions whose
+predicates and arguments match an entry in the semantic pattern
+dictionary are translated as part of the Semantic Valency Transfer.
+Finally, any remaining expressions are translated by the General Pattern
+Transfer.  The entire process is designed to prevent loss of meaning
+through elementary decomposition.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  Organization of Linguistic Knowledge </HEADER>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>  Semantic Categories of Words </HEADER>
+<P>
+Nouns are used to express existing objects as concepts.  Depending on
+how the object is viewed and understood, various profiles of the
+object are picked up or discarded.  Which noun is to be used is
+selected based on a profile corresponding to the view of the speaker.
+</P>
+<P>
+In conceiving the object, the special and individual characteristics
+are discarded and the features are recognized as a single unit.  Among
+the concepts analyzing semantic features, there have been attempts to
+explain the meaning of nouns as a bundle of detailed meanings or
+features.  But the concept that is represented by a noun is a single
+conclusive unit of recognition.  It is, therefore, to be handled as an
+irreducible concept, that can only be captured as a whole.  We
+classify these concepts as  SEMANTIC CATEGORIES.
+</P>
+<P>
+For example, the objective concept represented by the word   school would include ``the school as an organization'' and ``the
+school as a given location''. In machine translation, there is a need
+to know which of these the word school signifies.  In order to
+do this, thought was given to what type of profile is conceived for
+the object when it is used. These profiles were then classified as
+semantic categories held by each noun.
+</P>
+<P>
+Around 3,000 categories were specified, about the number of important
+words which the normal person feels comfortable in using.  The
+semantic categories are ordered into two  IS-A hierarchies. These
+are the common noun semantic categories, some 2,800 categories (12
+levels deep), and the proper noun semantic categories, some 200
+categories (9 levels deep).  Based on this ontology, a semantic
+  word dictionary was compiled with 400,000 index words.  The maximum
+number of semantic categories per word is 5 common noun categories and
+10 proper noun categories.  Overall, an average of 2 categories are
+assigned to each noun in the dictionary.
+</P>
+<P>
+Projects using conceptual classifications similar to our semantic
+categorization, have previously had around 30 to 50 categories. EDR
+ <REF/>, is implementing plans to extend to 500 categories. ALT-J/E is the first case of a system with a precision of some 3,000 categories and a large scale dictionary (around 400,000 index words).
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>  The Meaning of Expression Structures  as viewed from Declinable Words </HEADER>
+<P>
+In Japanese both verbs and adjectives are declinable.  The basic
+structure of Japanese sentences revolves mainly around
+predicates.  Looking at the declinable words, the meanings of the
+predicates themselves, and of their basic structure, can be understood
+by examining the types and meaning of nouns that fill the predicate's
+case frames. A semantic structure dictionary with some 6,000
+index words (verbs and adjectives) consisting of 15,000 patterns has
+been prepared for use in analysis, transfer and generation.
+</P>
+<P>
+With this method, analysis is performed by having units of semantics
+and structure correspond to one another so that ambiguity in
+structural analysis is reduced.  Each Japanese entry has an English
+translation. As soon as the structure of the Japanese is determined in
+the source language analysis, the basic English structure can be
+determined from the English form structure in the semantic structure
+dictionary.  This is helpful in avoiding the need for an additional
+conversion process.
+</P>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Realization of New Functions </HEADER>
+<P>
+Among the functions which have been realized through this method, the
+following  will solve problems previously requiring pre-editing.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>  Precise Selection of Translation    According to Meaning </HEADER>
+<P>
+Previously, re-writing of the original text was required so that each
+word in the source would have an unambiguous translation in the
+target language.  But, due to the rich information in the semantic
+structure and word dictionaries, it has now become possible to
+ differentiate into precise translations as shown in Figure <CREF/>. Manual rewriting is no longer necessary.
+</P>
+<P>
+It has also become possible to translate typically Japanese
+expressions which were previously difficult to translate into English
+as well as to differentiate between translation of idiomatic
+expressions and general expressions.
+</P>
+<P>
+Further, it has become clear, after experimenting, that in order to
+translate the meanings of Japanese declinable words (verbs and
+ adjectives) as shown in Figure <CREF/> into English, it is necessary to have a description of detailed rules. It has been
+ascertained that this, in turn, requires a classification of detailed
+semantic categories.  A look at rules involving the 15,000 cases
+registered in the expression structure dictionary reveals the frequent
+use of semantic categories classified in the 8th to 9th step in the
+semantic category system.  This shows that at least the top nine
+levels of our ontology (about 2,000 semantic categories) are needed to
+successfully disambiguate most predicates.
+</P>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>  Automatic Re-Writing Function in Japanese </HEADER>
+<P>
+There are many cases in which typical Japanese expressions, where two
+or more words are combined to form idiomatic expressions, cannot be
+literally translated and even if they were literally translated, would
+be inappropriate in the English language.  It would be advantageous to
+have such expressions automatically converted within the system into
+more easily translatable Japanese.  But previous attempts to do this
+have foundered due to the problems of unwanted side effects.
+</P>
+<P>
+The Multi-Level Translation Method has enabled a precise enumeration
+of conditions for the application of rules through detailed semantic
+categories.  This has enabled side effects to be reduced and
+effectively re-writes the Japanese prior to translation.
+</P>
+<P>
+ Figure <CREF/> shows an example of a Japanese sentence, which normally has numerous predicates but which has been automatically
+rewritten so as to have fewer.  Three Japanese verb phrases are
+changed into prepositional phrases in English.
+</P>
+</DIV>
+<DIV ID="4.3" DEPTH="2" R-NO="3"><HEADER>  Supplementation of ellipsed elements through Context Processing </HEADER>
+<P>
+The Japanese language normally omits elements that are easily
+recoverable from context, particularly subjects and objects.  But in
+English, these elements are in most cases obligatory.  Previously,
+supplementing these constituted an important part of pre-editing.
+</P>
+<P>
+ALT-J/E has, in addition to the semantic structure dictionary and
+semantic categories, introduced an analysis of the semantic categories
+of predicates which allows the supplemention of ellipses using the
+semantic relations between sentences.
+</P>
+</DIV>
+<DIV ID="4.4" DEPTH="2" R-NO="4"><HEADER>  Translation  of Compound Words </HEADER>
+<P>
+The Japanese language generates new words (compound words) which are
+an amalgamation of a number of nouns, prefixes and suffixes (a
+characteristic of agglutinative languages).  This type of compound
+word is generated without limitation and so it is impossible to have
+them all registered in a dictionary in advance.  With conventional
+translation methods, registration of these compound words in the
+dictionary was an important issue for pre-processing.
+</P>
+<P>
+ALT-J/E uses semantic categories to analyze compound words to
+find the semantic relationships of their constituents.  This function
+makes the translation of unknown compound words possible.  It also
+enables the automatic translation of compound words whose meanings
+vary  depending on the manner in which they are used within a
+sentence.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  The Benefits of the Multi-Level Translation  Method and Future Issues </HEADER>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>  Benefits of the Multi-Level Translation Method </HEADER>
+<P>
+The experimental Japanese-to-English machine translation system   ALT-J/E, based on the Multi-Level Translation Method, is currently
+being debugged.  To examine the potential of this method, newspaper
+lead sentences (a summary preceding the newspaper article proper,
+generally consisting of 3 to 5 sentences per article, and averaging 20
+words per sentence) were translated in the following experiments.
+</P>
+<P>
+Blind Test:
+(BT) Experiments conducted with articles chosen
+at random with no registration of unknown words, nor rule revisions.
+</P>
+<P>
+Window Test:
+(WT) Experiments on a sample of text with
+revision of the system allowed. Registration of unknown words and rule
+  revisions are conducted during the test.
+</P>
+<P>
+(In both cases, the original text was translated without any pre-editing) 
+</P>
+<P>
+The standards used for the evaluation are an improved version of the
+ ALPAC standards <REF/> with 10 points being a `perfect' translation and grades 6 or higher being a pass (the sentence is
+understandable from reading the translation only).  Grading was
+conducted by outside company specialists in translation.  The average
+of grades as judged by three specialists in Japanese-to-English
+translation were taken to determine passing or failing grades for each
+individual sentence.
+</P>
+<P>
+The condition for a passing grade was that the meaning could be
+understood by looking only at the translation.  Thus, sentences that
+were ruled as passing are not guaranteed to be stylistically
+appropriate (or even grammatical).  But it is estimated that a quality
+level equal to or better than that of existing Japanese-to-English
+machine translation systems has been achieved.
+</P>
+<P>
+According to this test, the pass rates for the blind test were 40 to
+50% , and over 60% for the window test. This indicates a passing
+ratio of about double that of existing Japanese-to-English machine
+translation systems.  For tests pertaining to technical subjects
+(which are easier to translate than the newspaper lead sentences), a
+pass rate of 80% was achieved.
+</P>
+<P>
+Based on the above results, we judge that with the Multi-Level
+Translation Method, a major step toward realization of a
+Japanese-to-English machine translation system requiring no
+pre-editing has been achieved.
+</P>
+</DIV>
+<DIV ID="5.2" DEPTH="2" R-NO="2"><HEADER>  Future Issues </HEADER>
+<P>
+The major problem currently being faced is the need for improvement of
+the translation quality of long sentences (of 30 words or longer) and
+for the overall improvement of the English in the translated text.  To
+meet this challenge, research efforts are presently being focussed on
+an extended Japanese-to-English transfer method designed to analyze
+the meaning of the structure of declinable words and to directly
+establish an appropriate English structure to correspond to this.
+This direct parse-tree transfer method will be adding a new path to
+the three transfer paths for objective expression in the Multi-Level
+Transfer Method, further improving and strengthening it.
+</P>
+<P>
+Over the long term, research efforts are being extended to include a
+review of the system of parts of speech in the Japanese language and
+to extend the semantic hierarchy to multiple dimensions.
+</P>
+</DIV>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Summary </HEADER>
+<P>
+This paper has presented the results of using the Multi-Level
+Translation Method, based on the Constructive Process Theory. It has
+shown that the method enables a Japanese-to-English machine
+translation system to function effectively without manual pre-editing.
+In fact, the major reasons for pre-editing the source text are no
+longer valid. But there remain problems with translating typically
+long Japanese sentences and a need to improve the quality of finished
+translations.
+</P>
+<P>
+We call the limited use of semantic information used in the
+Multi-Level Translation Method meaning analysis.  It is
+estimated that this level of technology is limited to a maximum
+success rate of approximately 80%.  To attain a higher level of
+accuracy it is essential to establish an understanding of meaning in
+context, based on the expansion of general and specialized knowledge
+of the target domains.  We call this meaning comprehension.
+However, since it is difficult to establish the comprehension of
+meaning in extremely broad or general fields, it is planned to
+establish the limits for processing based on meaning analysis first,
+and then follow up with research into the area of meaning
+comprehension.
+</P>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>  Acknowledgment </HEADER>
+<P>
+The authors wish to thank Masahiro Miyazaki, Kentaro Ogura
+and other members of the research group on machine translation for
+their valuable contribution to discussions; and especial thanks to
+Francis Bond for revising this paper before archiving it.
+</P>
+<DIV ID="7.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+ ALLWOOD, J.,  L.G. ANDERSON,   O. DAHL.
+1971.
+Logics in Linguistics.
+Cambridge Univ. Press.
+</P>
+<P>
+ AUTOMATIC LANGUAGE PROCESSING ADVISORY COMMITTEE.
+1966.
+Language and machine: Computers in translation and linguistics.
+Technical report, National Academy of sciences, U.S. National
+  Research Council.
+</P>
+<P>
+ BARWISE, J.,   J. PERRY.
+1981.
+Situation and attotudes.
+Journal of Philosophy 78.668-691.
+</P>
+<P>
+ BRESNAN, J. (ed.)
+1982.
+The Mental Representation of Grammatical Relations.
+Cambridge, Mass.: MIT Press.
+</P>
+<P>
+ CHOMSKY, NOAM.
+1956.
+Three Models for the Description of Language, volume IT-2.
+IRE Trans.
+</P>
+<P>
+ CHOMSKY, NOAM.
+1965.
+Aspects of the Theory of Syntax.
+MIT Press.
+</P>
+<P>
+ CRESSWELL, M.J.
+1973.
+Logics and Languages.
+London: Methuen  Co. Ltd.
+</P>
+<P>
+ EDR.
+1990.
+Concept dictionary.
+Technical report, Japan Electronic Dictionary Research Institute,
+  Ltd.
+</P>
+<P>
+ FILLMORE, C.J.
+1975.
+TOWARD A MODERN THEORY OF CASE  OTHER ARTICLES.
+Sanseidou Publishing.
+(Japanese Translation).
+</P>
+<P>
+ IKEHARA, SATORU.
+1989.
+Multi-level machine translation system.
+Future Computer Systems 1.261-274.
+</P>
+<P>
+ IKEHARA, SATORU,  MASAHIRO MIYAZAKI,  SATOSHI
+  SHIRAI,   Y. HAYASHI.
+1987.
+Speaker's recognition and multi-level-translating method based on it.
+Transactions of the Information Processing Society of Japan
+  28.
+(in Japanese).
+</P>
+<P>
+ IKEHARA, SATORU,  MASAHIRO MIYAZAKI,  SATOSHI
+  SHIRAI,   AKIO YOKOO.
+1989.
+An approach to machine translation method based on constructive
+  process theory.
+Review of the Electrical Communications Laboratories
+  37.39-44.
+</P>
+<P>
+ LANCELOT, CLAUDE,   ANTOINE ARNAULD.
+1972.
+Grammaire generale et raisonnee, les fondements de l'art de parler.
+In Port Royal Grammar, ed. by Paul Reitsch. Tokyo: Taishukan
+  Publishing.
+(Japanese Translation).
+</P>
+<P>
+ MENDELSON, E.
+1979.
+Introduction to Mathematical Logics.
+D. Van Nostrand Company.
+</P>
+<P>
+ MIURA, T.
+1967.
+Theory of Recognition and Languages.
+Keiso Shobou.
+(in Japanese).
+</P>
+<P>
+ MOTOORI, NORINAGA.
+1779.
+Kotoba no tama-no-o.
+Chikuma Publishing.
+(in Japanese).
+</P>
+<P>
+ MT SUMMIT-I (ed.)
+1987.
+Proceedings of MT Summit-I.
+</P>
+<P>
+ MT SUMMIT-II (ed.)
+1989.
+Proceedings of MT Summit-II.
+</P>
+<P>
+ NAGAO, MAKOTO.
+1985.
+Evaluation of the quality of machine-translated sentences and the
+  control of language.
+Journal of the Information Processing Society of Japan
+  26.1197-1202.
+</P>
+<P>
+ NAGAO, MAKOTO.
+1989.
+Japanese view future of machine translation.
+ In <REF/>, 123-140. 
+</P>
+<P>
+ NIRENBURG, SERGEI.
+1989.
+Kbmt-89-a knowledge-based MT project at Carnegie Mellon
+  University.
+ In <REF/>, 141-147. 
+</P>
+<P>
+ NOMOTO, K.
+1986.
+Frege's Philosophy of Languages.
+Keiso publishing.
+(in Japanese).
+</P>
+<P>
+ SAUSSURE, F.D.
+1909.
+COURS DE LINGUISTIQUE GENERALE.
+Keiso Publishing.
+(Japanese Translation).
+</P>
+<P>
+ TOKIEDA, MOTONAGA.
+1941.
+The Principle of Linguistics.
+Iwanami Bookstore.
+(in Japanese).
+</P>
+<P>
+ TOMABECHI, H.
+1987.
+Direct memory translation.
+In Proceedings of IJCAI-87.
+</P>
+<P>
+ TOMITA, M.
+1987.
+An efficient augmented-context-free parsing algorithm.
+Computational Linguistics 13.31-46.
+</P>
+<DIV ID="7.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  Now:  NTT Communication Science
+            Laboratories.
+   Regarding the difference
+between subjective and objective expressions, there is the theory
+     of Port Royal <REF/>, before Norinaga Motoori. 
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

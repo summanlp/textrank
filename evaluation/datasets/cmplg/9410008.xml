@@ -1,0 +1,211 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>RECOGNIZING TEXT GENRES WITH SIMPLE METRICS USING
+DISCRIMINANT ANALYSIS</TITLE>
+<ABSTRACT>
+<P>
+A simple method for categorizing texts into pre-determined text genre
+categories using the statistical standard technique of discriminant
+analysis is demonstrated with application to the Brown corpus. Discriminant
+analysis makes it possible use a large number of parameters that
+may be specific for a certain corpus or information stream, and combine
+them into a small number of functions, with the parameters weighted
+on basis of how useful they are for discriminating text genres. An
+application to information retrieval is discussed. 
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Text Types </HEADER>
+<P>
+There are different types of text. Texts ``about'' the same thing may be in
+differing genres, of different types, and of varying quality. Texts vary
+along several parameters, all relevant for the general information
+retrieval problem of matching reader needs and texts.  Given this variation,
+in a text retrieval context the problems are (i) identifying genres,
+and (ii) choosing criteria to cluster texts of the same genre, with
+predictable precision and recall. This should not be confused with the
+issue of identifying topics, and choosing criteria that discriminate one
+topic from another. Although not orthogonal to genre-dependent
+variation, the variation that relates directly to content and topic is
+along other dimensions. Naturally, there is co-variance. Texts about
+certain topics may only occur in certain genres, and texts in certain
+genres may only treat certain topics; most topics do, however, occur in
+several genres, which is what interests us here.
+</P>
+<P>
+Douglas Biber has studied text variation along several parameters, and
+found that texts can be considered to vary along five dimensions. In his
+study, he clusters features according to covariance, to find underlying
+dimensions (1989). We wish to find a method for identifying easily
+computable parameters that rapidly classify previously unseen texts in
+general classes and along a small set - smaller than Biber's five - of
+dimensions, such that they can be explained in intuitively simple terms to
+the user of an information retrieval application. Our aim is to take a set
+of texts that has been selected by some sort of crude semantic analysis
+such as is typically performed by an information retrieval system and
+partition it further by genre or text type, and to display this variation
+as simply as possible in one or two dimensions.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  Method </HEADER>
+<P>
+We start by using features similar to those first investigated by Biber,
+but we concentrate on those that are easy to compute assuming we have a
+part of speech tagger (Cutting et al, 1992; Church, 1988), such as
+such as third person pronoun occurrence rate as opposed to 'general hedges'
+(Biber, 1989).  More and more of Biber's features will be available with
+the advent of more proficient analysis programs, for instance if complete
+surface syntactic parsing were performed before categorization (Voutilainen
+ Tapanainen, 1993).
+</P>
+<P>
+We then use discriminant analysis, a technique from descriptive statistics.
+Discriminant analysis takes a set of precategorized individuals and data on
+their variation on a number of parameters, and works out a set discriminant functions which distinguishes between the groups.  These
+functions can then be used to predict the category memberships of new
+individuals based on their parameter scores (Tatsuoka, 1971; Mustonen,
+1965).
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  Evaluation </HEADER>
+<P>
+For data we used the Brown corpus of English text samples of uniform
+ length, categorized in several categories as seen in table <CREF/>. We ran discriminant analysis on the texts in the corpus using several
+ different features as seen in table <CREF/>. We used the SPSS system for statistical data analysis, which has as one of its features a complete
+discriminant analysis (SPSS, 1990).  The discriminant function extracted
+from the data by the analysis is a linear combination of the parameters. To
+categorize a set into N categories N-1 functions need to be determined.
+However, if we are content with being able to plot all categories on a
+two-dimensional plane, which probably is what we want to do, for ease of
+exposition, we only use the two first and most significant functions.
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>  2 categories </HEADER>
+<P>
+In the case of two categories, only one function is necessary for
+determining the category of an item. The function classified 478 cases
+correctly and misclassified 22, out of the 500 cases, as shown in
+ table <CREF/> and figure <CREF/>. 
+</P>
+<DIV ID="3.1.1" DEPTH="3" R-NO="1"><HEADER>  4 categories </HEADER>
+<P>
+Using the three functions extracted, 366 cases were correctly classified,
+and 134 cases were misclassified, out of the 500 cases, as can be seen in
+ table <CREF/> and figure <CREF/>. ``Miscellaneous'', the most problematic category, is a loose grouping of different informative
+texts.  The single most problematic subsubset of texts is a subset of
+eighteen non-fiction texts labeled ``learned/humanities''. Sixteen of them
+were misclassified, thirteen as ``miscellaneous''.
+</P>
+</DIV>
+<DIV ID="3.1.2" DEPTH="3" R-NO="2"><HEADER>  15 (or 10) categories </HEADER>
+<P>
+Using the fourteen functions extracted, 258 cases were correctly classified
+and 242 cases misclassified out of the 500 cases, as shown in
+ table <CREF/>. Trying to distinguish between the different types of fiction is expensive in terms of errors. If the fiction subcategories were
+collapsed there only would be ten categories, and the error rate for the
+categorization would improve as shown in the ``revised total'' record of
+the table. The ``learned/humanities'' subcategory is, as before, problematic:
+only two of the eighteen items were correctly classified. The others
+were most often misclassified as ``Religion'' or ``Belles Lettres''.
+</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Validation of the Technique </HEADER>
+<P>
+It is important to note that this experiment does not claim to show how genres in fact differ. What we show is that this sort of technique
+can be used to determine which parameters to use, given a set of
+them. We did not use a test set disjoint from the training set, and we do
+not claim that the functions we had the method extract from the data are
+useful in themselves. We discuss how well this method categorizes a set
+text, given a set of categories, and given a set of parameters.
+</P>
+<P>
+The error rates climb steeply with the number of categories tested for in
+the corpus we used. This may have to do with how the categories are chosen
+and defined. For instance, distinguishing between different types of
+fiction by formal or stylistic criteria of this kind may just be something
+we should not attempt: the fiction types are naturally defined in terms of
+their content, after all.
+</P>
+<P>
+The statistical technique of factor analysis can be used to discover
+categories, like Biber has done. The problem with using automatically
+derived categories is that even if they are in a sense real, meaning that
+they are supported by data, they may be difficult to explain for the
+unenthusiastic layman if the aim is to use the technique in retrieval
+tools.
+</P>
+<P>
+Other criteria that should be studied are second and higher order
+statistics on the respective parameters. Certain parameters probably vary more in certain text types than others, and they may have a skewed distribution as well. This is not difficult to determine, although
+the standard methods do not support automatic determination of standard
+deviation or skewness as discrimination criteria. Together with the
+investigation of several hitherto untried parameters, this is a next step.
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Readability Indexing </HEADER>
+<P>
+Not unrelated to the study of genre is the study of readability which
+aims to categorize texts according to their suitability for assumed sets of
+assumed readers. There is a wealth of formul to compute readability.
+Most commonly they combine easily computed text measures, typically average
+or sampled average sentence length combined with similarly computed word
+length, or incidence of words not on a specified ``easy word list'' (Chall,
+1948; Klare, 1963). In spite of Chall's warnings about injudicious
+application to writing tasks, readability measurement has naively come to
+be used as a prescriptive metric of good writing as a tool for writers, and
+has thus come into some disrepute among text researchers. Our small study
+confirms the basic findings of the early readability studies: the most
+important factors of the ones we tested are word length, sentence length,
+and different derivatives of these two parameters. As long as readability
+indexing schemes are used in descriptive applications they work well to
+discriminate between text types.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Application </HEADER>
+<P>
+The technique shows practical promise. The territorial maps shown in
+ figures <CREF/>, <CREF/>, and <CREF/> are intuitively useful tools for displaying what type a particular text is, compared with
+other existing texts. The technique demonstrated above has an obvious
+application in information retrieval, for picking out interesting texts, if
+content based methods select a too large set for easy manipulation and
+browsing (Cutting et al, 1992).
+</P>
+<P>
+In any specific application area it will be unlikely that the text database
+to be accessed will be completely free form. The texts under consideration
+will probably be specific in some way. General text types may be useful,
+but quite probably there will be a domain- or field-specific text typology.
+In an envisioned application, a user will employ a cascade of filters
+starting with filtering by topic, and continuing with filters by genre or
+text type, and ending by filters for text quality, or other tentative
+finer-grained qualifications.
+</P>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>  The IntFilter Project </HEADER>
+<P>
+The IntFilter Project at the departments of Computer and Systems Sciences,
+Computational Linguistics, and Psychology at Stockholm University is at
+present studying texts on the USENET News conferencing system. The project
+at present studies texts which appear on several different types of USENET
+News conferences, and investigates how well the classification criteria and
+categories that experienced USENET News users report using (IntFilter,
+1993) can be used by a newsreader system. To do this the project applies
+the method described here. The project uses categories such as ``query'',
+``comment'', ``announcement'', ``FAQ'', and so forth, categorizing them
+using parameters such as different types of length measures, form word content,
+quote level, percentage quoted text and other USENET News specific parameters.
+</P>
+</DIV>
+<DIV ID="8" DEPTH="1" R-NO="8"><HEADER>  Acknowledgements </HEADER>
+<P>
+Thanks to Hans Karlgren, Gunnel Kllgren, Geoff Nunberg, Jan Pedersen,
+and the Coling referees, who all have contributed with suggestions and
+methodological discussions.
+</P>
+<P>
+</P>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

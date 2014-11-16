@@ -1,0 +1,724 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>On Learning More Appropriate Selectional
+Restrictions</TITLE>
+<ABSTRACT>
+<P>
+We present some variations affecting the association measure and
+thresholding on a technique for learning Selectional Restrictions from
+on-line corpora. It uses a wide-coverage noun taxonomy and a
+statistical measure to generalize the appropriate semantic
+classes. Evaluation measures for the Selectional Restrictions learning
+task are discussed. Finally, an experimental evaluation of these
+variations is reported.
+Subject Areas: corpus-based language modeling, computational
+lexicography
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>    Introduction
+</HEADER>
+<P>
+In recent years there has been a common agreement in the NLP research
+community on the importance of having an extensive coverage of
+selectional restrictions (SRs) tuned to the domain to work with.  SRs
+can be seen as semantic type constraints that a word sense imposes
+on the words with which it combines in the process of semantic
+interpretation.  SRs may have different applications in NLP, specifically,
+they may help a parser with Word Sense Selection (WSS, as in
+ <REF/>), with preferring certain structures out of several grammatical ones
+ <REF/> and finally with deciding the semantic role  played by a syntactic complement <REF/>. Lexicography is also interested in the acquisition of SRs (both defining in
+context approach and lexical semantics work
+ <REF/>). 
+</P>
+<P>
+The aim of our work is to explore the feasibility of using an
+statistical method for extracting SRs from on-line
+corpora. Resnik <REF/> developed a method for automatically
+extracting class-based SRs from on-line corpora.  Ribas <REF/>
+performed some experiments using this basic technique and drew up some
+ limitations from the corresponding results.
+</P>
+<P>
+In this paper we will describe some substantial modifications to the
+basic technique and will report the corresponding experimental
+evaluation. The outline of the paper is as follows: in section
+ <CREF/> we summarize the basic methodology used in  <REF/>, analyzing its limitations; in section  <CREF/> we explore some alternative statistical measures for ranking the hypothesized SRs; in section
+ <CREF/> we propose some evaluation measures on the SRs-learning problem, and use them to test the experimental results obtained
+ by the different techniques; finally, in section <CREF/> we draw up the final conclusions and establish future lines of research.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    The basic technique for learning SRs
+</HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Description </HEADER>
+<P>
+The technique functionality can be summarized as:
+</P>
+<P>
+Input
+The training set, i.e. a list of complement co-occurrence triples,
+(verb-lemma,
+syntactic-relationship, noun-lemma) extracted from the corpus.
+</P>
+<P>
+Previous knowledge used
+</P>
+<P>
+A semantic
+ hierarchy (WordNet) where words are clustered in semantic classes,
+and semantic classes are organized hierarchically. Polysemous words are
+represented as instances of different classes.
+</P>
+<P>
+Output
+</P>
+<P>
+A set of syntactic SRs, (verb-lemma, syntactic-relationship,
+semantic-class, weight).  The final SRs must be mutually disjoint. SRs are
+weighted according to the statistical evidence found in the corpus.
+</P>
+<P>
+Learning process
+3 stages:
+</P>
+<P>
+1.
+Creation of the space of candidate classes.
+2.
+Evaluation of the appropriateness of the candidates by
+means of a statistical measure.
+3.
+Selection of the most appropriate subset in the
+candidate space to convey the SRs.
+</P>
+<P>
+The appropriateness of a class for expressing SRs (stage 2) is
+quantified from the strength of co-occurrence of verbs and classes of
+ nouns in the corpus <REF/>.  Given the verb v, the syntactic-relationship s and the candidate class c, the
+Association Score, Assoc, between v and c in s is defined:
+</P>
+<P>
+Assoc(v,s,c)  =   p(c|v,s) I(v;c|s) \nonumber \\
+ =  p(c|v,s) \log \frac{p(c|v,s)}{p(c|s) \nonumber}
+\end{eqnarray} -->
+</P>
+<P>
+The two terms of Assoc try to capture different properties:
+</P>
+<P>
+1.
+Mutual information ratio, I(v;c|s), measures the strength of the
+statistical association between the given verb v and the candidate
+class c in the given syntactic position s.  It compares the prior
+distribution, p(c|s), with the posterior distribution, p(c|v,s).
+</P>
+<P>
+2.
+p(c|v,s) scales up the strength of the association by the
+frequency of the relationship.
+</P>
+<P>
+Probabilities are estimated by Maximum Likelihood Estimation, counting
+ the relative frequency of events in the corpus. However, it is not obvious how to calculate class frequencies when the training corpus is not semantically tagged
+as is the case. Nevertheless, we take a simplistic approach and
+calculate them in the following manner:
+</P>
+<P>
+<!-- MATH: \begin{equation}
+freq(v,s,c) = \sum_{n \in c} freq(v,s,n) \times w
+\end{equation} -->
+</P>
+<P>
+Where w is a constant factor used to normalize the
+ probabilities 
+</P>
+<P>
+<!-- MATH: \begin{equation}
+w =
+\frac {\sum_{v \in \cal{V}} \sum_{s \in \cal{S}} \sum_{n \in \cal{N}}
+freq(v,s,n)}
+{\sum_{v \in \cal{V}} \sum_{s \in \cal{S}} \sum_{n \in \cal{N}}
+freq(v,s,n) |senses(n)|}
+\end{equation} -->
+</P>
+<P>
+When creating the space of candidate classes (learning process, stage
+1), we use a thresholding technique to ignore as much as possible
+the noise introduced in the training set.  Specifically, we consider
+only those classes that have a higher number of occurrences than the
+threshold. The selection of the most appropriate classes (stage 3) is
+based on a global search through the candidates, in such a way that
+the final classes are mutually disjoint (not related by hyperonymy).
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>    Evaluation
+</HEADER>
+<P>
+Ribas <REF/> reported experimental results obtained from
+the application of the above technique to learn SRs. He performed an
+evaluation of the SRs obtained from a training set of 870,000 words of
+the Wall Street Journal.  In this section we summarize the results and
+conclusions reached in that paper.
+</P>
+<P>
+ For instance, table <CREF/> shows the SRs acquired for the subject position of the verb seek. Type indicates a
+manual diagnosis about the class appropriateness (Ok: correct;
+<EQN/>Abs: over-generalization; Senses: due to erroneous
+senses). Assoc corresponds to the association score (higher
+values appear first). Most of the induced classes are due to incorrect
+senses. Thus, although suit was used in the WSJ articles only in the
+sense of 
+<!-- MATH: $<\! legal\_action \!>$ -->
+<EQN/>,
+the algorithm not only considered
+the other senses as well (
+<!-- MATH: $<\! suit, suing
+\!>$ -->
+<EQN/>,
+<!-- MATH: $<\! suit\_of\_clothes  \!>$ -->
+<EQN/>,
+<!-- MATH: $<\! suit   \!>$ -->
+<EQN/>)
+, but the Assoc score
+ranked
+them higher than the appropriate sense. We can also notice that the
+<EQN/>Abs class, 
+<!-- MATH: $<\! group \!>$ -->
+<EQN/>,
+seems too general for the
+example nouns, while one of its daughters, 
+<!-- MATH: $<\!  people \!>$ -->
+<EQN/>
+seems to
+fit the data much better.
+</P>
+<P>
+Analyzing the results obtained from different experimental evaluation
+methods, Ribas <REF/> drew up some conclusions:
+</P>
+<P>
+a.
+The technique achieves a good coverage.
+</P>
+<P>
+b.
+Most of the classes acquired result from the
+accumulation of incorrect senses.
+</P>
+<P>
+c.
+No clear co-relation between Assoc and the manual
+diagnosis is found.
+</P>
+<P>
+d.
+A slight tendency to over-generalization exists
+due to incorrect senses.
+</P>
+<P>
+Although the performance of the presented technique seems to be quite
+good, we think that some of the detected flaws could possibly be
+addressed. Noise due to polysemy of the nouns involved seems to be the
+main obstacle for the practicality of the technique. It makes the
+association score prefer incorrect classes and jump on
+over-generalizations. In this paper we are interested in exploring
+various ways to make the technique more robust to noise, namely, (a)
+to experiment with variations of the association score, (b) to
+experiment with thresholding.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    Variations on the association statistical measure
+</HEADER>
+<P>
+In this section we consider different variations on the association
+score in order to make it more robust. The different
+techniques are experimentally evaluated in section
+ <CREF/>. 
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>    Variations on the prior probability
+</HEADER>
+<P>
+When considering the prior probability, the more independent of the
+context it is the better to measure actual associations. A sensible
+modification of the measure would be to consider p(c) as the prior
+distribution:
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+Using the chain rule on mutual information
+ <REF/>, p. 22] we can mathematically relate the different versions of Assoc,
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+The first advantage of Assoc' would come from this (information
+theoretical) relationship. Specifically, the Assoc' takes into
+account the preference (selection) of syntactic positions for
+particular classes. In intuitive terms, typical subjects
+(e.g. [person, individual, ...]) would be preferred (to atypical
+subjects as [suit_of_clothes]) as SRs on the subject in contrast
+to Assoc. The second advantage is that as long as the prior
+probabilities, p(c), involve simpler events than those used in
+Assoc, p(c|s), the estimation is easier and more accurate
+(ameliorating data sparseness).
+</P>
+<P>
+A subsequent modification would be to
+estimate the prior, p(c), from the counts of all the nouns appearing
+in the corpus independently of their syntactic positions (not
+restricted to be heads of verbal complements).  In this
+way, the estimation of p(c) would be easier and more accurate.
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>    Estimating class probabilities from noun frequencies
+</HEADER>
+<P>
+In the global weighting technique presented in equation
+ <CREF/> very polysemous nouns provide the same amount of evidence to every sense as non-ambiguous nouns do -while less
+ambiguous nouns could be more informative about the correct classes as
+long as they do not carry ambiguity.
+</P>
+<P>
+ The weight introduced in (<CREF/>) could alternatively be found in a local manner, in such a way that more
+polysemous nouns would give less evidence to each one of their senses
+than less ambiguous ones. Local weight could be obtained using
+p(c|n). Nevertheless, a good estimation of this probability seems
+quite problematic because of the lack of tagged training material. In
+absence of a better estimator we use a rather poor one as the uniform
+distribution,
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+Resnik <REF/> also uses a local normalization
+technique but he normalizes by the total number of classes in the
+hierarchy. This scheme seems to present two problematic features (see
+ <REF/> for more details). First, it doesn't take dependency relationships introduced by hyperonymy into
+account. Second, nouns categorized in lower levels in the taxonomy
+provide less weight to each class than higher nouns.
+</P>
+</DIV>
+<DIV ID="3.3" DEPTH="2" R-NO="3"><HEADER>    Other statistical measures to score SRs
+</HEADER>
+<P>
+In this section we propose the application of other measures apart
+from Assoc for learning SRs: log-likelihood ratio
+ <REF/>, relative entropy  <REF/>, mutual information ratio  <REF/>, <EQN/>  <REF/>.  In section (<CREF/>) their experimental evaluation is presented.
+</P>
+<P>
+The statistical measures used to detect associations on the
+distribution defined by two random variables X and Y work by measuring
+the deviation of the conditional distribution, P(X|Y), from the
+expected distribution if both variables were considered independent,
+i.e. the marginal distribution, P(X).  If P(X) is a good
+approximation of P(X|Y), association measures should be low (near
+zero), otherwise deviating significantly from zero.
+</P>
+<P>
+ Table <CREF/> shows the cross-table formed by the conditional and marginal distributions in the case of 
+<!-- MATH: $X = \{ c,
+\neg c \}$ -->
+<EQN/>
+and 
+<!-- MATH: $Y= \{ v\_s, \neg v\_s \}$ -->
+<EQN/>.
+Different association
+measures use the information provided in the cross-table to different
+extents. Thus, Assoc and mutual information ratio consider only the
+deviation of the conditional probability p(c|v,s) from the
+corresponding marginal, p(c).
+</P>
+<P>
+On the other hand, log-likelihood ratio and <EQN/>
+measure
+the association between <EQN/>
+and c considering the deviation of
+ the four conditional cells in table <CREF/> from the corresponding marginals. It is plausible that the deviation of the
+cells not taken into account by Assoc can help on extracting useful
+SRs.
+</P>
+<P>
+Finally, it would be interesting to only use the information related
+to the selectional behavior of <EQN/>,
+i.e. comparing the conditional
+probabilities of c and <EQN/>
+given <EQN/>
+with the corresponding
+marginals. Relative entropy, 
+<!-- MATH: $D(P(X|v\_s)||P(X))$ -->
+<EQN/>,
+could do this job.
+</P>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>    Evaluation
+</HEADER>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>    Evaluation methods of SRs
+</HEADER>
+<P>
+Evaluation on NLP has been crucial to fostering research in
+particular areas. Evaluation of the SR learning task would provide
+grounds to compare different techniques that try to abstract SRs from
+ corpus using WordNet (e.g, section <CREF/>). It would also permit measuring the utility of the SRs obtained using WordNet
+in comparison with other frameworks using other kinds of
+knowledge. Finally it would be a powerful tool for detecting flaws of
+a particular technique (e.g,
+ <REF/> analysis). 
+</P>
+<P>
+However, a related and crucial issue is which linguistic tasks are
+used as a reference.  SRs are useful for both lexicography and NLP. On
+the one hand, from the point of view of lexicography, the goal of
+evaluation would be to measure the quality of the SRs induced, (i.e., how
+well the resulting classes correspond to the nouns as they were used
+in the corpus). On the other hand, from the point of view of NLP, SRs
+should be evaluated on their utility (i.e., how much they help on
+performing the reference task).
+</P>
+<DIV ID="4.1.1" DEPTH="3" R-NO="1"><HEADER>    Lexicography-oriented evaluation
+</HEADER>
+<P>
+As far as lexicography (quality) is concerned, we think the main
+criteria SRs acquired from corpora should meet are: (a) correct
+categorization -inferred classes should correspond to the correct
+senses of the words that are being generalized-, (b) appropriate
+generalization level and (c) good coverage -the majority of the noun
+occurrences in the corpus should be successfully generalized by the
+induced SRs.
+</P>
+<P>
+Some of the methods we could use for assessing experimentally the
+accomplishment of these criteria would be:
+</P>
+<P>
+<ITEMIZE>
+<ITEM>Introspection A lexicographer  checks if the SRs
+accomplish the criteria (a) and (b) above (e.g., the manual diagnosis
+ in table <CREF/>). Besides the intrinsic difficulties of this approach, it does not seem appropriate when comparing across
+different techniques for learning SRs, because of its qualitative
+flavor.
+</ITEM>
+<ITEM>Quantification of generalization level appropriateness
+A possible measure would be the percentage of sense occurrences
+included in the induced SRs which are effectively correct (from now
+on called Abstraction Ratio).  Hopefully, a technique with a
+higher abstraction ratio learns classes that fit the set of
+examples better. A manual assessment of the ratio confirmed this behavior, as
+testing sets with a lower ratio seemed to be inducing less
+<EQN/>Abs cases.
+</ITEM>
+<ITEM>Quantification of coverage It could be measured as the
+proportion of triples whose correct sense belongs to one of the SRs.
+</ITEM>
+</ITEMIZE>
+</P>
+</DIV>
+<DIV ID="4.1.2" DEPTH="3" R-NO="2"><HEADER>  NLP evaluation tasks </HEADER>
+<P>
+The NLP tasks where SRs utility could be evaluated are
+diverse. Some of them have already been introduced in section
+ <CREF/>. In the recent literature  (<REF/>, <REF/>, ...) several task oriented schemes to test Selectional Restrictions (mainly on syntactic
+ambiguity resolution) have been proposed. However, we have tested SRs
+on a WSS task,
+  using the following scheme.  For every triple in the testing set the algorithm selects as most appropriate that
+noun-sense that has as hyperonym the SR class with highest association
+score. When more than one sense belongs to the highest SR, a random
+selection is performed. When no SR has been acquired, the algorithm
+remains undecided.  The results of this WSS procedure are checked
+against a testing-sample manually analyzed, and precision and recall
+ratios are calculated. Precision is calculated as the ratio of
+manual-automatic matches / number of noun occurrences disambiguated by
+the procedure. Recall is computed as the ratio of manual-automatic
+matches / total number of noun occurrences.
+</P>
+</DIV>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>    Experimental results
+</HEADER>
+<P>
+In order to evaluate the different variants on the association score
+and the impact of thresholding we performed several experiments. In
+this section we analyze the results. As training set we used the
+870,000 words of WSJ material provided in the ACL/DCI version of
+the Penn Treebank. The testing set consisted of 2,658 triples
+corresponding to four average common verbs in the Treebank: rise, report, seek and present. We only considered
+those triples that had been correctly extracted from the Treebank and
+whose noun had the correct sense included in WordNet (2,165 triples
+out of the 2,658, from now on, called the testing-sample).
+</P>
+<P>
+As evaluation measures we used coverage, abstraction ratio, and recall
+ and precision ratios on the WSS task (section <CREF/>). In addition we performed some evaluation by hand comparing the SRs
+acquired by the different techniques.
+</P>
+<DIV ID="4.2.1" DEPTH="3" R-NO="1"><HEADER>  Comparing different techniques </HEADER>
+<P>
+Coverage for the different techniques is
+shown in table
+ <CREF/>. The higher the coverage, the better the technique succeeds in
+correctly generalizing more of the input examples. The labels used for
+referring to the different techniques are as follows: ``Assoc 
+p(c|s)'' corresponds to the basic association measure (section
+ <CREF/>), ``Assoc  Head-nouns'' and ``Assoc  All nouns'' to the techniques introduced in section
+ <CREF/>, ``Assoc  Normalizing'' to the local normalization
+ (section <CREF/>), and finally, log-likelihood, D (relative entropy) and I (mutual information
+ratio) to the techniques discussed in section
+ <CREF/>. 
+</P>
+<P>
+The abstraction ratio  for the different
+ techniques is shown in table <CREF/>.  In principle, the higher abstraction ratio, the better the technique succeeds in
+filtering out incorrect senses (less <EQN/>Abs).
+</P>
+<P>
+The precision and recall ratios on the noun WSS task for the different
+techniques are shown in table
+ <CREF/>.  In principle, the higher the precision and recall ratios the better the technique succeeds in
+inducing appropriate SRs for the disambiguation task.
+</P>
+<P>
+As far as the evaluation measures try to account for different
+phenomena the goodness of a particular technique should be quantified
+as a trade-off. Most of the results are very similar (differences are
+not statistically significative). Therefore we should be cautious when
+extrapolating the results. Some of the conclusions from the tables
+above are:
+</P>
+<P>
+1.
+<EQN/>
+and I get sensibly worse results than other
+measures (although abstraction is quite good).
+</P>
+<P>
+2.
+The local normalizing technique using the
+uniform distribution does not help. It seems that by using the local
+weighting we misinform the algorithm. The problem is the reduced
+weight that polysemous nouns get, while they seem to be the most
+ informative. However, a better informed kind of local weight (section
+ <CREF/>) should improve the technique significantly. 
+</P>
+<P>
+3.
+All versions of Assoc (except the local normalization) get
+good results. Specially the two techniques that exploit a simpler
+prior distribution, which seem to improve the basic technique.
+</P>
+<P>
+4.
+log-likelihood and D seem to get slightly worse
+results than Assoc techniques, although the results are very similar.
+</P>
+</DIV>
+<DIV ID="4.2.2" DEPTH="3" R-NO="2"><HEADER>  Thresholding </HEADER>
+<P>
+We were also interested in measuring the impact of thresholding on the
+ SRs acquired. In figure <CREF/> we can see the different evaluation measures of the basic technique when varying the
+threshold. Precision and recall coincide when no candidate classes are
+refused (
+<!-- MATH: $threshold = 1$ -->
+threshold = 1). However, as it might be expected, as the
+threshold increases (i.e. some cases are not classified) the two
+ratios slightly diverge (precision increases and recall diminishes).
+</P>
+<P>
+ Figure <CREF/> also shows the impact of thresholding on coverage and abstraction ratios. Both decrease when
+threshold increases, probably because when the rejecting threshold is
+low, small classes that fit the data well can be induced, learning
+over-general or incomplete SRs otherwise.
+</P>
+<P>
+Finally, it seems that precision and abstraction ratios are in inverse
+co-relation (as precision grows, abstraction decreases). In terms of
+WSS, general classes may be performing better than classes that fit
+the data better. Nevertheless, this relationship should be further
+explored in future work.
+</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>    Conclusions and future work
+</HEADER>
+<P>
+In this paper we have presented some variations affecting the
+association measure and thresholding on the basic technique for
+learning SRs from on-line corpora.  We proposed some evaluation
+measures for the SRs learning task. Finally, experimental results on
+these variations were reported. We can conclude that some of these
+variations seem to improve the results obtained using the basic
+technique. However, although the technique still seems far from
+practical application to NLP tasks, it may be most useful for providing
+experimental insight to lexicographers. Future lines of research will
+mainly concentrate on improving the local normalization technique by
+solving the noun sense ambiguity. We have foreseen the application of
+the following techniques:
+</P>
+<P>
+<ITEMIZE>
+<ITEM>Simple techniques to decide the best sense c given the target
+        noun n using estimates of the n-grams: P(c), P(c|n),
+         P(c|v,s) and 
+<!-- MATH: $P(c|v,s,n)$ -->
+P(c|v,s,n), obtained from supervised and
+         un-supervised corpora.
+</ITEM>
+<ITEM>Combining the different n-grams by means of smoothing
+         techniques.
+</ITEM>
+<ITEM>Calculating 
+<!-- MATH: $P(c|v,s,n)$ -->
+P(c|v,s,n) combining P(n|c) and
+         P(c|v,s), and applying the EM Algorithm
+          <REF/> to improve the model. 
+</ITEM>
+<ITEM>Using the WordNet hierarchy as a source of backing-off
+        knowledge, in such a way that if n-grams composed by c        aren't enough to decide the best sense (are equal to zero),
+        the tri-grams of ancestor classes could be used instead.
+</ITEM>
+</ITEMIZE>
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+R. Basili, M.T. Pazienza, and P. Velardi.
+1992.
+Computational lexicons: the neat examples and the odd exemplars.
+In Procs 3rd ANLP, Trento, Italy, April.
+</P>
+<P>
+K.W. Church and P. Hanks.
+1990.
+Word association norms, mutual information and lexicography.
+Computational Linguistics, 16(1).
+</P>
+<P>
+T.M. Cover and J.A. Thomas, editors.
+1991.
+Elements of Information Theory.
+John Wiley.
+</P>
+<P>
+A. P. Dempster, N. M. Laird, and D. B. Rubin.
+1977.
+Maximum likelihood from incomplete data via the em algorithm.
+Journal of the Royal Statistical Society, 39(B):1-38.
+</P>
+<P>
+T. Dunning.
+1993.
+Accurate methods for the statistics of surprise and coincidence.
+Computational Linguistics, 19(1):61-74.
+</P>
+<P>
+W. Gale and K. W. Church.
+1991.
+Identifying word correspondences in parallel texts.
+In DARPA Speech and Natural Language Workshop, Pacific Grove,
+  California, February.
+.
+</P>
+<P>
+R. Grishman and J. Sterling.
+1992.
+Acquisition of selectional patterns.
+In COLING, Nantes, France, march.
+</P>
+<P>
+G. Hirst.
+1987.
+Semantic interpretation and the resolution of ambiguity.
+Cambridge University Press.
+</P>
+<P>
+B. Levin.
+1992.
+Towards a lexical organization of English verbs.
+University of Chicago Press.
+</P>
+<P>
+G. Miller, R. Beckwith, C. Fellbaum, D. Gross, and K. Miller.
+1991.
+Five papers on wordnet.
+International Journal of Lexicography.
+</P>
+<P>
+P. S. Resnik.
+1992.
+Wordnet and distributional analysis: A class-based approach to
+  lexical discovery.
+In AAAI Symposium on Probabilistic Approaches to NL, San Jose,
+  CA.
+</P>
+<P>
+P. S. Resnik.
+1993.
+Selection and Information: A Class-Based Approach to lexical
+  relationships.
+Ph.D. thesis, Computer and Information Science Department,
+  University of Pennsylvania.
+</P>
+<P>
+F. Ribas.
+1994a.
+An experiment on learning appropriate selectional restrictions from a
+  parsed corpus.
+In COLING, Kyoto, Japan, August.
+</P>
+<P>
+F. Ribas.
+1994b.
+Learning more appropriate selectional restrictions.
+Technical report, ESPRIT BRA-7315 ACQUILEX-II WP.
+</P>
+<P>
+G. Whittemore, K. Ferrara, and H. Brunner.
+1990.
+Empirical study of predictive powers of simple attachment schemes for
+  post-modifier prepositional phrases.
+In Procs. ACL, Pennsylvania.
+</P>
+<P>
+G. K. Zipf.
+1945.
+The meaning-frequency relationship of words.
+The Journal of General Psychology, 33:251-256.
+</P>
+<P>
+(Acquilex-II Working Papers can be obtained by sending a request to
+cide@cup.cam.uk)
+</P>
+<DIV ID="5.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  Revised version prepared for the CMP-LG
+E-Print Archive of the original paper published in the Proceedings of the 7th
+Conference of the European Chapter of the Association for
+Computational Llinguistics, Dublin, Ireland, March 1995. The research
+reported here has been made in the framework of the Acquilex-II Esprit
+Project (7315), and has been supported by a grant of Departament
+d'Ensenyament, Generalitat de Catalunya, 91-DOGC-1491.
+  WordNet is a broad-coverage lexical
+ database, see <REF/>. 
+  Utility of
+smoothing techniques on class-based distributions is dubious
+ <REF/>. 
+  Resnik <REF/> and Ribas
+<REF/> used equation
+ <CREF/> without introducing normalization. Therefore, the estimated function
+didn't accomplish probability axioms. Nevertheless, their results
+should be equivalent (for our purposes) to those introducing
+normalization because it shouldn't affect the relative ordering of
+Assoc among rival candidate classes for the same (v,s).
+  In some way, it conforms to Zipf-law
+ <REF/>: noun frequency and polysemy are correlated. 
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

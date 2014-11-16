@@ -1,0 +1,3 @@
+Dataset taken from:
+
+http://metaoptimize.com/qa/questions/10203/how-to-use-rouge-to-evaluate-the-single-document-summarization-system

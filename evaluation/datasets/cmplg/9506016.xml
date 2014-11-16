@@ -1,0 +1,1788 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Indefeasible Semantics and Defeasible Pragmatics1</TITLE>
+<ABSTRACT>
+<P>
+An account of utterance interpretation in discourse needs to face the
+issue of how the discourse context controls the space of interacting
+preferences. Assuming a discourse processing architecture that
+distinguishes the grammar and pragmatics subsystems in terms of
+monotonic and nonmonotonic inferences, I will discuss how
+independently motivated default preferences interact in the
+interpretation of intersentential pronominal anaphora.
+In the framework of a general discourse processing model that
+integrates both the grammar and pragmatics subsystems, I will propose
+a fine structure of the preferential interpretation in pragmatics in
+terms of defeasible rule interactions. The pronoun interpretation
+preferences that serve as the empirical ground draw from the survey
+data specifically obtained for the present purpose.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  
+Discourse Processing Architecture
+</HEADER>
+<P>
+I will assume in this paper that a discourse is a sequence of
+utterances produced (spoken or written) by one or more discourse
+participants. Utterances are tokens of sentences or sentence
+fragments with which the speakers communicate certain information, and
+it is done in a context.  Utterance interpretation depends on
+the context, and utterance meaning updates the context.
+</P>
+<P>
+A specification of the complex interdependencies involved in utterance
+interpretation is greatly facilitated if it is couched in a discourse
+processing architecture that is both logically coherent and as closely
+as possible an approximation of the human cognitive
+ architecture for discourse processing. What are the major modules of the architecture, and what
+types of inferences do they support?  I claim that the most
+fundamental separation is between the spaces of possibilities
+and preferences.
+</P>
+<DIV ID="1.1" DEPTH="2" R-NO="1"><HEADER>  Separating Combinatorics and Preferences </HEADER>
+<P>
+There is an assumption in computational linguistics that combinatorics
+should take precedence over preferences.  The wisdom is to maximize
+the combinatoric space of utterance interpretation and to keep a firm
+line between this space and the other, preferential, space of
+interpretation.  Preferences are affected by computationally expensive
+open-ended commonsense inferences.  Combinatorics determine all and
+only possible interpretations, and preferences prioritize the
+ possibilities. Seen from another point of view, combinatorics are indefeasible -- that is, never overridden by
+commonsense plausibility, whereas preferences are defeasible --
+that is, can be overridden by commonsense plausibility. I will
+henceforth assume that the grammar subsystem consists only of
+ indefeasible possibilities, hence  monotonic, whereas the pragmatics subsystem consists mostly (or possibly entirely) of defeasible
+ preferences. 
+</P>
+<P>
+An example of indefeasible rules of grammar in English is the
+Subject-Verb-Object constituent order. The sentence Coffee drinks
+Sally uttered in a normal intonation cannot mean ``Sally drinks
+coffee'' despite the commonsense support.  An example of defeasible
+preferences is the interpretation of the pronoun he in discourse
+``John hit Bill. He was severely injured.'' The combinatoric
+rule of pronoun interpretation would say that both John and Bill are
+possible referents of he, while the preferential rule would say
+that Bill is preferred here because it is more plausible that the one
+who is hit gets injured rather than vice versa. Crucially, this
+preference is overridden in certain contexts.  For instance, if Bill
+is an indestructible cyborg, the preferred semantic value of he
+would shift to John.
+</P>
+<P>
+The inferential properties of the grammar
+ subsystem as a space of possibilities are well-illustrated in the so-called unification-based grammatical
+ formalisms (UBG). A UBG system consists of context-free phrase structure constraints and
+unification constraints. Maxwell and Kaplan (1993) describe how the
+constraint interactions can be made efficient by exploiting the
+following properties of a UBG system: (1) monotonicity -- no
+deduction is ever retracted when new constraints are added, (2) independence -- no new constraints can be deduced when two systems
+are conjoined, (3) conciseness -- the size of the system is a
+polynomial function of the input that it was derived from, and (4)
+order invariance -- sets of constraints can be processed in any
+ order without changing the final result. 
+</P>
+<P>
+The inferential properties of the pragmatics
+ subsystem are much less understood. Its general features can be characterized as those of preferential
+reasoning, a topic more studied in AI than in linguistics.  The
+pragmatics subsystem contains sets of preference rules that, in
+certain combinations, could lead to conflicting preferences. This
+fundamental indeterminacy leads to the properties opposite from those
+of the grammar subsystem: (1) nonmonotonicity -- preferences
+can be canceled when overriding preferences are added, (2) dependence -- new preferences may result when two pragmatic
+subsystems are conjoined, (3) explosion -- the system size is
+possibly an exponential (or worse) function of the input that it was
+derived from, and (4) order variance -- changing the order in
+which sets of preferences are processed may also change the final
+result.  The key to a discourse processing architecture is to preserve
+the above computational properties of the grammar subsystem while
+striving for a maximal control of the preference interactions in the
+ pragmatics subsystem. 
+</P>
+<P>
+Existing logical semantic theories employing dynamic interpretation
+rules (e.g., Kamp, 1981; Heim, 1982; Groenendijk and Stokhof, 1991;
+Kamp and Reyle, 1993) formalize the basic context dependence of
+indefeasible semantics. While these theories predict the possible dynamic interpretations of utterances, they are not
+concerned with how to compute the relative preferences among them.
+Lascarides and Asher (1993) extend the Discourse Representation
+ Theory (DRT) (Kamp, 1981) with the interaction of defeasible rules for integrating a new utterance
+content into the discourse information state. The input to their
+defeasible reasoning is a fully interpreted DR
+ Structure (DRS), with all the NPs already interpreted. The pragmatics subsystem I am concerned
+with here also includes the defeasible rules for NP interpretation and
+constituent attachments needed for DRS construction. The input to
+pragmatics in the present proposal is a much less specified logical
+form, and pragmatics kicks in during DRS construction.
+</P>
+</DIV>
+<DIV ID="1.2" DEPTH="2" R-NO="2"><HEADER>  
+The Processing Architecture
+</HEADER>
+<P>
+ The discourse processing architecture that I will assume in the background of the remainder of  this paper is this. 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ Let discourse be a sequence of utterances,
+<!-- MATH: $utt_1,\ldots,utt_n$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+We say that utterance utti defines a transition relation between the input context Ci-1 and the
+output context Ci. Context C is a multicomponent data
+ structure (see section <CREF/>).  The transition takes place as follows:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ Let grammar G consist of rules of syntax and
+semantics that assign each utterance utti the initial logical
+ form  
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+represents a disjunctive set of underspecified
+ formulas containing unresolved references, unscoped quantifiers, and vague
+relations. 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the weakest formula that packages a family of formulas that covers the entire range of possible
+ interpretations of utti (see section <CREF/>). 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ Let pragmatics P consist of rules for specifying and
+disambiguating 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in context Ci-1. Ideally, P outputs the
+ single preferred interpretation 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+(
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is subsumed by 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and there is no
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+that is preferred over 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and also subsumed by
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ), and integrating 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+into context Ci-1 produces
+the preferred output context Ci.  In a less felicitous case,
+the rules of P do not converge, resulting in multiple
+interpretations and output contexts.
+</P>
+</DIV>
+<DIV ID="1.3" DEPTH="2" R-NO="3"><HEADER>  
+Context
+</HEADER>
+<P>
+My aim here is to introduce the basic components of the context C in
+the above discourse processing architecture that I assume in the
+remainder of the paper.
+</P>
+<P>
+Context Ci is a 6-tuple 
+<!-- MATH: $\langle\phi_i^k,D_i,A_i,I_i,L,K\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ consisting of the fast-changing components,
+<!-- MATH: $\langle\phi_i^k,D_i,A_i,I_i\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+significantly affected by the
+dynamic import of utterances and the slow-changing components,
+<!-- MATH: $\langle
+L,K\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+relatively stable in a given stretch of discourse
+instance.  
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the preferred interpretation (see section
+ <CREF/>) of the last utterance utti in a logical form that preserves aspects of the syntactic structure of utti --
+best thought of as a short-term register of the surface structure of
+the previous utterance similar to the proposal by Sag and Hankamer
+ (1984).  Di is the discourse model -- a set of information states that the discourse has been about, which
+also incorporates the content of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Di contains sets of
+situations, eventualities, entities, and relations among them,
+associated with the evolving event, temporal, and discourse
+ structures.  Ai is the attentional state -- a partial order of the entities and propositions in Di,  where the ordering is by salience.  Ai is separated from Di because the same Di may correspond to
+different variants of Ai depending on the particular sequence of
+utterances in particular forms describing the same set of facts.
+ Ii is the set of indexical anchors -- the indexically accessible objects in the current discourse
+situation -- for instance, the values of indexical expressions such
+as I, you, here, and now. The slow-changing components are
+ the linguistic knowledge L and  world knowledge K used by the discourse participants. Although we know that discourse participants never share
+exactly the same mental state representing these components of the
+context, there must be a significant overlap in order for a discourse
+to be mutually intelligible. For the purpose of this paper, I will
+simply assume that context C is sufficiently shared by the
+participants.
+</P>
+<P>
+The next section elaborates on the initial logical form 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+that
+plays a crucial role of defining the grammar-pragmatics boundary in
+the discourse processing architecture.
+</P>
+</DIV>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  
+Indefeasible Semantics
+</HEADER>
+<P>
+ The initial logical form (ILF)  
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ represents the utterance's structure and meaning at the
+ grammar-pragmatics boundary. This section discusses the general features of ILF with examples.
+</P>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  General Considerations </HEADER>
+<P>
+There are specific proposals for the ILF 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in the computational
+literature (e.g., Alshawi and van Eijck, 1989; Alshawi, 1992; Alshawi
+and Crouch, 1992; Hwang and Schubert, 1992a, 1992b; Pereira and
+Pollack, 1991).  Details in these proposals vary, but there is a
+remarkable agreement on the general features.
+</P>
+<P>
+The ILF 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+contains ``vague'' predicates and functions
+representing what the utterance communicates.  Vague
+ predicates and functions represent various expression and construction types whose interpretation depends on the discourse context. They include
+unresolved referring expressions such as the pronoun he,
+unscoped quantifiers such as each, vague relations such as the
+relation between the nouns in a noun-noun compound, unresolved
+operators such as the tense operator past and the mood operator
+imperative, and attachment ambiguities such as for
+PP-attachments. The idea can also be extended to underspecify lexical
+senses at the ILF level.  These predicates and functions generate
+`assumptions' that need to be resolved or `discharged' in the union of
+the discourse and sentence contexts. The ILF is thus partial and
+indefeasible -- partial because it does not always have a truth
+value, and indefeasible because further contextual interpretations
+only prioritize possibilities and specify vagueness.
+</P>
+<P>
+The ILF 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+also represents aspects of the utterance's surface
+structure relevant to how the utterance communicates the
+information content (e.g., the Topic-Focus
+ Articulation of Sgall et al., 1986). Such a syntax-semantics corepresentation could be achieved in either
+of the two options: (1) the logical form is structured,
+representing aspects of phonological and surface syntactic structures
+such as the grammatical functions of nominal expressions, linear
+order, and topic-comment structure, or (2) the partial semantic
+representation and the phonological and syntactic structures are
+separately represented with mappings among corresponding parts.  In
+this paper, the choice is arbitrary as long as certain syntactic
+information is available at the logical form.
+</P>
+<P>
+There is a general question of how far and how soon the
+ILF gets specified and disambiguated by the pragmatics. The above
+existing proposals in the computational literature assume that each
+utterance is completely specified and disambiguated before the next
+utterance comes in. This includes the integration of the utterance
+content into the evolving discourse structure, event structure, and
+temporal structure in the context, as discussed by Lascarides and
+Asher (1993). An utterance's complete interpretation is not in general
+available on the spot, however, and it often has to wait till some
+more information is supplied in the subsequent discourse (Grosz et
+al., 1986). It is also possible that only the information concerning
+those entities that are significant or salient (or `in focus') in the
+current discourse need to be fully specified and
+ disambiguated.  The present discourse processing architecture allows such incremental and partial
+specification and disambiguation of the information state along
+discourse progression though this perspective is not explored in any
+technical detail here.
+</P>
+<P>
+In sum, the ILF represents the indefeasible semantics of an utterance
+by leaving the following context-dependent interpretations
+underdetermined: reference of nominal expressions, modifier
+attachments, quantifier scoping, vague relations, and lexical
+senses. The ILF also leaves open how the given utterance is integrated
+into the temporal, event, and discourse structures in the context.
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  Our Working Formalism </HEADER>
+<P>
+I will use a simplified ILF in this paper. It is an underspecified
+predicate logic in a davidsonian style -- a version of QLF (Kameyama,
+1995) without the aterm-qterm distinction.  The ILF for the utterance
+``He made a robot spider'' is as follows:
+<!-- MATH: $decl\ (past[\exists exy[make(e)\wedge Agent_{Subj}(e,x)\wedge
+pro(x)\wedge he(x)\\\wedge Theme_{Obj}(e, y)\wedge indef\_sg(y)\wedge
+spider(y)\\\wedge nn\_relation(y,\lambda z(robot,z))]])$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+It contains the following vague predicates and  functions: 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ unresolved unstressed pronoun ``he'' -- 
+<!-- MATH: $pro(x)\wedge he(x)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ unscoped quantificational determiner ``a'' -- 
+<!-- MATH: $indef\_sg(y)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ a vague relation for a noun-noun compound ``robot spider'' --
+<!-- MATH: $spider(y)\wedge nn\_relation(y,\lambda z(robot,z))$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+(a relation
+between a spider entity and a robot property)
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ unresolved past tense -- 
+<!-- MATH: $past(\psi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ unresolved declarative mood -- 
+<!-- MATH: $decl(\psi ')$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ If the preferred interpretation of the utterance is that ``John'' made
+a robot shaped like a spider, we have the following DRS-like logical
+form:
+<!-- MATH: $\exists etxy[make(e)\wedge Time(e,t)\wedge Agent_{Subj}(e,x)\\\wedge
+named(x,``john'')\wedge Theme_{Obj}(e,y)\wedge spider\_like(y)\wedge
+robot(y)]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The interpretation is complete when the content is integrated into the
+discourse, event, and temporal structures in the context.  These
+structures are assumed to be in the discourse model D. The
+pragmatics subsystem must make all of the preferential decisions
+including NP interpretation and operator interpretation as well as
+ contextual integration. 
+</P>
+</DIV>
+<DIV ID="2.3" DEPTH="2" R-NO="3"><HEADER>  
+Ambiguity and Underspecification
+</HEADER>
+<P>
+The initial logical form mixes both ambiguity and underspecification.
+The choice is largely arbitrary when the number of possible
+interpretations is exhaustively enumerable.  Whenever there are npossible interpretations for a linguistic item or construction type,
+we can have either (1) a disjunctive set of n interpretations 
+<!-- MATH: $i_{1},...,i_{n}$ -->
+i1,...,in,
+ from which the pragmatics chooses the best, or (2) one underspecified
+interpretation that the pragmatics further specifies.  Pragmatic
+disambiguation and specification involve exactly the same kind of an
+interplay of linguistic and commonsense preferences, and relative
+preferences in disambiguation and specification are often
+interdependent.
+</P>
+<P>
+Consider He made a robot spider with six legs.  There is a
+preference for the interpretation ``a robot spider with six legs''
+over the alternative ``a male person with six legs''. This preference
+is overridden in certain contexts -- for instance, if the person is a
+fictional figure who can freely change the number of legs to be two,
+four, or six, the alternative reading becomes equally plausible.  Note
+that the attachment disambiguation and pronoun interpretation are
+interdependent here.
+</P>
+<P>
+When the number of possible interpretations cannot be exhaustively
+enumerated, however, ambiguity and underspecification are not
+interchangeable, and we must posit an underspecified
+ relation as a semantic primitive.  A sufficient but not necessary condition for positing an underspecified
+ relation is this (Kameyama, 1995): 
+An underspecified relation is posited when there is an open-ended set
+of possible specific relations associated with a construction type,
+and the interpretation is typically affected by ad hoc facts
+known in the discourse context.
+</P>
+<P>
+A canonical example is the interpretation of noun-noun compounds such
+as elephant pen. It could mean a pen shaped like an elephant, a
+pen with elephant pictures on the body, a pen with a small toy
+elephant glued on the top, or, depending on the context, a pen that
+the speaker found on the ground when she was pretending to be an
+elephant. All we can tell from the grammar of noun-noun compounds is
+that it is a pen that has some salient relation with elephants. It
+makes sense, then, to explicitly state in the grammar output the vague
+notion of ``some salient relation'' as a primitive. This is the basic
+motivation of the proposal for underspecified relations in the logical
+form in the computational literature (e.g., Alshawi, 1990; Hobbs et
+al., 1993).  The same thing goes with scope ambiguities. The number of
+possible scopings is always bounded but possibly very large (on the
+order of hundreds), and speakers are often unable to select a single
+specific scoping, so the grammar should defer assigning specific
+scopings to a sentence and give it to pragmatics (Hobbs, 1983; Reyle,
+1993; Poesio, 1993).
+</P>
+<P>
+In sum, with the ILF sealing off the space of grammatical reasoning,
+the present discourse processing architecture magnifies the importance
+of pragmatics in utterance interpretation. Pragmatics achieves
+anaphora resolution, attachment disambiguation, quantifier scoping,
+vague relation specification, and contextual integration all in one
+module. Is there a system in the chaos? That is the question we turn
+to now.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  
+Defeasible Pragmatics
+</HEADER>
+<P>
+This section discusses the features and examples of the defeasible
+rules in the pragmatics subsystem.
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>  General Considerations </HEADER>
+<P>
+By defeasible, I mean a conclusion that has to be retracted when
+some additional facts are introduced.  This characterizes the preferential aspect of utterance interpretation with the
+ nonmonotonicity property.  Grammatical reasoning is governed by the Tarskian notion of valid inference in standard logic -- ``Each model of the premises is also a model for
+ the conclusion.''  Pragmatic reasoning distinguishes among models as to their relevance or plausibility, and
+is governed by the notion of plausible inference (Shoham, 1988) --
+``Each most preferred model of the premises is a model for the
+conclusion.''  The preference can be stated in terms of default rules
+as well, so the general reasoning takes the form of ``as long as no
+exception is known, prefer the default.''  In utterance
+interpretation, this form of reasoning chooses the best interpretation
+ from among the set of possible ones.  The present focus is the
+interpretation preferences of intersentential pronominal anaphora.
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>  
+Earlier Computational Approaches to Pronoun
+Interpretation
+</HEADER>
+<P>
+Computational research on pronoun interpretation has always recognized
+the existence of powerful grammatical preferences, but there are
+different views on their status in the overall processing
+architecture.  Hobbs (1978) discussed the relative merit of purely
+grammar-based and purely commonsense-based strategies for pronoun
+interpretation. His grammar-based strategy that accounts for 98% of
+a large number of pronouns in naturally occurring texts simply could
+not be extended to account for the remaining cases that only
+commonsense reasoning can explain. He settled in a ``deeper'' method
+that seeks a global coherence arguing that coreference can
+be determined as a side-effect of coherence-seeking interpretation.
+The abduction-based approach (Hobbs et al., 1993) is an example of
+such a general inference system, where syntax-based preferences for
+coreference resolution are used as the last resort when other
+inferences do not converge.
+</P>
+<P>
+Sidner's (1983) local focusing model used an attentional
+representation level to mediate the grammar's control of
+ discourse inferences. For each pronoun, there is an ordered list of potential referents
+determined by local focusing rules, and the highest one that leads to
+a consistent commonsense interpretation of the utterance is
+chosen. Common sense has a veto power over grammar-based focusing in
+the ultimate interpretation, but common sense is the last
+resort, contrary to Hobbs's approach.  Carter (1987) implemented
+Sidner's theory combined with Wilks's (1975) preferential semantics,
+and reported the success rate of 93% for resolving pronouns in a
+variety of stories -- of which only 12% relied on commonsense
+inferences.
+</P>
+<P>
+Grammar's role in the control of inferences was the original
+ motivation of the centering model (Joshi and Kuhn, 1979; Joshi and Weinstein, 1981).  The proposal was to use
+the monadic tendency of discourse (i.e., tendency to be
+centrally about one thing at a time) to control the amount of
+computation required in discourse interpretation.  Grosz, Joshi, and
+Weinstein (1983) proposed a refinement of Sidner's model in terms of
+centering, and highlighted the crucial role of pronouns in linking an
+utterance to the discourse context.  Subsequent work on centering
+converged on an equally significant role of the main clause
+ SUBJECT (Kameyama, 1985, 1986; Grosz, Joshi, and Weinstein, 1986; Brennan, Friedman, and Pollard,
+1987). Hudson D'Zurma (1988) experimentally verified that speakers had
+a difficulty in interpreting a discourse where a centering prediction
+was in conflict with commonsense plausibility, leading to a `garden
+path' effect. An example from her experiment is: ``Dick had a jam
+session with Brad. He played trumpet while Brad played bass. ??He
+plucked very quickly.''
+Centering models the local attentional state management in an overall
+discourse model proposed by Grosz and Sidner (1986).
+</P>
+<P>
+These computational approaches to discourse have recognized the
+non-truth-conditional effects on utterance interpretation coming
+ from the utterance's surface structure (i.e., phonological,
+morphological, and syntactic structures). Although this aspect of
+interpretation cannot be neglected in a discourse processing model,
+its relevance to a logical model of discourse semantics and pragmatics
+has remained unclear. It is worth pointing out that discourse
+ pragmatics in the above computational approaches as well as in philosophy (e.g., Lewis, 1979; Stalnaker,
+1980) has generally assumed a dynamic architecture. Would there be a
+potential fit with the dynamic semantic theories in linguistics (e.g.,
+Kamp, 1981; Heim, 1982; Groenendijk and Stokhof, 1991) in a way that
+forms a basis for an integrated logical model of discourse semantics
+and pragmatics?  In this paper, I propose a pronoun interpretation
+model taking ideas from both computational and linguistic
+traditions, and present it in such a way that it becomes tractable for
+logical implementation.
+</P>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  
+Pronoun Interpretation Preferences: Facts
+</HEADER>
+<P>
+Pronoun interpretation must be carried out in an often vast space of
+possibilities, somehow controlling the inferences with default
+preferences coming from different aspects of the current context.
+Pronouns such as he, she, it and they can refer to
+entities talked about in the current discourse, present in the current
+indexical context, or simply salient in the model of the world
+implicitly shared by the discourse participants.  Since the problem
+space is vast and complex, we need to narrow it down to come to grips
+with interesting generalizations.  I will now limit our discussion to
+the interpretation of the anaphoric use of unstressed male
+singular third person pronoun he or him in English.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>  Survey and the Results </HEADER>
+<P>
+In 1993, I conducted a survey of pronoun interpretation preferences
+using the discourse examples shown in Table 1.  These examples were
+constructed to isolate the relevant dimensions of interest based on
+ previous work (see section <CREF/>). 
+</P>
+<P>
+One set of examples, A-H, involves pronouns that occur in the second
+of two-sentence discourses. They were presented to competent (some
+nonnative) speakers of English in the A-F-C-H-E-D-B-G order, avoiding
+sequential effects of two adjancent similar examples. The speakers
+were instructed to read them with no special stresses on words, and to
+answer the who-did-what questions about pronouns in italics. The
+answer ``unclear'' was also allowed, in which case, the speaker was
+encouraged to state the reason. The total number of the speakers was
+47, of which 10 were nonlinguist natural language researchers and 4
+were nonnative but fluent English speakers.  The second set of
+examples, I-L, are longer discourses. They were given to disjoint
+sets of native English speakers, none of whom are linguists.
+</P>
+<P>
+The examples fall under two general categories, as indicated in Table
+1. One group isolates the grammatical effects by minimizing
+commonsense biases. In these examples, it is conjectured that there is
+no relevant commonsense knowledge that affects the pronoun
+interpretation in question. The other group examines the commonsense effects of a specific causal knowledge of hitting and
+injuring in relation to the grammatical effects observed in the first
+group.
+</P>
+<P>
+Table 2 shows the survey results.  The 
+<!-- MATH: $\chi^2_{df=1}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  significance for each example was computed by adding an evenly divided number of the ``unclear'' answers
+to each explicitly selected answer, reflecting the assumption that an
+``unclear'' answer shows a genuine ambiguity. Preference is considered
+significant if p[.05, weakly significant if .05[p[.10,
+and insignificant if .10[p. Insignificant preference is
+interpreted to mean ambiguity or incoherence. It follows from the
+Gricean Maxim that ambiguity must be avoided in order for an utterance
+to be pragmatically felicitous. An example with an insignificant
+preference is thus infelicitous, and should not be generated.
+</P>
+<P>
+It must be noted that the present survey results exhibit only one
+aspect of preferential interpretation -- namely, the final
+preference reached after an unlimited time to think. They do not
+represent the process of interepretation -- for instance, a
+number of speakers commented that they had to retract the first
+obvious choice in example I. This garden-path effect verified in
+Hudson D'Zurma's (1988) experiments does not show in the present
+survey results.
+</P>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>  
+Discussion of the Results
+</HEADER>
+<P>
+The present set of examples highlights four major sources of
+preference in pronoun interpretation -- SUBJECT Antecedent
+Preference, Pronominal Chain Preference, Grammatical Parallelism
+Preference, and Commonsense Preference. These are stated at a
+descriptive level with no theoretical commitments. A theoretical
+account of the same set of facts will be given in section
+ <CREF/>. Each source of preference is discussed below. 
+</P>
+<P>
+ SUBJECT Antecedent Preference. A hierarchy of the preferred intersentential antecedent of a pronoun has been proposed in the centering framework, which
+basically says that the main clause SUBJECT is preferred over the
+OBJECT (Kameyama, 1985,1986; Grosz et al., 1986).  This preference is
+ confirmed in examples A and B. 
+</P>
+<P>
+The consistency of this preference across examples A and B
+demonstrates that grammatical functions rather than thematic roles are
+the adequate level of generalization. In both A and B, the thematic
+roles of Bill and John in the first sentence are agent and theme (or
+patient), respectively, but the switch in grammatical functions by
+passivization causes the preferred interpretation to switch
+accordingly.
+</P>
+<P>
+Example C demonstrates the defeasibility of this preference in the
+face of the parallelism induced by the adverb too as a side
+effect of an indefeasible conventional presupposition (see
+ section <CREF/>). 
+</P>
+<P>
+ Pronominal Chain Preference. This is the preference for a chain of pronouns across utterances to
+ corefer. Examples K and L are a minimal pair of structural effects without a
+commonsense bias.  Their contrast shows the effect of grammatical
+positions.  The SUBJECT-SUBJECT chain of pronouns (example K)
+supports a significant coreference preference (p[.001), whereas the
+OBJECT-SUBJECT chain (example L) supports a weakly significant noncoreference preference (.05[p[.10) indicating a parallelism
+effect below.
+</P>
+<P>
+Example I shows that the causal knowledge also in the end
+overrides a stretch of SUBJECT pronominal chain, but as noted above,
+this example causes the speakers to first interpret the SUBJECT
+pronouns to corefer, then retract the choice due to the
+inconsistency with a causal knowledge. This processing tendency
+indicates that the grammatical preference is processed faster than the
+commonsense preference. We will come back to this issue later.
+</P>
+<P>
+In example J, the strong preference for a SUBJECT pronominal chain is
+undermined by the indefiniteness of the referent (one of the
+boys) that the generic causal knowledge supports and by the
+additional inference -- when one hits one of a group of boys, he
+would be revenged by the group.  The grammar-based preference and
+common sense are in a tie here, showing a genuine ambiguity
+(.50[p[.70).
+</P>
+<P>
+ Grammatical Parallelism Preference. There is a general preference for two adjacent utterances to be grammatically parallel.  The parallelism requires,
+roughly, that the SUBJECTs of two adjacent utterances corefer and that
+the OBJECTs, if applicable, also corefer.  This preference is
+ demonstrated in example D that involves two pronouns. In example L, the parallelism preference overrides the pronominal chain preference.
+</P>
+<P>
+Example E shows the defeasibility of the parallelism preference in the
+face of the presupposition triggered by adverb back.  An ``x hit
+y back'' event conventionally presupposes that a ``y hit x'' event has
+previously occurred, leading to the near-unanimous interpretation
+ ``Bill hit John back.'' 
+</P>
+<P>
+ Commonsense Preference. Examples F-H illustrate the effect of a simple causal knowledge that dictates
+the final interpretation over and above the grammatical preferences.
+In example F, the SUBJECT Antecedent Preference is defeated by an
+inference derived from the generic causal knowledge -- ``when X hits
+Y, Y is normally hurt,'' and ``being injured is being hurt.'' Since
+the example involves some ``normal'' fellows called John and Bill, it
+applies with full force (46/47).
+</P>
+<P>
+Examples G and H show what happens to this baseline default when the
+described event involves some special individuals (fictitious or
+nonfictitious) that the speakers have some knowledge about. In example
+H, the preferred interpretation (34/47) swings to the one where the
+normal fellow, John, is injured as a result of attempting to assault
+ the indestructible cyborg.  The cyborg also could have been injured (6/47) (because the movie showed
+that it can be destroyed after all).  In example G, John
+attempts to assault a warm-blooded real person, Arnold, who seems a
+little stronger than normal fellows.  Here, more speakers thought that
+John was injured (24/47) than Arnold was (13/47), but this preference
+is insignificant (.10[p[.20). It reflects the indeterminacy of
+whether Arnold is a normal fellow or not, which affects the
+ applicability of the generic causal knowledge. 
+</P>
+</DIV>
+<DIV ID="4.3" DEPTH="2" R-NO="3"><HEADER>  Descriptive Generalizations </HEADER>
+<P>
+Table 3 summarizes the preference predicted by each of the four
+sources discussed above and the final outcome verified in the
+survey. We see the following general patterns of conflict
+ resolution: 
+1.
+Conventional Presuppositions
+(triggered by adverbs in examples C and E) and Commonsense Preferences
+(examples F, G, and H) dictate the final preference.
+2.
+Grammatical Preferences take charge in the absence of relevant
+Commonsense Preferences (examples A-E, K, and L).
+3.
+The SUBJECT Antecedent Preference overrides the Grammatical
+Parallelism Preference when in conflict (see examples A and B), and
+both are in turn stronger than the Pronominal Chain Preference
+(example L).
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+-- due to the conventional presupposition triggered by adverb too.
+<!-- MATH: $\diamondsuit$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+-- due to the conventional presupposition triggered by adverb
+back.
+<!-- MATH: $\spadesuit$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+-- Tommy is the first choice, which is later retracted.
+</P>
+<P>
+ The cases of indeterminate final preference in examples G and J are worth noting. This kind of an indeterminate preference is infelicitous and uncooperative, which
+should be avoided in discourse generation. The indeterminacy in
+example G is due to the indeterminacy of Arnold being a normal person
+subject to injury or an abnormally strong person who would not let
+himself be injured. The indeterminacy in example J is due to the
+conflict between the general causal knowledge about an injury caused
+by hitting and the insalience of an indefinite referent as a possible
+pronominal referent.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  
+Pronoun Interpretation Preferences: Account
+</HEADER>
+<P>
+Four major sources of preference have been identified in the above
+pronoun interpretation examples. I propose that these sources
+correspond to the data structures in the different context components
+ outlined in section <CREF/>.  The context components the most relevant to the present discussion are the attentional state A, the
+LF register 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and the discourse model D.
+</P>
+<P>
+The main thrust of the present account is the general interaction of
+ preferences that apply on different context components. It explains the basic fact that preferences may or
+may not be determinate. The present perspective of preference
+interactions also extends and explains the role of the attentional
+state in Grosz and Sidner's (1986) discourse theory.
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>  The Role of the Attentional State </HEADER>
+<P>
+A discourse describes situations, eventualities, and entities,
+together with the relations among them. The attentional
+ state A represents a dynamically updated  snapshot of their salience. We thus assume the property salient to be a primitive representing the partial
+ order among a set of entities in A. The property salient is gradient and relative.  A certain absolute degree of salience may not be achieved by any entities in a given A, but there
+is always a set of maximally salient entities, which is often,
+ but not necessarily, a singleton set. Thus it is crucial that a rule about the single maximally salient entity in a given A is only sometimes
+determinate.
+</P>
+<P>
+We will now recast some elements of the centering model in the present
+discourse processing architecture.  In the input context Ci-1 for
+utterance utti, the form and content (
+<!-- MATH: $\phi_{i-1}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ )
+of the
+immediately preceding utterance utti-1 occupy an especially
+salient status.  The entities realized in utti-1 are among the
+most salient subpart of Ai-1. I assume that this is achieved by a
+general A-updating mechanism. One of the entities in Ai-1 may
+be the 
+<!-- MATH: $Center_{i-1}$ -->
+Centeri-1, what the current discourse is centrally
+ about, hence the high salience: 
+CENTER
+The Center is normally more salient than other entities in
+the same attentional state.
+</P>
+<P>
+At least two default linguistic hierarchies are relevant to the
+ dynamics of salience One is the grammatical function hierarchy (GF ORDER), and the other is the nominal expression type
+ hierarchy (EXP ORDER).  The GF ORDER in utti predicts the relative salience of entities in the
+ output attentional state Ai whereas the EXP ORDER in uttipredicts the relative salience of entities assumed in the input attentional state Ai-1.  EXP ORDER is also crucial to the management of the Center (EXP CENTER):
+GF ORDER:
+Given a hierarchy, [ SUBJECT ] OBJECT ] OBJECT2 ]OTHERS], an entity realized by a higher ranked phrase is normally
+more salient in the output attentional state.
+EXP ORDER:
+Given a hierarchy, [ ZERO
+PRONOMINAL ] PRONOUN ] DEFINITE NP ] INDEFINITE
+ NP],  an entity realized by a higher-ranked expression type is normally more salient in the input attentional state.
+EXP CENTER:
+An expression of the highest ranked type
+normally realizes the Center in the output attentional state.
+EXP CENTER can be interpreted in two ways. One computes the
+``highest-ranked type'' per utterance, sometimes allowing a
+nonpronominal expression type to output the Center. The other takes it
+to be fixed, namely, only the pronominals. The choice is empirical.
+In this paper, I will take the second interpretation.
+</P>
+<P>
+Since matrix subjects and objects cannot be omitted in
+ English,  the highest-ranked expression type is the (unstressed) pronoun (see
+Kameyama, 1985:Ch.1).  From EXP ORDER, it follows that a pronoun normally realizes a maximally salient entity in the input
+attentional state.  A pronoun can also realize a submaximally salient
+entity if this choice is supported by another overriding preference.
+The grammatical features of pronouns also constrain the range of
+possible referents -- for instance, a he-type entity is a male
+agent. The maximal salience thus applies on the suitably restricted
+subset of the domain for each type of pronoun.
+</P>
+<P>
+The interactions of the above defeasible rules -- CENTER, GF ORDER,
+EXP ORDER, and EXP CENTER -- account for various descriptive
+generalizations. First, the SUBJECT Antecedent Preference follows from
+GF ORDER and EXP ORDER -- SUBJECT is the highest ranked GF in the
+first utterance, and a pronoun in the second utterance realizes the
+maximally salient entity in the input A.  Second, the coreference
+and noncoreference preferences in pronominal chains are accounted for.
+The strong coreference preference for a SUBJECT-SUBJECT pronominal
+chain (example K) comes from the fact that a SUBJECT Center is the
+single maximally salient entity, which leads to a determinate
+ preference. In contrast, an OBJECT Center competes with the SUBJECT non-Center for the maximal salience,
+ which leads to an indeterminate preference based on salience alone (example L).  The indeterminacy is resolved, to some extent, by the Grammatical Parallelism Preference
+ (section <CREF/>). 
+</P>
+<P>
+The center transition types of ``establishing'' and ``chaining''
+(Kameyama, 1985,1986) result from the interactions of CENTER, EXP
+ ORDER, and EXP CENTER. The Center is ``established'' when a pronoun picks a salient non-Center in the input context and makes it the Center in
+the output context.  It is ``chained'' when a pronoun picks the Center
+in the input context and makes it the Center in the output context.
+Examples A-H are thus concerned with Center-establishing pronouns,
+whereas examples I-L are concerned with Center-chaining
+pronouns. These transition types are not the primitives that directly
+drive preferences, however.
+</P>
+</DIV>
+<DIV ID="5.2" DEPTH="2" R-NO="2"><HEADER>  
+The Role of the LF Register
+</HEADER>
+<P>
+The grammatical parallelism of two adjacent utterances in discourse
+affects the preferred interpretation of pronouns (Kameyama, 1986),
+tense (Kameyama, Passonneau, and Poesio, 1993), and ellipsis (Pruest,
+1992; Kehler, 1993). This general tendency warrants a separate
+statement.  Parallelism is achieved, in the present account, by a
+computation on the pair of logical forms, one in the LF register in
+the context, and the other being interpreted.
+PARA:
+The LF register in the input context and the ILF being
+ interpreted seek maximal parallelism. The present perspective of rule interaction explains the
+``property-sharing'' constraint on Center-chaining (Kameyama, 1986)
+as follows.  GF ORDER, EXP ORDER, and PARA join forces to create a
+strong grammatical preference for SUBJECT-SUBJECT coreference
+(examples D,K). When they are in conflict, that is, when the maximally
+salient entity is not in a parallel position, PARA is defeated
+(examples A,B). When maximal salience is indeterminate, the
+parallelism preference affects the choice (example L), leading to a
+noncoreference preference for an OBJECT-SUBJECT pronominal chain.
+</P>
+</DIV>
+<DIV ID="5.3" DEPTH="2" R-NO="3"><HEADER>  The Role of the Discourse Model </HEADER>
+<P>
+ The discourse model contains a set of information states about situations, eventualities, entities, and the
+relations among them. It also contains the evolving discourse
+structure, temporal structure, and event structure. Both linguistic
+semantics and commonsense preferences apply on the same discourse
+model.
+</P>
+<P>
+ Lexically Triggered Presuppositions. Adverbs too and back trigger conventional presuppositionsabout the input discourse model. These presuppositions are part of lexical semantics, thus indefeasible.
+</P>
+<P>
+Adverb too triggers a presupposition that appears to seek
+parallelism between an utterance in the context and the utterance
+being interpreted. This is actually due to a general similarity
+presupposition associated with too.  Consider each of the
+following utterances immediately preceding ``John hit Bill too'':
+``Mary hit Bill'', ``John hit Mary'', ``Mary kicked Bill'', ``John
+kicked Mary'', ``Mary hit Jane'', and `John called Bill''. What's
+construed as `similar' in each case is a function of the particular
+utterance pair, and intuitively, preferred pairs support more
+similarities. Thus similarity comes in degrees, and a parallel
+interpretation is due to the preference for a maximal similarity.
+</P>
+<P>
+Adverb back triggers a presupposition for a reverse
+parallelism. That is, the utterance ``Bill hit John back'' presupposes
+that it occurred after ``John hit Bill''.
+</P>
+<P>
+Commonsense Knowledge. In contrast to the above rules that
+belong to the linguistic knowledge, the commonsense
+ knowledge consists of all that an ordinary speaker knows about the world and life. Formalizing common
+sense is a major research goal of AI, where nonmonotonic reasoning has
+been intensively studied. My goal here is not to propose a new
+approach to commonsense reasoning but simply to highlight its
+ interaction with linguistic pragmatics in the overall pragmatics subsystem. We know one thing for sure -- there
+will be a relatively small number of linguistic pragmatic rules that
+systematically interact with an open-ended mass of commonsense
+rules. Since the linguistic rules can be seen to control
+commonsense inferences, our aim is to describe the former as fully as
+possible, and specify how the ``control mechanism'' works. The
+commonsense rules posited in connection to the examples in this paper
+are thus meant to be exemplary. There will be different rules for each
+new example and domain to be treated. The linguistic rules, however,
+should be stable across examples and domains.
+</P>
+<P>
+The single powerful causal knowledge at work in our examples is that
+hitting may cause injury on the hittee but less likely on the hitter:
+HIT:
+When an agent x hits an agent y, y is normally hurt.
+The effects of the Terminator and Arnold indicate that the
+applicability of the HIT rule depends on the normality of the agents
+involved. Relevant knowledge includes things like: An agent is
+normally vulnerable, Arnold is a normal agent or an abnormally strong
+agent, and Terminator is an abnormally strong agent.
+</P>
+</DIV>
+<DIV ID="5.4" DEPTH="2" R-NO="4"><HEADER>  Account of the Rule Interactions </HEADER>
+<P>
+ We now state the preference interaction patterns observed in Table 3 above. The SUBJECT Antecedent Preference and Pronominal Chain Preference result from
+CENTER, GF ORDER, EXP ORDER, and EXP CENTER.  These are the defeasible
+Attentional Rules (ATT) stating the preferred attentional state
+transitions. The Grammatical Parallelism Preference is PARA. This is
+an example of the defeasible LF Rules (LF) stating the preferred
+LF transitions. Conventional presuppositions triggered by too
+and back are examples of the indefeasible Semantic Rules
+(SEM) in the grammar constraining the interpretation in the discourse
+model. The causal knowledge of hitting is HIT, with associated
+knowledge ETC about agents, Terminator, and Arnold. These are examples
+of the defeasible Commonsense Rules (WK) stating the preferred
+discourse model. Table 4 identifies the rules that dominate the final interpretation in examples A-L.
+</P>
+<P>
+Rules: ATT={CENTER, GF ORDER, EXP ORDER, EXP CENTER},
+LF={PARA}, WK={HIT, ETC}, SEM={TOO, BACK}.
+</P>
+<P>
+General Features. The first distinction among these rules is
+ defeasibility. The SEM rules are indefeasible whereas all other rules are defeasible. It is predicted that
+indefeasible rules override all defeasible rules, as verified in
+examples C and E.
+</P>
+<P>
+What factor determines the interaction pattern among the defeasible
+rules?  The three context components -- discourse model D,
+attentional state A, and LF register 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+-- all have their
+preferred transitions. The D preference results from proposition-level (or ``sentence-level'')
+ inferences directly determining the preferred model whereas the A and LF preferences
+result from entity-level (or ``term-level'')
+ inferences only indirectly determining the preferred model. We have seen that proposition-level
+preferences, if applicable, generally override entity-level
+preferences, albeit with a varying degree of difficulty.
+</P>
+<P>
+Take two examples: (1) ``John met Bill. He was injured.'' and
+(2) ``John hit Bill. He was injured.''  In (1), the ATT and LF
+preference that the pronoun refers to John indirectly leads to the
+preference that John was injured, which becomes the overall
+preference in the absence of relevant WK rules.  In (2), relevant WK
+rules directly support a proposition-level preference, Bill was
+injured, which wins out (with a varying degree of difficulty). These
+``flows of preference'' during an utterance interpretation are
+illustrated below:
+(1)
+<!-- MATH: $[_S [_{NP}$ -->
+[S [NP he]:{John]Bill} 
+<!-- MATH: $was\ injured$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ]
+<!-- MATH: $\Longrightarrow$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+John was injured
+(2)
+<!-- MATH: $[_S [_{NP}$ -->
+[S [NP he]:{John]Bill} 
+<!-- MATH: $was\ injured$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ]:{Bill
+was injured ] John was injured} 
+<!-- MATH: $\Longrightarrow$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Bill was injured.
+</P>
+<P>
+ Conflict Resolution Patterns. We see a straightforward overriding pattern in examples A-H involving ``Center-establishing'' pronouns: ATT overrides LF, and
+WK overrides ATT and LF.  Such an overriding relation can be
+seen as a dynamic updating operation (;) (van Benthem et al., 1993)
+-- preferences are evaluated in turn, the later ones overriding the
+ earlier ones: LF;ATT;WK. It may be the general pattern of ``changing preferences'' during
+utterance interpretation.
+</P>
+<P>
+Examples I-L involving ``Center-chaining'' pronouns show more or
+less the same pattern except that the overriding gets more difficult
+in some cases.  It is more difficult when a SUBJECT pronoun chain
+supports a single maximally salient entity as in example I. This shows
+that the LF and ATT preferences in fact join forces to interact with
+the WK preferences.  This intuition is expressed with brackets:
+<!-- MATH: $[LF;ATT];WK$ -->
+[LF;ATT];WK.  The ``retraction'' observed in example I still fits
+this pattern, but the increased difficulty in overriding is only
+implicit.
+</P>
+<P>
+Lascarides and Asher (1993) illustrate patterns of defeasible rule
+ interactions and the Penguin Principle defined below ( <!-- MATH: $\phi\rightarrow\psi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+means ``if 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+then indefeasibly 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,'' and 
+<!-- MATH: $\phi >\psi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+means ``if 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+then
+normally 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  .''): 
+Nixon Diamond
+A conflict is unresolved resulting in an
+ambiguity or incoherence:
+<!-- MATH: $(\phi >\chi )\wedge(\psi >\neg\chi )\supset (\phi ,\psi >\chi\wedge\neg\chi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+Penguin Principle
+A conflict is resolved by the more specific principle
+ defeating the more general one: 
+<!-- MATH: $(\phi\rightarrow\psi )\wedge (\phi >\chi )\wedge (\psi >\neg\chi
+)\supset (\phi ,\psi >\chi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+On their account, any resolution of a conflict between two defeasible
+rules should be a case of the Penguin Principle.  Does it explain all
+the conflict resolution patterns observed in pronoun interpretation?
+</P>
+<P>
+The Penguin Principle explains some of the conflict resolution
+patterns -- for instance, the knowledge about specific agents,
+Terminator and Arnold, override the generic causal knowledge about
+hitting (examples G and H).  There may also be a remote conceptual
+connection between the Penguin Principle and the pattern 
+<!-- MATH: $[LF;ATT];WK$ -->
+[LF;ATT];WKin the following line -- grammatical preferences (ATT and LF) tend to
+be more abstract than commonsense preferences (WK) about particular
+types of eventualities, so the more specific support wins (Kameyama et
+al., 1993). However, the LF, ATT, and WK rules apply on different data
+structures, and cannot always be reduced to an indefeasible
+implication (
+<!-- MATH: $\phi\rightarrow\psi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ )
+as required in the Penguin
+Principle. For instance, hittee(x) can be 
+<!-- MATH: $subject(x)$ -->
+subject(x) or 
+<!-- MATH: $\neg
+subject(x)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+depending on the sentence structure, so we cannot say that
+hittee(x) implies 
+<!-- MATH: $\neg subject(x)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to derive the overriding pattern
+in example F. What additional kinds of conflict resolution inferences
+do we have then?
+</P>
+<P>
+There are two additional conflict resolution patterns observed in the
+present examples, which I will call the Indefeasible
+ Override and the Defeasible  Override, defined below: 
+Indefeasible Override
+An indefeasible principle overrides a
+defeasible one: 
+<!-- MATH: $(\phi\rightarrow\chi )\wedge (\psi >\neg\chi )\supset
+(\phi ,\psi\rightarrow\chi )$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Defeasible Override
+Given an explicit overriding relation, one
+defeasible principle defeats another (even when 
+<!-- MATH: $\psi >\neg\chi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ):
+<!-- MATH: $(\psi ;\phi )\wedge (\phi >\chi )\supset (\phi ,\psi >\chi )$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+The Indefeasible Override follows from the monotonicity of classical
+implication (
+<!-- MATH: $\phi\rightarrow\chi\supset\phi ,\psi\rightarrow\chi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ),
+and is an inherent principle in any nonmonotonic logic. It predicts
+the fact that the SEM rules override all the defeasible rules
+(examples C and E).  The Defeasible Override captures a certain a
+priori given ``ranks'' or ``priorities'' among different sources of
+information, using the dynamic override (;) operator, where
+<!-- MATH: $\phi ;\psi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+means ``
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+overrides 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .''  It is motivated by
+the view that preferences come from different sources, and are
+associated with different ``degrees of defeasibility'' not necessarily
+ in terms of the Penguin Principle.  It enables us to state the override pattern 
+<!-- MATH: $[LF;ATT];WK$ -->
+[LF;ATT];WK while allowing a varying
+degree of difficulty for WK's overriding. I hope to define a logical
+system that axiomatizes these conflict resolution inferences.
+</P>
+</DIV>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Further Questions </HEADER>
+<P>
+A number of questions related to the present topic have not been
+discussed. The first are logical questions.  What are the
+ connections with update logics (e.g., Veltman, 1993)? We can see that the grammar subsystem supports straight updating, whereas the pragmatics subsystem supports preferential updating or upgrading (van Benthem et al., 1993).
+The preference interaction patterns discussed here can perhaps be
+formulated as fine-grained upgrading inferences during utterance
+interpretation within the proposed utterance interpretation
+ architecture. Can my proposal be couched in a system of preferential dynamic logic that combines elements of dynamic semantic theories and preferential models
+(e.g., McCarthy, 1980; Shoham, 1988)?  Does the context as a
+multicomponent data structure proposed here also support the general
+contextual inferences such as lifting in the context
+ logic (e.g., McCarthy, 1993; Buvac and Mason, 1993)?
+</P>
+<P>
+There are also computational questions.
+Does the proposed discourse processing architecture with explicit
+contextual control of inferences actually help manage the
+computational complexity of the nonmonotonic reasoning in the
+pragmatic rule interactions?
+</P>
+<P>
+Finally, a cognitive question -- Does the proposed discourse
+processing architecture naturally extend to a more elaborate
+many-person discourse model that addresses the issue of coordinating
+different private contexts (e.g., Perrault, 1990; Thomason,
+1990; Jaspars, 1994)?
+</P>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>  Conclusions </HEADER>
+<P>
+A discourse processing architecture with desirable computational
+properties consists of a grammar subsystem representing the space of
+possibilities and a pragmatics subsystem representing the space of
+preferences. Underspecified logical forms proposed in the
+computational literature define the grammar-pragmatics boundary.
+Utterance interpretation induces a complex interaction of defeasible
+rules in the pragmatics subsystem. Upon scrutiny of a set of examples
+involving intersentential pronominal anaphora, I have identified
+different groups of defeasible rules that determine the preferred
+transitions of different components of the dynamic context.  There are
+grammatical preferences inducing fast entity-level inferences only
+indirectly suggesting the preferred discourse model, and commonsense
+preferences inducing slow proposition-level inferences directly
+determining the preferred discourse model. The attentional state in
+the context supports the formulation of attentional rules that
+significantly affect pronoun interpretation preferences. The observed
+patterns of conflict resolution among interacting preferences are
+predicted by a small set of inference patterns including the one that
+assumes an explicitly given overriding relation between rules or rule
+groups. In general, I hope that this paper has made clear some of the
+actual complexities of interacting preferences in linguistic
+pragmatics, and that the discussion has made them sufficiently sorted
+ out for further logical implementations. 
+</P>
+</DIV>
+<DIV ID="8" DEPTH="1" R-NO="8"><HEADER>  References </HEADER>
+<P>
+by2em
+</P>
+<P>
+Alshawi, Hiyan. 1990. Resolving Quasi Logical Forms.
+Computational Linguistics, 16(3), 133-144.
+</P>
+<P>
+Alshawi, Hiyan. ed. 1992. The Core Language Engine, The MIT
+Press, Cambridge, MA.
+</P>
+<P>
+Alshawi, Hiyan, and Richard Crouch. 1992. Monotonic Semantic
+Interpretation.  In Proceedings of the 30th Annual Meeting of the
+Association for Computational Linguistics, Newark, DE, 32-39.
+</P>
+<P>
+Alshawi, Hiyan, and Jan van Eijck. 1989.  Logical Forms in the Core
+Language Engine.  In Proceedings of the 27th Annual Meeting of
+the Association for Computational Linguistics, Vancouver, Canada,
+25-32.
+</P>
+<P>
+Asher, Nicholas and Michael Morreau. 1993. Commonsense Entailment: A
+Modal Theory of Nonmonotonic Reasoning. In Proceedings of the
+International Joint Conference on Artificial Intelligence, Chambray,
+France, 387-392.
+</P>
+<P>
+van Benthem, Johan, Jan van Eijck, and Alla Frolova. 1993. Changing
+Preferences. Report CS-R9310. Institute for Logic, Language and
+Computation, University of Amsterdam.
+</P>
+<P>
+Brennan, Susan, Lyn Friedman, and Carl Pollard. 1987.  A Centering
+Approach to Pronouns.  In Proceedings of the 25th Annual Meeting
+of the Association for Computational Linguistics, 155-162.
+</P>
+<P>
+Buvac, Sasa and Ian Mason. 1993. Propositional Logic of
+Context. In Proceedings of the 11th National Conference on
+Artificial Intelligence, 412-419.
+</P>
+<P>
+Carter, David. 1987. Interpreting Anaphors in Natural Language
+Texts. Ellis Horwood, Chichester, Sussex, UK.
+</P>
+<P>
+Grdenfors, Peter and David Makinson. 1994. Nonmonotonic Inference
+Based on Expectations. Artificial Intelligence, 65, 197-245.
+</P>
+<P>
+Groenendijk, Jeroen and Martin Stokhof. 1991. Dynamic Predicate Logic. Linguistics and Philosophy, 14, 39-100.
+</P>
+<P>
+Grosz, Barbara, Aravind Joshi, and Scott Weinstein. 1983.  Providing a Unified
+Account of Definite Noun Phrases in Discourse.  In Proceedings of
+the 21st Meeting of the Association of Computational Linguistics,
+Cambridge, MA, 44-50.
+</P>
+<P>
+Grosz, Barbara, Aravind Joshi, and Scott Weinstein. 1986.  Towards a
+computational theory of discourse interpretation.  Unpublished
+manuscript. [The final version to appear in Computational
+Linguistics under the title ``Centering: A Framework for Modelling
+the Local Coherence of Discourse'']
+</P>
+<P>
+Grosz, Barbara and Candy Sidner. 1986. Attention, Intention, and the Structure
+of Discourse. Computational Linguistics, 12(3), 175-204.
+</P>
+<P>
+Heim, Irene. 1982. The Semantics of Definite and Indefinite Noun
+Phrases, Ph.D. Thesis, University of Massachusetts, Amherst.
+</P>
+<P>
+Hobbs, Jerry. 1978. Resolving Pronoun References. Lingua, 44,
+311-338. Also in B. Grosz, K. Sparck-Jones, and B. Webber, eds., Readings in Natural Language Processing, Morgan Kaufmann, Los Altos,
+CA, 1986, 339-352.
+</P>
+<P>
+Hobbs, Jerry. 1983. An Improper Treatment of Quantification in
+Ordinary English. In Proceedings of the 21st Meeting of the
+Association of Computational Linguistics, Cambridge, MA, 57-63.
+</P>
+<P>
+Hobbs, Jerry, Mark Stickel, Doug Appelt, and Paul Martin. 1993.
+Interpretation as Abduction. Artificial Intelligence, 63, 69-142.
+</P>
+<P>
+Hudson D'Zmura, Susan. 1988. The Structure of Discourse and
+Anaphor Resolution: The Discourse Center and the Roles of Nouns and
+Pronouns. Ph.D. Thesis, University of Rochester.
+</P>
+<P>
+Hwang, Chung Hee, and Lenhart K. Schubert. 1992a. Episodic Logic: A
+Comprehensive Semantic Representation and Knowledge Representation for
+Language Understanding. Technical Report, Dept. of Computer Science,
+University of Rochester, Rochester, NY.
+</P>
+<P>
+Hwang, Chung Hee, and Lenhart K. Schubert. 1992b. Episodic Logic: A
+Situational Logic for Natural Language Processing. In P. Aczel,
+D. Israel, Y. Katagiri, and S. Peters, eds., Situation Theory and
+its Applications, Volume 3, CSLI, Stanford, CA.
+</P>
+<P>
+Jaspars, Jan. 1994. Calculi for Constructive Communication,
+Ph.D. Thesis, University of Tilberg.
+</P>
+<P>
+Joshi, Aravind, and Steve Kuhn. 1979. Centered Logic: The Role of Entity
+Centered Sentence Representation in Natural Language Inferencing. In
+Proceedings of International Joint Conference on Artificial
+Intelligence, Tokyo, Japan, 435-439.
+</P>
+<P>
+Joshi, Aravind, and Scott Weinstein. 1981. Control of Inference: Role of
+Some Aspects of Discoruse Structure -- Centering. In Proceedings
+of International Joint Conference on Artificial Intelligence,
+Vancouver, Canada, 385-387.
+</P>
+<P>
+Kameyama, Megumi. 1985. Zero Anaphora: The Case of Japanese.
+Ph.D. Thesis, Stanford University.
+</P>
+<P>
+Kameyama, Megumi. 1986. A Property-sharing Constraints in Centering.
+In Proceedings of the 24th Annual Meeting of
+the Association for Computational Linguistics, New York, NY, 200-206.
+</P>
+<P>
+Kameyama, Megumi. 1994a. Indefeasible Semantics and Defeasible
+Pragmatics. CWI Report CS-R9441 and SRI Technical Note 544.
+</P>
+<P>
+Kameyama, Megumi. 1994b. Stressed and Unstressed Pronouns:
+Complementary Preferences. In P. Bosch and R. van der Sandt,
+eds., Focus and Natural Language Processing, Institute for Logic
+and Linguistics, IBM, Heidelberg, 475-484.
+</P>
+<P>
+Kameyama, Megumi. 1995.  The Syntax and Semantics of the Japanese
+Language Engine. In R. Mazuka and N. Nagai, eds., Japanese
+Sentence Processing, Lawrence Erlbaum Associates, Hillsdale, NJ,
+153-176.
+</P>
+<P>
+Kameyama, Megumi, Rebecca Passonneau, and Massimo Poesio.  Temporal
+Centering. 1993. In Proceedings of the 31st Meeting of the
+Association of Computational Linguistics, Columbus, OH, 70-77.
+</P>
+<P>
+Kamp, Hans. 1981. A Theory of Truth and Semantic Representation. In
+J. Groenendijk, T. Janssen, and M. Stokhof, eds., Formal Methods
+in the Study of Language, Mathematical Center, Amsterdam, 277-322.
+</P>
+<P>
+Kamp, Hans, and Uwe Reyle. 1993. From Discourse to Logic, Kluwer
+Academic Publishers, Dordrecht.
+</P>
+<P>
+Kehler, Andrew. 1993. The Effect of Establishing Coherence in Ellipsis
+and Anaphora Resolution.
+In Proceedings of the 31st Meeting of the
+Association of Computational Linguistics, Columbus, OH, 62-69.
+</P>
+<P>
+Lascarides, Alex, and Nicholas Asher. 1993.  Temporal Interpretation,
+Discourse Relations, and Commonsense Entailment. Linguistics and
+Philosophy, 16, 437-493.
+</P>
+<P>
+Lewis, David. 1979. Scorekeeping in a Language Game. Journal of
+Philosophical Logic, 8, 339-359.
+</P>
+<P>
+Lifschitz, Vladimir. 1988. Circumscriptive Theories: A Logic-Based
+Framework for Knowledge Representation. Journal of Philosophical
+Logic, 17(4), 391-442.
+</P>
+<P>
+Maxwell, John, and Ronald Kaplan. 1993. The Interface between Phrasal
+and Functional Constraints. Computational Linguistics, 19(4),
+571-590.
+</P>
+<P>
+McCarthy, John. 1980. Circumscription-A Form of Non-monotonic
+Reasoning. Artificial Intelligence, 13(1,2), 27-39.
+</P>
+<P>
+McCarthy, John. 1986. Applications of Circumscription to Formalizing
+Commonsense Knowledge. Artificial Intelligence, 28, 89-116.
+</P>
+<P>
+McCarthy, John. 1993. Notes on Formalizing Context. In Proceedings of the International Joint Conference on Artificial
+Intelligence, Chambray, France, 555-560.
+</P>
+<P>
+Pereira, Fernando and Martha Pollack. 1991. Incremental
+Interpretation. Artificial Intelligence, 50, 37-82.
+</P>
+<P>
+Pereira, Fernando, and David Warren. 1980. Definite Clause Grammars
+for Language Analysis. Artificial Intelligence, 13, 231-278.
+</P>
+<P>
+Perrault, C. Ray. 1990. An Application of Default Logic to Speech Act
+Theory. In P. Cohen, J. Morgan, and M. Pollack, eds., Intentions
+in Communications, MIT Press, Cambridge, MA, 161-185.
+</P>
+<P>
+Poesio, Massimo. 1993. Discourse Interpretation and the Scope of
+Operators. Ph.D. Thesis, University of Rochester.
+</P>
+<P>
+Pruest, Hub. 1992. On Discourse Structuring, VP Anaphora and Gapping.
+Ph.D. Thesis, University of Amsterdam.
+</P>
+<P>
+Reyle, Uwe. 1993. Dealing with Ambiguities by Underspecification:
+Construction, Representation, and Deduction. Journal of
+Semantics, 10(2).
+</P>
+<P>
+Sag, Ivan, and Jorge Hankamer. 1984. Toward a Theory of Anaphoric
+Processing. Linguistics and Philosophy, 7, 325-345.
+</P>
+<P>
+Sgall, Petr, Eva Hajicov, and Jarmila
+Panevov.. 1986. The Meaning of the Sentence in its Semantic
+and Pragmatics Aspects, Reidel, Dordrecht and Academia, Prague.
+</P>
+<P>
+Shoham, Yoav. 1988. Reasoning about Change: Time and Causality
+ from the Standpoint of Artificial Intelligence, MIT Press, Cambridge,
+MA.
+</P>
+<P>
+Sidner, Candy. 1983.  Focusing in the comprehension of definite
+anaphora.  In M. Brady and R. C. Berwick, eds., Computational
+Models of Discourse, The MIT Press, Cambridge, MA, 267-330.
+</P>
+<P>
+Stalnaker, Robert, C. 1972. Pragmatics. In Davidson and Harman, eds.,
+Semantics of Natural Language, Reidel, Dordrecht, 380-397.
+</P>
+<P>
+Stalnaker, Robert, C. 1980. Assertion. In P. Cole, ed., Syntax and Semantics Vol.9: Pragmatics, Academic Press, New York,
+315-332.
+</P>
+<P>
+Thomason, Richmond. 1990. Propagating Epistemic Coordination through
+Mutual Defaults I. In R. Parikh, ed., Theoretical Aspects of
+Reasoning about Knowledge, Proceedings of the Third Conference (TARK
+1990), Morgan Kaufmann, Palo Alto, CA, 29-38.
+</P>
+<P>
+Veltman, Frank. 1993. Defaults in Update Semantics. Manuscript,
+Department of Philosophy, University of Amsterdam. To appear in the
+Journal of Philosophical Logic.
+</P>
+<P>
+Wilks, Yorick. 1975. A Preferential, Pattern-seeking Semantics for
+Natural Language Inference. Artificial Intelligence, 6, 53-74.
+</P>
+<DIV ID="8.1" DEPTH="2" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+I would like to thank David Beaver, Johan van Benthem, Paul Dekker,
+Jan van Eijck, Jan Jaspars, Aravind Joshi, Alex Lascarides, Daniel Marcu,
+Becky Passonneau, Henritte
+de Swart, and Frank Veltman for helpful discussions and comments on
+earlier versions of the paper.  The thoughtful comments by an
+anonymous reviewer helped reshape the focus of the paper.  I also
+profited from the comments from the seminar participants at the
+University of Bielefeld and the University of Amsterdam.  I would
+also like to thank those who responded to the pronoun interpretation
+questionnaire whose results are discussed herein. Part of the work was
+sponsored by project NF 102/62-356 (`Structural and Semantic
+Parallels in Natural Languages and Programming Languages'), funded by
+the Netherlands Organization for the Advancement of Research (N.W.O.).
+  This separation of rule types does not imply a
+sequential ordering between the two processing modules.  Different
+rule types can be interleaved for interpreting or generating a
+subsentential constituent.
+  The same formal system
+can be viewed from different viewpoints -- as a system of rules, constraints, or inferences. Rules produce and
+transform structures in a system, constraints reduce possible
+structures, and inferences are used to reason about structures (e.g.,
+manipulating assertions or drawing conclusions) as the ``logic'' in
+the standard sense.  To take a prominent example, in the ``parsing as
+deduction'' paradigm (Pereira and Warren, 1980), context-free rules
+are also seen as deductive inference rules. The rule S 
+<!-- MATH: $\rightarrow$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ NP VP
+is translated into the inference rule NP(i,j) 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  VP(j,k)
+<!-- MATH: $\rightarrow$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  S(i,k). I will not adhere to one particular viewpoint
+in this paper, and rather take advantage of the flexibility.
+  Grammar rules can be
+seen from two viewpoints -- they eliminate as well as create possibilities. The former applies when communication is seen
+as incremental elimination of possible information states. The latter
+applies when it is seen as incremental increase of information
+content. I leave the choice open here.
+  In contrast, the abduction-based
+ system (Hobbs et al., 1993) does not separate grammar and pragmatics. All the rules are defeasible and
+directly interact in one big module. (The defeasibility of grammar
+rules is motivated by the fact of disfluencies in language use.) The
+result is an increased computational complexity.
+  This architecture is in line with
+Stalnaker's (1972:385) conception:
+The syntactical and semantical rules for a language determine an
+interpreted sentence or clause; this, together with some features of
+the context of use of the sentence or clause, determines a truth
+value. An interpreted sentence, then, corresponds to a function from
+contexts into propositions, and a proposition is a function from
+possible worlds into truth values.
+  A comment by Paul Dekker.
+  I assume that various preferential
+decisions are interleaved rather than sequentially ordered within
+pragmatics.
+  We have here an
+operational criterion for separating out grammar and pragmatics.  It
+leads to a discovery of cross-linguistic variation in the
+grammar-pragmatics boundary.  Long-distance dependency is a case in
+point (Kameyama, 1995).
+  Grammatical functions will be in uppercase in order
+to avoid the ambiguity of these words.
+  Some speakers indicated that
+they had to assume additional facts in order to make a plausible
+scenario -- for instance, in example A, ``Mary is a teacher, and she
+sent John home as a punishment''. The speakers seem to want some more
+information to make the judgment more conclusive.  What are the
+relationships among these three people mentioned out of the blue? I
+realize that impoverished examples of this sort rarely occur in our
+real-life discourses. To sort out some rather delicate interplay of
+preferences, however, we need to start out with simplified examples.
+This is analogous to the use of the ``blocks world'' (i.e., the world
+of blocks) in AI.
+  I will use the simple terminology of ``referent''
+and ``coreference'' without committing to their realist connotation
+because this does not affect the points I wish to make in this paper.
+  Another
+possible source of preference is the causal link between the two
+described eventualities, John's hitting Bill (e1) and someone
+disliking someone (e2).  The preferred interpretation supports the
+causal link ``e1 because e2'', while the alternative
+interpretation, which nobody took, supports ``e1 therefore
+e2''.  These could be stated in terms of discourse relations of Explanation and Cause (e.g., Lascarides and Asher, 1993). I'm
+not aware of any empirical studies of this kind of preference
+effects.
+  I suspect that the two speakers who
+took the opposite interpretation used the sense of back close to
+``again''.
+  The Terminator is a cyborg played
+by Arnold Schwarzenegger in a popular science-fiction movie.
+  Of interest
+here is the fact that the three speakers who knew nothing about
+what a ``Terminator'' is all interpreted that John was injured
+in example H. They clearly sensed ``something nasty and abnormal''
+ from this name alone.
+  I
+will not discuss the partial order of propositions.
+  Those entities that are
+``inaccessible'' in the DRT sense do not participate in the salience
+ordering, or even if they do, they are below a certain minimal
+threshold of salience.
+  In the centering model, the
+entities realized in 
+<!-- MATH: $\phi_{i-1}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are the ``forward-looking centers''
+(Cf), and 
+<!-- MATH: $Center_{i-1}$ -->
+Centeri-1 is the ``backward-looking center'' (Cb).
+  Consituents'
+linear ordering and animacy are also relevant.
+  This order also
+approximates the relative salience of entities in the output
+attentional state, as demonstrated in part in example J.
+  There is a pragmatic difference between stressed and
+unstressed pronouns, which should be accounted for by an independent
+treatment of stress -- for example, in terms of a preference reversal
+function (Kameyama, 1994b). This paper concerns only unstressed
+pronouns.
+  Except in a telegraphic register.
+  This notion of the single maximally
+salient entity corresponds to the ``preferred center'' Cp (Grosz et
+al., 1986) that is determined solely by the GF ORDER. The difference
+here is that it is determined by both the Center and GF ORDER,
+predicting an indeterminacy in certain cases.
+  What I have previously called retain is now called chain. It covers both CONTINUE and RETAIN
+technically distinguished by Grosz et al. (1986) and Brennan et
+al. (1987).
+  This statement is
+intentionally left vague.  See Pruest's (1992) MSCD operation for a
+general definition of parallelism preference, and my property-sharing
+constraint (Kameyama, 1986) for a subcase relevant to pronoun
+interpretation.
+<!-- MATH: $\phi ;\psi [X]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+means 
+<!-- MATH: $\psi [\phi
+[X]]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+where p[X] means 
+<!-- MATH: $X\cap [[p]]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+(update state X with p).
+  In these definitions, I use the
+notations from Asher and Morreau's (1993) Commonsense Entailment (CE)
+logic as a theoretical meta-formalism without strictly adhering to
+the CE ontology.
+  It follows from Cautious
+Monotonicity [A
+<!-- MATH: $\Rightarrow$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ B, A
+<!-- MATH: $\Rightarrow$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ C /
+A,B
+<!-- MATH: $\Rightarrow$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ C]:
+<!-- MATH: $(\phi\rightarrow\psi )\wedge (\phi >\chi )\supset
+(\phi ,\psi >\chi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+because 
+<!-- MATH: $(\phi\wedge\psi )\leftrightarrow\phi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+  Grdenfors and
+Makinson's (1994) use of expectation ordering in preferential
+reasonning achieves essentially the same effect.
+  In the longer
+version of this paper (Kameyama, 1994a), a logical implementation of
+the preferential rule interactions is proposed using prioritized
+circumscription (McCarthy, 1980, 1986; Lifschitz, 1988), a nonmonotonic
+reasoning formalism in AI.
+</P>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

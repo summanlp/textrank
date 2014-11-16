@@ -1,0 +1,201 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Using default inheritance to describe LTAG</TITLE>
+<ABSTRACT>
+<P>
+We present the results of an investigation into how the set of
+elementary trees of a Lexicalized Tree Adjoining Grammar can be
+represented in the lexical knowledge representation language DATR
+(Evans  Gazdar 1989a,b). The LTAG under consideration is based on
+the one described in Abeille et al. (1990).  Our approach is
+similar to that of Vijay-Shanker  Schabes (1992) in that we formulate
+an inheritance hierarchy that efficiently encodes the elementary trees.
+However, rather than creating a new representation formalism for this
+task, we employ techniques of established utility in other
+lexically-oriented frameworks. In particular, we show how DATR's
+default mechanism can be used to eliminate the need for a non-immediate
+dominance relation in the descriptions of the surface LTAG entries.
+This allows us to embed the tree structures in the feature theory in a
+manner reminiscent of HPSG subcategorisation frames, and hence express
+lexical rules as relations over feature structures.
+Vijay-Shanker  Schabes (1992) have drawn attention to the considerable
+redundancy inherent in  lexicons that are expressed in a flat
+manner with no sharing of structure or properties across the elementary
+ trees. In addition to theoretical considerations, one practical consequence of such redundancy is that maintenance of the lexicon
+becomes very difficult. One way to minimise redundancy is to adopt a
+hierarchical lexicon structure with inheritance and lexical rules.
+Vijay-Shanker  Schabes outline such a view of an  lexicon which
+is loosely based on that of Flickinger (1987) but tailored for  trees rather than  subcategorization lists.
+We share their perception of the problem and agree that adopting a
+hierarchical approach provides the best available solution to it.
+However, we see no need for the creation of a hierarchical lexical
+formalism that is specific to the  problem.  The use of
+hierarchical lexicons to reduce or eliminate lexical redundancy is now a
+fairly well researched area of NLP (Daelemans  Gazdar 1992; Briscoe
+et al. 1993) and a variety of formal languages for defining such
+lexicons already exist. One of the more widely known and used of these
+languages is  (Evans  Gazdar 1989a,b); in this paper we will
+show how  can be used to formulate a compact, hierarchical
+encoding of an  lexicon.
+There are three major advantages to using an ``off the shelf''
+lexical knowledge representation language (LKRL) like .  The
+first is that it makes it easier to compare the  lexicon with
+those associated with other types of lexical grammar. Thus, for
+example,  has been used to define lexicons for Word Grammar,
+ and -style fragments. The second is that one can take
+advantage of existing analyses of other levels of lexical
+description.  is a general purpose LKRL, not one that is
+restricted to syntactic description.  It has been used for phonology,
+prosody, morphology, compositional semantics and lexical semantics,
+ as well as for syntax. And the third advantage is that one can exploit existing formal and implementation
+ work on the language. 
+Writing an  lexicon in  turns out to be little different
+from writing any other type of lexicalist grammar's lexicon in an LKRL.
+The only significant difference lies in the specification for the
+subcategorization frames for lexemes.  In  these are lists of
+categories whilst in  they are trees.  In their proposal,
+Vijay-Shanker  Schabes use inheritance to monotonically build up
+partial descriptions of trees. Each description is a finite set of
+dominance, immediate dominance and linear precedence statements in a
+tree description language developed by Rogers  Vijay-Shanker (1992).
+In our approach, trees are described using only local relations: 's
+non-monotonicity allows us to ``rewrite'' local relations among the
+nodes of a tree, thereby achieving the principal effect of Vijay-Shanker
+ Schabes' use of non-immediate dominance. This allows us to encode tree
+relations in the feature structure (in a similar fashion to  subcategorisation lists), and cast lexical rules as relations over
+feature structures.
+Before going into the details of our account, we note that we have made
+a number of simplifying assumptions in our approach to
+ . In particular, our account is purely syntactic, and does not distinguish
+ and  feature specifications on tree nodes, as would be
+required to support adjunction and substitution (although it
+straightforwardly could do so).
+The tree encoding we use is a variant of Kilbury's (1990) bottom-up
+encoding of trees.  A tree is described relative to a particular
+distinguished leaf node - in the  entries it is the anchor
+ node. The tree is represented with the binary relations ,  and , encoded as features whose
+values are the feature structures representing the parent,
+immediate-left or immediate-right subtree, encoded in the same way. For
+the parent subtree, the distinguished leaf is the parent node
+ itself, for non-atomic left and right subtrees, we choose the (generally unique)
+lexical leaf of the subtree. Features other than ,  or
+ describe properties of the current node in a conventional
+fashion.
+As an example, here is the encoding of the subcategorization tree for a
+ditransitive verb using a -style syntax:
+    Give:
+        [cat] == v                          [parent parent cat] == s
+        [right cat] == np                   [right right cat] == p
+        [parent cat] == vp                  [right right parent cat] == pp
+        [parent left cat] == np             [right right right cat] == np.
+This says that Give is a verb, with an NP to its right, a VP as
+its parent and an NP to the left of its parent. The second column
+stipulates an S as its grandparent and describes the PP to the right of
+its right NP, starting at the P, with an NP to its right and PP as its
+parent.
+Very little of this information is actually specified directly in the entry for
+Give, however. In fact, Give is a minimally specified leaf
+of the inheritance hierarchy given by the  fragment in
+ Figure <CREF/>. 
+Looking at this fragment from the bottom upwards, we see that lexical
+entries Die, Eat, Give (etc.) are defined in terms of abstract
+verb classes , , ,  (etc.). These are defined in terms of
+each other (so  is defined as an instance of  with an additional
+NP complement etc.), and ultimately in terms of S_TREE,
+PP_TREE, NP_TREE, VP_TREE, P_TREE (etc.) which define fragments of
+tree structure. At the very top of the hierarchy TREE_NODE
+specifies default properties of all nodes in  trees.
+This fragment defines by inheritance all the specifications for Give given previously. In addition it defines root as a simple
+morphological tag on lexical tree-nodes, and , which specifies the
+node type as one of normal, substitution or anchor - a
+classification assumed to have significance for components outside the
+lexicon. Nothing precludes more than one leaf in a tree having  anchor. Indeed in the tree for Give, the preposition to is also an anchor. But the tree is encoded from a single leaf,
+which we assume to be the `principal' anchor.
+A key feature of the analysis is that trees are always fully specified
+using only local relations. When a verb class inherits tree information
+from a superclass, it can extend, delete or rearrange that information
+as required to construct its own tree, overriding tree relations of the
+superclass which are not valid in the subclass. This obviates the need
+for any kind of partial descriptions of trees required by monotonic
+inheritance frameworks. It is this that makes it possible to encode the
+trees directly in the feature theory, and this in turn allows us to
+encode lexical rules as relations over feature structures.
+In the present investigation we have considered four lexical rules:
+simple versions of passive, dative, subject-auxiliary inversion (SAI) and
+wh-questions (WHQ). Of these, the dative rule is the most
+straightforward. We express dative as an explicit alternation for
+ditransitive verbs, using the techniques of Kilgarriff (1993). For any
+ditransitive, the feature path [alt dative] defines a complete
+alternative feature structure with a double-object complement. This is
+achieved via a single additional statement in the definition of .
+    DITRANS_VERB:
+        [alt dative] == DOUBLEOBJ_VERB:[].
+Passive and SAI are slightly more complicated, because rule application
+is `triggered' by the presence of a particular feature in the lexical
+entry: [form] == passive and [form] == inv respectively.
+This is achieved in  by using the trigger feature to control value
+definitions and inheritance. For example, the definition for the class
+of auxiliary verbs might be written as follows.
+    AUX_VERB:                               AUX_TREE:
+        [] == INTRANS_VERB                      [] == TREE_NODE
+        [aux] == true                           [cat] == [aux_cat "[form]"]
+        [parent] == AUX_TREE:[]                 [aux_cat] == vp
+        [right] == AUX_TREE:[]                  [aux_cat inv] == s.
+        [right type] == foot.
+Here  defines the (auxiliary) tree for auxiliary verbs, but inherits
+the parent and right sister information from AUX_TREE. The
+latter uses the setting of  (at the node for the lexical entry
+itself - hence the quotes) to establish the value for : s
+for inverted verbs, vp for all others. Passive is similar, but in
+this case the tree structure itself is modified (in the definition of
+) when  is specified as passive.
+Finally, WHQ has the most complicated treatment. In , it is
+possible to construe WHQ as a triggered rule like passive and SAI. In
+this case, the trigger is the presence of [form] == null on any NP in the tree. Identifying whether such a trigger is
+present in an arbitrary tree requires some fairly subtle  code.
+However, once the trigger has been located, the effect of this rule is
+fairly easy to capture: the top of the verbal subcategorisation tree is
+extended by `activating' the following definitions.
+    INTRANS_VERB:
+        [parent parent parent cat] == s
+        [parent parent left cat] == np
+        [parent parent left form] == wh.
+The full version of this  fragment encodes all the components
+discussed above in a single coherent, but slightly more complicated
+account. It is available on request from the authors.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  Other related work includes Becker (1993) and Habert
+(1991).
+  See, for example, Bleiching (1992,
+1994), Brown  Hippisley (1994), Corbett  Fraser (1993), Cahill
+(1990, 1993), Cahill  Evans (1990), Fraser  Corbett (in press),
+Gazdar (forthcoming), Gibbon (1992), Kilgarriff (1993), Kilgarriff 
+Gazdar (in press), Reinhard  Gibbon (1991).
+  See, for example, Andry et al.
+(1992) on compilation, Kilbury et al. (1991) on coding DAGs,
+Langer (1994) on reverse querying, and Barg (1994), Light (1994),
+Light et al. (1993) and Kilbury et al. (1994) on
+automatic acquisition.  And there are at least a dozen different
+ implementations available on various platforms and programming
+languages.
+  And note in addition that the examples in this
+paper are simplified still further for expositional purposes.
+  Or the principal anchor node, in constructions which have
+more than one lexical anchor.
+  The parent is not a leaf of the entire tree, of
+course, but it is a leaf of the subtree above the current node.
+  To gain a superficial understanding of this
+fragment, read a line such as [] == INTRANS_VERB as ``inherit everything from the definition of .'', and a line such as
+[parent] == PP_TREE:[] as ``inherit the  subtree
+from the definition of PP_TREE.'' Inheritance is always
+default - locally defined feature specifications take priority over
+inherited ones.
+</P>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

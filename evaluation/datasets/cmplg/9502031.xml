@@ -1,0 +1,218 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Cooperative Error Handling and Shallow Processing</TITLE>
+<ABSTRACT>
+<P>
+This
+  paper is concerned with the detection and correction of
+  sub-sentential English text errors.  Previous spelling programs,
+  unless restricted to a very small set of words, have operated as
+  post-processors.  And to date, grammar checkers and other programs
+  which deal with ill-formed input usually step directly from spelling
+  considerations to a full-scale parse, assuming a complete sentence.
+  Work described below is aimed at evaluating the effectiveness of
+  shallow (sub-sentential) processing and the feasibility of
+  cooperative error checking, through building and testing
+  appropriately an error-processing system.  A system under
+  construction is outlined which incorporates morphological checks
+  (using new two-level error rules) over a directed letter graph, tag
+  positional trigrams and partial parsing.  Intended testing is
+  discussed.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+Unless a keyboard user is particularly proficient, a frustrating
+amount of time is usually spent backtracking to pick up mis-typed or
+otherwise mistaken input.  Work described in this paper started from
+an idea of an error processor that would sit on top of an editor,
+detecting/correcting errors just after entry, while the user continued
+with further text, relieved from tedious backtracking.  Hence
+`co-operative' error processing.  But if a program is to catch such
+errors very soon after they are entered, it will have to operate with
+less than the complete sentence.
+</P>
+<P>
+Work underway focuses on shallow processing: how far error detection
+and correction can proceed when the system purview is set to a stretch
+of text which does not admit complete sentential analysis.  To date,
+grammar checkers and other programs which deal with illformed input
+usually step directly from spelling considerations to a full-scale
+sentence parse.  However treating the sentence as a basic unit loses
+meaning when the `sentence' is incomplete or illformed.  Shallow
+processing is also interesting because it should be cheaper and faster
+than a complete analysis of the whole sentence.
+</P>
+<P>
+To investigate issues involved in shallow processing and cooperative
+error handling, the pet (processing errors in text) system is
+being built.  The focus is on these two issues; no attempt is being
+ made to produce a complete product .  Pet operates over a shifting window of text (it can be attached simply and asynchronously to the Emacs
+editor).  One word in this purview is in focus at a time.  Pet
+will give one of three responses to this word; it will accept the
+word, suggest a correction, or indicate that it found an error it
+couldn't correct.  Below follow an outline and discussion of the
+(linguistic) components of pet and discussion of testing and
+evaluation of the system.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  Pet System </HEADER>
+<P>
+Morphological Processing  Spelling Checking
+</P>
+<P>
+The word in focus is first passed through a two-level morphological analysis
+stage,
+based on an adaption of (Pulman, 1991).  Two purposes are served here: checking
+the word is lexical (i.e. in the lexicon or a permissible inflection of
+a word in the lexicon) and collecting the possible categories, which
+are represented as sets of feature specifications (Grover, 1993).
+</P>
+<P>
+This morphological lookup operates over a character trie which
+has been compressed into a (directed) graph. Common endings are shared
+and category information is stored on the first unique transition.  The
+advantages of this compression are that (1) a word/morpheme is
+recognised (and category affixation rules (Grover, 1993) checked) as soon as
+the initial
+letters allow uniqueness, rather than at the end of the word, and (2) there
+is an immense saving of space. There was a reduction of over half the
+transitions on
+the trie formed from the Alvey lexicon.
+</P>
+<P>
+If the word is unknown, the system reconsiders analysis from the point
+where it broke down with the added possibility of an error rule.
+There are currently four error rules, corresponding to the four Damerau
+transformations: omission, insertion, transposition, substitution (Damerau,
+1964) -
+considered in that order (Pollock, 1983).
+The error rules are in two level format and integrate seamlessly into
+morphological
+analysis.
+</P>
+<P>
+ * - X - * 
+<!-- MATH: $\rightarrow$ -->
+<EQN/>
+* - - *
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  Testing and Evaluation </HEADER>
+<P>
+With the aim of evaluating the effectiveness of shallow processing,
+tests will be carried out
+to see what proportion of different types of errors can be dealt with
+elegantly, adequately and/or efficiently.  Under examination will be
+the number of errors missed/caught and wrongly/rightly corrected.
+Different components and
+configurations of the system will be compared, for example the
+error rules v. p.b.t.'s.  Parameters of the
+system will be varied, for example the breadth of the purview, the
+position of the purview focus, the number of correction candidates and
+the timing of their generation.  Will shallow processing miss too
+many of the errors cooperative error processing is aimed at?
+</P>
+<P>
+There are two significant difficulties with collecting test data.
+The central difficulty is finding a representative sample of
+genuine errors by native speakers, in context, with the correct version of
+the text attached. Apart from anything else, `representative' is
+hard to decide - spectrum of errors or distribution of errors ?
+Secondly, any corpus of text usually contains only those errors that were
+left undetected in the text.  Cooperative processing deals with errors that one
+backtracks to catch; if not a different class or range, these at least might
+have
+a different distribution of error types.
+</P>
+<P>
+The ideal data would be records of peoples' keystrokes when interacting with
+an editor while creating or editing a piece of text.  This would allow
+one measure of the (linguistic) feasibility of cooperative error
+processing: the effectiveness of shallow processing over errors revealed
+by the keystroke-record data.  There does not appear
+to be an English source of this kind, so it is planned to compile one.
+</P>
+<P>
+For comparison, a variety of other data has been collected.  Preliminary tests
+used generated errors, from a program that produces random Damerau slips
+according
+to an observed distribution (Pollock, 1983), using confusion matrices where
+appropriate (Kernighan, 1990).  Assembled data includes the
+Birkbeck corpus (Mitton, 1986) and multifarious misspelling lists (without
+context).  Suggestions have been made to look for low frequency words in
+corpora and news/mail archives, and to the Longmans learner corpus
+(not native speakers).
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Acknowledgements </HEADER>
+<P>
+ Thanks to all who offered advice on finding data, and to Doug McIlroy,
+Sue Blackwell and Neil Rowe for sending me their misspelling lists.
+</P>
+<P>
+This work is supported by a British Telecom Scholarship, administered
+by the Cambridge Commonwealth Trust in conjunction with the Foreign and
+Commonwealth Office.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+  Hiyan Alshawi. 1992.
+The Core Language Engine. Cambridge, Massachusetts: The MIT Press.
+</P>
+<P>
+  Fred J. Damerau. 1964.
+``A Technique for Computer Detection and Correction of Spelling Errors",
+</P>
+<P>
+  Roger Garside, Geoffrey Leech and Geoffrey Sampson, eds.
+1987.
+The Computational Analysis of English.  Longman.
+Commun. ACM, 7(3):171-176.
+</P>
+<P>
+  Claire Grover, John Carroll and Ted Briscoe. 1993.
+``The Alvey Natural Language Tools Grammar (4th Release)",
+Tech. Rep. 284, Computer Lab, University of Cambridge.
+</P>
+<P>
+  Mark D. Kernighan, Kenneth W. Church and William A. Gale.
+1990.
+``A Spelling Correction Program Based on a Noisy Channel Model",
+Proc. Coling-90, pp 205-210.
+</P>
+<P>
+  Roger Mitton, ed. 1986.
+A Collection of Computer-Readable Corpora of English Spelling Errors (ver. 2).
+Birkbeck College, University of London.
+</P>
+<P>
+  Joseph J. Pollock and Antonio Zamora. 1983.
+``Collection and Characterization of Spelling Errors in Scientific and
+Scholarly Text",
+J. Am. Soc. Inf. Sci., 34(1):51-58.
+</P>
+<P>
+  Stephen G. Pulman and Mark R. Hepple. 1993.
+``A feature-based formalism for two-level phonology: a description and
+implementation",
+Computer Speech and Language, 7(4):333-358.
+</P>
+<P>
+  Edward M. Riseman and Allen R. Hanson. 1974.
+``A Contextual Postprocessing System for Error Correction Using Binary n-Grams",
+IEEE Trans. Comput., C-23(5):480-493.
+</P>
+<DIV ID="4.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+   In particular, there are
+  many HCI issues associated with such a system, which are beyond the
+  scope of this paper.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

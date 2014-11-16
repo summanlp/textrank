@@ -1,0 +1,829 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>An NLP Approach to a Specific Type of Texts: Car Accident Reports</TITLE>
+<ABSTRACT>
+<P>
+The work reported here is the result of a study done within a larger
+project on the ``Semantics of Natural Languages'' viewed from the
+field of Artificial Intelligence and Computational Linguistics.  In
+this project, we have chosen a corpus of insurance claim
+reports.
+These texts deal with a relatively circumscribed domain, that of road
+traffic, thereby limiting the extra-linguistic knowledge necessary to
+understand them.  Moreover, these texts present a number of very
+specific characteristics, insofar as they are written in a
+quasi-institutional setting which imposes many constraints on their
+production.
+We first determine what these constraints are in order to then show
+how they provide the writer with the means to create as succint a text
+as possible, and in a symmetric way, how they provide the reader with
+the means to interpret the text and to distinguish between its factual
+and argumentative aspects.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Characteristics of the texts </HEADER>
+<P>
+This type of texts is culturally well-defined and possesses several
+characteristics, which both the writer and the reader are perfectly
+aware of when writing or reading one of them.  It is not a newspaper
+story, nor a letter to a friend narrating the car accident, but an
+insurance claim report which has to follow several constraints,
+ defined in <CREF/>. 
+</P>
+<P>
+(1)
+Text Parameters
+A.
+the text involves at least two participants, generally two
+vehicles, one of which is the author's;
+</P>
+<P>
+B.
+the text is obligatorily short, at most one paragraph;
+</P>
+<P>
+C.
+by definition, the text is a narration in which an accident
+takes place;
+</P>
+<P>
+D.
+the text is sent to the author's insurance company.
+</P>
+<P>
+Beyond these four parameters which are determined by the nature of the
+reports, we also find in this text presuppositions due to the
+particular domain involved, the ``road'' domain.  This domain-specific
+knowledge, which is part of the more general context C, is
+called here K.  K concerns vehicles, vehicle motions,
+traffic rules, the usual behavior of drivers and pedestrians, and also
+some elements of ``naive'' geometry.
+</P>
+<P>
+Parameter D has a special bearing in so far as the writers know that
+the insurance agents must pass a judgement on their behavior and will
+determine their share of responsibility in the accident.  Necessarily,
+the authors of those reports, while supposedly describing in an
+impartial way the different events which have occurred, will attempt
+to lessen their responsability.  The texts thus present many instances
+of argumentative devices, whose usage forms part of the more general
+knowledge of the language conventions, LC.  In a symmetric
+way, the reader, i.e. the insurance agent, must untangle the factual
+description from the argumentative presentation of the events.
+</P>
+<P>
+We can define the tasks that this type of texts presents for the
+ writer and for the reader as in <CREF/> and  <CREF/> respectively. 
+</P>
+<P>
+(2)
+The Writer's Problem:
+The writer W knows the factual content P corresponding to
+the circumstances of the accident and wants to convey it through a
+text T.  W must then choose a T such that (a) it
+will allow a reader R to rediscover P, and (b) it will
+minimize W's responsibility.
+</P>
+<P>
+(3)
+The Reader's Problem:
+The reader R knows the language conventions LC and a part
+of the context C.  R must then determine (a) the
+factual content P of the text T and (b) the argumentation
+presented by its writer W.
+</P>
+<P>
+These two symmetrical tasks are thus both composed of a factual and an
+argumentative part.  These two parts also coincide with the two goals
+we can define for an NLP approach to understanding and processing
+these texts.  At the first level, we try to extract from the text the
+objective content corresponding to a factual analysis in order to
+recreate the event:  ``What happened?  What real world events
+concerning the motions of these vehicles or the scene geometry
+actually occurred?''
+</P>
+<P>
+At the second level, we take into account the nature and intent of the
+text.  Our problem is then to uncover the argumentative devices used
+by the writer and to determine how they can be used by the reader, and
+later by our system, in interpreting the texts.
+</P>
+<P>
+Accordingly, the remainder of this paper is divided into two parts.
+ In section <CREF/>, we show the importance of the situational and cultural presuppositions for parameters A, B and C, and in section
+ <CREF/>, we take into account parameter D, which determines the argumentative aspect of the texts.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    Factual content of the texts
+</HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>    Parameter A
+</HEADER>
+<P>
+Parameter A (the fact that car accidents usually involve two
+participants, most often two vehicles) is used to infer the identity
+of some entities in the texts, or to establish coreference between two
+entities.
+</P>
+<P>
+There is a specific naming convention in French insurance claim
+reports for the vehicles involved in an accident:  claimants must
+refer to their own vehicle as ``A'' and to their opponent's as ``B''.
+This convention, although it is part of the shared knowledge about
+LC, is not always followed, and indeed it seems to be a burden
+for W.  The reason is probably that a stereotypical
+description using only labels ``A'' and ``B'' for the vehicles
+involved sounds very neutral, such as could have been made by any
+independant observer of the accident, while in fact W was
+directly involved in the accident, and is thus personnally implicated, as
+a person endowed with awareness and intentionality.  Thus, the authors
+often do not seem to be able to choose between a narrative style using
+the first person (``I'') and a descriptive style using the third
+person (``vehicle A'').  Most of the texts are not homogeneous in this
+respect and combine the two styles, as if there was a struggle,
+probably unconscious, between a spontaneous narration of the different
+events and a stereotyped description using the convention.
+</P>
+<P>
+(4)
+Vehicle A waiting and stopped at the Pont de
+Levallois lights.  Vehicle B arrived and hit  my left side
+mirror with its right side mirror.
+</P>
+<P>
+This hesitation which we observe in our texts is reinforced by the use
+of metonymy.  Metonymy is often used to allow the identification of
+the container with its content, and a common use of metonymy in our
+texts concerns the vehicle and its driver.  Metonymy builds a unique
+discourse entity, and as a consequence some properties from the
+vehicle are transferred to the driver, and vice-versa.
+Personalization of the vehicles is a typical example of this transfer:
+a vehicle becomes endowed with the properties of a human being, for
+instance by transferring from the driver to the car the property of
+ intentionality as in <CREF/>, or that of agentivity as in <CREF/>. 
+</P>
+<P>
+(5)
+b.
+Vehicle B wanted to turn right
+</P>
+<P>
+b.
+Being momentarily stopped in the right lane on Boulevard des
+Italiens, I had switched my blinker on; I was at a stop and getting
+ready to change lanes.  Vehicle B coming from my left
+squeezed too close to me and damaged the whole left
+front side.  (T7)
+</P>
+<P>
+ We can see from the example in <CREF/> that this unique entity does not consist only of the vehicle and its driver, but can
+ also include its passengers.  In <CREF/>, there is an identification between the vehicle and the writer's husband, the
+writer probably being the insured person.
+</P>
+<P>
+(6)
+b.
+One of the cars in front of me opened its right front door (T3)
+</P>
+<P>
+b.
+My husband had entered the intersection when Mr. X's car hit
+the front of the vehicle.
+</P>
+<P>
+Conversely, transference of properties can be made from the car to the
+ driver, as in <CREF/> or <CREF/>.  In <CREF/>, objects (here the bumper) belonging to the vehicle are treated as belonging to
+ the driver.  In <CREF/>, the property of ``rolling along'' (the literal meaning of the verb rouler) is transferred to the
+driver.
+</P>
+<P>
+(7)
+b.
+my bumper (T11)
+</P>
+<P>
+b.
+Je roulais (I was driving, literally I was rolling)
+</P>
+<P>
+This use of metonymy follows the coercion of semantic types (see
+ <REF/>) in a predictable way:  the properties being used to make an entity of one type (e.g. car:  ``inanimate
+mechanical object'') into an entity of another type (e.g. driver:  ``human agent'') are extractible in a regular way from the
+predicate (e.g. squeeze:  ``requires an agentive subject'').
+</P>
+<P>
+This coercion, economical for W because it allows a greater
+conciseness, requires additional work on the part of R, because
+R must make some inferences to undo it and to find the referent
+of some expression.  For instance, a number of inferences, some of
+them spatial, are necessary to find the identity of the agent, i.e. the
+ passenger in the right front seat, in <CREF/>. 
+</P>
+<P>
+Finding the exact referent of an expression is necessary in order to
+ block wrong inferences.  For instance, in <CREF/>, the 1st person refers successively to the car and to the driver:
+</P>
+<P>
+<ITEMIZE>
+<ITEM>in I had switched on my blinker, the referent of I is the driver;
+</ITEM>
+<ITEM>being stopped can be understood with I referring
+to the driver as well as to the vehicle;
+</ITEM>
+<ITEM>in the last sentence, the word me must refer to the
+vehicle:  from this text, R would never conclude that the
+driver's left cheek had been bruised.
+</ITEM>
+</ITEMIZE>
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  Parameter B </HEADER>
+<P>
+When setting to the task of writing such a report, the writer knows
+parameter B, the constraint that only about a paragraph may be used to
+ relate the accident.  At the same time, W must not forget any important information whose absence
+would prevent R from discovering the correct content P.
+</P>
+<P>
+So, W is thus faced with two goals:  to be exhaustive and to
+ be concise. These aims are not contradictory but force W to select the
+information that will be given:  the text T must provide all the
+information that is necessary in order to be understood, but only that
+ much.  We rediscover here Grice's Maxims <REF/>, in particular  the Maxim of Quantity, or Ducrot's exhaustivity law <REF/>. Every detail mentioned by W can be assumed to be significant
+and every adjective and adverb will carry some significance for the
+ narration, as in <CREF/>, where extremely relevant modifiers are piled up after the head noun.
+</P>
+<P>
+(8)
+the road on which the intense traffic is going
+one-way in two lanes; (T5)
+</P>
+<P>
+This constraint on the choice of information to give, which we call
+``W's selection problem'' and which we will later exploit to
+infer some argumentative points, is part of the wider language
+conventions LC and constitutes a ``meta-knowledge'', essential
+for the success of communication.
+</P>
+<P>
+Because of ``W's selection problem'', W will generally
+mention an event or an entity only in case its presence cannot be
+deduced from K or from other types of shared background
+knowledge, and only in case an explicit reference is absolutely
+necessary to understand the text.  From this, it follows that the
+number of entities introduced in the text will be kept to a minimum.
+We can schematize this ``Minimality Assumption'' as follows:
+</P>
+<P>
+(9)
+Minimality Assumption:
+  W's selection problem + Maxim of Quantity 
+  -] minimal number of entities introduced
+</P>
+<P>
+We can see a direct application of the ``Minimality Assumption'' in
+ <CREF/>: 
+</P>
+<P>
+(10)
+I was driving on the right hand side of the road when a vehicle
+arriving in front of me in the curve was completely thrown off course.
+Keeping as close as possible to the right, I wasn't able to avoid the car
+which was coming with great speed.  (T8)
+</P>
+<P>
+ The text in <CREF/> mentions only two vehicles.  The first one, W's, is implicit in I was driving.  The other one
+is mentioned in two different expressions, a vehicle arriving in
+front of me in the curve and the car which was coming with
+great speed.  It is clear that the second expression is anaphoric
+to the first, but this coreference is not explicit in the text.
+</P>
+<P>
+The coreference is allowed first by the use of two compatible terms:
+indeed a car is a particular type of vehicle.  This fact can be
+extracted from a hierarchy of concepts which is part of the background
+knowledge K (a car is the most typical kind of vehicle).  Secondly, this coreference is licensed by the use of the
+definite article, which allows the inference that the entity has
+already been mentioned.  Finally, it is confirmed by the ``Minimality
+Assumption'', which prevents the introduction of a third vehicle which
+ would not play any role in the scene. 
+</P>
+</DIV>
+<DIV ID="2.3" DEPTH="2" R-NO="3"><HEADER>  Parameter C </HEADER>
+<P>
+In many of our texts, the accident is explicitly mentioned with verbs
+such as percuter, endommager, toucher, heurter (``collide'',
+``damage'', ``touch'', ``hit''), or with nouns such as choc,
+collision (``impact'', ``collision'').  But this is not the case in
+ <CREF/>, a text for which, if it was another type of narrative, we might imagine other endings to the incident (e.g. but I was able
+to swerve and avoid it).
+</P>
+<P>
+(11)
+We were in Saint-Ouen, I was surprised by the person who
+braked in front of me, not being able to change lanes, and the road
+being wet, I couldn't stop completely in time (T15)
+</P>
+<P>
+We can see here the effect of Parameter C:  since these texts are
+accident reports, the series of events they relate must by default
+contain an accident.  The interpretation of the texts often requires
+the reconstruction of an impact between the two vehicles, otherwise
+the incident which is described would not warrant the existence of the
+report.
+</P>
+<P>
+The existence of the impact can then be deduced from a combination of
+several clues, some linguistic, some inferential.  Among the former,
+we often find the combination of the negation with a verbal group of
+the form ``can/be able to + V'', for instance I couldn't stop
+ completely in time in <CREF/>, or I wasn't able to avoid the  car which was coming with great speed in <CREF/>. 
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    Argumentation
+</HEADER>
+<P>
+So far, we have examined the texts from a purely factual point of
+view.  Now, we take into account the argumentative aspect of these
+texts.  Indeed, the authors know that these few lines, meant for their
+insurance company, may contribute to the final decision about their
+share of legal and financial liability.  So, they will try to
+minimize their own responsibility.  There are two ways W can
+justify his own behavior and make excuses for it:
+</P>
+<P>
+A.
+trying to push the blame onto his opponent by accusing him
+of an abnormal behavior;
+</P>
+<P>
+B.
+contrasting what was expected and what happened in reality,
+by invoking unforeseable circumstances.
+</P>
+<P>
+With either strategy, W must first show that he has done
+everything that was required in the given circumstances and will
+always try to appear as innocent as possible.
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>  Strategy A: Blaming the other driver </HEADER>
+<P>
+With strategy A, W wants to suggest or to say explicitly that
+the other driver is at fault.  Background knowledge K may be
+used implicitly by W to suggest that his opponent has
+misbehaved, and it also allows R to infer which behaviour is
+ ``right'' and which one is ``wrong''.  For instance, in <CREF/>, it is clear, but not explicitly mentioned, that the driver of vehicle B
+did something illegal, since in France one must pass on the left.
+</P>
+<P>
+(12)
+The driver of vehicle B passed me on the right.  (T11)
+</P>
+<P>
+ In <CREF/>, since vehicle B was not respecting the ground markings it made a mistake in ``cutting back in'' on W's vehicle.  Of
+course, W has taken care to mention that his own vehicle was
+in the correct lane.
+</P>
+<P>
+(13)
+I was driving in my vehicle A in the right lane reserved for
+vehicles going straight ahead.  Vehicle B was driving in the left lane
+reserved for vehicles going left (ground markings with arrows).  It
+cut back in on my vehicle. (T12)
+</P>
+<P>
+These two examples show the importance of implicit knowledge, but
+blaming the opponent can also be done explicitly.  Besides the example
+ in <CREF/>, where the truck driver is clearly said to be  responsible for the manoeuver, there are lexical clues, such as slalom in <CREF/> (the driver of <CREF/> is committing fault  after fault!), or blinding in <CREF/>, suggesting that  the other driver was at fault.  In example <CREF/>, even without the background knowledge of the French right-of-way rules, the
+words denies and right-of-way strongly accuse the
+other driver.  Driving at an excessive speed is of course a very
+ common characteristic of the other driver..., see <CREF/> and  <CREF/>. 
+</P>
+<P>
+(14)
+e.
+the latter turned left, forcing me to steer left
+to avoid it. (T2)
+</P>
+<P>
+e.
+According to the witness who was following me, the driver of
+vehicle B was doing a slalom between the cars. (T11)
+</P>
+<P>
+e.
+A vehicle with full white headlights
+blinding us struck us with great speed in the
+back of the vehicle, taking us into a series of barrel rolls before
+the vehicle stopped in a ditch. (T10)
+</P>
+<P>
+e.
+Vehicle B coming from my left, I find myself at the
+intersection, at moderate speed, about 40 km/h, when vehicle B hits my
+vehicle, and denies me the right-of-way from
+the right. (T4)
+</P>
+<P>
+e.
+at that moment vehicle B passed me with great
+speed (T9)
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>  Strategy B: Blaming unforeseable circumstances </HEADER>
+<P>
+Here, the indications are mostly at the lexical level (e.g. tre surpris ``to be surprised'') and make frequent use of the
+negation.
+</P>
+<P>
+(15)
+b.
+I was surprised by the person who braked in
+front of me, not being able to change lanes, and the
+road being wet (T15)
+</P>
+<P>
+b.
+I didn't expect that a driver would wish to pass
+me for there weren't two lanes marked on the portion of the road where
+I was stopped.  (T5)
+</P>
+<P>
+The use of negation is also a favorite clue to indicate an opposition
+between what should have happened and what actually occurred.
+</P>
+<P>
+(16)
+b.
+I wasn't able to avoid the car which was coming
+with great speed. (T8)
+</P>
+<P>
+b.
+and the road being wet, I wasn't able to stop
+completely in time. (T15)
+</P>
+<P>
+Another device is the reverse of the metonymy conflating the vehicle
+ and its driver which we saw in <CREF/>.  For instance, in  <CREF/>, it is not W, but the car which is the subject of the two verbs, as if it was responsible for the events.
+</P>
+<P>
+(17)
+on impact, and because of the slippery pavement, my vehicle
+skids, and hits the metal railing around a
+tree, whence a second front impact. (T4)
+</P>
+<P>
+ Of course the two strategies are not mutually exclusive; <CREF/> and  <CREF/> are actually instances of a mixture of both, in particular  <CREF/> where W piles up all sorts of attenuating circumstances and also emphasizes (immediately put the brakes
+on) his own appropriate reactions.
+</P>
+<P>
+(18)
+I was driving at about 45 km/h in a small one-way
+street where cars were parked on both sides.  Popping
+suddenly on my right coming out of a private building
+garage, Mrs.Glorieux's vehicle was at a very short
+distance from my vehicle; passage being impossible:
+surprised, I immediately put the brakes on but the impact
+was unavoidable.  (T14)
+</P>
+<P>
+Morover, the authors may choose to describe only that part of reality
+which is in their favor, and the reader must thus be able to reconstruct
+the items that were left out (intentionally or not).
+</P>
+<P>
+With strategy B, linguistic clues include the use of reflexive verbs
+(la porte s'est ouverte ``the door opened'') and of the
+passive voice (j'ai t dport ``I was thrown
+off course'') instead of a plain active voice.  These constructions,
+by suppressing the agent, suggest that W was not involved in
+the course of events and cannot be held responsible for what happened.
+We also find here all the adverbials and modifiers denoting unexpected
+ events or unusual states of affairs.  In addition to <CREF/>, some  more examples are given in <CREF/>. 
+</P>
+<P>
+(19)
+c.
+but I hit the second car which hadn't yet gone
+through the stop-sign. (T1)
+</P>
+<P>
+c.
+I wasn't able to avoid the car which was coming with great
+speed (T8)
+</P>
+<P>
+c.
+at that moment vehicle B passed me with great speed (T9)
+</P>
+</DIV>
+<DIV ID="3.3" DEPTH="2" R-NO="3"><HEADER>    Resolving Ambiguity and Drawing Inferences
+</HEADER>
+<P>
+These texts provide a number of examples of clearcut ambiguity between
+two situations A and B, which an argumentative type of justification
+helps resolve.  The question that allows resolving the ambiguity is:
+``What advantage would there be for W in implying situation A?
+or in implying situation B?''.  We go in more details into some
+examples.
+</P>
+<DIV ID="3.3.1" DEPTH="3" R-NO="1"><HEADER>  Lexical Ambiguity </HEADER>
+<P>
+ As shown in <CREF/>, the original French text of the example  given in <CREF/> presents a common kind of ambiguity, since in French, the word droite is ambiguous between the two
+ interpretations right and straight. 
+</P>
+<P>
+(20)
+Je roulais sur la partie droite de la chausse (T8)
+</P>
+<P>
+I was driving on the (right-hand side)/(straight portion) of the road
+</P>
+<P>
+Here, even though the whole text can also be interpreted with the droite/straight meaning, the droite/right interpretation is
+more plausible.  However, only an argumentative type of reasoning can
+lead R to prefer the latter.
+</P>
+<P>
+Since the fact that in France one drives on the right is well-known,
+in specifying that he was driving on the right side of the
+road, W violates the Maxim of Quantity (i.e. not to say
+anything superfluous) and therefore must be taken as intending to
+convey some other information.  In this case, it must be in order to
+assert that his behavior was conforming to the ``Rules of the Road'',
+which is a pertinent fact to mention.  Here, informational redundancy
+by itself carries some information which allows inference.
+</P>
+<P>
+We can thus formulate the following rule:
+</P>
+<P>
+(21)
+In case of ambiguity, prefer the interpretation which allows R
+to infer a ``correct behavior'' on W's part.
+</P>
+</DIV>
+<DIV ID="3.3.2" DEPTH="3" R-NO="2"><HEADER>  Time Reference Ambiguity </HEADER>
+<P>
+ In example <CREF/>, repeated here as <CREF/> for convenience, the use of the pluperfect had switched on is ambiguous.
+</P>
+<P>
+(22)
+Being momentarily stopped in the right lane on Boulevard des
+Italiens, I had switched my blinker on; I was at a stop
+and getting ready to change lanes.  Vehicle B coming from my left
+squeezed too close to me and damaged the whole left front side.  (T7)
+</P>
+<P>
+The pluperfect implies that the process being talked about is
+perceived with another past event as a point of reference, which may
+not yet have been mentioned (the situation is exactly parallel in both
+French and English).  Here, two different referential situations can
+be envisaged, with two different consequences:
+</P>
+<P>
+<ITEMIZE>
+<ITEM>If the accident itself is chosen as the point of reference,
+switching the blinker on signals a future change of lanes.  It must
+therefore be the left blinker.  This conclusion requires geometrical
+reasoning:  ``If X is stopped in the right lane and if X wants to
+change lanes, X can only go left''.
+</ITEM>
+<ITEM>If the time of stopping is chosen as the point of reference,
+switching the blinker on is prior to the time of stopping and thus
+signals it.  It must then be the right blinker, since the vehicle is
+in the right lane.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+To make a decision, arguments of the ``Maxims'' type must be used.
+R cannot assume that too much information is present in the
+text.  The fact that the blinker would be switched on before stopping
+would not be relevant since the accident occurred after the act of
+stopping, when W started again.  On the other hand, the fact
+that W did switch the blinker on before starting again is very
+relevant from an argumentative point of view, since the message
+conveyed is then ``W behaved in the right way and did what was
+ required''.  Therefore, by appealing to the rule proposed in    <CREF/>, the first interpretation is chosen and R may conclude that
+W had his left blinker on.
+</P>
+</DIV>
+<DIV ID="3.3.3" DEPTH="3" R-NO="3"><HEADER>    Action or Intention?
+</HEADER>
+<P>
+Sometimes, the problem for R is to determine whether an action
+presented as an intended future event has remained at a purely
+intentional level or whether actions have been taken to attain it.
+For instance, when the intended action belongs to a script with
+sequential steps, the question arises whether some of the preparatory
+actions belonging to the script have already been accomplished.
+</P>
+<P>
+ In <CREF/>, we saw that there were two possible choices for a point of reference in the interpretation of the pluperfect.  In
+addition, the verb s'apprter  can have several
+interpretations.  Like to get ready (which we give here as its
+translation), it can mean to be about to and then it is a
+simple aspectual auxiliary focussing on the beginning of the action
+(inchoative).  It can also have a more agentive interpretation and
+then it means to actively prepare for.
+</P>
+<P>
+In the inchoative to be about to interpretation, the action of
+``switching the blinker on'' is an event independent of ``changing
+lanes''; in the agentive to prepare for interpretation, that
+same action corresponds to one of the preparatory acts.  But more
+crucially, in the agentive interpretation, W may already have
+started changing lanes and then probably would be at fault, while in
+the inchoative reading, W would still be stopped and would be
+innocent.
+</P>
+<P>
+It seems that in most cases, such an intended future event is more
+than simply intentional and that W has indeed already started
+to act.  Otherwise it would not be possible to explain the accident in
+ <CREF/>, since there would be no reason for W's car to have been damaged if W hadn't already started turning left.
+</P>
+<P>
+ Similarly in the case of the texts given in <CREF/> and <CREF/> below, the only plausible reconstruction of the accident requires
+vehicle ``A'' to have already started the action which is presented as
+ an intention (Wanting to pass a hauler in <CREF/> and I  wanted to enter the second lane in <CREF/>). 
+</P>
+<P>
+(23)
+Wanting to pass a hauler with its right blinker
+on, the latter turned left, forcing me to steer left to avoid it.  The
+car skidded on the wet pavement and struck a sidewalk then a fence
+straight ahead.  The truck driver had indeed switched on his left
+blinker, but the trailer was inverting the signal to the right.  Not
+having touched me, the driver declared himself unconcerned by the
+situation and refused to draw a report.  Having left my car to call a
+mechanic, I came back to find it with the right back door bashed in
+with no note left by the guilty party.  (T2)
+</P>
+<P>
+(24)
+I was stopped at the intersection wishing to take the road on
+which the intense traffic is going one-way in two lanes; as the last
+vehicle of the flow was coming, I wanted to enter
+the second lane, leaving the first one free for it.  The
+moment I started, I heard the shock in the back; I wasn't expecting a
+driver would wish to pass me for there weren't two lanes marked on the
+portion of the road where I was stopped.  (T5)
+</P>
+<P>
+Instead of using an imperfective verbal form (i.e. tant en
+train de dpasser un semi-remorque (``while passing a hauler'')
+ in <CREF/>, or j'tais en train de tourner  gauche  (``I was turning left'') in <CREF/>) which would clearly indicate that the action had already started, W chooses the intentional
+form and in doing so, creates an ambiguity for R:  ``Had W actually already done something or not?''.  This lack of
+precision (or downright lie?)  is intentional and allows W to
+try to lessen his responsibility, which will succeed if R opts
+for a purely intentional reading of the verbal form.
+</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Conclusion </HEADER>
+<P>
+In this paper we have tried to show the importance of situational,
+cultural and textual presuppositions from the point of view of both
+the writer W and the reader R.  As this work
+constitutes a first step in the study of natural language semantics in
+the context of an NLP project, the approach adopted here is an attempt
+to automate the process of understanding these texts and deriving
+inferences from them.  Crucial issues for NLP are how to define and
+describe the different types of knowledge involved in the processes of
+writing and reading texts, and how to establish rules that mimic the
+reasoning involved in these activities.
+</P>
+<P>
+Here, we take advantage of the specificity of the texts - the authors
+narrate events leading to a car accident while trying to lessen their
+responsability - to circumscribe the type of knowledge required and
+to give some rules of interpretation, valid for this type of text, in
+this type of context.  We have determined four parameters, and two
+types of knowledge necessary for both the production and the
+interpretation of these reports.  Two of these parameters (A and C)
+and K belong to the factual domain, while the other two parameters (B
+and D) and LC pertain to discourse.
+</P>
+<P>
+For clarity of exposition, we have distinguished these two types of
+characteristics in our texts by examining first the factual content of
+the texts and then their argumentative aspect, but it is not always
+easy to separate them and we can also ask whether there actually can
+be a purely factual reading of a text that would not take into account
+discourse and argumentation phenomena.
+</P>
+<P>
+In any case, even if such a reading existed, it would be insufficient
+to account for the inferences that the reader can and must make from
+the textual data in order to reconstruct the events described by the
+text and to determine each participant's role in it.  We have shown
+for instance that inferences based on argumentation could often help
+the reader clarify the text or choose between several interpretations.
+We find here the well-known difficulty of precisely defining the
+border between semantics and pragmatics.
+</P>
+<P>
+It would be interesting to analyze the two corresponding texts by the
+two opponents reporting the same accident in order to establish which
+part of the information is objectively factual and shared by both
+texts, and which part of the information is argumentatively biased,
+thus better distinguishing the subjective part of both discourses.
+The omission of information, which was mentioned as one of the
+argumentative devices on the part of W and as a basis for
+inference on the part of R, would then become an even more
+important factor in the analysis.  Very few such pairs of texts are
+available, but in the continuation of this project, we may try to do
+some further work based on these.
+</P>
+<P>
+Lastly, we have shown that some inferences rely on assessing the
+relevance or the quality/quantity of the information given.  This
+assessment itself refers to a norm which is shared by the community of
+speakers and thus belongs to LC.  However, it remains extremely
+difficult to define this norm in advance and this type of inference,
+though crucial for language understanding, still appears beyond what
+is currently possible in NLP.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Barwise, J. (1988).
+``On the circonstancial relation between meaning and content'' in
+The situation in logic. CSLI n017, pp59-76.
+</P>
+<P>
+Ducrot, O. (1972).
+Dire et ne pas dire. Principes de smantique linguistique.
+Paris: Hermann
+</P>
+<P>
+Estival, D.  F. Gayral (to appear) ``Contexte et Infrence''.
+Journe ATALA:  Inter-PRC Smantique des Langues Naturelles,
+Paris,
+November 1993.  to appear in Traitement Automatique des
+Langues,  vol.35.
+</P>
+<P>
+Gayral, F. (1992).
+Smantique du langage naturel et profondeur variable : une
+premire
+approche. Thse de l'universit Paris-Nord, LIPN, Villetaneuse.
+</P>
+<P>
+Grice, H.P. (1975).
+`` Logic and conversation'', in Syntax and Semantics.
+New York: Academic Press.  pp.41-58.
+</P>
+<P>
+Rapport d'activit du groupe de travail inter-PRC (IA et CHM).
+(1990). Universit de Nancy.
+</P>
+<P>
+Kerbrat-Orecchioni, C. (1986).
+L'nonciation de la subjectivit dans le langage.
+Paris:  A. Colin.
+</P>
+<P>
+Pustejovsky, J. (1989).  ``Type Coercion and Selection''.
+Proceedings of WCCFL VIII, Vancouver.
+</P>
+<P>
+Schank, R.C.  R.P. Abelson (1977).
+Scripts, Plans, Goals and Understanding.
+Lawrence Erlbaum Associates, Hillsdale, New Jersey.
+</P>
+<DIV ID="4.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+   There is a predefined area on the
+printed form for the writer to write this text.
+Of course, this exhaustivity is not absolute, but is relative to the
+context for these texts.  There is an ``informational norm'' in any
+type of texts and the relevance of the information to be given is
+judged relative to this informational norm, which is very difficult to
+define precisely and which can only be known empirically (see
+ <REF/>). 
+</P>
+<P>
+The absence of information is as meaningful as its presence, but is
+much harder to assess, since in order to bring it to light, we need a
+basis for comparison.  In this context, the comparison could be
+provided by the opponent's accident report; although difficult to
+achieve, this would constitute an interesting study.
+See [] for a more detailed presentation and
+more examples of this type of inferences permitted in our texts.
+If the adjective droite means straight, its opposite is
+then courbe/curved, if it means right, the opposite is
+then gauche/left.
+The semantic interpretation of the verb itself can also help in making
+the choice, see next section.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

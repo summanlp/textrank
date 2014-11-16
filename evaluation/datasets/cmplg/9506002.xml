@@ -1,0 +1,1075 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Weak Subsumption Constraints for Type Diagnosis: An Incremental Algorithm</TITLE>
+<ABSTRACT>
+<P>
+We introduce constraints
+necessary for type checking a higher-order concurrent
+constraint language,
+and solve them with an incremental algorithm.
+Our constraint system extends rational unification
+by constraints 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ saying that ``x has at least the structure of y'',
+modelled by a weak instance relation between trees.
+This notion of instance has been carefully chosen
+to be weaker than the usual one which
+renders semi-unification undecidable.
+Semi-unification has more than once served to link
+unification problems arising from type inference
+and those considered in computational linguistics.
+Just as polymorphic recursion corresponds to subsumption
+through the semi-unification problem, our
+type constraint problem corresponds to weak
+subsumption of feature graphs in linguistics.
+The decidability problem for for feature
+ graphs has been settled by Drre <REF/>. 
+In contrast to Drre's, our algorithm is fully incremental
+and does not refer to finite state automata.
+Our algorithm also is a lot more flexible. It allows
+a number of extensions (records, sorts, disjunctive types,
+type declarations, and others)
+which make it suitable for type inference
+of a full-fledged programming language.
+Keywords: type inference, weak subsumption,
+unification, constraints, constraint programming
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+We give an algorithm which is at the heart of a type
+diagnosis system for a higher-order concurrent
+constraint language, viz. the 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+calculus
+ <REF/> which is the underlying  operational model of the programming language Oz <REF/>. The algorithm decides satisfiability of
+constraints
+containing equations 
+<!-- MATH: $x\gleich y$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+<!-- MATH: $x\gleich f(\ol{y})$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and constraints 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+over infinite constructor
+trees with free variables.
+The algorithm is given fully in terms of constraint simplification.
+One the one hand, this gives credit to the close
+relationship between type inference and constraint solving
+(e.g.,
+ <REF/>,<REF/>,<REF/> and many others).
+On the other hand it establishes yet another correspondence
+between unification problems arising from polymorphic type inference
+and unification based grammar formalisms:
+The most prominent one is the equivalence of
+ type checking polymorphic recursion <REF/>,<REF/>  with semi-unification <REF/>,<REF/>  both of which are
+undecidable in general. To avoid this undecidability,
+we chose a weaker instance relation to give semantics to
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+For example, we allow 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+as an instance
+of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+even if 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+On the type
+side, this type of constraints maintains some of the polymorphic
+flavour, but  abandons full parametric
+ polymorphism <REF/>. 
+</P>
+<P>
+We start out from the set of
+infinite constructor trees with holes (free variables).
+We give a semantics which interprets the tree assigned
+to a variable dually: As itself
+and the set of its ``weak'' instances.
+Our algorithm terminates, and can be shown to
+be correct and complete under this semantics.
+The decidability problem for our constraints turned out
+to be equivalent to weak subsumption over feature graphs
+ solved by Drre <REF/> for
+feature graphs with feature (but no arity) constraints.
+</P>
+<P>
+However, only half of Drre's two-step
+solution is a constraint solving
+algorithm. The second step relies on the
+equivalence of non-deterministic and deterministic
+finite state automata. In contrast, our algorithm
+decides satisfiability in a completely incremental
+manner and is thus amenable to be integrated
+ in an concurrent constraint language like Oz <REF/>  or AKL <REF/>. 
+</P>
+<P>
+The extension of our algorithm towards
+feature trees is easily possible
+ (see <REF/>). This allows to do type diagnosis for
+ records <REF/> and objects. An entirely set-based semantics allows
+to naturally extend the algorithm
+to a full-fledged type diagnosis system,
+covering - among other aspects - sorts, disjunctive types,
+and recursive data type declarations
+ <REF/>. 
+</P>
+<DIV ID="1.1" DEPTH="2" R-NO="1"><HEADER>  Type Diagnosis. </HEADER>
+<P>
+As an illustrating example for the form of type diagnosis
+we have in mind, consider the following 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+program:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+This program declares four variables x,y,z, and p. It defines
+a relational abstraction p, which states that its two arguments
+u and v are related through the equation 
+<!-- MATH: $v=cons(x\: u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  . Furthermore, it states the equality 
+<!-- MATH: $x\gleich f(y\: z)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+applies p to yy.
+This application 
+<!-- MATH: $\appl{p}{y}{y}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+reduces to a copy of
+the abstraction p with the
+actual arguments yy replaced for the formal ones uv:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Observe how the abstraction p is  defined by
+reference to the global variable x, while
+the value of x is defined through an application
+of p: 
+<!-- MATH: $\appl{p}{y}{y} \apc x\gleich f(y\: z)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Such a cycle is specific to the 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+calculus
+since no other language offers
+explicit declaration of logic variables global to an abstraction
+(be it logic, functional, or concurrent
+ languages, e.g., Prolog, ML <REF/>,  or Pict <REF/>). 
+</P>
+<P>
+The types of the variables involved are described by
+ the following constraint. For ease of reading, we slightly abuse notation and pick
+the type variables identical to the
+corresponding object variables:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $\langle u\: v\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the relational type of p,
+and the application gives rise to the constraint
+<!-- MATH: $\MS{y}{u} \apc \MS{y}{v}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+which says that y is constrained by both formal arguments
+of the procedure p.
+The subconstraint
+<!-- MATH: $x\gleich f(y\: z) \apc \MS{y}{v}  \apc v\gleich cons(x\: u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ reflects the cyclic dependency between x and p. It says
+that y be in the set of instances of
+v which depends through 
+<!-- MATH: $v\gleich cons(x\: u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ on x, and at the same time that x should be exactly
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+Type diagnosis along this line
+ is discussed in depth in <REF/>. 
+</P>
+</DIV>
+<DIV ID="1.2" DEPTH="2" R-NO="2"><HEADER>  Related Work. </HEADER>
+<P>
+Apart from the already mentioned work,
+related work includes investigations about membership
+ constraints (e.g., <REF/>), type analysis for untyped languages (Soft Typing)
+ <REF/>,<REF/>,<REF/>, constraint-based program analysis
+ <REF/>  and the derivation of recursive sets from programs <REF/>. For proofs and a detailed discussion of related work
+ see <REF/>. 
+</P>
+</DIV>
+<DIV ID="1.3" DEPTH="2" R-NO="3"><HEADER>  Plan of the Paper. </HEADER>
+<P>
+ This paper is structured as follows. In the Section <CREF/> below we present our constraints along with their semantics and
+ give necessary notation. Section <CREF/> gives a simple algorithm which is correct but non-terminating.
+ Section <CREF/> gives the rules of the full algorithm.  Section <CREF/> concludes and gives a brief outlook. 
+</P>
+</DIV>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    Constraints and Semantics
+</HEADER>
+<P>
+We assume a signature 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+of function
+symbols with at least two elements ranged over by
+<!-- MATH: $f,g,h,a,b,c$ -->
+f,g,h,a,b,c and an infinite
+set of base variables 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ranged over by
+<!-- MATH: $\Base{\chi}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+If V is a further set of variables then
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+stands for the set of all finite or infinite trees
+over signature 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and variables V. Trees of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ are always ranged over by s and t. The set of variables
+occurring in a tree t is denoted by 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Sequences of variables are written as 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+or 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+We build constraints over a set of
+constraint variables ranged over by x, y,
+z, u, v, w. Constraint variables must contain at least
+base variables. The syntax of
+our constraints 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is as follows:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+As atomic constraints we consider equations
+<!-- MATH: $x\gleich y$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+or 
+<!-- MATH: $x\gleich f(\ol{y})$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+constraints 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Constraints are atomic
+constraints closed under conjunction. First-order
+formulae build over constraints 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are denoted by
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+We define 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to be the least binary
+relation on 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+such that 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is associative
+and commutative. For convenience, we shall use the
+following notation:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+As semantic structures we pick tree-structures
+which we also call 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+for some set V. The domain of a
+tree-structure 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the set of trees 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Its interpretation is defined by
+<!-- MATH: $\: f^{\IT{V}}(\ol{t}) = f(\ol{t})$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+We define the application
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+of f to a sequences of sets of trees 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ elementwise, 
+<!-- MATH: $f(\ol{T})= \{f(\ol{t}) \mid \ol{t}\in \ol{T}\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Given a tree 
+<!-- MATH: $s\in \IT{V}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+the set 
+<!-- MATH: $\inst{V}{s}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ of weak instances of s is defined as the greatest fixed point of:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Notice that this definition implies
+<!-- MATH: $f(a\ b) \in \inst{V}{f(x\ x)}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+even if 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Let V1, V2 be two sets whose elements we call
+variables. A V1-V2-substitution 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a
+mapping from V1 to 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+By homomorphic extension, every
+substitution can be extended to a mapping from 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ to 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The set of strong instances of s
+is defined by
+<!-- MATH: $\ainst{V}{s} =
+\{\sigma(s) \:|\: \mbox{$\sigma$\space is a $\V(s)$ -$V$ -substitution}\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+. Note that 
+<!-- MATH: $\ainst{V}{s} \subseteq \inst{V}{s}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and that
+<!-- MATH: $f(a\: b)\not\in \ainst{V}{f(x\: x)}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Using 
+<!-- MATH: $\ainst{V}{s}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+instead of 
+<!-- MATH: $\inst{V}{s}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+would
+make satisfiability of our constraints equivalent to
+semi-unification and undecidable
+ <REF/>,<REF/>. 
+</P>
+<P>
+Let 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+be a V1-V2-substitution,
+<!-- MATH: $\{x,y,\ol{z}\}\subset V_1$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ constraints such that 
+<!-- MATH: $\V(\phi)\subseteq V_1$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\V(\psi)\subseteq V_1$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+ Then we define:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+A V1-V2-solution of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a V1-V2-substitution
+satisfying 
+<!-- MATH: $\models_{\sigma} \phi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+A constraint 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is called
+satisfiable, if there exists a V1-V2-solution for
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The notion of 
+<!-- MATH: $\models_\sigma$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+extends to arbitrary first-order
+formulae 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in the usual way.
+We say that a formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is valid, if 
+<!-- MATH: $\models_\sigma
+\Phi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+holds for all V1-V2-substitutions 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+with
+<!-- MATH: $\V(\Phi)\subseteq V_1$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+In symbols, 
+<!-- MATH: $\models \Phi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+Our setting is a conservative extension of
+the usual rational unification problem. This means
+that free variables in the semantic domain do not affect
+equality constraints. A constraint 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is satisfiable in the
+tree-model 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+if there
+exists a 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -V-solution of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The trees of
+<!-- MATH: $\IT{\emptyset}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are called ground trees.
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The statement would be wrong for 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ 's
+containing weak subsumption constraints. For instance,
+consider the following 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+with 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ :
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+This 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is not satisfiable in the model of ground trees,
+since the set 
+<!-- MATH: $\inst{\emptyset}{t}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a singleton for
+all ground trees t, whereas any V1-V2-solution 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+of
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+has to satisfy
+<!-- MATH: $\{a,b\} \subseteq \inst{V_2}{\sigma(z)}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+.  However, there exists a 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -solution
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is an singleton:
+<!-- MATH: $\sigma(x) \Sp{=} a\:,
+\sigma(y) \Sp{=} b\:,
+  \sigma(z) \Sp{=} v\:$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Weak Subsumption vs. Sets of Weak Instances. </HEADER>
+<P>
+In the remainder of this section we
+compare our sets of weak instance with Drre's
+notion of weak subsumption.
+Let us consider constructor
+trees as special feature trees with integer-valued features,
+a distinguished feature
+ label (e.g., <REF/>,<REF/>), and a distinguished feature arity.
+Given feature constraints x[f]y saying that xhas direct subtree y at feature f, the equation
+<!-- MATH: $x\gleich f(y_1\dots y_n)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+can be considered
+ equivalent to: 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Let us write 
+<!-- MATH: $s[f]\!\!\downarrow$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to say that
+the tree s has some direct subtree at f.
+A simulation between 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a relation
+<!-- MATH: $\Delta \subseteq \IT{{V_1}} \times \IT{{V_2}}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+satisfying:
+If 
+<!-- MATH: $(t,s) \in \Delta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+then
+</P>
+<P>
+Now, the weak subsumption preorder 
+<!-- MATH: $\weaksub^V$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined by:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+We have the following lemma:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+A similar statement can be derived for the set of strong
+instances
+and a strong subsumption preorder
+ following <REF/>. The difference between 
+<!-- MATH: $\weaksub^V$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and Drre's
+notion of weak subsumption is that he does not require
+Arity Simulation, while we naturally do
+since we  start
+from constructor trees. For type checking, constructor
+trees seem more natural: For illustration note that
+the arity of a procedure is essential type information.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    A Non-terminating Solution
+</HEADER>
+<P>
+In order to solve our constraints one could come up
+with the system
+ given in Figure <CREF/>. Besides the three usual unification rules for
+rational trees, the only additional rule is (Descend).
+This algorithm is correct and very likely to be complete
+in that for an unsatisfiable constraint 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+there is a derivation
+from 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+However, this intuitive algorithm loops due to the introduction
+of new variables.
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Note that some form of descending is necessary in order to derive the clash
+from the inconsistent constraint
+<!-- MATH: $y \gleich f(u) \apc u\gleich a \apc z \gleich f(x) \apc
+\MS{x}{y} \apc \MS{x}{z} \apc \phi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>    Algorithm
+</HEADER>
+<P>
+To consider trees with free variables as set of instances
+means that we need to compute intersections of such sets
+and to decide their emptiness.
+When we simplify 
+<!-- MATH: $\MS{x}{y}\apc \MS{x}{z}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ in a context 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+we have to compute the intersection of the
+sets of instances of y and z.
+In order to avoid the introduction of new variables we
+add a new class of variables to represent such intersections,
+and one new constraint.
+Intersection variables are defined as nonempty
+finite subsets of base variables. In order
+capture the intended semantics, we
+write 
+<!-- MATH: $\chi_1\Cap\ldots\Cap \chi_n$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+instead of
+<!-- MATH: $\{\chi_1\}\cup \ldots \cup\{\chi_n\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The equality 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+on intersection variables is the equality
+on powersets, which  satisfies:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+We call an x a component of y, if
+<!-- MATH: $y\equiv \IS{x}{z}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+for some z.
+The set of components of a variable x is denoted by
+<!-- MATH: $\VarComp{x}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Note that 
+<!-- MATH: $\IS{x}{y}\in \V(\phi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>  Acknowledgements. </HEADER>
+<P>
+We would like to thank Ralf Treinen for pointing
+us to Drre's paper and the anonymous referees
+for useful remarks.
+The research reported in this paper has been supported by the
+Bundesminister fr Bildung, Wissenschaft, Forschung und
+Technologie (FTZ-ITW-9105), the Esprit Project ACCLAIM (PE 7195),
+the Esprit Working Group CCL (EP 6028), and a fellowship of the
+Graduiertenkolleg 'Kognition' at the Universitt des Saarlandes
+of the first author.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>    Outlook
+</HEADER>
+<P>
+We have presented an algorithm for deciding
+satisfiability of constraints over infinite
+constructor trees with holes.
+Our motivation to solve such constraints
+grew out of a type inference problem. Formally,
+the problem is equivalent to type checking a weak form
+of polymorphic recursion. Type checking
+polymorphic recursion is equivalent to
+semi-unification and to subsumption of feature graphs.
+All three are undecidable
+ <REF/>,<REF/>,<REF/>. We establish a similar correspondence between
+a type inference problem and
+weak subsumption of feature graphs:
+The latter has been investigated by Drre
+looking for a logical treatment
+of coordination phenomena in unification based
+ grammar formalisms <REF/>. Our starting point from the constraint language Oz however
+lead us to an incremental algorithm, in contrast
+to the automata based solution of Drre.
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+A. Aiken and E. Wimmers.
+Type Inclusion Constraints and Type Inference.
+In ACM Conference on Functional Programming and Computer
+  Architecture, pages 31-41, Copenhagen, Denmark, June 1993.
+</P>
+<P>
+Rolf Backofen.
+Expressivity and Decidability of First-order Languages over
+  Feature Trees.
+Doctoral Dissertation. Universitt des Saarlandes, Technische
+  Fakultt, 66041 Saarbrcken, Germany, 1994.
+</P>
+<P>
+R. Cartwright and M. Fagan.
+Soft Typing.
+In ACM Conference on Programming Language Design and
+  Implementation, pages 278-292, June 1991.
+</P>
+<P>
+Jochen Drre.
+Feature-Logic with Weak Subsumption Constraints.
+ In Rupp et al. <REF/>, chapter 7, pages   187-203.
+</P>
+<P>
+Jochen Drre and William C. Rounds.
+On Subsumption and Semiunification in Feature Algebras.
+In IEEE Symposium on Logic in Computer Science, pages 300-310,
+  1990.
+</P>
+<P>
+T. Frhwirth, E. Shapiro, M. Y. Vardi, and E. Yardeni.
+Logic Programs as Types for Logic Programs.
+In IEEE Symposium on Logic in Computer Science, pages 300-309,
+  1991.
+</P>
+<P>
+F. Henglein.
+Type Inference and Semi-Unification.
+In ACM Conference on LISP and Functional Programming, pages
+  184-197, January 1988.
+</P>
+<P>
+Robert Harper, Dave MacQueen, and Robin Milner.
+Standard ML.
+Technical Report ECS-LFCS-86-2, Department of Computer Science,
+  University of Edinburgh, 1986.
+</P>
+<P>
+Sverker Janson and Seif Haridi.
+Programming Paradigms of the Andorra Kernel Language.
+In International Logic Programming Symposium, pages 167-186,
+  1991.
+</P>
+<P>
+Dexter Kozen, Jens Palsberg, and Michael I. Schwartzbach.
+Efficient Inference of Partial Types.
+Journal of Computer and System Sciences, 49(2):306-324, 1994.
+has also appared in Proc. FOCS, pp.363-371.
+</P>
+<P>
+A. Kfoury, J. Tiuryn, and P. Urzyczyn.
+The Undecidability of the Semi-Unification Problem.
+In ACM Symposium on Theory of Computation, pages 468-476, May
+  1990.
+</P>
+<P>
+A. J. Kfoury, J. Tiuryn, and Urzycyn.
+Type Recursion in the Presence of Polymorphic Recursion.
+ACM Transactions on Programming Languages and Systems, pages
+  290-311, 1993.
+</P>
+<P>
+Martin Mller and Joachim Niehren.
+A Type is a Type is a Type.
+Research report, DFKI, Stuhlsatzenhausweg 3, D-66123 Saarbrcken,
+  Germany, 1995.
+In Preparation.
+</P>
+<P>
+Martin Mller.
+Type Diagnosis for a Higher-Order Concurrent Constraint
+  Language.
+Doctoral Dissertation. Universitt des Saarlandes, Technische
+  Fakultt, 66041 Saarbrcken, Germany, 1996.
+In Preparation.
+</P>
+<P>
+Alan Mycroft.
+Polymorphic Type Schemes and Recursive Definitions.
+In International Symposium on Programming, number 167 in
+  Lecture Notes in Computer Science, 1984.
+</P>
+<P>
+Joachim Niehren and Andreas Podelski.
+Feature Automata and Recognizable Sets of Feature Trees.
+In Tapsoft, pages 356-375, April 1993.
+</P>
+<P>
+Joachim Niehren, Andreas Podelski, and Ralf Treinen.
+Equational and Membership Constraints for Infinite Trees.
+In Claude Kirchner, editor, Proceedings of the RTA '93, pages
+  106-120, 1993.
+</P>
+<P>
+Benjamin C. Pierce and David N. Turner.
+PICT User Manual.
+Technical Report to appear, LFCS, Edinburgh, 1995.
+Version 3.5g.
+</P>
+<P>
+C. J. Rupp, M. A. Rosner, and R. L. Johnson, editors.
+Constraints, Languages, and Computation.
+Academic Press, 1994.
+</P>
+<P>
+Gert Smolka.
+A Foundation for Concurrent Constraint Programming.
+In Jean-Pierre Jouannaud, editor, Constraints in Computational
+  Logics, volume 845 of Lecture Notes in Computer Science, pages 50-72,
+  Mnchen, Germany, 7-9 September 1994.
+</P>
+<P>
+Gert Smolka and Ralf Treinen.
+Records for Logic Programming.
+In International Conference and Symposium on Logic Programming,
+  pages 240-254, November 1992.
+Has appeared in the Journal of Logic Programming, April 1994.
+</P>
+<P>
+Gert Smolka and Ralf Treinen, editors.
+DFKI Oz Documentation Series.
+Stuhlsatzenhausweg 3, D-66123 Saarbrcken, Germany, 1994.
+Documentation and System available through anonymous ftp from
+  ps-ftp.dfki.uni-sb.de or through WWW from http://ps-www.dfki.uni-sb.de.
+</P>
+<P>
+Mitchell Wand.
+A Simple Algorithm and Proof for Type Inference.
+Fundamenta Informaticae, 10:115-122, 1987.
+</P>
+<P>
+Andrew K. Wright and Robert Cartwright.
+A Practical Soft Type System for Scheme.
+Technical Report 93-218, Rice University, December 1993.
+</P>
+<DIV ID="5.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+   Note that
+<!-- MATH: $\abstr{p}{u}{v}{v\gleich cons(x\: u)}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is different from a
+        named 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+abstraction 
+<!-- MATH: $p = \alam{u}{cons(x\: u)}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+because it is relational rather than functional,
+   and also different to the Prolog program
+!-- MATH: $p(u,v)\ \mbox{:-}\ v=cons(x\: u).$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+   because Prolog does not allow
+   variables to be global wrt. a predicate
+   but rather existentially quantifies x.
+  The formal account of the derivation of type constraints from programs
+   will be given in  <REF/>. 
+  This simpler encoding of constructor trees not using arity
+  constraints has been suggested by one of the referees.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

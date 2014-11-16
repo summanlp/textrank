@@ -1,0 +1,585 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Conserving Fuel in Statistical Language Learning: Predicting Data Requirements 1
+</TITLE>
+<ABSTRACT>
+<P>
+The paradigm for  NLP known as  STATISTICAL LANGUAGE
+LEARNING ( SLL) has flourished in recent times, being seen
+as a quick and easy way to get off the ground.
+Research systems have been launched at many  NLP
+problems including sense disambiguation (Yarowsky, 1992),
+anaphora resolution (Dagan and Itai, 1990),
+prepositional phrase attachment (Hindle and Rooth, 1993)
+and lexical acquisition (Brent, 1993).  This has all been fueled by
+the large text corpora which are
+increasingly available (Marcus et al., 1993).
+Since these systems learn to navigate language by consuming
+text, they are critically dependent on the data that
+drives them.
+In this paper I address the practical concern of predicting
+how much training data is sufficient for a given system.  First,
+I briefly review earlier results and show how these can be
+combined to bound the expected accuracy of a mode-based
+learner as a function of the volume of training data.
+I then develop a more accurate estimate of the expected
+accuracy function under the assumption that inputs
+are uniformly distributed.  Since this estimate is expensive
+to compute, I also give a close but cheaply computable
+approximation to it.  Finally, I report on a series of simulations
+exploring the effects of inputs that are not uniformly
+distributed.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Background </HEADER>
+<DIV ID="1.1" DEPTH="2" R-NO="1"><HEADER>  Do We Need To Know? </HEADER>
+<P>
+Even though text is becoming increasingly available, it is often
+expensive, especially if it must be annotated.  Consider the
+decisions facing the  SLL technology consumer, that is,
+the architect of a planned commercial  NLP system.
+For each module which is to employ  SLL, an appropriate technique
+must be selected.  If different techniques require different
+amounts of data to achieve a given accuracy,
+the architect would like to know what these requirements are in advance
+in order to make an informed choice.
+</P>
+<P>
+Further, once the technique is chosen, she must decide how much
+data to collect or purchase for training.  Because this data can be expensive,
+foreknowledge of data requirements is highly valuable.
+Thus, in order to make statistical  NLP technology practical,
+a predictive theory of data requirements is needed.
+Despite this need, very little attention has been paid to the
+ problem. 
+</P>
+</DIV>
+<DIV ID="1.2" DEPTH="2" R-NO="2"><HEADER>    Foundations For A Theory
+</HEADER>
+<P>
+All the  SLL systems mentioned above employ knowledge gained
+from a corpus to make decisions.  Abstractly, this knowledge
+can be represented as a mapping from observable features (inputs)
+to decision outcomes (outputs).  Following Lauer (1995) I will
+call each distinguished input a  BIN and each possible output
+a  VALUE.  There is a probability distribution across the bins
+representing how instances fall into bins.  Also, for each bin,
+there is a probability distribution across the set of values
+representing how instances in that bin take on values.
+For the system to perform accurately, most (but not necessarily
+all) of the instances falling in a particular bin must have the
+same value.
+</P>
+<P>
+In what follows I will make several assumptions: Training and test
+data are drawn from the same distributions.  The set of possible
+values is binary (examples include Hindle and Rooth, 1993 and
+Lauer, 1994).  The probability of the most likely value in each
+ bin is constant. Finally, I will only consider a simple learning algorithm: collect
+the training instances falling into each bin and then select
+the most frequent value for each.  This mode-based learner is
+employed directly in the unigram tagger of Charniak (1993, p49)
+and is at the heart of many systems.
+</P>
+</DIV>
+<DIV ID="1.3" DEPTH="2" R-NO="3"><HEADER>  Optimal Accuracy </HEADER>
+<P>
+There are two sources of error in statistical language
+learners of the kind we are considering.  First, since the
+values are not necessarily fully determined by the bins,
+no matter what value the learner
+assigns to a bin there will always be errors (the optimal
+error rate).
+Second, since training
+data is limited, the learner may not have sufficient data
+available to acquire accurate rules.
+The combination of these sources of error results in some
+degree of inaccuracy for the system.  We are interested in
+estimating the accuracy for various volumes of training
+data.  Since the optimal error rate is independent of the
+amount of training data,  it will always exist no matter how
+much data is used.
+As the amount of training data increases we
+expect the accuracy to get closer to this optimal.
+</P>
+<P>
+Let B be the set of bins, V the set of values, 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+the
+probability that an instance falls into the bin b and
+<!-- MATH: $\Pr(v \mid b)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+the probability of the value v given the
+bin b.  If we denote the most likely value in each bin as
+<!-- MATH: $v_b = \mbox{argmax}_{v \in V} \Pr(v \mid b)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+then the
+expected value of the optimal accuracy is determined by
+the likelihood of this value occurring in each bin.
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\mbox{OA} = \sum_{b \in B} \Pr(b) \Pr(v_b \mid b)
+\end{equation} -->
+</P>
+<P>
+If we know the probability that an algorithm will learn the
+value v for the bin b (denote this
+<!-- MATH: $\Pr(\mbox{learn}(b)=v)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ), then we can also calculate the
+expected accuracy rate:
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\mbox{EA} = \sum_{b \in B} \Pr(b) \sum_{v \in V}
+\Pr(\mbox{learn}(b)=v) \Pr(v \mid b)
+\end{equation} -->
+</P>
+<P>
+In Lauer (1995) several results are shown concerning the
+relationship of these two values.  I will summarise these
+ in section <CREF/> (see equations (<CREF/>)  and (<CREF/>)). 
+</P>
+</DIV>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  Existing Work </HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>    Empty Bins and Non-empty Bins
+</HEADER>
+<P>
+The most severe result of insufficient training data is that
+some bins can go without any training instances.  Since the
+learner has no indications about likely values for the bin it
+will be forced to guess.  To estimate how often this will
+occur, consider the way in which m training instances
+would fall into the bins.  For each bin, the probability
+that no training instances fall into it is:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+I will call such bins  EMPTY BINS.
+</P>
+<P>
+In Lauer (1995) it is shown that for any bin b:
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\Pr(\mbox{count}(b) = 0) < e^{-m/{\mid B \mid}}
+\end{equation} -->
+</P>
+<P>
+Lauer (1995) also bounds the expected
+accuracy of the mode-based learner when all bins are
+guaranteed to have at least one training instance.  When
+this is the case, it is shown that the expected error rate
+is always no worse than twice the optimal error rate.
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\mbox{EA} \ge (1-2(1-\mbox{OA}))
+\end{equation} -->
+</P>
+<P>
+This is quite a useful result, since we expect the optimal
+accuracy to be fairly high.  If the optimal
+predictions are 90% accurate, then a mode-based learner
+will be at least 80% accurate after learning on just
+one instance per bin.
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  Overall Expected Accuracy </HEADER>
+<P>
+Unfortunately, we cannot normally guarantee that no bins
+will be empty, since the corpus is typically a random
+ sample.  However, we can combine equations (<CREF/>)  and (<CREF/>) to arrive at a bound for the overall expected accuracy after training on a random sample.
+Over non-empty bins, we know that the error rate is no worse than
+twice the optimal error rate for those bins.
+Since we have assumed that 
+<!-- MATH: $\Pr(v_b \mid b)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is constant
+(call this p), we can infer
+that the optimal accuracy for the non-empty bins is
+the same as the optimal accuracy on all bins.  Thus:
+\mbox{EA}  =  \Pr(\mbox{non-empty}) \mbox{EA}(\mbox{non-empty})
++ \Pr(\mbox{empty}) \mbox{EA}(\mbox{empty}) \nonumber \\
+         \ge  (1-e^{-m/{\mid B \mid}}) \mbox{EA}(\mbox{non-empty})
+                + (e^{-m/{\mid B \mid}}) \mbox{EA}(\mbox{empty}) \nonumber \\
+         \ge  (1-e^{-m/{\mid B \mid}}) (1-2(1-\mbox{OA}))
+                + \frac{1}{2}e^{-m/{\mid B \mid}} \nonumber \\
+         =  (1-e^{-m/{\mid B \mid}}) (2p-1)
+                + \frac{1}{2}e^{-m/{\mid B \mid}}
+\end{eqnarray} -->
+The second step follows from the fact that
+<!-- MATH: $\mbox{EA}(\mbox{non-empty}) \ge \mbox{EA}(\mbox{empty})$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+ equation (<CREF/>).  The third step follows from  equation (<CREF/>). 
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    Theory
+</HEADER>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>  Estimating Expected Accuracy </HEADER>
+<P>
+ Given the assumptions in section <CREF/>, we can arrive at a better estimate of the expected accuracy
+when the distribution of bins is uniform (that is,
+<!-- MATH: $\Pr(b) = \frac{1}{\mid B \mid}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ).
+Let the total number of training instances in a bin b be nand the number of these instances with value v be
+<!-- MATH: $\mbox{count}(v,b)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ :
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+If n is even, we must also add an additional term of
+<!-- MATH: $1/2 {n \choose n/2} {\Pr(v \mid b)}^{n/2} (1-\Pr(v \mid
+b))^{n/2}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+This is because when there are equal numbers
+of both values in the bin, a random guess yields an
+expected accuracy of 50%.  In the arguments below, I will
+treat all values of n as odd in order to simplify.  The
+reader may check for herself that the results hold generally
+when the above extra term is included.
+</P>
+<P>
+Using the fact that V is binary, the total expected accuracy
+for test instances in bin bwhen it contains n training instances is:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+By summing over all possible numbers of training
+instances in a bin, we can arrive at an expression for the
+expected accuracy across all bins as follows:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+where 
+<!-- MATH: $\mbox{binomial}(j;k,p) = {k \choose j} p^j (1-
+p)^{k-j}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+To simplify this I have defined a function as follows:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+A result which may be easily obtained by expansion is:
+</P>
+<P>
+<!-- MATH: \begin{equation}
+G(m,r,1-p) = 1 - G(m,r,p)
+\end{equation} -->
+</P>
+<P>
+ Using the assumptions in section <CREF/> and the uniform bin probabilities we can now proceed to simplify:
+
+ The last step uses equation (<CREF/>) and 
+<!-- MATH: $\sum_{b \in B} \frac{1}{\mid B \mid} = 1$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>    A Computable Bound for G
+</HEADER>
+<P>
+The main difficulty with the function G is the
+appearance of 
+<!-- MATH: ${m \choose n}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Most corpus-based language learners
+use large corpora, so we expect the number of training
+instances, m, to be very large.
+So we need a
+more easily computable version of G.  The following argument
+leads to a fairly tight lower bound to G for suitably chosen
+values of kj (see below):
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The first step rearranges the order of addition.  The final
+step introduces a series of variables which limit the
+number of terms in the inner sum.  The inequality holds for
+all 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Notice that the kj may vary for each
+term of the outer sum.  Since 
+<!-- MATH: $n \le k_j \le m$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+we can use
+the following relation:
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\frac{m!}{(m-n)!} \ge (m-k_j)^n
+\end{equation} -->
+</P>
+<P>
+Letting 
+<!-- MATH: $x_j = r p \frac{(m-k_j)}{(1-r)}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+we can simplify as
+follows:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The last step introduces g and holds for all 
+<!-- MATH: $g \le (m-
+1)/2$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+This is because in practice only the first few terms
+of the outer sum are significant.  Thus for suitably chosen
+g, kj this is a cheaply computable lower bound for
+G.  A program to compute this to a high degree of
+accuracy has been implemented.
+</P>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Experiment </HEADER>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>    Skewed Bins
+</HEADER>
+<P>
+The assumption that bin probabilities are uniform is problematic.
+When bins are uniformly probable, the expected number of
+training instances in the same bin as a random test instance is
+<!-- MATH: $\frac{m}{\mid B \mid}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+(
+<!-- MATH: $= \sum_{b \in B} \Pr(b) \sum_{n=0}^{m}
+n \Pr(n \mbox{ training items fall into } b)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+).
+But most distributions in language are highly skewed.
+Zipf's law states that word types are distributed logarithmically
+(the nth most frequent word has probability proportional
+to 
+<!-- MATH: $\frac{1}{n}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ).  When this is true the expected number of
+training instances in the same bin as a random test instance is
+approximately 
+<!-- MATH: $\frac{1.6 m}{\log{(0.56 \mid B \mid)}^2}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ (
+<!-- MATH: $\gg \frac{m}{\mid B \mid}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ).  Thus we can expect much more
+information to be available about typical test cases.
+</P>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>  Simulations </HEADER>
+<P>
+ Since the mathematics in section <CREF/> cannot easily be generalised to different distributions,
+I have conducted several simulations in order to verify
+the mathematical results above and to explore the effect
+of using a skewed distribution of bins.
+</P>
+<P>
+These simulations use a fixed number of bins (10,000), allocating
+m training instances to the bins according to either
+a uniform or logarithmic distribution.  It then measures the
+correctness of the mode-based learner on 1000 randomly generated
+test instances to arrive at an observed correctness
+ rate. 
+</P>
+<P>
+This process (training and testing) is repeated 30 times for each run,
+with the mean being recorded as the observed accuracy.
+The standard deviation is used to estimate a 5% t-score confidence interval.
+</P>
+</DIV>
+<DIV ID="4.3" DEPTH="2" R-NO="3"><HEADER>  Results </HEADER>
+<P>
+ Figure <CREF/> shows five traces of accuracy as the volume of training data is varied.
+The lowest curve shows the old bound which can be achieved
+using the results in Lauer (1995), as represented by
+ equation (<CREF/>).  The other dotted curve shows  the expected accuracy predicted using equation (<CREF/>)  as approximated by the program described in section <CREF/>. The two further curves (with confidence interval bars) then show
+the results of simulations, using uniform and logarithmic bin
+distributions.
+</P>
+<P>
+As can be seen, the new bound given in this paper is accurate
+for uniform bin probabilities.  However, when the bins are
+logarithmically distributed learning converges significantly
+more quickly, as suggested by the reasoning about expected
+ number of relevant training instances (see section <CREF/>). Perhaps surprisingly though, the logarithmic distribution
+appears to eventually fall behind the uniform one once there is plenty
+of data.  This might be explained by the presence of very rare bins
+in the logarithmic distribution which thus take longer to learn.
+Both these observations are crucial to reasoning
+about data requirements for  SLL.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Conclusion </HEADER>
+<P>
+If commercial  NLP systems are to be developed from the current
+batch of research prototypes for  SLL, then a predictive theory
+of the data requirements of such systems is necessary.  In this paper
+I have explored the dependence of the expected accuracy of a simple
+statistical learner on the volume of training data.  When the
+probability distribution of inputs is uniform, I have shown how to
+compute the expected accuracy, a result backed up by simulations.
+In particular, an average of four training instances per bin can
+be expected to yield an error rate only 50% worse than the
+optimal error rate.
+</P>
+<P>
+When the distribution is non-uniform, simulations show that
+convergence can be much more rapid.  Error rates only 50% worse
+than optimal result from only three training instances per
+bin.  However,
+when data is abundant,
+non-uniform distributions result in higher error rates
+than the estimate produced by assuming uniformity.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Acknowledgements </HEADER>
+<P>
+I am grateful to Mark Johnson, without whom this work
+would not exist, and also to Robert Dale, Mark Dras, Mike Johnson and
+John Potter.  Financial support is gratefully acknowledged from the
+Australian Government and the Microsoft Institute.
+</P>
+<DIV ID="6.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+1
+ Brent, Michael.
+1993.
+From Grammar to Lexicon: Unsupervised Learning of Lexical Syntax.
+In Computational Linguistics, Vol 19(2),
+pp243-62.
+</P>
+<P>
+2
+ Charniak, Eugene.
+1993.
+Statistical Language Learning.
+MIT Press, Cambridge, MA.
+</P>
+<P>
+3
+ Dagan, I. and Itai, A.
+1990.
+A Statistical Filter For Resolving Pronoun References.
+In Proceedings of the Seventh Israeli Conference on
+Artificial Intelligence and Computer Vision, Ramat Gan, Israel. pp125-35.
+</P>
+<P>
+4
+ de Haan, Pieter.
+1992.
+Optimum Corpus Sample Size?
+In Leitner, Gerhard (ed.) New Directions in
+English Language Corpora.
+Mouton de Gruyter, Berlin.
+</P>
+<P>
+5
+ Hindle, D. and Rooth, M.
+1993.
+Structural Ambiguity and Lexical Relations.
+In Computational Linguistics Vol. 19(1),
+pp103-20.
+</P>
+<P>
+6
+ Lauer, Mark.
+1995.
+How Much Is Enough? Data Requirements for Statistical NLP.
+In Proceedings of the 2nd Conference of the
+Pacific Association for Computational Linguistics, Brisbane, Australia.
+cmp-lg/9509001
+</P>
+<P>
+7
+ Lauer, M. and Dras, M.
+1994.
+A Probabilistic Model of Compound Nouns.
+In Proceedings of the 7th Australian Joint
+Conference on Artificial Intelligence, Armidale, NSW, Australia.
+World Scientific Press, pp474-81. cmp-lg/9409003
+</P>
+<P>
+8
+ Marcus, M., Marcinkiewicz, M. A. and Santorini, B.
+1993.
+Building a Large Annotated Corpus of English: The Penn Treebank.
+In Computational Linguistics Vol 19(2),
+pp313-30.
+</P>
+<P>
+9
+ Yarowsky, David.
+1992.
+Word-Sense Disambiguation Using Statistical Models of
+Roget's Categories Trained on Large Corpora.
+In Proceedings of COLING-92, France, pp454-60.
+</P>
+<DIV ID="6.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  This paper has been
+ accepted for publication at the Eigth Australian Joint Conference
+ on Artificial Intelligence, Canberra, 1995.
+  See de Haan (1992) for an investigation of sample
+sizes for linguistic studies.
+  Note that this does not require that the most
+likely value be the same value in each bin; only that whatever
+the most likely value is has a constant probability.
+  The results were generated using an optimal
+value probability of p = 0.9 (thus the optimal accuracy rate is 90%).
+Simulations with other values of p did not differ qualitatively.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

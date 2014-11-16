@@ -1,0 +1,1319 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Efficient Tabular LR Parsing</TITLE>
+<ABSTRACT>
+<P>
+We give a new treatment of tabular LR parsing,
+which is an alternative to Tomita's generalized LR algorithm.
+The advantage is twofold. Firstly, our treatment is conceptually more
+attractive because it uses simpler concepts, such as grammar
+transformations and standard tabulation techniques also
+know as chart parsing. Secondly, the static and dynamic
+complexity of parsing, both in space and time, is significantly reduced.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+ The efficiency of LR(k) parsing techniques <REF/>  is very attractive from the perspective of natural language 
+processing applications.  
+This has stimulated the computational linguistics community to 
+develop extensions of these techniques to general context-free 
+grammar parsing. 
+The best-known example is 
+generalized LR parsing, also known as
+Tomita's algorithm, described by <REF/>
+and further investigated by, for example,
+<REF/> and <REF/>. 
+Despite appearances, the graph-structured stacks used to describe 
+Tomita's algorithm differ very little from parse tables, 
+or in other words,
+generalized LR parsing is one of the
+so called
+tabular parsing algorithms, among which also the 
+ CYK algorithm <REF/>  and Earley's algorithm <REF/> can be found. (Tabular parsing is also known as chart parsing.)
+</P>
+<P>
+In this paper we investigate the extension of LR parsing to general 
+context-free grammars from a more general viewpoint: tabular
+algorithms can often be described by the composition
+of two constructions. One example is given by <REF/>
+and <REF/>;
+the construction of pushdown automata from grammars and the
+simulation of these automata by means of tabulation yield different
+tabular algorithms for different such constructions.
+Another example, on which our presentation is based, was first
+suggested by <REF/>: a grammar is first transformed
+and then a standard tabular algorithm 
+along with some filtering condition 
+is applied
+using the transformed grammar. In our case, the transformation
+and the subsequent application of the tabular algorithm result in a new form
+of tabular LR parsing.
+</P>
+<P>
+Our method is more efficient than Tomita's algorithm in two respects.
+First, reduce operations are implemented in an efficient way,
+by splitting them into several, more primitive, operations
+(a similar idea has been proposed by <REF/> for Tomita's algorithm). 
+Second, several paths in the computation that must be 
+simulated separately by Tomita's algorithm are collapsed into a single 
+computation path, using state minimization techniques. 
+Experiments on practical grammars have indicated that there is a 
+significant gain in efficiency, with regard to both space and time requirements.
+</P>
+<P>
+Our grammar transformation produces a so called cover for 
+the input 
+grammar, which together with the filtering condition 
+fully captures the specification of the method, 
+abstracting away from algorithmic details such as data structures 
+and control flow. 
+Since this cover can be easily precomputed,  
+implementing our LR parser simply amounts to
+running the standard tabular algorithm.
+This is very attractive from an application-oriented perspective,
+since many actual systems for natural language processing are 
+based on these kinds of parsing algorithm.
+</P>
+<P>
+The remainder of this paper is organized as follows.
+ In Section <CREF/> some preliminaries are discussed.  We review the notion of LR automaton in Section <CREF/>  and introduce the notion of 2LR automaton in Section <CREF/>.  Then we specify our tabular LR method in Section <CREF/>,  and provide an analysis of the algorithm in Section <CREF/>.  Finally, some empirical results are given in Section <CREF/>,  and further discussion of our method is provided in Section <CREF/>.   
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    Definitions
+</HEADER>
+<P>
+Throughout this paper we use standard formal language notation.
+We assume that the reader is familiar with context-free
+ grammar parsing theory <REF/>.   
+</P>
+<P>
+A context-free grammar (<EQN/>)
+is a 4-tuple 
+<!-- MATH: $G = (\myterm,\nonterm,P,S)$ -->
+<EQN/>,
+where <EQN/>
+and <EQN/>are two finite disjoint sets of terminal 
+and nonterminal symbols, respectively, 
+<!-- MATH: $S \in \nonterm$ -->
+<EQN/>
+is the start symbol, 
+and P is a finite set of rules. Each rule has the form
+<!-- MATH: $A \de \alpha$ -->
+<EQN/>
+with 
+<!-- MATH: $A \in \nonterm$ -->
+<EQN/>
+and 
+<!-- MATH: $\alpha \in \myvar^*$ -->
+<EQN/>,
+where <EQN/>
+denotes 
+<!-- MATH: $\nonterm \cup \myterm$ -->
+<EQN/>.
+The size of G, written <EQN/>,
+is defined
+as 
+<!-- MATH: $\sum_{(A \de \alpha)\in P} \Size{A\alpha}$ -->
+<EQN/>;
+by  we
+mean the length of a string of symbols <EQN/>.
+</P>
+<P>
+We generally use symbols 
+<!-- MATH: $A, B, C, \ldots$ -->
+<EQN/>
+to range over 
+<!-- MATH: $\nonterm\!$ -->
+<EQN/>,
+symbols 
+<!-- MATH: $a,b,c, \ldots$ -->
+<EQN/>
+to range over <EQN/>,
+symbols X, Y, Z to range over <EQN/>,
+symbols 
+<!-- MATH: $\alpha, \beta, \gamma, \ldots$ -->
+<EQN/>
+to range over 
+<!-- MATH: $\myvar^*\!$ -->
+<EQN/>,
+and symbols 
+<!-- MATH: $v, w, x, \ldots$ -->
+<EQN/>
+to range over 
+<!-- MATH: $\myterm^*\!$ -->
+<EQN/>.
+We write <EQN/>
+to denote the empty string.
+</P>
+<P>
+A <EQN/>
+is said to be in binary form if 
+<!-- MATH: $\alpha \in \{\epsilon\} \cup \myvar\cup \nonterm^2$ -->
+<EQN/>for all of its rules
+<!-- MATH: $A\de\alpha$ -->
+<EQN/>.
+(The binary form does not limit
+the (weak) generative capacity of context-free 
+ grammars <REF/>.) For technical reasons, we sometimes use the augmented grammar 
+associated with G, defined as 
+<!-- MATH: $G^\dagger = (\myterm^\dagger,\nonterm^\dagger,P^\dagger,S^\dagger)$ -->
+<EQN/>,
+where <EQN/>,
+<EQN/>
+and <EQN/>
+are fresh symbols, 
+<!-- MATH: $\myterm^\dagger=\myterm\cup\{\bos,\eos\}$ -->
+<EQN/>,
+<!-- MATH: $\nonterm^\dagger=\nonterm\cup\{S^\dagger\}$ -->
+<EQN/>
+and 
+<!-- MATH: $P^\dagger=P\cup\{S^\dagger\de \bos S\eos\}$ -->
+<EQN/>.
+</P>
+<P>
+A pushdown automaton (<EQN/>)
+is a 5-tuple
+<!-- MATH: $\cA = (\myterm, \stack, T, \qin, \qfin)$ -->
+<EQN/>,
+where <EQN/>,
+<EQN/>
+and T are finite sets of input symbols, stack symbols
+and transitions, respectively;
+<!-- MATH: $\qin\in \stack$ -->
+<EQN/>
+is the initial stack symbol and
+<!-- MATH: $\qfin\in \stack$ -->
+<EQN/>
+is the final stack symbol.
+  Each transition has the form 
+<!-- MATH: $\delta_1\pda{z} \delta_2$ -->
+<EQN/>,
+where 
+<!-- MATH: $\delta_1, \delta_2 \in \stack^*$ -->
+<EQN/>,
+<!-- MATH: $1\leq\Size{\delta_1}$ -->
+<EQN/>,
+<!-- MATH: $1\leq\Size{\delta_2}\leq 2$ -->
+<EQN/>,
+and <EQN/>
+or z=a.
+We generally use symbols 
+<!-- MATH: $q, r, s, \ldots$ -->
+<EQN/>
+to range over <EQN/>,
+and
+the symbol <EQN/>
+to range over <EQN/>.
+</P>
+<P>
+Consider a fixed input string 
+<!-- MATH: $v \in \myterm^*$ -->
+<EQN/>.
+A configuration of the automaton is a pair 
+<!-- MATH: $(\delta,w)$ -->
+<EQN/>
+consisting
+of a stack 
+<!-- MATH: $\delta \in \stack^*$ -->
+<EQN/>
+and the remaining input w,
+which is a suffix of the input string v.
+The rightmost symbol of <EQN/>
+represents the top of the stack.
+The initial configuration has the form
+<!-- MATH: $(\qin, v )$ -->
+<EQN/>,
+where the stack is formed by the initial
+stack symbol.  
+The final configuration has the form
+<!-- MATH: $(\qin\;\qfin, \ep)$ -->
+<EQN/>,
+where the stack is formed by the final
+stack symbol stacked upon the initial stack symbol. 
+</P>
+<P>
+The application of a transition 
+<!-- MATH: $\delta_1\pda{z} \delta_2$ -->
+<EQN/>is described as follows.
+If the top-most symbols of the stack are <EQN/>,
+then these 
+symbols may be replaced by <EQN/>,
+provided that either <EQN/>,
+or z=a and a is
+the first symbol of the remaining input. Furthermore, if z=a then a is
+removed from the remaining input. 
+Formally, for a fixed <EQN/>
+<EQN/>
+we define the binary relation 
+<EQN/>
+on configurations as the least relation satisfying
+<!-- MATH: $(\delta \delta_1,w)\vdash(\delta \delta_2,w)$ -->
+<EQN/>
+if there is a transition
+<!-- MATH: $\delta_1 \pda{\ep} \delta_2$ -->
+<EQN/>,
+and
+<!-- MATH: $(\delta \delta_1,aw)\vdash(\delta \delta_2,w)$ -->
+<EQN/>
+if there is a transition
+<!-- MATH: $\delta_1 \pda{a} \delta_2$ -->
+<EQN/>.
+The recognition of a certain input v is obtained if starting from the
+initial configuration for that input we can reach the final
+configuration by repeated application of transitions, or,
+formally, if 
+<!-- MATH: $(\qin,v) \vdash^* (\qin \;\qfin,\epsilon)$ -->
+<EQN/>,
+where <EQN/>
+denotes the reflexive and transitive closure of
+<EQN/>.
+</P>
+<P>
+By a computation of a PDA we mean a sequence
+<EQN/>
+<EQN/>
+<!-- MATH: $(\delta_1,w_1)$ -->
+<EQN/>
+<EQN/>
+... <EQN/>
+<!-- MATH: $(\delta_n,w_n)$ -->
+<EQN/>,
+<EQN/>.
+A <EQN/>
+is called deterministic 
+if for all possible configurations at most one transition is applicable. 
+A <EQN/>
+is said to be in binary form
+if, for all transitions 
+<!-- MATH: $\delta_1 \pda{z} \delta_2$ -->
+<EQN/>,
+we have 
+<!-- MATH: $\Size{\delta_1} \leq 2$ -->
+<EQN/>.
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    LR automata
+</HEADER>
+<P>
+Let 
+<!-- MATH: $G = (\myterm, \nonterm, P, S)$ -->
+<EQN/>
+be a <EQN/>.
+We recall the notion of LR automaton, which is
+a particular kind of <EQN/>.
+We make use of the augmented grammar 
+<!-- MATH: $G^\dagger = (\myterm^\dagger, \nonterm^\dagger, P^\dagger, S^\dagger)$ -->
+<EQN/>
+ introduced in Section <CREF/>. 
+</P>
+<P>
+Let 
+<!-- MATH: $\lrset = \{A \de \alpha \mydot \beta \sep (A \de \alpha \beta)
+\in P^\dagger \}$ -->
+<EQN/>.
+We introduce the function <EQN/>
+from 
+<!-- MATH: $2^{\lrset}$ -->
+<EQN/>
+to 
+<!-- MATH: $2^{\lrset}$ -->
+<EQN/>
+and the function <EQN/>
+from 
+<!-- MATH: $2^{\lrset} \times \myvar$ -->
+<EQN/>
+to 
+<!-- MATH: $2^{\lrset}$ -->
+<EQN/>.
+For any 
+<!-- MATH: $q \subseteq \lrset$ -->
+<EQN/>,
+<!-- MATH: $\closure(q)$ -->
+<EQN/>
+is the smallest set such that
+1.
+<!-- MATH: $q \subseteq \closure(q)$ -->
+<EQN/>;
+and
+2.
+<!-- MATH: $(B \de \alpha \mydot A \beta) \in \closure(q)$ -->
+<EQN/>
+and 
+<!-- MATH: $(A\de\gamma)\in P^\dagger$ -->
+<EQN/>
+together imply 
+<!-- MATH: $(A \de\ \mydot \gamma) \in \closure(q)$ -->
+<EQN/>.
+We then define 
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+We construct a finite set <EQN/>
+as the smallest collection of sets 
+satisfying the conditions:
+1.
+<!-- MATH: $\{ S^\dagger \de \bos \mydot S\eos \} \in \lrstate$ -->
+<EQN/>;
+and
+2.
+for every 
+<!-- MATH: $q \in \lrstate$ -->
+<EQN/>
+and 
+<!-- MATH: $X \in \myvar$ -->
+<EQN/>,
+we have
+<!-- MATH: $\goto(q,X) \in \lrstate$ -->
+<EQN/>,
+provided 
+<!-- MATH: $\goto(q,X) \neq\emptyset$ -->
+<EQN/>.
+Two elements from <EQN/>
+deserve special attention:
+<!-- MATH: $\qin = \{ S^\dagger \de\bos \mydot S\eos \}$ -->
+<EQN/>,
+and <EQN/>,
+which is defined to be
+the unique set in <EQN/>
+containing 
+<!-- MATH: $(S^\dagger \de \bos S\mydot\eos)$ -->
+<EQN/>;
+in other words, 
+<!-- MATH: $\qfin=\goto(\qin,S)$ -->
+<EQN/>.
+</P>
+<P>
+For 
+<!-- MATH: $A \in \nonterm$ -->
+<EQN/>,
+an A-redex is a string 
+<!-- MATH: $q_0 q_1 q_2 \cdots q_m$ -->
+<EQN/>,
+<EQN/>,
+of elements from <EQN/>,
+satisfying the following conditions: 
+1.
+<!-- MATH: $(A \de \alpha \mydot) \in \closure(q_m)$ -->
+<EQN/>,
+for some 
+<!-- MATH: $\alpha = X_1 X_2 \cdots X_m$ -->
+<EQN/>;
+and
+2.
+<!-- MATH: $\goto(q_{k-1},X_{k}) = q_{k}$ -->
+<EQN/>,
+        for 
+<!-- MATH: $1 \leq k \leq m$ -->
+<EQN/>.
+Note that in such an A-redex, 
+<!-- MATH: $(A \de\ \mydot X_1 X_2 \cdots X_m)$ -->
+<EQN/>
+<EQN/>
+<!-- MATH: $\closure(q_0)$ -->
+<EQN/>,
+and 
+<!-- MATH: $(A \de X_1\cdots X_k \mydot X_{k+1} \cdots X_m)$ -->
+<EQN/>
+<EQN/>qk, for <EQN/>.
+</P>
+<P>
+The LR automaton associated with G is now introduced.
+ <EQN/> Transitions in (i) above are called shift, 
+transitions in (ii) are called reduce. 
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>    2LR Automata
+</HEADER>
+<P>
+The automata <EQN/>
+defined in the previous section
+are deterministic only for a subset of the <EQN/>s, 
+ called the LR(0) grammars <REF/>, and behave nondeterministically in the general case.
+When designing tabular methods that 
+simulate nondeterministic computations of <EQN/>,
+two main difficulties are encountered: 
+<ITEMIZE>
+<ITEM>A reduce transition in <EQN/>
+is an elementary operation 
+that removes from the stack a number of elements bounded by 
+the size of the underlying grammar.  Consequently, 
+the time requirement of tabular
+simulation of <EQN/>
+computations can be onerous, for 
+reasons pointed out by <REF/> and <REF/>.
+</ITEM>
+<ITEM>The set <EQN/>
+can be exponential in the size 
+ of the grammar <REF/>.   If in such a case the computations of <EQN/>
+touch upon each state, 
+then time and space requirements of tabular simulation are 
+obviously onerous. 
+</ITEM>
+</ITEMIZE>
+The first issue above is solved here by recasting <EQN/>
+in binary form. This is done by considering each reduce transition 
+as a sequence of ``pop'' operations which affect at most two stack symbols 
+at a time. (See also <REF/>, <REF/>, and <REF/>,
+and for LR parsing specifically <REF/> and <REF/>.)
+The following definition introduces this new kind of automaton.
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Transitions in (i) above are again called shift, transitions
+in (ii) are called initiate, those in (iii) are called 
+gathering, and transitions in (iv) are called goto.
+The role of a reduce step in <EQN/>
+is taken over in <EQN/>by an initiate step, a number of gathering steps, and a goto step.
+Observe that these steps involve the new stack symbols
+<!-- MATH: $(A \de \alpha \mydot \beta) \in \lrset$ -->
+<EQN/>
+that are distinguishable from possible stack symbols
+<!-- MATH: $\{ A \de \alpha \mydot \beta \} \in \lrstate$ -->
+<EQN/>.
+</P>
+<P>
+We now turn to the second above-mentioned problem, 
+regarding the size of set <EQN/>.
+The problem is in part solved here as follows. 
+The number of states in <EQN/>
+is considerably reduced by identifying two states if they become identical
+after items 
+<!-- MATH: $A\de\alpha\mydot\beta$ -->
+<EQN/>
+from <EQN/>
+have been
+simplified to only the suffix of the right-hand side <EQN/>.
+This is reminiscent of
+ techniques of state minimization for finite automata <REF/>,  as they have been applied before to LR parsing, e.g., 
+by <REF/> and <REF/>.
+</P>
+<P>
+Let <EQN/>
+be the augmented grammar associated with 
+a <EQN/>
+G, and let 
+<!-- MATH: $\TWOlrset = \{\beta \sep (A \de \alpha \beta) \in P^\dagger \}$ -->
+<EQN/>.
+We define variants of the <EQN/>
+and <EQN/>
+functions from the
+previous section as follows.
+For any set 
+<!-- MATH: $q \subseteq \TWOlrset$ -->
+<EQN/>,
+<!-- MATH: $\closure'(q)$ -->
+<EQN/>
+is the smallest collection of sets such that
+1.
+<!-- MATH: $q \subseteq \closure'(q)$ -->
+<EQN/>;
+and
+2.
+<!-- MATH: $(A \beta) \in \closure'(q)$ -->
+<EQN/>
+and
+<!-- MATH: $(A\de\gamma) \in P^\dagger$ -->
+<EQN/>
+together imply 
+<!-- MATH: $(\gamma) \in \closure'(q)$ -->
+<EQN/>.
+Also, we define 
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+We now construct a finite set 
+<!-- MATH: $\TWOlrstate$ -->
+<EQN/>
+as the smallest set 
+satisfying the conditions:
+1.
+<!-- MATH: $\{ S\eos \} \in \TWOlrstate$ -->
+<EQN/>;
+and 
+2.
+for every
+<!-- MATH: $q \in \TWOlrstate$ -->
+<EQN/>
+and 
+<!-- MATH: $X \in \myvar$ -->
+<EQN/>,
+we have
+<!-- MATH: $\goto'(q,X) \in \TWOlrstate$ -->
+<EQN/>,
+provided 
+<!-- MATH: $\goto'(q,X) \neq\emptyset$ -->
+<EQN/>.
+</P>
+<P>
+As stack symbols, we take the elements from <EQN/>
+and a subset
+of elements from 
+<!-- MATH: $(\myvar\times\TWOlrstate)$ -->
+<EQN/>:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+In a stack symbol of the form (X, q),
+the X serves to record the grammar symbol
+that has been recognized last, cf. the symbols that formerly were found
+immediately before the dots. 
+</P>
+<P>
+The 2LR automaton associated with G can now be introduced. 
+ <EQN/> Note that in the case of a reduce/reduce conflict with two grammar
+rules sharing some suffix in the right-hand side, the gathering steps
+of <EQN/>
+will treat both rules simultaneously,
+until the parts of the right-hand sides are reached where the two rules differ.
+(See <REF/> for a similar sharing of computation for
+common suffixes.)
+</P>
+<P>
+An interesting fact is that the automaton <EQN/>
+is very similar
+to the automaton <EQN/>
+constructed for a grammar transformed
+by the transformation 
+<!-- MATH: $\tau_{\it two}$ -->
+<EQN/>
+given by <REF/>.
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>    The algorithm
+</HEADER>
+<P>
+This section presents a tabular LR parser, 
+which is the main result of this paper. 
+The parser is derived from the 2LR automata 
+introduced in the previous section.  Following the general approach 
+presented by <REF/>, we simulate computations of these devices 
+using a tabular method, a grammar transformation and a filtering
+function.
+</P>
+<P>
+We make use of a tabular parsing algorithm which is basically 
+an asynchronous version of the CYK algorithm, 
+as presented by <REF/>, 
+extended to productions of the forms <EQN/>
+and 
+<!-- MATH: $A\de\epsilon$ -->
+<EQN/>
+and 
+with a left-to-right filtering condition. 
+The algorithm uses a parse table consisting in a 0-indexed 
+square array U. The indices represent positions in the input string.
+We define Ui to be 
+<!-- MATH: $\bigcup_{k \leq i} U_{k,i}$ -->
+<EQN/>.
+</P>
+<P>
+Computation of the entries of U is moderated by a filtering process.
+This process makes use of a function <EQN/>
+from
+<!-- MATH: $2^{\nonterm}$ -->
+<EQN/>
+to 
+<!-- MATH: $2^{\nonterm}$ -->
+<EQN/>,
+specific to a certain
+context-free grammar.
+We have a certain nonterminal 
+<!-- MATH: $A_{\it init}$ -->
+<EQN/>
+which is initially
+inserted in U0,0 in order to start the recognition process.
+</P>
+<P>
+We are now ready to give a formal specification of the tabular algorithm.
+</P>
+<P>
+ <EQN/> The string has been accepted when 
+<!-- MATH: $S \in U_{0,n}$ -->
+<EQN/>.
+</P>
+<P>
+We now specify a grammar transformation, based on the 
+definition of <EQN/>.
+</P>
+<P>
+ <EQN/> Observe that there is a direct, one-to-one correspondence between 
+transitions of <EQN/>
+and productions of <EQN/>.
+</P>
+<P>
+The accompanying function <EQN/>
+is defined as follows
+(q,q',q'' range over the stack elements):
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The above definition implies that only the tabular equivalents of the
+shift, initiate and goto transitions are subject to actual filtering; 
+the simulation
+of the gathering transitions does not depend on elements in <EQN/>.
+</P>
+<P>
+Finally, the distinguished nonterminal from the cover used to initialize 
+the table is <EQN/>.
+Thus we start with 
+<!-- MATH: $(\bos,\{S\eos\}) \in U_{0,0}$ -->
+<EQN/>.
+</P>
+<P>
+The 2LR cover introduces spurious ambiguity: where some grammar
+G would allow a certain number of parses to be found for a certain
+input, the grammar <EQN/>
+in general allows more parses.
+This problem is in part solved by the filtering function <EQN/>.
+The remaining spurious ambiguity is avoided by a particular
+way of constructing the parse trees, described in what follows.
+</P>
+<P>
+ After Algorithm <CREF/> has recognized a given input, the set of all parse trees can be computed as 
+<!-- MATH: $\tree(\qfin',0,n)$ -->
+<EQN/>
+where the function <EQN/>,
+which 
+determines sets of either parse trees or lists of parse trees
+for entries in U, is recursively defined by:
+1.
+<!-- MATH: $\tree((a,q'),i,j)$ -->
+<EQN/>
+is the set <EQN/>.
+This set contains a single
+parse tree consisting of a single node labelled a.
+2.
+<!-- MATH: $\tree(\epsilon,i,i)$ -->
+<EQN/>
+is the set 
+<!-- MATH: $\{\epsilon\}$ -->
+<EQN/>.
+This set consists of
+an empty list of trees.
+3.
+<!-- MATH: $\tree(X\beta,i,j)$ -->
+<EQN/>
+is the union of the sets 
+<!-- MATH: ${\cal T}_{(X\beta),i,j}^k$ -->
+<EQN/>,
+where 
+<!-- MATH: $i\leq k\leq j$ -->
+<EQN/>,
+<!-- MATH: $(\beta) \in U_{k,j}$ -->
+<EQN/>,
+and there is at least one
+<!-- MATH: $(X,q) \in U_{i,k}$ -->
+<EQN/>
+and
+<!-- MATH: $(X \beta) \de (X,q)\;(\beta)$ -->
+<EQN/>
+in <EQN/>,
+for some q.
+For each such k, select one such q. We define
+<!-- MATH: ${\cal T}_{(X\beta),i,j}^k =
+\{t \cdot {\it ts} \sep t \in \tree((X,q),i,k) \wedge
+{\it ts} \in \tree(\beta,k,j)\}$ -->
+<EQN/>.
+Each 
+<!-- MATH: $t \cdot {\it ts}$ -->
+<EQN/>
+is a list of
+trees, with head t and tail <EQN/>.
+4.
+<!-- MATH: $\tree((A,q'),i,j)$ -->
+<EQN/>
+is the union of the sets 
+<!-- MATH: ${\cal T}_{(A,q'),i,j}^{\alpha}$ -->
+<EQN/>,
+where 
+<!-- MATH: $(\alpha) \in U_{i,j}$ -->
+<EQN/>
+is such that 
+<!-- MATH: $(A,q') \de (\alpha)$ -->
+<EQN/>
+in <EQN/>.
+We define 
+<!-- MATH: ${\cal T}_{(A,q'),i,j}^{\alpha}=\{glue(A,{\it ts}) \sep
+{\it ts}\in \tree(\alpha,i,j)\}$ -->
+<EQN/>.
+The function <EQN/>
+constructs a tree from a fresh root node labelled
+A and the trees in list <EQN/>
+as immediate subtrees.
+We emphasize that in the third clause above, 
+one should not consider more than one 
+q for given k in order to prevent spurious ambiguity.
+(In fact, for fixed X,i,k and for different q 
+such that 
+<!-- MATH: $(X,q) \in U_{i,k}$ -->
+<EQN/>,
+<!-- MATH: $\tree((X,q),i,k)$ -->
+<EQN/>
+yields 
+the exact same set of trees.)
+With this proviso, the degree of ambiguity, i.e. the number of parses
+found by the algorithm for any input, is reduced to exactly that of 
+the source grammar.
+</P>
+<P>
+A practical implementation would construct the parse trees on-the-fly,
+attaching them to the table entries, allowing packing and sharing
+of subtrees (cf. the literature on parse forests 
+ <REF/>,<REF/>).  Our algorithm 
+actually only needs one (packed) subtree for several 
+<!-- MATH: $(X,q)\in U_{i,k}$ -->
+<EQN/>
+with 
+fixed X,i,k but different q.
+The resulting parse forests would then be optimally
+compact, contrary to some other LR-based tabular algorithms, as pointed
+out by <REF/>, <REF/> and <REF/>. 
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>    Analysis of the algorithm
+</HEADER>
+<P>
+In this section, we investigate how the steps performed 
+ by Algorithm <CREF/> (applied to the 2LR cover) relate to those performed by <EQN/>,
+for the same input.
+</P>
+<P>
+We define a subrelation <EQN/>
+of <EQN/>
+as:
+<!-- MATH: $(\delta,uw)\models^+(\delta\delta',w)$ -->
+<EQN/>
+if and only if
+<!-- MATH: $(\delta,uw)=(\delta,z_1z_2\cdots z_mw)
+\vdash(\delta\delta_1,z_2\cdots z_mw)\vdash\ldots\vdash(\delta\delta_m,w)=
+(\delta\delta',w)$ -->
+<EQN/>,
+for some <EQN/>,
+where 
+<!-- MATH: $|\delta_k|>0$ -->
+<EQN/>
+for all k, 
+<!-- MATH: $1\leq k \leq m$ -->
+<EQN/>.
+Informally, we have 
+<!-- MATH: $(\delta,uw)\models^+(\delta\delta',w)$ -->
+<EQN/>
+if configuration
+<!-- MATH: $(\delta\delta',w)$ -->
+<EQN/>
+can be reached from 
+<!-- MATH: $(\delta,uw)$ -->
+<EQN/>
+without the
+bottom-most part <EQN/>
+of the intermediate stacks being affected by
+any of the transitions;
+furthermore, at least one element is pushed on top of <EQN/>.
+</P>
+<P>
+The following characterization relates  
+the automaton <EQN/>
+ and Algorithm <CREF/> applied to the 2LR cover.
+Symbol 
+<!-- MATH: $q\in\TWOlrsym$ -->
+<EQN/>
+is eventually 
+added to Ui,j if and only if for some <EQN/>:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+In words, q is found in entry Ui,j if and only if, 
+at input position j, the automaton would push some 
+element q on top of some lower-part of the stack <EQN/>
+that 
+remains unaffected while the input from i to j is being read.
+</P>
+<P>
+The above characterization, whose proof is not reported here,
+is the justification for calling the resulting algorithm 
+tabular LR parsing. In particular, for
+a grammar for which <EQN/>
+is deterministic, i.e. for an
+LR(0) grammar, the number of steps performed by <EQN/>
+and
+the number of steps performed by the above algorithm 
+are exactly the same. In the case
+of grammars which are not LR(0), the tabular LR algorithm
+is more efficient than for example a backtrack realisation of <EQN/>.
+</P>
+<P>
+For determining the order of the time complexity of
+our algorithm, we look at the most
+expensive step, which
+is the computation of an element 
+<!-- MATH: $(X\beta) \in U_{i,j}$ -->
+<EQN/>
+from 
+two elements 
+<!-- MATH: $(X,q) \in U_{i,k}$ -->
+<EQN/>
+and 
+<!-- MATH: $(\beta) \in U_{k,j}$ -->
+<EQN/>,
+through
+<!-- MATH: ${(X,q)\;(\beta)} \pda{\epsilon} (X \beta) \in \TtwoLR$ -->
+<EQN/>.
+In a straightforward realisation of the algorithm,
+this step can be applied 
+<!-- MATH: $\order{\Size{\TtwoLR}\cdot\Size{v}^3}$ -->
+<EQN/>
+times (once for each i,k,j and each transition), each step taking
+a constant amount of time.
+We conclude that the time complexity of our algorithm
+is 
+<!-- MATH: $\order{\Size{\TtwoLR}\cdot\Size{v}^3}$ -->
+<EQN/>.
+</P>
+<P>
+As far as space requirements are concerned, each set Ui,jor Ui contains at most 
+<!-- MATH: $\Size{\TWOlrsym}$ -->
+<EQN/>
+elements.
+(One may assume an auxiliary table storing each Ui.)
+This results in a space complexity 
+<!-- MATH: $\order{\Size{\TWOlrsym}\cdot\Size{v}^2}$ -->
+<EQN/>.
+</P>
+<P>
+The entries in the table represent single stack elements, as opposed to
+pairs of stack elements following <REF/> and <REF/>. 
+This has been investigated before 
+by <REF/> and <REF/>.
+</P>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>    Empirical results
+</HEADER>
+<P>
+ We have performed some experiments with Algorithm <CREF/> applied to <EQN/>
+and <EQN/>,
+for 4 practical context-free grammars.
+For <EQN/>
+a cover was used analogous to 
+the one in 
+ Definition <CREF/>; the filtering function remains the same.
+</P>
+<P>
+The first grammar 
+generates a subset of the programming language ALGOL 68
+ <REF/>. The second and third  grammars generate a fragment of Dutch, and are 
+referred to 
+ as the CORRie grammar <REF/> and the Deltra  grammar <REF/>,  respectively. 
+These grammars were stripped of their arguments
+in order to 
+convert them into context-free grammars.  
+The fourth grammar, referred to as the
+ Alvey grammar <REF/>,  generates a fragment of English and was
+automatically generated from a unification-based grammar.
+</P>
+<P>
+The test sentences
+have been obtained by automatic generation from the grammars,
+ using the Grammar Workbench <REF/>, which uses a random generator to select rules; 
+therefore these sentences do 
+not necessarily represent input typical 
+of the applications 
+for which the grammars were written. 
+ Table <CREF/> summarizes the test material.  
+</P>
+<P>
+Our implementation is merely a prototype, which means that
+absolute duration of the parsing process is little indicative of
+the actual efficiency of more sophisticated implementations.
+Therefore, our measurements have been restricted to implementation-independent
+quantities, viz. the number of elements stored
+in the parse table and the number of elementary steps
+performed by the algorithm. In a
+practical implementation, such quantities will strongly influence the 
+space and time complexity, although they do not represent the only
+determining factors. Furthermore, all optimizations
+of the time and space efficiency have been left out of consideration.
+</P>
+<P>
+ Table <CREF/> presents the costs of parsing the  test sentences.
+The first and third columns 
+give the number of entries stored in table
+U, the second 
+and fourth 
+columns give the number of elementary steps that were
+performed. 
+</P>
+<P>
+An elementary step consists of the derivation of one element
+in <EQN/>
+or <EQN/>
+from one or two 
+other elements. 
+The elements that are used in the filtering process are counted
+individually. 
+We give an example for the case of <EQN/>.
+Suppose we derive an element 
+<!-- MATH: $q'\in U_{i,j}$ -->
+<EQN/>
+from
+an element 
+<!-- MATH: $(A\de\ \mydot\alpha) \in U_{i,j}$ -->
+<EQN/>,
+warranted by
+two elements 
+<!-- MATH: $q_1,q_2\in U_i$ -->
+<EQN/>,
+<!-- MATH: $q_1\neq q_2$ -->
+<EQN/>,
+through <EQN/>,
+in the presence of
+<!-- MATH: ${q_1 \; (A\de\ \mydot\alpha)} \pda{\epsilon} {q_1\; q'} \in\TLR'$ -->
+<EQN/>
+and
+<!-- MATH: ${q_2 \; (A\de\ \mydot\alpha)} \pda{\epsilon} {q_2\; q'} \in\TLR'$ -->
+<EQN/>.
+We then count 
+two parsing steps, one for q1 and one for q2.
+</P>
+<P>
+ Table <CREF/> shows that there is a significant gain in space and time efficiency 
+when moving 
+from <EQN/>
+to <EQN/>.
+</P>
+<P>
+Apart from the dynamic costs of parsing, we have also measured some
+quantities relevant to the construction and storage of the two types
+of tabular LR parser. 
+ These data are given in Table <CREF/>. 
+</P>
+<P>
+We see that the number of states is strongly reduced
+with regard to traditional LR parsing. In the case of the Alvey
+grammar, 
+moving from 
+<!-- MATH: $|\lrstate|$ -->
+<EQN/>
+to 
+<!-- MATH: $|\TWOlrstate|$ -->
+<EQN/>
+amounts
+to a reduction to 20.3 %. 
+Whereas time- and space-efficient computation 
+of <EQN/>
+for this grammar is a serious problem,
+computation of 
+<!-- MATH: $\TWOlrstate$ -->
+<EQN/>
+will not be difficult on any modern
+computer. Also significant is the reduction from <EQN/>
+to
+<EQN/>,
+especially for the larger grammars. These quantities 
+correlate with the amount of storage needed for naive representation
+of the respective automata.
+</P>
+</DIV>
+<DIV ID="8" DEPTH="1" R-NO="8"><HEADER>    Discussion
+</HEADER>
+<P>
+Our treatment of tabular LR parsing has two important advantages over
+the one by Tomita: 
+<ITEMIZE>
+<ITEM>It is conceptually simpler, because we make use of simple
+concepts such as a grammar transformation and the well-understood
+CYK algorithm, instead of a complicated mechanism working on 
+graph-structured stacks.
+</ITEM>
+<ITEM>Our algorithm requires fewer LR states.
+This leads to faster parser generation, to smaller parsers, 
+and to reduced time and space complexity of parsing itself.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+The conceptual simplicity of our formulation of tabular
+LR parsing allows comparison with other tabular parsing techniques,
+such as
+ Earley's algorithm <REF/> and tabular left-corner  parsing <REF/>, based on implementation-independent criteria. This is in contrast to experiments reported before (e.g. by
+<REF/>),
+which treated tabular LR parsing differently from the other
+techniques.
+</P>
+<P>
+The reduced time and space complexities reported in the previous
+section pertain to the tabular realisation of two
+parsing techniques, expressed by the automata <EQN/>
+and 
+<EQN/>.
+The tabular realisation of the former automata is
+very close to a variant of Tomita's algorithm 
+by <REF/>. 
+The objective of our experiments was to show that the
+automata <EQN/>
+provide a better basis than <EQN/>
+for 
+tabular LR parsing with regard to space and time complexity. 
+</P>
+<P>
+Parsing algorithms that are not based on the LR technique
+have however been left out of consideration, and so
+were techniques for unification grammars and techniques incorporating
+finite-state processes.
+</P>
+<P>
+Theoretical 
+ considerations <REF/>,<REF/>,<REF/> have suggested that for natural language parsing, LR-based techniques may not
+necessarily be superior to other parsing techniques, although
+convincing empirical data to this effect has never been shown.
+This issue is difficult to resolve because so much of the 
+relative efficiency of the different parsing techniques depends
+on particular grammars and particular input, as well as
+on particular implementations of the techniques. We hope
+the conceptual framework presented in this paper may
+at least partly alleviate this problem.
+</P>
+</DIV>
+<DIV ID="9" DEPTH="1" R-NO="9"><HEADER>  Acknowledgements </HEADER>
+<P>
+The first author is supported by the Dutch Organization
+for Scientific Research (NWO), under grant 305-00-802.
+Part of the present research was done
+while the second author was visiting the
+Center for Language and Speech Processing,
+Johns Hopkins University, Baltimore, MD.
+</P>
+<P>
+We received kind help from 
+John Carroll, Job Honig, Kees Koster, Theo Vosse and Hans de Vreught
+in finding the grammars mentioned in this paper.
+Generous help with locating relevant literature was provided by Anton
+Nijholt, Rockford Ross, and Arnd Rumann.
+</P>
+<DIV ID="9.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Billot, S. and B. Lang.
+1989.
+The structure of shared forests in ambiguous parsing.
+In 27th Annual Meeting of the ACL, pages 143-151.
+</P>
+<P>
+Booth, T.L.
+1967.
+Sequential Machines and Automata Theory.
+Wiley, New York.
+</P>
+<P>
+Carroll, J.A.
+1993.
+Practical unification-based parsing of natural language.
+Technical Report No. 314, University of Cambridge, Computer
+  Laboratory, England.
+PhD thesis.
+</P>
+<P>
+Earley, J.
+1970.
+An efficient context-free parsing algorithm.
+Communications of the ACM, 13(2):94-102.
+</P>
+<P>
+Harrison, M.A.
+1978.
+Introduction to Formal Language Theory.
+Addison-Wesley.
+</P>
+<P>
+Johnson, M.
+1991.
+The computational complexity of GLR parsing.
+In <REF/>, chapter 3, pages 35-42.
+</P>
+<P>
+Kipps, J.R.
+1991.
+GLR parsing in time 
+<!-- MATH: ${\cal O}(n^3)$ -->
+<EQN/>.
+In <REF/>, chapter 4, pages 43-59.
+</P>
+<P>
+Lang, B.
+1974.
+Deterministic techniques for efficient non-deterministic parsers.
+In Automata, Languages and Programming, 2nd Colloquium,
+  LNCS 14, pages 255-269,
+  Saarbrcken. Springer-Verlag.
+</P>
+<P>
+Leermakers, R.
+1989.
+How to cover a grammar.
+In 27th Annual Meeting of the ACL, pages 135-142.
+</P>
+<P>
+Leermakers, R.
+1992a.
+A recursive ascent Earley parser.
+Information Processing Letters, 41(2):87-91.
+</P>
+<P>
+Leermakers, R.
+1992b.
+Recursive ascent parsing: from Earley to Marcus.
+Theoretical Computer Science, 104:299-312.
+</P>
+<P>
+Nederhof, M.J.
+1993.
+Generalized left-corner parsing.
+In Sixth Conference of the European Chapter of the ACL, pages
+  305-314.
+</P>
+<P>
+Nederhof, M.J.
+1994a.
+Linguistic Parsing and Program Transformations.
+Ph.D. thesis, University of Nijmegen.
+</P>
+<P>
+Nederhof, M.J.
+1994b.
+An optimal tabular parsing algorithm.
+In 32nd Annual Meeting of the ACL, pages 117-124.
+</P>
+<P>
+Nederhof, M.J. and K. Koster.
+1992.
+A customized grammar workbench.
+In J. Aarts, P. de Haan, and N. Oostdijk, editors, English
+  Language Corpora: Design, Analysis and Exploitation, Papers from the
+  thirteenth International Conference on English Language Research on
+  Computerized Corpora, pages 163-179, Nijmegen. Rodopi.
+</P>
+<P>
+Nederhof, M.J. and J.J. Sarbo.
+1993.
+Increasing the applicability of LR parsing.
+In Third International Workshop on Parsing Technologies, pages
+  187-201.
+</P>
+<P>
+Nederhof, M.J. and G. Satta.
+1994.
+An extended theory of head-driven parsing.
+In 32nd Annual Meeting of the ACL, pages 210-217.
+</P>
+<P>
+Pager, D.
+1970.
+A solution to an open problem by Knuth.
+Information and Control, 17:462-473.
+</P>
+<P>
+Rekers, J.
+1992.
+Parser Generation for Interactive Environments.
+Ph.D. thesis, University of Amsterdam.
+</P>
+<P>
+Schabes, Y.
+1991.
+Polynomial time and space shift-reduce parsing of arbitrary
+  context-free grammars.
+In 29th Annual Meeting of the ACL, pages 106-113.
+</P>
+<P>
+Schauerte, R.
+1973.
+Transformationen von LR(k)-grammatiken.
+Diplomarbeit, Universitt Gttingen, Abteilung Informatik.
+</P>
+<P>
+Schoorl, J.J. and S. Belder.
+1990.
+Computational linguistics at Delft: A status report.
+Report WTM/TT 90-09, Delft University of Technology, Applied
+  Linguistics Unit.
+</P>
+<P>
+Shann, P.
+1991.
+Experiments with GLR and chart parsing.
+In TO91a, chapter 2, pages 17-34.
+</P>
+<P>
+Sheil, B.A.
+1976.
+Observations on context-free parsing.
+Statistical Methods in Linguistics, pages 71-109.
+</P>
+<P>
+Sippu, S. and E. Soisalon-Soininen.
+1990.
+Parsing Theory, Vol. II: LR(k) and LL(k) Parsing.
+Springer-Verlag.
+</P>
+<P>
+Tomita, M.
+1986.
+Efficient Parsing for Natural Language.
+Kluwer Academic Publishers.
+</P>
+<P>
+Tomita, M., editor.
+1991.
+Generalized LR Parsing.
+Kluwer Academic Publishers.
+</P>
+<P>
+van Wijngaarden, A. et al.
+1975.
+Revised report on the algorithmic language ALGOL 68.
+Acta Informatica, 5:1-236.
+</P>
+<P>
+Villemonte de la Clergerie, E.
+1993.
+Automates  Piles et Programmation Dynamique -- DyALog:
+  Une application  la Programmation en Logique.
+Ph.D. thesis, Universit Paris VII.
+</P>
+<P>
+Vosse, T.G.
+1994.
+The Word Connection.
+Ph.D. thesis, University of Leiden.
+</P>
+<DIV ID="9.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+We dispense with the notion of state, 
+traditionally incorporated in the definition of <EQN/>.
+This does not affect the power of these devices, since
+states can be encoded within stack symbols and transitions.
+  For the earliest mention of this transformation, we have
+encountered pointers to <REF/>. Regrettably, we have as yet not been
+able to get hold of a copy of this paper.
+  As remarked before by <REF/>, the algorithms by
+<REF/> and <REF/> are not really related to LR parsing, although
+some notation used in these papers suggests otherwise.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

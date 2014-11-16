@@ -1,0 +1,706 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Connectivity in Bag Generation</TITLE>
+<ABSTRACT>
+<P>
+This paper presents a pruning technique which can be used to reduce
+the number of paths searched in rule-based bag generators of the type
+ proposed by <REF/> and <REF/>.  Pruning the search space in these generators is important given the computational
+cost of bag generation. The technique relies on a connectivity
+constraint between the semantic indices associated with each lexical
+sign in a bag. Testing the algorithm on a range of sentences shows
+reductions in the generation time and the number of edges constructed.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+Bag generation is a form of natural language generation in which the
+input is a bag (also known as a multiset: a set in which repeated
+elements are significant) of lexical elements and the output is a
+grammatical sentence or a statistically most probable permutation with
+respect to some language model. 
+</P>
+<P>
+Bag generation has been considered within the statistical and
+rule-based paradigms of computational linguistics, and each has
+handled this problem differently
+ <REF/>,<REF/>,<REF/>,<REF/>. This paper only considers rule based approaches to this problem.
+</P>
+<P>
+Bag generation has received particular attention in lexicalist 
+approaches to MT, as exemplified by Shake-and-Bake generation
+ <REF/>,<REF/>. One can also envisage applications of bag generation to generation
+from minimally recursive semantic representations
+ <REF/> and other semantic frameworks which separate scoping  from content information <REF/>.  In these frameworks, the unordered nature of predicate or relation sets makes the application
+of bag generation techniques attractive.
+</P>
+<P>
+A notational convention used in the paper is that items such as `dog1'
+ stand for simplified lexical signs of the form <REF/>: 
+<!-- MATH: ${\setlength{\arraycolsep}{0.4mm}
+\renewcommand {0.7}{0.7}
+                       \left[                   
+                       \begin{array}{l}
+                       \\[-2mm] 
+{\mbox{\scriptsize {\sc cat}}\! =\! {{\mbox{\scriptsize {\bf N}}}}}\\
+{\mbox{\scriptsize {\sc sem}}\! =\!\! {{{\setlength{\arraycolsep}{0.4mm}         
+                       \renewcommand {0.7}{0.7}
+                       \left[                   
+                       \begin{array}{l}
+                       \\[-2mm] 
+                {\mbox{\scriptsize {\sc reln}}\! =\! {{\mbox{\scriptsize {\bf dog}}}}}\\
+                {\mbox{\scriptsize {\sc arg1}}\! =\! {{\mbox{\scriptsize {\bf 1}}}}} \\[-2mm] \\
+                       \end{array}              
+                       \right]
+                    }}}} \\[-2mm] \\
+                       \end{array}              
+                       \right]
+                    }$ -->
+<EQN/>
+In such signs, the semantic argument will be referred to as an `index' and
+will be shown as a subscript to a lexeme;
+in the above example, the index has been given the unique type 1.
+</P>
+<P>
+ The term index is borrowed from HPSG <REF/> where indices are used as arguments to relations; however these indices may
+ also be equated with discourse referents in DRT <REF/>.  As with most lexicalist generators, semantic variables must be
+distinguished in order to disallow translationally incorrect
+permutations of the target bag.
+We distinguish variables by uniquely typing them.
+</P>
+<P>
+Two assumptions are made regarding lexical-semantic indexing. 
+</P>
+<P>
+Assumption  1   
+All lexical signs must be indexed, including functional and
+ nonpredicative elements <REF/>.
+</P>
+<P>
+Assumption  2   
+All lexical signs must be connected to each other. Two lexical signs
+are connected if they are directly connected; furthermore, the
+connectivity relation is transitive. 
+</P>
+<P>
+Definition  1   
+Two signs, A, B, are directly connected if there exist at
+least two paths, PathA, PathB, such that A:PathA is token identical
+with B:PathB.
+</P>
+<P>
+The indices involved in determining connectivity are
+specified as parameters for a particular formalism. For example, in
+HPSG, they would be indicated through paths such as 
+SYNSEM:LOCAL:CONTENT:INDEX.
+</P>
+<P>
+To ensure that only connected lexical signs are generated
+and analysed, the following assumption must also be made:
+</P>
+<P>
+Assumption  3   
+A grammar will only generate or analyse connected lexical signs.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    Bag Generation Algorithms
+</HEADER>
+<P>
+Two main types of rule-based bag generators have been proposed. The
+first type consists of a parser suitably relaxed to take into account
+the unordered character of the input
+ <REF/>,<REF/>,<REF/>. For example, in generators based on a chart parser, the fundamental rule 
+is applied only when the edges to be combined share no lexical leaves,
+in contrast to requiring that the two edges have source and target nodes
+in common. The other type of generator applies a greedy algorithm to
+an initial solution in order to find a grammatical sentence
+ <REF/>.  
+</P>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Redundancy in Bag Generation </HEADER>
+<P>
+One disadvantage with the above generators is that they construct a
+number of structures which need not have been computed at all. In building
+these structures, the generator is effectively searching branches of the
+search space which never lead to a complete sentence. Consider the
+the following input bag:
+ {dog,barked,the,brown,big}Previous researchers <REF/>,<REF/> have noted that from such a bag, the following strings are generated but none can form part
+of a complete sentence (note that indices are omitted when there is no
+possibility of confusion; # indicates that the substring will never
+be part of a complete sentence):
+</P>
+<P>
+Ex.  1   
+</P>
+<P>
+# the dog
+# the dog barked
+# the brown dog
+</P>
+<P>
+For simple cases in chart based generators such unnecessary strings do not create many problems, but for longer sentences, each additional
+substring implies a further branch in the search tree
+to be considered.
+</P>
+<P>
+Since the computational complexity of the greedy bag generator
+ <REF/> is polynomial (i.e.  <!-- MATH: $\mathcal{O}$ -->
+<EQN/>(n[4])),
+the effect of redundant substructures is not as detrimental as for
+parser based generators. Nevertheless, a certain amount of unnecessary
+work is performed. To show this, consider the test-rewrite sequence
+ for Example <CREF/>: 
+</P>
+<P>
+<ITEMIZE>
+<ITEM>Test: dog barked the brown big
+</ITEM>
+<ITEM>Rewrite: __ barked the dog brown big
+</ITEM>
+<ITEM>Test: barked (the dog) brown big
+</ITEM>
+<ITEM>Rewrite: __ (the dog) barked brown big
+</ITEM>
+<ITEM>Test: ((the dog) barked) brown big
+</ITEM>
+<ITEM>Rewrite: the brown dog barked __ big
+</ITEM>
+<ITEM>Test: ((the (brown dog)) barked) big
+</ITEM>
+<ITEM>Rewrite: the big (brown dog) barked __
+</ITEM>
+<ITEM>Test: ((the (big (brown dog))) barked) (terminate)
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+In this sequence double underscore
+(__) indicates the starting position of a moved constituent; the moved
+constituent itself is given in bold face; the bracketing indicates
+analysed constituents (for expository purposes the algorithm has been
+oversimplified, but the general idea remains the same).
+</P>
+<P>
+Now consider the step where `brown' is inserted between `the' and
+`dog'. This action causes the complete structure for `the dog barked'
+to be discarded and replaced with that for `the brown dog barked',
+which in turn is discarded and replaced by `the big brown dog barked'.
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  Previous Work </HEADER>
+<P>
+A number of pruning techniques have been suggested
+to reduce the amount of redundancy in bag generators.
+Brew brew92
+proposed a constraint propagation technique which eliminates
+branches during bag generation by considering the necessary
+functor-argument relationships that exist between the component
+basic signs of categorial signs. These relationships form a graph 
+indicating the necessary conditions for a lexical item to form part of
+a complete sentence.
+Such graphs can be used to eliminate the substrings in Example
+ <CREF/>.  Unfortunately the technique exploits specific aspects of categorial grammars and it is not clear how they
+may be used with other formalisms.
+</P>
+<P>
+Trujillo trujillo95c adapts some of Brew's ideas to phrase
+structure grammars by compiling Follow functions and constructing
+adjacency graphs. While this approach reduces the size of the search
+space, it does not prune it sufficiently for certain classes of
+modifiers.
+</P>
+<P>
+Phillips phillips93 proposes handling inefficiency at the
+expense of completeness. His idea is to maintain a queue of modifiable
+constituents (e.g. N1s) in order to delay their combination with other
+constituents until modifiers (e.g. PPs) have been analysed.  While
+practical, this approach can lead to alternative valid sentences not
+being generated.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  Connectivity Restrictions </HEADER>
+<P>
+In searching for a mechanism that eliminates unnecessary wfss,
+it will be possible to use indices in lexical signs.
+As mentioned earlier, these indices play a major role in preventing the
+generation of incorrect translations.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+It will be shown that it is possible to exploit the connectivity
+ Assumption <CREF/> above in order to achieve a reduction in the number of redundant wfss constructed by both types of generator
+ described in section <CREF/>. 
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>  Using Connectivity for Pruning </HEADER>
+<P>
+Take the following bag:
+</P>
+<P>
+Ex.  2   
+</P>
+<P>
+{dog1,the1,brown1,big1}
+</P>
+<P>
+(corresponding to `the big brown dog').  Assume that the next wfss to be constructed by the generator is the NP `the dog'. Given the grammar
+ in Figure <CREF/>, it is possible to deduce that `brown' can never be part of a complete NP constructed from such a substring.
+This can be determined as follows. If this adjective were part of such
+a sentence, `brown' would have to appear as a leaf in some constituent
+that combines with `the dog' or with a constituent containing `the
+dog'. From the grammar, the only constituents that can combine with
+`dog' are VP, Vtra and P. However, none of these constituents can have
+`brown1' as a leaf: in the case of P and Vtra this is trivial,
+since they are both categories of a different lexical type. In the
+case of the VP, `brown1' cannot appear as a leaf either because
+expansions of the VP are restricted to NP complements with 2 as their
+semantic index, which in turn would also require adjectives within
+them to have this index. Furthermore, `brown1' cannot occur as a
+leaf in a deeper constituent in the VP because such an occurrence
+would be associated with a different index.
+In such cases `brown' would modify a different noun with a different index:
+</P>
+<P>
+Ex.  3   
+</P>
+<P>
+{the1,dog1,with1,2,the2,brown2,collar2}
+</P>
+<P>
+A naive implementation of this deduction would attempt to expand the
+VP depth-first, left to right, in order to accommodate `brown' in a
+complete derivation.  Since this would not be possible, the NP `the
+dog' would be discarded.  This approach is grossly inefficient
+however. What is required is a more tractable algorithm which, given a
+wfss and its associated sign, will be able to determine whether all
+remaining lexical elements can ever form part of a complete sentence
+which includes that wfss.
+</P>
+<P>
+Note that deciding whether a lexical sign can appear outside a phrase is
+determined purely by the grammar, and not by whether the lexical
+elements share the same index or not. Thus, a more complex grammar
+would allow `the man' from the bag
+</P>
+<P>
+Ex.  4   
+</P>
+<P>
+{the1,man1,shavese,1,1,himself1}
+</P>
+<P>
+even though `himself' has the same index as `the man'. 
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>  Outer Domains </HEADER>
+<P>
+The approach introduced here compiles the relevant information offline
+from the grammar and uses it to check for connectivity during bag
+generation. The compilation process results in a set of
+(Sign,Lex,Bindings) triples called outer domains. This set is
+based on a unification-based phrase structure grammar defined as follows:
+</P>
+<P>
+Definition  2   
+A grammar is a tuple (N,T,P,S), where P is a set of productions
+<!-- MATH: $\alpha \Rightarrow \beta$ -->
+<EQN/>,
+<EQN/>
+is a sign, <EQN/>
+is a
+list of signs, N is the set of all <EQN/>,
+T is the set of all signs
+appearing as elements of <EQN/>
+which unify with lexical
+entries, and S is the start sign.
+</P>
+<P>
+Outer domains are defined as follow:
+</P>
+<P>
+Definition  3   
+{ (Sign,Lex,Binds) <EQN/>
+Sign 
+<!-- MATH: $\in N \cup T$ -->
+<EQN/>,
+Lex <EQN/>
+and there
+exists a derivation 
+<!-- MATH: $\alpha \stackrel{*}{\Rightarrow}
+\beta_{1}$ -->
+<EQN/>Sign'<EQN/>Lex'<EQN/>or 
+<!-- MATH: $\alpha \stackrel{*}{\Rightarrow}
+\beta_{1}$ -->
+<EQN/>Lex'<EQN/>Sign'<EQN/>,
+and Sign' a unifier
+for Sign, Lex' a unifier for Lex, and Binds the set of all path
+pairs [SignPath,LexPath] such that Sign':SignPath is token
+identical with Lex':LexPath}
+</P>
+<P>
+Intuitively, the outer domains indicate that preterminal category Lex
+can appear in a complete sentence with subconstituent Sign, such that
+Lex is not a leaf of Sign. Using ideas from data flow analysis
+ <REF/>, predictive parser constructions <REF/> and  feature grammar compilation <REF/> it is possible to construct such a set of triples.  Outer domains thus
+represent elements which may lie outside a subtree of category Sign in
+a complete sentential derivation. The following definition specifies
+how outer domains are used:
+</P>
+<P>
+Definition  4   
+A lexical sign Lex' is in the outer domain of Sign' iff there is a triple
+(Sign,Lex,Binds) in outer domains such that Sign and Lex unify with 
+Sign' and Lex' respectively, and there is at least one pair 
+[PathS,PathL] <EQN/>
+Binds such that Sign':PathS unifies
+with Lex':PathL.
+</P>
+<P>
+In compiling outer domains, inner domains are used to facilitate
+computation.  Inner domains are defined as follows:
+</P>
+<P>
+Definition  5   
+{ (Sign,Lex,Binds) <EQN/>
+Sign 
+<!-- MATH: $\in N \cup T$ -->
+<EQN/>,
+Lex <EQN/>
+and there
+exists a derivation 
+<!-- MATH: $\alpha \stackrel{*}{\Rightarrow}
+\beta_{1}$ -->
+<EQN/>Lex'<EQN/>,
+with Sign' a unifier for Sign, Lex' a unifier
+for Lex, and Binds the set of all path pairs [SignPath,LexPath]such that Sign':SignPath is token identical with Lex':LexPath}
+</P>
+<P>
+The inner domains thus express all the possible terminal categories
+which may be derived from each nonterminal in the grammar. 
+</P>
+<P>
+To be able to exploit connectivity during generation, inner and outer
+domains contain only triples in which Binds has at least one element.
+In this way, only those lexical categories which are directly
+connected to the sign are taken into account; the implication of this
+will become clearer later.
+</P>
+<P>
+As an example, the outer domain of NP as derived from the above grammar is:
+(NP[sem:arg1:X],Vtra[sem:arg2:Y],
+ {[sem:arg1,sem:arg2]})
+(NP[sem:arg1:X],Vtra[sem:arg3:Y],
+ {[sem:arg1,sem:arg3]})
+(NP[sem:arg1:X],P[sem:arg3:Y],
+ {[sem:arg1,sem:arg3]})This set indicates that for any NP, the only terminal categories not
+contained in the subtree with root NP, and with which the NP shares a
+semantic index, are Vtra and P. For instance, the first triple arises
+from the following tree:
+</P>
+<P>
+<EQN/>
+</P>
+</DIV>
+<DIV ID="3.3" DEPTH="2" R-NO="3"><HEADER>  Pruning through Outer Domains and Connectivity </HEADER>
+<P>
+The pruning technique developed here operates on grammars whose
+analyses result in connected leaves. 
+</P>
+<P>
+Consider some wfss W constructed from a bag B and with category C;
+this category, in the form of a sign, will include syntactic and
+lexical-semantic information.  Such a wfss will have been constructed
+during the bag generation process. Now, either W includes all the
+input elements as leaves, in which case W constitutes a complete
+sentence, or there are elements in the input bag which are not part of
+ W. In the latter case, for bags obeying Assumption <CREF/>, the following condition holds for any W that can form part of a
+complete sentence:
+</P>
+<P>
+Condition  1   
+Let L be the set of leaves appearing in W, let G be the graph (V,E),
+where V = {C} <EQN/>
+B - L, and E = { {x,y} | x,y <EQN/>
+V and
+y is in the outer domain of x}. Then G is connected.
+</P>
+<P>
+To show that this condition indeed holds, consider a grammatical
+ordering of some input bag B, represented as the string W:<EQN/>..
+<!-- MATH: $\gamma\delta$ -->
+ <EQN/>..<EQN/>By Assumption <CREF/>, the lexical elements in the bag, and therefore in any grammatical ordering of it, are connected. Now consider
+reducing this string using the production rule:
+<!-- MATH: $\Rightarrow \gamma\delta$ -->
+<EQN/>to give the string W':<EQN/>..D..<EQN/>In this case, the signs in W' will also be connected. This can be
+shown by contradiction:
+</P>
+<P>
+Proof  1   
+Assume that there is some sign <EQN/>
+in W' to which D is not
+connected. Then grammar G would allow disconnected strings to be
+ generated, contrary to Assumption <CREF/>. This is because D would not be able to rewrite
+<!-- MATH: $\gamma_{1}\delta_{1}$ -->
+<EQN/>
+in
+such a way that both
+daughters were connected to <EQN/>,
+leading to a disconnected
+string.
+</P>
+<P>
+The situation in string W' is analogous to that in Condition
+ <CREF/>. By identifying signs which are directly connected in E, it is possible to determine whether E is connected and
+consequently whether C can form part of a complete derivation. Instead
+of simply comparing the value of index paths, it is more restrictive
+to use outer domains since they give us precisely those elements
+which are directly connected to a sign and are in its outer domain.
+</P>
+</DIV>
+<DIV ID="3.4" DEPTH="2" R-NO="4"><HEADER>  Example </HEADER>
+<P>
+ Consider Example <CREF/>. To eliminate the wfss `the dog' from further consideration, a connected graph of lexical signs is
+ constructed before generation is started (Figure <CREF/>). 
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+This graph is built by using the outer domain of each lexical element
+to decide which of the remaining elements could possibly share an index
+with it in a complete sentence.
+</P>
+<P>
+When a new wfss is constructed during generation, say by application
+of the modified fundamental rule or during the rewrite phase in a
+greedy algorithm, this initial graph is updated and tested for
+connectivity. If the updated graph is not connected then the proposed
+wfss cannot form part of a complete sentence.  Updating the graph
+involves three steps. Firstly every node in the graph which is a leaf
+of the new wfss is deleted, together with its associated
+arcs. Secondly, a new node corresponding to the new wfss is added to
+the graph. Finally, a new arc is added to the graph between the new
+node and every other node lying in its outer domain.  The updated
+(disconnected) graph that ensues after constructing `the dog' is
+ shown in Figure <CREF/>; this NP is therefore rejected. 
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Compiling Connectivity Domains </HEADER>
+<P>
+For reasons of space, the computation of outer domains cannot be
+described fully here. The broad outline, however, is as
+follows. First, the inner domains of the grammar are calculated. This
+involves the calculation of the fixed point of set equations,
+analogous to those used in the construction of First sets for
+ predictive parsers <REF/>,<REF/>. Given the inner domains of each category in the grammar, the construction of the
+outer domains involves the computation of the fixed point of set
+equations relating the outer domain of a category to the inner domain
+of its sisters and to the outer domain of its mother, in a manner
+analogous to the computation of Follow sets.
+</P>
+<P>
+During computation, the set of Binds is monotonically increased
+as different ways of directly connecting sign and lexeme are found.
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Results </HEADER>
+<P>
+The above pruning technique has been tested on bags of different sizes
+including different combinations of modifiers. Sentences were
+generated using two versions of a modified chart parser. In one, every
+inactive edge constructed was added to the chart. In the other, every
+inactive edge was tested to see if it led to a disconnected graph; if
+it did, then the edge was discarded. The results of the experiment are
+ shown in Table <CREF/>. The implementation was in Prolog
+on a Sun SparcStation 10; the generation timings do not
+include garbage collection time. The grammar
+used for the experiment consisted of simplified,
+feature-based versions of the ID rules in GPSG; there were 18 rules
+and 50 lexical entries. Compilation of the outer domains for these
+rules took approximately 37 minutes, and the resulting set occupies 40K of
+memory. In the general case, however, the size of the outer domains is
+<!-- MATH: $\mathcal{O}$ -->
+<EQN/>(n[2]), where n is the number of distinct signs;
+this number can be controlled by employing equivalence classes of
+different levels of specificity for
+pre-terminal and non-terminal signs.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+Only one reading was generated for each bag, corresponding to one
+attachment site for PPs. The table shows that the technique can yield
+reductions in the number of edges (both active and inactive)
+and time taken, especially for longer sentences, while retaining
+the overheads at an acceptable level.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Conclusion </HEADER>
+<P>
+A technique for pruning the search space of a bag generator has been
+implemented and its usefulness shown in the generation of
+different types of constructions. The technique relies on a
+connectivity constraint imposed on the semantic relationships
+expressed in the input bag. In order to apply the algorithm, outer
+domains needed to be compiled from the grammar; these are used to
+discard wfss by ensuring lexical signs outside a wfss can indeed appear
+outside that string.
+</P>
+<P>
+Exploratory work employing adjacency constraints during generation has
+yielded further improvements in execution time when applied in
+conjunction with the pruner. If extended appropriately, these
+constraints could prune the search space even further.
+This work will be reported at a later date.
+</P>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>  Acknowledgments </HEADER>
+<P>
+Two anonymous reviewers provided very useful comments; 
+we regret not being able to do justice to all their suggestions.
+</P>
+<DIV ID="7.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+A. V. Aho, R. Sethi, and J. D. Ullman.
+1986.
+Compilers - Principles , Techniques, and Tools.
+Addison Wesley, Reading, MA.
+</P>
+<P>
+J. L. Beaven.
+1992.
+Lexicalist Unification Based Machine Translation.
+Ph.D. thesis, Department of Artificial Intelligence, University of
+  Edinburgh, Edinburgh, UK.
+</P>
+<P>
+C. Brew.
+1992.
+Letting the cat out of the bag: Generation for Shake-and-Bake MT.
+In Proceedings of the 14th COLING, pages 610-16, Nantes,
+  France, August.
+</P>
+<P>
+J. Calder, M. Reape, and H. Zeevat.
+1989.
+An algorithm for generation in unification categorial grammar.
+In Proceedings of the Fourth European Conference of the ACL,
+  pages 233-40, Manchester, England, April.
+</P>
+<P>
+H.H. Chen and Y.S. Lee.
+1994.
+A corrective training algorithm for adaptive learning in bag
+  generation.
+In New Methods in Language Processing, Manchester, UK.
+</P>
+<P>
+A. Copestake, D. Flickinger, R. Malouf, S. Riehemann, and I. Sag.
+1995.
+Translation using minimal recursion semantics.
+In Proceedings of the 6th International Conference on
+  Theoretical and Methodological Issues in Machine Translation, Leuven,
+  Belgium, July.
+</P>
+<P>
+H. Kamp and U. Reyle.
+1993.
+From Discourse to Logic - Introduction to Modeltheoretic
+  Semantics of Natural Language, Formal Logic and Discourse Representation
+  Theory, volume 42 of Studies in Linguistics and Philosophy.
+Kluwer Academic, Dordrecht, The Netherlands.
+</P>
+<P>
+Ken Kennedy.
+1981.
+A survey of data flow analysis techniques.
+In Muchnick and Jones muchnicketal81, chapter 1, pages 5-54.
+</P>
+<P>
+Steven S. Muchnick and Neil D. Jones, editors.
+1981.
+Program Flow Analysis: Theory and Applications.
+Software. Prentice-Hall, Englewood Cliffs, NJ.
+</P>
+<P>
+J. D. Phillips.
+1993.
+Generation of text from logical formulae.
+Machine Translation, 8(4):209-35.
+</P>
+<P>
+C. Pollard and I. Sag.
+1994.
+Head Driven Phrase Structure Grammar.
+Chicago University Press, IL.
+</P>
+<P>
+Fred Popowich.
+1995.
+Improving the efficiency of a generation algorithm for Shake and
+  Bake machine translation using Head-Driven Phrase Structure Grammar.
+In Proceedings of Natural Language Understanding and Logic
+  Programming V, Lisbon, Portugal, May.
+</P>
+<P>
+V. Poznanski, J. L. Beaven, and P. Whitelock.
+1995.
+An efficient generation algorithm for lexicalist MT.
+In Proceedings of the 33rd Annual Meeting of the Association for
+  Computational Linguistics, Boston, MA, June.
+</P>
+<P>
+Uwe Reyle.
+1995.
+On reasoning with ambiguities.
+In Proceedings of the Seventh Conference of the European Chapter
+  of the Association for Computational Linguistics, pages 1-15, Dublin,
+  Ireland, March.
+</P>
+<P>
+C. J. Rupp, M. A. Rosner, and R. L. Johnson, editors.
+1994.
+Constraints, Language and Computation.
+Academic Press, London.
+</P>
+<P>
+S. M. Shieber.
+1986.
+An Introduction to Unification-based Approaches to Grammar,
+  volume 4 of CSLI Lecture Notes.
+CSLI, Stanford, CA.
+</P>
+<P>
+A. Trujillo.
+1994.
+Computing FIRST and FOLLOW functions for Feature-Theoretic
+  grammars.
+In Proceedings of the 15th COLING, pages 875-80, Kyoto, Japan,
+  August.
+</P>
+<P>
+A. Trujillo.
+1995.
+Lexicalist Machine Translation of Spatial Prepositions.
+Ph.D. thesis, Computer Laboratory, University of Cambridge, April.
+</P>
+<P>
+Pete Whitelock.
+1994.
+Shake-and-bake translation.
+In Rupp et al. ruppetal94, pages 339-59.
+</P>
+<DIV ID="7.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+   Now at SHARP Laboratories of
+Europe, Oxford Science Park, Oxford OX4 4GA. E-mail: simon@sharp.co.uk
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

@@ -1,0 +1,1373 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>An Extended Clustering Algorithm for Statistical Language Models</TITLE>
+<ABSTRACT>
+<P>
+Statistical language models frequently suffer from a lack of training data.
+This problem can be alleviated by  clustering,
+because it reduces the number of free parameters that need to be trained.
+However, clustered models have the following drawback:
+if there is ``enough'' data to train an unclustered model, then the clustered
+variant may perform worse. On currently used
+language modeling corpora, e.g. the Wall Street Journal corpus, how do the
+performances of a clustered and an
+unclustered model compare? While trying to address this question, we develop
+the following two ideas. First, to get
+a clustering algorithm with potentially high performance, an existing algorithm
+is extended to deal with higher order N-grams.
+Second, to make it possible to cluster large amounts of training data more
+efficiently,  a heuristic to speed up the
+algorithm is presented. The resulting clustering algorithm can be used to
+cluster trigrams on the Wall Street Journal corpus and the
+language models it produces can compete with existing back-off models.
+Especially when there is only little training data available, the clustered
+models clearly outperform the back-off models.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+It is well known that statistical language models often suffer from a lack of
+training data. This is true for standard tasks and
+even more so when one tries to build a language model for a new domain, because
+a large corpus of texts from that domain is usually
+not available. One frequently used approach to alleviate this problem is to
+construct a clustered language model. Because it
+has fewer parameters, it needs less training data. The main advantage of a
+clustered model are its robustness, even in the
+face of little or sparse training data,  and its compactness. Particularly when
+a language model is used during the acoustic
+search in a speech recogniser, having a more compact, e.g. less complex model,
+can be of considerable importance. The main drawback
+of clustered models is that they may perform worse than an unclustered model,
+if there is ``enough'' data to train the
+latter. Do corpora currently used for language modeling, e.g. the Wall Street
+Journal corpus,  contain enough data in that sense?
+Or, in other words, how does the performance of a clustered model compare with
+that of an unclustered model? In this paper, we
+will attempt to partly answer this question and, along the way, an extended,
+more efficient clustering
+algorithm will be developed.
+</P>
+<P>
+ In the next section (section <CREF/>), a brief review of existing clustering algorithms will be given. For the work presented here, we use the
+clustering
+ algorithm proposed in <REF/>, because, in the spirit of decision directed learning, it uses an optimisation function
+that is very closely related to the final performance measure we wish to
+maximise. Since the algorithm forms the basis of our
+work, its optimisation criterion is derived in detail.
+</P>
+<P>
+In order to achieve a clustered model with potentially high
+ performance, the algorithm is then extended (section <CREF/>)  so that it can cluster higher order N-grams. We
+present three possible approaches for this extension and then develop the one
+chosen
+for this work in more detail.
+</P>
+<P>
+When such a clustering algorithm is applied to a large training corpus, e.g.
+the Wall Street Journal corpus, with tens of
+millions of words, the computational effort required can easily become
+prohibitive. Therefore, a simple
+ heuristic to speed up the algorithm is developed in section <CREF/>. Its main idea is as follows. Rather than trying to move each word wto all possible
+clusters, as the algorithm requires initially, one only tries moving w to a
+fixed number of clusters that have been
+selected from all possible clusters by a simple heuristic. This reduces the
+order of the complexity of the
+algorithm. Of course, it may lead to a decrease in performance. However, in
+practice, the decrease in performance is
+minor (less than 5%), whereas the obtained speedup is large (up to a factor
+of 32).
+</P>
+<P>
+Because of the increase in the speed of the algorithm, it can be applied more
+easily to the Wall Street Journal
+ corpus and the obtained results will be presented in section <CREF/>. 
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    Background and Related Work
+</HEADER>
+<P>
+In speech recognition, one is given a sequence of acoustic observations A and
+one tries to find the word
+sequence W[*] that is most likely to correspond to A. In order to minimise
+the average probability of
+ error, one should, according to Bayes' decision rule (<REF/>, p.17]), choose
+</P>
+<P>
+<!-- MATH: \begin{equation}
+W^{*}=argmax_{W} p(W|A).
+\end{equation} -->
+</P>
+<P>
+ Based on Bayes' formula (see for example <REF/>, p.150]), one can rewrite  the probability from the right hand side of equation <CREF/> according to the
+following equation:
+</P>
+<P>
+<!-- MATH: \begin{equation}
+p(W|A)=\frac{p(W)*p(A|W)}{p(A)}.
+\end{equation} -->
+</P>
+<P>
+p(W) is the probability that the word sequence W is spoken, p(A|W) is
+the conditional probability that the acoustic signal A is observed when Wis spoken
+and p(A) is the probability of observing the acoustic signal A. Based on
+ this formula, one can rewrite the maximization of equation <CREF/> as 
+</P>
+<P>
+<!-- MATH: \begin{equation}
+W^{*}=argmax_{W} \frac{p(W)*p(A|W)}{p(A)}.
+\end{equation} -->
+</P>
+<P>
+Since p(A) is the same for all  W, the factor p(A) does not influence the
+ choice of W and maximising equation <CREF/> is equivalent to maximising
+</P>
+<P>
+<!-- MATH: \begin{equation}
+W^{*}=argmax_{W} p(W)*p(A|W).
+\end{equation} -->
+</P>
+<P>
+The component of the speech recogniser that calculates
+p(A|W) is called the acoustic model, the component calculating p(W)the language model. With 
+<!-- MATH: $W=w_{1},...,w_{n}$ -->
+W=w1,...,wn, one can further decompose p(W)using the definition of conditional
+probabilities as
+</P>
+<P>
+<!-- MATH: \begin{equation}
+p(W)=\ \prod_{i=1}^{i=n} p(w_{i}|w_{1},...,w_{i-1}).
+\end{equation} -->
+</P>
+<P>
+In practice, because of the large number of parameters  in equation
+ <CREF/>, the probability of wiusually only depends on the immediately preceding M words: 
+</P>
+<P>
+<!-- MATH: \begin{equation}
+p(w_{i}|w_{1},...,w_{i-1}) \approx p(w_{i}|w_{i-M},...,w_{i-1}).
+\end{equation} -->
+</P>
+<P>
+These models are called (M+1)-gram models and in practice, mostly bigram
+(M=1) and trigram (M=2) models
+are used. Even in these cases, the number of parameters that need to be
+estimated from training
+data can be quite large. For a speech recogniser with a vocabulary of 20,000words, the bigram
+needs to estimate roughly 
+<!-- MATH: $20,000^{2}=4*10^{8}$ -->
+20,000[2=4*108] parameters and a trigram
+<!-- MATH: $20,000^{3}=8*10^{12}$ -->
+20,000[3=8*1012].
+</P>
+<P>
+One way to alleviate this problem is to use class based models. Let 
+<!-- MATH: $G: w
+\rightarrow G(w)=g_{w}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+be a function that maps each
+word w to its class 
+<!-- MATH: $G(w)=g_{w}$ -->
+G(w)=gw and let |G| denote the number of classes.
+We can then model the probability
+of wi as
+p(w_{i}|w_{1},...,w_{i-1}) \approx  p_{G}(w_{i}|w_{i-M},...,w_{i-1})\\
+ =  p_{G}(G(w_{i})|G(w_{i-M}),...,G(w_{i-1}))*p_{G}(w_{i}|G(w_{i})).
+\end{eqnarray} -->
+Thus, if |G|=1000 classes are being used, the class-based bigram model
+  has
+<!-- MATH: $1,000^{2}+20,000=1.02*10^{6}$ -->
+1,000[2+20,000=1.02*106] parameters and the class-based trigram model
+<!-- MATH: $1,000^{3}+20,000=1.00002*10^{9}$ -->
+1,000[3+20,000=1.00002*109].
+This constitutes a significant reduction in both cases.
+</P>
+<P>
+Many researchers have developed algorithms for determining the clustering
+function G automatically
+ (see for example <REF/>, <REF/>, <REF/>, <REF/> and  <REF/>). Starting from an initial clustering function, the basic principle often is to move words from
+their current cluster to
+another cluster, but only if this improves the value of an optimisation
+criterion. The algorithms often
+differ in the optimisation criterion and in general, there
+are many possible choices for it. However, in the spirit of decision-directed
+learning, it makes sense to
+use as optimisation criterion a function that is very closely related or
+identical to the final
+performance measure we wish to maximise. This way, one can be very confident
+that an improvement in the
+optimisation criterion will actually translate to an improvement of
+performance. We therefore chose the
+ algorithm proposed in <REF/> as the basis for our work. In the following, the
+optimisation criterion for a bigram based model (e.g. M=1) will be
+ derived, roughly as presented in <REF/>. 
+</P>
+<P>
+In order to automatically find classification functions  G, the
+classification problem is first converted into an optimisation problem.
+Suppose the function F(G) indicates how good the classification G is. One
+can then
+reformulate the classification problem as finding the classification G[*]that maximises F:
+</P>
+<P>
+<!-- MATH: \begin{equation}
+G^{*} = argmax_{G \in {\cal G}} F(G),
+\end{equation} -->
+</P>
+<P>
+where 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+contains the set of possible classifications which are at our
+disposal.
+</P>
+<P>
+What is a suitable function F, also called optimisation criterion? Given a
+classification function
+G, the probabilities 
+<!-- MATH: $p_{G}(w|v)$ -->
+ pG(w|v) of equation <CREF/> can be estimated using
+the maximum likelihood (ML) estimator, e.g. relative frequencies:
+<!-- MATH: \begin{eqnarray}
+p_{G}(w|v)  =  p(G(w)|G(v)) * p(w|G(w))\\
+ =  \frac{N(G(v), G(w))}{N(G(v))} * \frac{N(G(w), y)}{N(G(w))},
+\end{eqnarray} -->
+where N(x) denotes the number
+of times x occurs in the training data.
+Given these probability estimates 
+<!-- MATH: $p_{G}(w|v)$ -->
+pG(w|v), the likelihood FMLof the training data, e.g. the probability of the training data being generated
+by our probability
+estimates 
+<!-- MATH: $p_{G}(w|v)$ -->
+pG(w|v), measures how well the training data is represented by
+the
+ estimates and can be used as optimisation criterion (<REF/>). The likelihood of the
+training data FML is simply
+<!-- MATH: \begin{eqnarray}
+F_{ML}  =  \prod_{i=1}^{N} p_{G}(w_{i}|w_{i-1})\\
+ =   \prod_{i=1}^{N} \frac{N(g_{w_{i-1}}, g_{w_{i}})}{N(g_{w_{i-1}})} *
+\frac{N(g_{w_{i}}, w_{i})}{N(g_{w_{i}})}.
+\end{eqnarray} -->
+Assuming that the classification is unique, e.g. that G is a function,
+<!-- MATH: $N(g_{w_{i}}, w_{i})=N(w_{i})$ -->
+N(gwi, wi)=N(wi) always holds
+(because wi always occurs with the same class gwi). Since one
+tries to optimise FML with respect to G, any term that does not depend
+on Gcan be removed, because it will not influence the optimisation. It is
+thus equivalent to optimise
+<!-- MATH: \begin{eqnarray}
+F^{'}_{ML}  =  \prod_{i=1}^{N} \frac{N(g_{w_{i-1}},
+g_{w_{i}})}{N(g_{w_{i-1}})} * \frac{1}{N(g_{w_{i}})}\\
+ =:  \prod_{i=1}^{N} f(w_{i-1}, w_{i}).
+\end{eqnarray} -->
+If, for two pairs 
+<!-- MATH: $(w_{i-1}, w_{i})$ -->
+(wi-1, wi) and 
+<!-- MATH: $(w_{j-1}, w_{j})$ -->
+(wj-1, wj),
+<!-- MATH: $G(w_{i-1})=G(w_{j-1})$ -->
+G(wi-1)=G(wj-1) and
+<!-- MATH: $G(w_{i})=G(w_{j})$ -->
+G(wi)=G(wj) holds, then 
+<!-- MATH: $f(w_{i-1}, w_{i})=f(w_{j-1}, w_{j})$ -->
+f(wi-1, wi)=f(wj-1, wj) is also
+true.
+Identical terms can thus be regrouped to obtain
+</P>
+<P>
+<!-- MATH: \begin{equation}
+F^{'}_{ML}= \prod_{g_{1}, g_{2}} [ \frac{N(g_{1}, g_{2})}{N(g_{1})} *
+\frac{1}{N(g_{2})} ] ^{N(g_{1}, g_{2})},
+\end{equation} -->
+</P>
+<P>
+where the product is over all possible pairs 
+<!-- MATH: $(g_{1}, g_{2})$ -->
+(g1, g2).
+Because N(g1) does not depend on g2 and N(g2) does not depend on
+g1, this can again be simplified to
+</P>
+<P>
+<!-- MATH: \begin{equation}
+F^{'}_{ML}= \prod_{g_{1}, g_{2}} N(g_{1}, g_{2})^{N(g_{1}, g_{2})}
+\prod_{g_{1}} \frac{1}{N(g_{1})}^{N(g_{1})}
+\prod_{g_{2}} \frac{1}{N(g_{2})}^{N(g_{2})}.
+\end{equation} -->
+</P>
+<P>
+After taking the logarithm, one obtains the equivalent optimisation criterion
+<!-- MATH: $F^{''}_{ML}$ -->
+F['']ML
+<!-- MATH: \begin{eqnarray}
+F^{''}_{ML}  =   \sum_{g_{1}, g_{2}}  N(g_{1}, g_{2}) * log( N(g_{1}, g_{2}
+)) -
+\sum_{g_{1}} N(g_{1}) * log ( N(g_{1}))\\
+  -   \sum_{g_{2}} N(g_{2}) * log ( N(g_{2})) \nonumber .
+\end{eqnarray} -->
+</P>
+<P>
+<!-- MATH: $F^{''}_{ML}$ -->
+F['']ML is the maximum likelihood optimisation criterion that can be used
+ to find a good classification
+G. However, the problem with this maximum likelihood criterion is that one
+first estimates the probabilities
+<!-- MATH: $p_{G}(w|v)$ -->
+pG(w|v) on the training data T and then, given 
+<!-- MATH: $p_{G}(w|v)$ -->
+pG(w|v), one
+evaluates
+the classification G on T. In other words, both the classification G and
+the estimator
+<!-- MATH: $p_{G}(w|v)$ -->
+pG(w|v) are trained on the same data. Thus, there will not be any unseen
+event, a fact
+that overestimates the power for generalisation of the class based model. In
+order to avoid this,
+a cross-validation technique will be incorporated directly into the
+ optimisation criterion in section <CREF/>. 
+</P>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>    Leaving-One-Out Criterion
+</HEADER>
+<P>
+The basic principle of cross-validation is to split the training data T into
+a ``retained'' part
+TR and a ``held-out'' part TH. One can then use TR to estimate
+the probabilities
+<!-- MATH: $p_{G}(w|v)$ -->
+pG(w|v) for a given classification G,  and TH to evaluate how well
+the
+classification G performs. The so-called
+leaving-one-out technique is a special case of cross-validation
+ (<REF/>, pp.75]). It divides the data into N-1 samples as ``retained'' part and only one sample
+as ``held-out'' part. This is repeated N-1 times, so that each sample is
+once in the ``held-out'' part. The advantage of this approach is that all
+samples
+are used in the ``retained'' and in the ``held-out'' part, thus making very
+efficient
+use of the existing data. In other words, the  ``held-out'' part TH to
+evaluate
+a classification G is the entire set of data points; but when we calculate
+the
+probability of the i[th] data point, one assumes that the probability
+distributions
+<!-- MATH: $p_{G}(w|v)$ -->
+pG(w|v) were estimated on all the data expect point i.
+</P>
+<P>
+Let Ti denote the data without the pair 
+<!-- MATH: $(w_{i-1}, w_{i})$ -->
+(wi-1, wi) and
+<!-- MATH: $p_{G,T_{i}}(w|v)$ -->
+pG,Ti(w|v) the probability estimates based on a given classification
+G and
+training corpus Ti. Given a particular Ti, the probability of the
+``held-out''
+part 
+<!-- MATH: $(w_{i-1}, w_{i})$ -->
+(wi-1, wi) is 
+<!-- MATH: $p_{G,T_{i}}(w_{i}|w_{i-1})$ -->
+pG,Ti(wi|wi-1). The probability of the
+complete corpus,
+where each pair is in turn considered the ``held-out'' part is the
+leaving-one-out likelihood LLO
+</P>
+<P>
+<!-- MATH: \begin{equation}
+L_{LO}=\prod_{i=1}^{N} p_{G,T_{i}}(w_{i}|w_{i-1}).
+\end{equation} -->
+</P>
+<P>
+In the following, an optimisation function FLO will be derived by
+specifying how
+<!-- MATH: $p_{G,T_{i}}(w_{i}|w_{i-1})$ -->
+pG,Ti(wi|wi-1) is estimated from frequency counts.
+ First 
+<!-- MATH: $p_{G,T_{i}}(w_{i}|w_{i-1})$ -->
+pG,Ti(wi|wi-1) is rewritten  as usual (see equation
+ <CREF/>): 
+p_{G,T_{i}}(w|v)  =  p_{G,T_{i}}(G(w)|G(v))*p_{G, T_{i}}(w|G(w))\\
+ =  \frac{p_{G,T_{i}}(g_{1}, g_{2})}{p_{G,T_{i}}(g_{1})} *
+\frac{p_{G,T_{i}}(g_{2}, w)}{p_{G,T_{i}}(g_{2})},
+\end{eqnarray} -->
+where 
+<!-- MATH: $g_{1}=G(v)$ -->
+g1=G(v) and 
+<!-- MATH: $g_{2}=G(w)$ -->
+g2=G(w).
+ Now we will specify how each term in equation <CREF/> is estimated. 
+</P>
+<P>
+As shown before, 
+<!-- MATH: $p_{G,T_{i}}(g_{2}, w)=p_{G,T_{i}}(w)$ -->
+pG,Ti(g2, w)=pG,Ti(w) (if the classification
+Gis a function) and since 
+<!-- MATH: $p_{T_{i}}(w)$ -->
+pTi(w) is actually independent of G, one can
+drop it
+out of the maximization and thus need not specify an estimate for it.
+</P>
+<P>
+As will be shown later, one can guarantee that every class
+g1 and g2 has been seen at least once in the
+``retained'' part and one can thus use relative counts as estimates for class
+uni-grams:
+p_{G,T_{i}}(g_{1})  =  \frac{N_{T_{i}}(g_{1})}{N_{T_{i}}}\\
+p_{G,T_{i}}(g_{2})  =  \frac{N_{T_{i}}(g_{2})}{N_{T_{i}}}.
+\end{eqnarray} -->
+</P>
+<P>
+However, in the case of the class bi-gram, one might have to predict unseen
+events
+ . We therefore use the absolute discounting
+ method (<REF/>), where the counts are reduced by a constant value b [ 1and where the gained probability mass is redistributed over unseen events. Let
+<!-- MATH: $n_{0,T_{i}}$ -->
+n0,Ti be the number of unseen pairs 
+<!-- MATH: $(g_{1}, g_{2})$ -->
+(g1, g2) and 
+<!-- MATH: $n_{+,T_{i}}$ -->
+n+,Tithe number of
+seen pairs 
+<!-- MATH: $(g_{1}, g_{2})$ -->
+(g1, g2). This leads to the following smoothed estimate
+<!-- MATH: \begin{eqnarray}
+\lefteqn{ p_{G,T_{i}}(g_{1}, g_{2})} \nonumber \\
+ =  \left\{ \begin{array}{ll}
+\frac{N_{T_{i}}(g_{1}, g_{2}) - b}{N_{T_{i}}}  \mbox{if $N_{T_{i}}(g_{1},
+g_{2})>0$ }\\
+\frac{n_{+, T_{i}}*b}{n_{0,T_{i}}*N_{T_{i}}}  \mbox{if $N_{T_{i}}(g_{1},
+g_{2})=0$ }\\
+\end{array}
+\right.
+\end{eqnarray} -->
+Ideally, one would make b depend on the classification, e.g. use
+<!-- MATH: $b=\frac{n_{1}}{n_{1}+2*n_{2}}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where
+n1 and n2 depend on G. However, due to computational reasons, we
+use, as suggested in
+ <REF/>, the empirically determined constant value b=0.75 during clustering.
+The probability distribution 
+<!-- MATH: $p_{G,T_{i}}(g_{1}, g_{2})$ -->
+pG,Ti(g1, g2) will always be
+evaluated on the
+``held-out'' part 
+<!-- MATH: $(w_{i-1}, w_{i})$ -->
+(wi-1, wi) and with 
+<!-- MATH: $g_{1,i}=g_{w_{i-1}}$ -->
+g1,i=gwi-1 and
+<!-- MATH: $g_{2,i}=g_{w_{i}}$ -->
+g2,i=gwi, one obtains
+\lefteqn{ p_{G,T_{i}}(g_{1,i}, g_{2,i})} \nonumber \\
+ =  \left\{ \begin{array}{ll}
+\frac{N_{T_{i}}(g_{1,i}, g_{2,i}) - b}{N_{T_{i}}}  \mbox{if
+$N_{T_{i}}(g_{1,i}, g_{2,i})>0$ }\\
+\frac{n_{+, T_{i}}*b}{n_{0,T_{i}}*N_{T_{i}}}  \mbox{if $N_{T_{i}}(g_{1,i},
+g_{2,i})=0$ }\end{array}
+\right.
+\end{eqnarray} -->
+</P>
+<P>
+In order to facilitate future regrouping of terms, one can now express the
+counts
+<!-- MATH: $N_{T_{i}}, N_{T_{i}}(g_{1})$ -->
+NTi, NTi(g1) etc.
+in terms of the counts of
+the complete corpus T as follows:
+N_{T_{i}}  =  N_{T} - 1\\
+N_{T_{i}}(g_{1})  =  N_{T}(g_{1}) - 1 \\
+N_{T_{i}}(g_{2})  =  N_{T}(g_{2}) - 1 \\
+N_{T_{i}}(g_{1,i}, g_{2,i})  =   N_{T}(g_{1,i}, g_{2,i})-1\\N_{T_{i}}  = 
+N_{T} - 1 \\
+n_{+, T_{i}}  =  \left\{
+\begin{array}{ll}
+n_{+, T}  \mbox{if $N_{T}(g_{1,i}, g_{2,i})>1$ }\\
+n_{+, T} - 1   \mbox{if $N_{T}(g_{1,i}, g_{2,i})=1$ }\\
+\end{array} \right. \\
+n_{0,T_{i}}  =   \left\{
+\begin{array}{ll}
+n_{0,T}  \mbox{if $N_{T}(g_{1,i}, g_{2,i})>1$ }\\
+n_{0, T} - 1   \mbox{if $N_{T}(g_{1,i}, g_{2,i})=1$ }\end{array} \right.
+\end{eqnarray} -->
+ All the expressions can now be substituted back into equation <CREF/>. After dropping 
+<!-- MATH: $p_{G,T_{i}}(w)$ -->
+pG,Ti(w) because it is independent of G, one arrives
+at
+<!-- MATH: \begin{eqnarray}
+F'_{LO}  =  \prod_{i=1}^{N} \frac{p_{G,T_{i}}(g_{1,i},
+g_{2,i})}{p_{G,T_{i}}(g_{1,i})} * \frac{1}{p_{G,T_{i}}(g_{2,i})}\\
+ =  \prod_{g_{1}, g_{2}} ( p_{G,T_{i}}(g_{1}, g_{2}))^{N(g_{1}, g_{2})} *
+\prod_{g_{1}} (\frac{1}{p_{G,T_{i}}(g_{1})})^{N(g_{1})}\\
+   * \prod_{g_{2}} (\frac{1}{p_{G,T_{i}}(g_{2})})^{N(g_{2})} \nonumber .
+\end{eqnarray} -->
+ One can now substitute equations <CREF/>, <CREF/> and  <CREF/>, using  the counts of the whole corpus of equations <CREF/> to <CREF/> . After having dropped
+terms independent of G, one obtains
+<!-- MATH: \begin{eqnarray}
+F''_{LO}  =  \prod_{g_{1}, g_{2} : N(g_{1},g_{2})  > 1 } (N_{T}(g_{1}, g_{2})
+-1 -b )^{N_{T}(g_{1}, g_{2})} *
+\left( \frac{(n_{+,T}-1)*b}{(n_{0,T}+1)} \right)^{n_{1,T}}\\
+  *  \prod_{g_{1}} \left( \frac{1}{(N_{T}(g_{1}-1))} \right)^{N_{T}(g_{1})}
+* \prod_{g_{2}} \left( \frac{1}{(N_{T}(g_{2}-1))} \right)^{N_{T}(g_{2})}
+\nonumber ,
+\end{eqnarray} -->
+where n1,T is the number of pairs 
+<!-- MATH: $(g_{1}, g_{2})$ -->
+(g1, g2) seen exactly once in
+T(e.g. the number of pairs that will be unseen when used as ``held-out'' part).
+Taking the logarithm, we obtain the final optimisation criterion F'''LO
+<!-- MATH: \begin{eqnarray}
+F'''_{LO}  =  \sum_{g_{1}, g_{2}:N_{T}(g_{1}, g_{2})>1} N_{T}(g_{1}, g_{2}) *
+log ( N_{T}(g_{1}, g_{2}) - 1 - b )\\
+ +  n_{1,T} * log ( \frac{b*(n_{+, T}-1)}{(n_{0,T}+1)} ) \nonumber \\
+  -  \sum_{g_{1}} N_{T}(g_{1}) * log (  N_{T}(g_{1}) - 1 ) - \sum_{g_{2}}
+N_{T}(g_{2}) * log (  N_{T}(g_{2}) - 1 )
+\nonumber .
+\end{eqnarray} -->
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>    Clustering Algorithm
+</HEADER>
+<P>
+Given the  maximization criterion F'''LO, we use the algorithm in Figure
+ <CREF/> to find a good clustering function G. The algorithm tries to make local changes by moving words between
+classes, but only if
+it improves the value of the optimisation function. The algorithm will converge
+because the
+optimisation criterion is made up of logarithms of probabilities and thus has
+an upper limit and
+because the value of the optimisation criterion increases in each iteration.
+However, the solution
+found by this greedy algorithm is only locally optimal and it depends on the
+starting conditions.
+Furthermore, since the clustering of one word affects the future clustering of
+other words, the
+ order in which words are moved is important. As suggested in <REF/>, the words
+are sorted by
+the number of times they occur such that the most frequent words, about which
+one knows
+the most,  are clustered first. Moreover, infrequent words (e.g. words
+with occurrence counts smaller than 5) are not considered for clustering,
+because the information they
+provide is not very reliable. Thus, if one starts out with an initial
+clustering in which no cluster
+occurs only once, and if one never moves words that occur only once,
+then one will never have a cluster which occurs only once.
+Thus, the assumption we made earlier,
+when it was decided to estimate cluster uni-grams by frequency counts, can be
+guaranteed.
+</P>
+<P>
+We will now determine the complexity of the algorithm. Let C be
+the maximal number of clusters for G, let E be the number
+of elements one tries to cluster (e.g. E=|V|),
+and let I be the number of iterations.
+When one moves w from gw to g'w in the inner loop, one needs
+to change the counts 
+<!-- MATH: $N(g_{w}, g_{2})$ -->
+N(gw, g2) and 
+<!-- MATH: $N(g'_{w}, g_{2})$ -->
+N(g'w, g2) for all g2.
+The amount by which the counts need to be changed is equal to the
+number of times w occurred with cluster g2. Since this amount is
+independent of g'w, one only needs to calculate it once for each w.
+The amount can then be looked up in constant time within the loop, thus
+making the inner loop of order C. The inner loop is executed once for every
+cluster w can be moved to, thus giving a complexity of the order of C[2].
+For
+each w, one needed to calculate the number of times w occurred with all
+clusters g2. For that one has to sum up all the bigram counts
+<!-- MATH: $N(w,v):G(v)=g_{2}$ -->
+N(w,v):G(v)=g2, which is on the order of E, thus giving a complexity of
+the order
+of  E+C[2]. The two outer loops are executed I and E times, thus giving
+a total complexity of the order of 
+<!-- MATH: $I*E*(E+C^{2})$ -->
+I*E*(E+C[2]).
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    Extending the Clustering Algorithm to N-grams
+</HEADER>
+<P>
+It is well known that a trigram model outperforms a bigram model if there is
+sufficient training data. If
+we want our clustering algorithm to compete with unclustered models on a corpus
+like the Wall Street Journal,
+where the trigram indeed outperforms the bi-gram, it therefore seems logical
+that the
+clustering algorithm should be extended to deal with trigrams (and higher order
+N-grams) as well.
+ The original clustered bigram model, as derived from equation <CREF/>, is
+p(w_{i}|w_{i-1}) =  p_{G}(G(w_{i})|G(w_{i-1}))*p_{G}(w_{i}|G(w_{i})).
+\end{eqnarray} -->
+There are at least three ways of extending the clustering to (M+1)-grams,
+depending on how one models
+the probability 
+<!-- MATH: $p(w_{i}|w_{i-M},...,w_{i-1})$ -->
+p(wi|wi-M,...,wi-1):
+a)   p_{G}(G(w_{i})|G(w_{i-M}),...,G(w_{i-1}))*p_{G}(w_{i}|G(w_{i})) \\
+b)  
+p_{G}(G_{M+1}(w_{i})|G_{M}(w_{i-M}),...,G_{1}(w_{i-1}))*p_{G}(w_{i}|G_{M+1}(w_{i}))\\
+c)   p_{G}(G_{2}(w_{i})|G_{1}(w_{i-M},...,w_{i-1}))*p_{G}(w_{i}|G_{2}(w_{i}))
+\end{eqnarray} -->
+</P>
+<P>
+The tradeoff between these models is one of accuracy versus complexity.
+Approach a), which only
+uses one clustering function G, could produce
+</P>
+<P>
+|G|[|V|]
+</P>
+<P>
+different clusterings (for each word in V,
+it can choose one of the |G| clusters). Approach b), which uses M+1different clustering functions,
+can represent
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+different clusterings, including all the clusterings of
+approach a). Approach c), which uses one clustering function for the tuples
+<!-- MATH: $w_{i-M},...,w_{i-1}$ -->
+wi-M,...,wi-1 and
+one for wi, can produce
+</P>
+<P>
+|G1|[(|V|M)+|G2||V|]
+</P>
+<P>
+possible clusterings, including all the
+ones represented by approach a) and b). Approach c) therefore has the
+highest potential for accuracy,
+as long as there is sufficient training data. Since the Wall Street Journal
+corpus is very large, we
+decided to use approach c). Please note that for M=1, approach a) gives
+the traditional
+clustered bigram approach, but approaches b) and c) (c) collapses to b)for M=1) are more
+general than the traditional model. Moreover, approach c) is referred to in a
+recent publication
+ (<REF/>) as a two-sided (non symmetric) approach. 
+</P>
+<P>
+ Similar to the derivation presented in section <CREF/>, one can now derive the  optimisation
+criterion for approach c). However,  since it is very similar to the
+ derivation shown in section <CREF/>, only the final formulae will be given here. The complete derivation is given in appendix A.
+Let g1 and g2 denote clusters of G1 and G2 respectively.
+The optimisation criterion for the extended algorithm is
+<!-- MATH: \begin{eqnarray}
+F_{LO}  =  \sum_{g_{1}, g_{2}:N_{T}(g_{1}, g_{2})>1} N_{T}(g_{1}, g_{2}) *
+log ( N_{T}(g_{1}, g_{2}) - 1 - b )\\
+ +  n_{1,T} * log ( \frac{b*(n_{+, T}-1)}{(n_{0,T}+1)} ) \nonumber \\
+  -  \sum_{g_{1}} N_{T}(g_{1}) * log (  N_{T}(g_{1}) - 1 ) - \sum_{g_{2}}
+N_{T}(g_{2}) * log (  N_{T}(g_{2}) - 1 )
+\nonumber .
+\end{eqnarray} -->
+The corresponding clustering algorithm, which is shown in figure
+ <CREF/>, is a straight forward extension of the  one given in section <CREF/>. 
+It's complexity can be derived as follows. Let CG1 and CG2 be
+the maximal number of clusters for G1 and G2, let E1 and E2 be the number
+of elements G1 and G2 try to cluster, let 
+<!-- MATH: $C=max(C_{G_{1}},
+C_{G_{2}})$ -->
+C=max(CG1,
+CG2),
+<!-- MATH: $E=max(E_{1}, E_{2})$ -->
+E=max(E1, E2) and let I be the number of iterations.
+When one moves w from gw to g'w in the inner loop
+(the situation is symmetrical for t), one needs
+to change the counts 
+<!-- MATH: $N(g_{w}, g_{2})$ -->
+N(gw, g2) and 
+<!-- MATH: $N(g'_{w}, g_{2})$ -->
+N(g'w, g2) for all 
+<!-- MATH: $g_{2}
+\in G_{2}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The amount by which the counts need to be changed is equal to the
+number of times w occurs with cluster g2. Since this amount is
+independent of g'w, one only needs to calculate it once for each w.
+The amount can then be looked up in constant time within the loop, thus
+making the inner loop of order C. The inner loop is executed once for every
+cluster w can be moved to, thus giving a complexity of the order of C[2].
+For
+each w, one needed to calculate the number of times w occurred with all
+clusters g2. For that, one has to sum up all the bigram counts
+<!-- MATH: $N(w,t):G_{2}(t)=g_{2}$ -->
+N(w,t):G2(t)=g2, which is on the order of E, thus giving a complexity
+of the order
+of  E+C[2]. The two outer loops are executed I and E times thus giving
+a total complexity of the order of 
+<!-- MATH: $I*E*(E+C^{2})$ -->
+I*E*(E+C[2]). This is almost identical
+to the complexity of the bigram clustering algorithm given in section
+ <CREF/>, except that E is now the number of (M+1)-grams one wishes to cluster, rather than the number of unigrams (e.g. words of the vocabulary).
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>    Speeding up the Algorithm
+</HEADER>
+<P>
+If one wants to use the clustering algorithm on large corpora, the complexity
+of the algorithm
+becomes a crucial issue. As shown in the last two sections, the complexity of
+the algorithm
+is 
+<!-- MATH: $O(I*E*(E+C^{2}))$ -->
+O(I*E*(E+C[2])), where C is the maximally allowed number of clusters,
+I is the number of
+iterations and E is the number of elements to cluster (|V| in case of
+bigrams, |V|[M+1] in case of the extended algorithm). C crucially
+determines the quality of the resulting language model and one
+would therefore like to chose it as big as possible. Unfortunately, because the
+algorithm
+is quadratic in C, this may be very costly. We therefore developed the
+following heuristic to speed up the algorithm.
+</P>
+<P>
+The factor C[2] comes from the fact that one tries to move a word w to
+each of the C possible
+clusters (O(C)), and for each of these one has to calculate the difference in
+the
+optimisation function (O(C) again). If, based on some heuristic, one could
+select a fixed
+number t of target clusters, then one could only try moving w to these tclusters, rather than
+to all possible clusters C. This may of course lead to the situation where
+one does not move a
+word to the best possible cluster (because it was not selected by the
+heuristic), and thus
+potentially to a decrease in performance. But this decrease in performance
+depends of course
+on the heuristic function used and we will come back to this issue when we look
+at the practical
+results.
+</P>
+<P>
+The heuristic used in this work is as follows. For each cluster g1, one
+keeps track of the h clusters that
+most frequently co-occur with g1 in the tables 
+<!-- MATH: $N(g_{1}, g_{2})$ -->
+N(g1, g2).
+For example, if g1 is a cluster of G1 (the situation is symmetric
+for G2), then the h biggest entries in 
+<!-- MATH: $N(g_{1}, g)$ -->
+N(g1, g) are the
+h clusters being stored.
+When one tries to move a word w,
+one also constructs a list of the h most frequent clusters that follow w(one can  get this
+for free as part of the factor E in (E+C[2])). One then simply calculates
+the
+number of clusters that are in both lists and takes this as the heuristic score
+H(g1). The
+bigger H(g1), the more similar are the distributions of w and g1,
+and the more likely
+it is that g1 is a good target cluster to which w should be moved.
+Because the
+length of the lists is a constant h calculating the heuristic score
+is also independent of C. One can thus calculate the heuristic score of all
+C clusters in O(C).
+However, once one has decided to move w to a given cluster, one would have to
+update the
+lists containing the h most frequent clusters following each cluster g1(the lists might have
+changed due to the last moving of a word). Since the update is O(C) for a
+given g1, the update
+would again be O(C[2]) for all clusters. In order to avoid this, one can
+make another
+approximation at this point. One can only update the list for the original  and
+the new cluster of w. The
+full update of all the lists  is only performed after a certain number u of
+words have been moved.
+</P>
+<P>
+To sum up, we can say that one can select t target clusters using the
+heuristic in O(C). Following
+that, one tries  moving w to each of these t clusters, which is again
+O(C). Moreover, several times
+per iteration (depending on u), one updates the list of most frequent
+clusters which is O(C[2]).
+Thus, the complexity of the heuristic version of the algorithm is
+<!-- MATH: $O(I*(E*(E+C)+C^{2}))$ -->
+O(I*(E*(E+C)+C[2])). The complexity still contains the factor C[2], but
+this time not
+within the inner parenthesis. The factor C[2] will thus be smaller than
+E*(E+C), and is only given for completeness.
+</P>
+<P>
+We will now present a practical evaluation of the heuristic algorithm. The
+heuristic itself is
+parameterised by h, the number of most frequent clusters one uses to
+calculate the heuristic score, t,
+the number of best ranked target clusters one tries to move word w to and
+u, the number indicating after how many words a full update of the list of
+most frequent clusters
+is performed. In order to evaluate the heuristic for a given set
+of parameters, one can simply compare the final value of the approximation
+function
+and the resulting perplexity of the
+heuristic algorithm with that of the full algorithm.
+</P>
+<P>
+ Table <CREF/> contains a comparison of the results using approximately one million words of training data (from the Wall Street
+Journal corpus) and values t=10, h=10 and
+u=1000. The CPU Time given was measured on a DEC alpha workstation (DEC 3000,
+model 600), which
+was used in all the experiments reported in this paper.
+One can see that the
+execution time of the standard algorithm seems indeed quadratic in the number
+of
+clusters, whereas that of the heuristic version seems to be linear. Moreover,
+the perplexity of the heuristic version is always within 4% of that of the
+standard algorithm, a number which does not seem to increase systematically
+with
+the number of clusters. Furthermore, the speed up of the algorithm seems to
+be closely related to the number of clusters divided by t. For example,
+in the case of 320 clusters, this ration is 320/10=32 and the heuristic
+version is indeed almost 32 times as fast (the speed up is almost
+<!-- MATH: $1-\frac{1}{32}=0.97$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ).
+Judging from the time behaviour of the standard algorithm, one would expect
+it to take around 32 hours to run with 1000 clusters, whereas the
+heuristic algorithm, as will be shown later, only takes about half an
+hour  (for t=10).
+</P>
+<P>
+ Tables <CREF/> to <CREF/> contain a more detailed analysis of the influence of the parameters t, u, and h on the heuristic version
+of the algorithm, this time with a maximal number of allowed clusters of
+1000.
+The first point to note is
+that in all tables, a change in the value of the optimisation function is very
+closely related to a change in perplexity. This is a very reassuring finding,
+because it indicates that the clustering algorithm actually tries to
+optimise the correct criterion.
+</P>
+<P>
+ From table <CREF/>, one can see that an increase in t leads to an increase  in execution time, but also
+ to an increase in performance. This is because as t increases,
+the chances of the
+heuristic missing the overall best target cluster for a given word wdecreases.
+</P>
+<P>
+ In table <CREF/>, one can see that the effect of u on the algorithm is very minor. This could be explained by the fact that even
+though the full lists of most frequent clusters are not updated at every move,
+the update in clusters gw and g'w, which is performed at every
+move, contains the most important changes.
+</P>
+<P>
+ Finally, in table <CREF/>, one can see that the performance of the algorithm decreases with an increase in h. This in a way counter
+intuitive result could be explained by the following hypothesis. If the
+suitability of a target cluster is determined by a small number of very
+frequently co-occurring clusters, then increasing h could make the heuristic
+perform worse, because the effect of the most important clusters is
+perturbed by a large number of less important clusters (the heuristic
+only counts the number of clusters in both lists and does not weigh them).
+</P>
+<P>
+Based on the results of these experiments, we chose h=5, t=10 and
+u=1000 for future experiments with the heuristic version of the algorithm.
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>    Results
+</HEADER>
+<P>
+In the following, we will present  results of clustered language models on  the
+Wall
+Street Journal (WSJ) corpus. The work reported here was performed on the WSJ0
+corpus, using the verbalised pronunciation (VP) and non verbalised
+pronunciation
+(NVP) versions of the corpus with the 20K open vocabulary. As mentioned
+ on the CDROM (and as discussed in <REF/>), the results for open vocabularies are usually not meaningful,
+if the unknown words are taken into account when calculating the
+perplexity.
+ One way to solve this problem (<REF/>) is to simply skip the unknown words, when calculating the perplexity. Since all our experiments
+were performed with the open vocabulary, this is the approach
+taken here, except when indicated otherwise.  In order to investigate
+the influence of the amount of training data on the results, we used seven
+different sets of training
+data, T1 to T7, with about 2K, 12K, 60K, 350K, 1.7M, 8.5M and 40M words
+respectively. All perplexity results
+were calculated on approximately 2.3 million words of text that were not part
+of the training
+material. The clustered models were
+produced with the extended heuristic version of the algorithm. To run to
+completion, it took less than
+12 hours real time for the bigram case, and several days for the trigram case.
+</P>
+<P>
+As a yardstick for the performance of the clustered models, we implemented the
+commonly used compact
+ back-off model (<REF/>, <REF/>). Because the bigram counts were not smoothed, the probability
+mass, that could be redistributed to unseen events, was only gained through
+events that fell below the
+cut-off threshold. If a given cut-off threshold did  did not lead to any gained
+probability
+mass for a particular distribution (because no
+event was below the threshold and thus no probability mass could be
+redistributed), the cut-off threshold
+of this distribution was set to the lowest value, that would lead to some gain
+in probability mass.
+ Table <CREF/> and  <CREF/> give the perplexity of back-off models with various cut-off thresholds C for verbalised
+and non-verbalised pronunciation respectively.
+First, one can see that a bigger value of C leads to a higher perplexity.
+This is because as C increases, more
+and more bigram counts are discarded and replaced by unigram, rather than
+bigram,  probability estimates.
+However, a good reason why higher values of C might still be of interest is
+that they lead to substantially
+smaller models and this can be of crucial importance for the time performance
+of a recogniser.
+Second, and more importantly for our purposes,
+the results seem comparable to other results reported in the literature. In
+ <REF/> for example, the perplexity results for the non-verbalised data with open vocabulary is 205, quite close
+to our 216 (for C=2). However, it
+is quite likely that the probabilities of unknown words were taken into account
+for the calculation of the
+205 value and our model also gives a perplexity of 205 in that case. The
+back-off results of tables
+ <CREF/> and <CREF/> therefore constitute a reasonable yardstick to evaluate
+the performance of the clustered language models.
+</P>
+<P>
+ Tables <CREF/> and <CREF/> give the results of a clustered bigram with
+2000 clusters for both G1 and G2, for verbalised and non-verbalised
+pronunciation respectively.
+For better comparison, the matching results of the back-off models are repeated
+and the difference is given in percent.
+Even though the clustered model performs worse than the back-off model on the
+largest set of data, it
+outperforms the back-off model in almost all other cases. This clearly shows
+the superior robustness of the
+clustered models.
+</P>
+<P>
+ Table <CREF/> shows the results for a clustered tri-gram   with 7000 and 1000 clusters for G1 and G2 on VP data. Because
+these results were obtained on slightly different training and  testing texts,
+the table also
+contains the results of the clustered bi-gram on the same data. One
+can see that the clustered trigram outperforms the
+clustered bigram, at least with sufficient training data. But even with
+only five million words of training data, the clustered trigram is only
+slightly worse than the clustered bigram, showing again the
+robustness of the clustered language models.
+</P>
+<P>
+From all the results given here, one can see that the clustered
+language models can still compete with unclustered models, even
+when a large corpus, such as the Wall Street Journal corpus,
+is being used.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>    Conclusions
+</HEADER>
+<P>
+In this paper, an existing clustering algorithm is extended to deal with
+higher order N-grams. Moreover, a heuristic version of the algorithm is
+introduced, which leads to a very significant speed up (up to a factor
+of 32),
+with only a slight loss in performance (5%). This makes it
+possible to apply the resulting algorithm to the clustering of bigrams and
+trigrams on the Wall Street Journal corpus. The results are shown to
+be comparable to standard back-off bigram models.
+Moreover, in the absence of many million words of training data, the clustered
+model is more robust and clearly outperforms the non-clustered models.
+This is an important point, because for many real world speech recognition
+applications, the amount of training data available for a certain task or
+domain is in general unlikely to exceed several million words. In those
+cases, the clustered models seem like a good alternative to back-off models and
+certainly one that deserves close investigation.
+</P>
+<P>
+The main advantage
+of the clustering models, its robustness in the face of little training
+data, can also be seen from the results and in these situations, the
+clustered algorithm is preferable to the standard back-off
+models.
+</P>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>    Appendix A: Deriving the Optimisation Function
+</HEADER>
+<P>
+In  this appendix, we will present the derivation of the optimisation function
+for the extended clustering algorithm in detail. It is a generalisation of
+ <REF/>, where the derivation was given for M=1.
+</P>
+<P>
+Let G be a short hand to denote both classification functions G1 and
+ G2. Following the same approach as in section <CREF/>, one  can estimate the probabilities in equation <CREF/> using the maximum likelihood estimator
+<!-- MATH: \begin{eqnarray}
+p_{G}(w|v_{M},...,v_{1})  =  p(G_{2}(w)|G_{1}(v_{M},...,v_{1})) *
+p(w|G_{2}(w))\\
+ =  \frac{N(g_{1}, g_{2})}{N(g_{1})} * \frac{N(g_{2}, y)}{N(g_{2})},
+\end{eqnarray} -->
+where 
+<!-- MATH: $g_{1}=G_{1}(v_{M},...,v_{1})$ -->
+g1=G1(vM,...,v1), 
+<!-- MATH: $g_{2}=G_{2}(w)$ -->
+g2=G2(w) and N(x) denotes the
+number
+of times x occurs in the data.
+Given these probability estimates 
+<!-- MATH: $p_{G}(w|v_{M},...,v_{1})$ -->
+pG(w|vM,...,v1), the likelihood
+FMLof the training data, e.g. the probability of the training data being generated
+by our probability
+estimates 
+<!-- MATH: $p_{G}(w|v_{M},...,v_{1})$ -->
+pG(w|vM,...,v1), measures how well the training data is
+represented by the
+ estimates and can be used as optimisation criterion (<REF/>). The likelihood of the
+training data FML is simply
+<!-- MATH: \begin{eqnarray}
+F_{ML}  =  \prod_{i=1}^{N} p_{G}(w_{i}|w_{i-M},...,w_{i-1})\\
+ =   \prod_{i=1}^{N} \frac{N(G_{1}(w_{i-M},...,w_{i-1}),
+G_{2}(w_{i}))}{N(G_{1}(w_{i-M},...,w_{i-1}))} * \frac{N(G_{2}(w_{i}),
+w_{i})}{N(G_{2}(w_{i}))}.
+\end{eqnarray} -->
+Assuming that the classification is unique, e.g. that G1 and G2 are
+functions, 
+<!-- MATH: $N(G_{2}(w_{i}), w_{i})=N(w_{i})$ -->
+N(G2(wi), wi)=N(wi) always holds
+(because wi always occurs with the same class 
+<!-- MATH: $G_{2}(w_{i})$ -->
+G2(wi)). Since one
+is trying to optimise FML with respect to G, one
+can remove any term that does not depend on G, because it will not influence
+the optimisation. It is
+thus equivalent to optimise
+<!-- MATH: \begin{eqnarray}
+F^{'}_{ML}  =  \prod_{i=1}^{N} \frac{N(G_{1}(w_{i-M},...,w_{i-1}),
+G_{2}(w_{i}))}{N(G_{1}(w_{i-M},...,w_{i-1}))} * \frac{1}{N(G_{2}(w_{i}))}\\
+ =:  \prod_{i=1}^{N} f(w_{i-M},...,w_{i-1}, w_{i})  .
+\end{eqnarray} -->
+If, for two tuples 
+<!-- MATH: $(w_{i-M},...,w_{i-1}, w_{i})$ -->
+(wi-M,...,wi-1, wi) and 
+<!-- MATH: $(w_{j-M},...,w_{j-1},
+w_{j})$ -->
+(wj-M,...,wj-1,
+wj), 
+<!-- MATH: $G_{1}(w_{i-M},...,w_{i-1})=G_{1}(w_{j-M},...,w_{j-1})$ -->
+G1(wi-M,...,wi-1)=G1(wj-M,...,wj-1)and 
+<!-- MATH: $(G_{2}(w_{i})=G_{2}(w_{j})$ -->
+(G2(wi)=G2(wj) is true, then 
+<!-- MATH: $f(w_{i-M},...,w_{i-1},
+w_{i})=f(w_{j-M},...,w_{j-1}, w_{j})$ -->
+f(wi-M,...,wi-1,
+wi)=f(wj-M,...,wj-1, wj) also holds.
+One can thus regroup identical terms to obtain
+</P>
+<P>
+<!-- MATH: \begin{equation}
+F^{'}_{ML}= \prod_{g_{1}, g_{2}} [ \frac{N(g_{1}, g_{2})}{N(g_{1})} *
+\frac{1}{N(g_{2})} ] ^{N(g_{1}, g_{2})},
+\end{equation} -->
+</P>
+<P>
+where the product is over all possible pairs 
+<!-- MATH: $(g_{1}, g_{2})$ -->
+(g1, g2).
+Because N(g1) does not depend on g2 and N(g2) does not depend on
+g1, one can
+simplify this again to
+</P>
+<P>
+<!-- MATH: \begin{equation}
+F^{'}_{ML}= \prod_{g_{1}, g_{2}} N(g_{1}, g_{2})^{N(g_{1}, g_{2})}
+\prod_{g_{1}} \frac{1}{N(g_{1})}^{N(g_{1})}
+\prod_{g_{2}} \frac{1}{N(g_{2})}^{N(g_{2})}.
+\end{equation} -->
+</P>
+<P>
+Taking the logarithm, one obtains the equivalent optimisation criterion
+<!-- MATH: \begin{eqnarray}
+F^{''}_{ML}  =   \sum_{g_{1}, g_{2}}  N(g_{1}, g_{2}) * log( N(g_{1}, g_{2}
+)) -
+\sum_{g_{1}} N(g_{1}) * log ( N(g_{1}))\\
+  -   \sum_{g_{2}} N(g_{2}) * log ( N(g_{2})) \nonumber .
+\end{eqnarray} -->
+</P>
+<P>
+<!-- MATH: $F^{''}_{ML}$ -->
+F['']ML is the maximum likelihood optimisation criterion which could
+be used to find a good classifications
+G. However, the problem with this maximum likelihood criterion is the same as
+in
+ section <CREF/>. In the following, a leaving-one-out criterion is therefore developed.
+</P>
+<P>
+Let Ti denote the data without the pair 
+<!-- MATH: $(w_{i-M},...,w_{i-1}, w_{i})$ -->
+(wi-M,...,wi-1, wi) and
+<!-- MATH: $p_{G,T_{i}}(w|v_{M},...,v_{1})$ -->
+pG,Ti(w|vM,...,v1) the probability estimates based on a given
+classification G and
+training corpus Ti. Given a particular Ti, the probability of the
+``held-out''
+part 
+<!-- MATH: $(w_{i-M},...,w_{i-1}, w_{i})$ -->
+(wi-M,...,wi-1, wi) is
+<!-- MATH: $p_{G,T_{i}}(w_{i}|w_{i-M},...,w_{i-1})$ -->
+pG,Ti(wi|wi-M,...,wi-1). The probability of the complete
+corpus,
+where each pair is in turn considered the ``held-out'' part is the
+leaving-one-out likelihood LLO
+</P>
+<P>
+<!-- MATH: \begin{equation}
+L_{LO}=\prod_{i=1}^{N} p_{G,T_{i}}(w_{i}|w_{i-M},...,w_{i-1}).
+\end{equation} -->
+</P>
+<P>
+In the following, we will derive an optimisation function FLO by
+specifying how
+<!-- MATH: $p_{G,T_{i}}(w_{i}|w_{i-M},...,w_{i-1})$ -->
+pG,Ti(wi|wi-M,...,wi-1) is estimated from frequency counts.
+ One first rewrites 
+<!-- MATH: $p_{G,T_{i}}(w_{i}|w_{i-M},...,w_{i-1})$ -->
+pG,Ti(wi|wi-M,...,wi-1) as usual (see
+ equation <CREF/>): 
+p_{G,T_{i}}(w|v_{M},...,v_{1})  = 
+P_{G,T_{i}}(G_{2}(w)|G_{1}(v_{M},...,v_{1}))*P_{G, T_{i}}(w|G_{2}(w))\\
+ =  \frac{p_{G,T_{i}}(g_{1}, g_{2})}{p_{G,T_{i}}(g_{1})} *
+\frac{p_{G,T_{i}}(g_{2}, w)}{p_{G,T_{i}}(g_{2})},
+\end{eqnarray} -->
+where 
+<!-- MATH: $g_{1}=G_{1}(v_{M},...,v_{1})$ -->
+g1=G1(vM,...,v1) and 
+<!-- MATH: $g_{2}=G_{2}(w)$ -->
+g2=G2(w).
+ Now we will specify how we estimate each term in equation <CREF/>. 
+</P>
+<P>
+As before, 
+<!-- MATH: $p_{G,T_{i}}$ -->
+pG,Ti can be dropped from the optimisation criterion and
+relative frequencies can be used as estimators for the class unigrams:
+p_{G,T_{i}}(g_{1})  =  \frac{N_{T_{i}}(g_{1})}{N_{T_{i}}}\\
+p_{G,T_{i}}(g_{2})  =  \frac{N_{T_{i}}(g_{2})}{N_{T_{i}}}.
+\end{eqnarray} -->
+</P>
+<P>
+In the case of the class bi-gram, one can again use the absolute discounting
+method for smoothing. Let
+<!-- MATH: $n_{0,T_{i}}$ -->
+n0,Ti be the number of unseen pairs 
+<!-- MATH: $(g_{1}, g_{2})$ -->
+(g1, g2) and 
+<!-- MATH: $n_{+,T_{i}}$ -->
+n+,Tithe number of
+seen pairs 
+<!-- MATH: $(g_{1}, g_{2})$ -->
+(g1, g2), leading to the following smoothed estimate
+<!-- MATH: \begin{eqnarray}
+\lefteqn{ p_{G,T_{i}}(g_{1}, g_{2})} \nonumber \\
+ =  \left\{ \begin{array}{ll}
+\frac{N_{T_{i}}(g_{1}, g_{2}) - b}{N_{T_{i}}}  \mbox{if $N_{T_{i}}(g_{1},
+g_{2})>0$ }\\
+\frac{n_{+, T_{i}}*b}{n_{0,T_{i}}*N_{T_{i}}}  \mbox{if $N_{T_{i}}(g_{1},
+g_{2})=0$ }\\
+\end{array}
+\right.
+\end{eqnarray} -->
+Again, the empirically determined constant value b=0.75 is used during
+clustering.
+The probability distribution 
+<!-- MATH: $p_{G,T_{i}}(g_{1}, g_{2})$ -->
+pG,Ti(g1, g2) will always be
+evaluated on the
+``held-out'' part 
+<!-- MATH: $(w_{i-M},...,w_{i-1}, w_{i})$ -->
+(wi-M,...,wi-1, wi) and with
+<!-- MATH: $g_{1,i}=G_{1}(w_{i-M},...,w_{i-1})$ -->
+g1,i=G1(wi-M,...,wi-1) and 
+<!-- MATH: $g_{2,i}=G_{2}(w_{i})$ -->
+g2,i=G2(wi) one obtains
+\lefteqn{ p_{G,T_{i}}(g_{1,i}, g_{2,i})} \nonumber \\
+ =  \left\{ \begin{array}{ll}
+\frac{N_{T_{i}}(g_{1,i}, g_{2,i}) - b}{N_{T_{i}}}  \mbox{if
+$N_{T_{i}}(g_{1,i}, g_{2,i})>0$ }\\
+\frac{n_{+, T_{i}}*b}{n_{0,T_{i}}*N_{T_{i}}}  \mbox{if $N_{T_{i}}(g_{1,i},
+g_{2,i})=0$ }\end{array}
+\right.
+\end{eqnarray} -->
+</P>
+<P>
+In order to facilitate future regrouping of terms, one again expresses the
+counts
+<!-- MATH: $N_{T_{i}}, N_{T_{i}}(g_{1})$ -->
+NTi, NTi(g1) etc.
+in terms of the counts of
+the complete corpus T as follows:
+N_{T_{i}}  =  N_{T} - 1\\
+N_{T_{i}}(g_{1})  =  N_{T}(g_{1}) - 1 \\
+N_{T_{i}}(g_{2})  =  N_{T}(g_{2}) - 1 \\
+N_{T_{i}}(g_{1,i}, g_{2,i})  =   N_{T}(g_{1,i}, g_{2,i})-1\\N_{T_{i}}  = 
+N_{T} - 1 \\
+n_{+, T_{i}}  =  \left\{
+\begin{array}{ll}
+n_{+, T}  \mbox{if $N_{T}(g_{1,i}, g_{2,i})>1$ }\\
+n_{+, T} - 1   \mbox{if $N_{T}(g_{1,i}, g_{2,i})=1$ }\\
+\end{array} \right. \\
+n_{0,T_{i}}  =   \left\{
+\begin{array}{ll}
+n_{0,T}  \mbox{if $N_{T}(g_{1,i}, g_{2,i})>1$ }\\
+n_{0, T} - 1   \mbox{if $N_{T}(g_{1,i}, g_{2,i})=1$ }\end{array} \right.
+\end{eqnarray} -->
+After dropping 
+<!-- MATH: $p_{G,T_{i}}(w)$ -->
+pG,Ti(w) and substituting the expressions back into
+ equation <CREF/>, one obtains: 
+<!-- MATH: \begin{eqnarray}
+F'_{LO}  =  \prod_{i=1}^{N} \frac{p_{G,T_{i}}(g_{1,i},
+g_{2,i})}{p_{G,T_{i}}(g_{1,i})} * \frac{1}{p_{G,T_{i}}(g_{2,i})}\\
+ =  \prod_{g_{1}, g_{2}} ( p_{G,T_{i}}(g_{1}, g_{2}))^{N(g_{1}, g_{2})} *
+\prod_{g_{1}} (\frac{1}{p_{G,T_{i}}(g_{1})})^{N(g_{1})} *
+\prod_{g_{2}} (\frac{1}{p_{G,T_{i}}(g_{2})})^{N(g_{2})} .
+\end{eqnarray} -->
+ One can now substitute equations <CREF/>, <CREF/> and  <CREF/>, using  the counts of the whole corpus of equations <CREF/> to <CREF/> . After having dropped
+terms independent of G, one obtains
+<!-- MATH: \begin{eqnarray}
+F''_{LO}  =  \prod_{g_{1}, g_{2} : N(g_{1},g_{2})  > 1 } (N_{T}(g_{1}, g_{2})
+-1 -b )^{N_{T}(g_{1}, g_{2})} *
+\left( \frac{(n_{+,T}-1)*b}{(n_{0,T}+1)} \right)^{n_{1,T}}\\
+  *  \prod_{g_{1}} \left( \frac{1}{(N_{T}(g_{1}-1))} \right)^{N_{T}(g_{1})}
+* \prod_{g_{2}} \left( \frac{1}{(N_{T}(g_{2}-1))} \right)^{N_{T}(g_{2})}
+\nonumber ,
+\end{eqnarray} -->
+where n1,T is the number of pairs 
+<!-- MATH: $(g_{1}, g_{2})$ -->
+(g1, g2) seen exactly once in
+T(e.g. the number of pairs that will be unseen when used as ``held-out'' part).
+Taking the logarithm, one obtains the final optimisation criterion F'''LO
+<!-- MATH: \begin{eqnarray}
+F'''_{LO}  =  \sum_{g_{1}, g_{2}:N_{T}(g_{1}, g_{2})>1} N_{T}(g_{1}, g_{2}) *
+log ( N_{T}(g_{1}, g_{2}) - 1 - b )\\
+ +  n_{1,T} * log ( \frac{b*(n_{+, T}-1)}{(n_{0,T}+1)} ) \nonumber \\
+  -  \sum_{g_{1}} N_{T}(g_{1}) * log (  N_{T}(g_{1}) - 1 ) - \sum_{g_{2}}
+N_{T}(g_{2}) * log (  N_{T}(g_{2}) - 1 )
+\nonumber .
+\end{eqnarray} -->
+</P>
+<DIV ID="7.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+X. Aubert, C. Dugast, H. Ney, and V. Steinbiss.
+Large vocabulary continuous speech recognition of wall street journal
+  data.
+In Proceedings of International Conference on Acoustics, Speech
+  and Signal Processing, 1994.
+</P>
+<P>
+David Carter.
+Improving language models by clustering training sentences.
+In to appear in ANLP 94, Stuttgart Germany, 1994.
+</P>
+<P>
+R. O. Duda and P.E. Hart.
+Pattern Classification and Scene Analysis.
+Wiley, New York, 1973.
+</P>
+<P>
+John E. Freund.
+Modern Elementary Statistics.
+Prentice-Hall, Englewood Cliffs, New Jersey, 7th Edition, 1988.
+</P>
+<P>
+Michele Jardino and Gilles Adda.
+Automatic word classification using simulated annealing.
+In Proceedings of International Conference on Acoustics, Speech
+  and Signal Processing, pages 41-43. Minneapolis, MN, 1993.
+</P>
+<P>
+Fred Jelinek.
+Self-organized language modeling for speech recognition.
+In Alex Waibel and Kai-Fu Lee, editors, Readings in Speech
+  Recognition, pages 450-506. Morgan Kaufmann, San Mateo, CA, 1990.
+</P>
+<P>
+S. Katz.
+Estimation of probabilities from sparse data for the language model
+  component of a speech recognizer.
+IEEE Transactions on Acoustics, Speech and Signal Processing,
+  35:400-401, 1987.
+</P>
+<P>
+Reinhard Kneser and Hermann Ney.
+Improved clustering techniques for class-based statistical language
+  modelling.
+In European Conference on Speech Communication and Technology,
+  pages 973-976. Berlin, Germany, September 1993.
+</P>
+<P>
+Hermann Ney and Ute Essen.
+Estimating `small' probabilities by leaving-one-out.
+In European Conference on Speech Communication and Technology,
+  pages 2239-2242. Berlin, Germany, 1993.
+</P>
+<P>
+Hermann Ney, Ute Essen, and Reinhard Kneser.
+On structuring probabilistic dependencies in stochastic language
+  modelling.
+Computer, Speech and Language, 8:1:1-38, 1994.
+</P>
+<P>
+Douglas B. Paul.
+Experience with a stack decoder-based HMM CSR and back-off n-gram
+  language models.
+In Proceedings of DARPA Speech and Natural Language Workshop,
+  pages 284-288, 1991.
+</P>
+<P>
+Fernando Pereira, Naftali Tishby, and Lillian Lee.
+Distributional clustering of English words.
+In Proceedings of the Annual Meeting of the Association for
+  Computational Linguistics, pages 183-190. Columbus, OH, 1993.
+</P>
+<P>
+Ronald Rosenfeld.
+personal communication.
+1994.
+</P>
+<P>
+Joerg P. Ueberla.
+Analysing a simple language model - some general conclusions for
+  language models for speech recognition.
+Computer, Speech and Language, 8:153-176, 1994.
+</P>
+<P>
+Joerg P. Ueberla.
+On using selectional restriction in language models for speech
+  recognition.
+Technical report, School of Computing Science, Simon Fraser
+  University, Canada, CMPT TR 94-03, 1994.
+</P>
+<DIV ID="7.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  This model is also sometimes referred to as bi-pos model, where
+pos stands for Parts Of Speech.
+  If 
+<!-- MATH: $(w_{i-1}, w_{i})$ -->
+(wi-1, wi) occurs only once in the complete corpus, then
+<!-- MATH: $p_{G,T_{i}}(w_{i}|w_{i-1})$ -->
+pG,Ti(wi|wi-1) will have to be calculated based on the corpus
+Ti, which does not
+contain any occurrences of 
+<!-- MATH: $(w_{i-1}, w_{i})$ -->
+(wi-1, wi).
+  Only the 500,000 most frequent bigrams were clustered using
+G1.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

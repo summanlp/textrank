@@ -1,0 +1,1443 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>A Note on the Complexity of Restricted Attribute-Value
+Grammars</TITLE>
+<ABSTRACT>
+<P>
+The recognition problem for attribute-value grammars(AVGs) was shown
+to be undecidable by Johnson in 1988. Therefore, the general
+form of AVGs is of no practical use. In this paper we study
+a very restricted form of AVG, for which the recognition problem
+is decidable (though still 
+<!-- MATH: $\mathord{\it NP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -complete), the R-AVG. We show that
+the R-AVG formalism captures all of the context free languages and
+more, and introduce a variation on the so-called off-line
+parsability constraint, the honest
+parsability constraint, which lets different types of
+R-AVG coincide precisely with well-known time complexity classes.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+Although a universal feature theory does not exist, there is
+a general understanding of its objects. The objects of feature
+theories are abstract linguistic objects, e.g., an object ``sentence,''
+an object ``masculine third person singular,'' an object ``verb,'' an
+object ``noun phrase.'' These abstract objects have properties like
+``tense,'' ``number,'' ``predicate,'' ``subject.''
+The values of these properties
+are either atomic, like ``present'' and ``singular,'' or abstract
+objects, like ``verb'' and ``noun-phrase.''
+The abstract objects are fully described by their properties and
+their values. Multiple descriptions for the properties and values
+of the abstract linguistic objects are presented in the literature.
+Examples are:
+</P>
+<P>
+1.
+Feature graphs, which are labeled rooted directed acyclic graphs
+G=(V,A), where
+F is a collection of labels,
+a sink
+in the graph represents an atomic value and the labeling function
+is an injective function 
+<!-- MATH: $f:V\times A\mapsto F$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+2.
+Attribute-value matrices,
+which are matrices in which the
+entries consist of an attribute and a value or
+a reentrance symbol. The values are either atomic or
+attribute-value matrices.
+</P>
+<P>
+From a computational point of view, all descriptions that are used in
+practical problems are equivalent. Though there exist some theories
+ with a considerably higher expressive power <REF/>. For this paper we adopt the feature graph description, which we will
+define somewhat more formal in the next section.
+ Attribute Value Languages(AVL) <REF/> consist of sets of logical formulas that describe classes of feature graphs,
+by expressing constraints on the type of paths that can exist within
+the graphs. To wit: In a sentence like ``a man walks'' the edges
+labeled with ``person'' that leave the nodes
+labeled ``a man'' and ``walks'' should both
+end in a node labeled ``singular.'' Such a constraint is called
+a ``path equation'' in the attribute-value language.
+</P>
+<P>
+ A rewrite grammar <REF/> can be enriched with an AVL to construct an Attribute Value
+Grammar(AVG), which consists of pairs of rewrite-rules and logical
+formulas. The rewrite rule is applicable to a production (nonterminal)
+only if the logical formula that expresses the relation between
+left- and right-hand side of the rule evaluates to true.
+The recognition problem for attribute-value grammars can be
+stated as: Given a grammar G and a string w does there
+exist a derivation in G, that respects the constraints
+given by its AVL, and that ends in w.
+As the intermediate productions correspond
+to feature graphs this question can also be formulated as
+a question about the existence of a consistent sequence of
+feature graphs that results in a feature graph describing w.
+For the rewrite grammar, any formalism in the Chomsky hierarchy
+(from regular to type 0) can be chosen. From a computational point
+of view it is of course most desirable to restrict oneself to
+a formalism that on the one hand gives enough expressibility
+to describe a large fragment of the (natural) language, and
+on the other hand is restrictive enough to preserve feasibility.
+For a discussion on the linguistic significance of such restrictions,
+ see <REF/>. 
+</P>
+<P>
+ Johnson <REF/> proved that attribute-value grammars that are as restrictive as being equipped with a rewrite grammar
+that is regular can already give rise to an undecidable recognition
+problem.
+Obviously, to be of any practical use, the
+rewrite grammar or the attribute-value language must be more restrictive.
+Johnson proposed to add the off-line parsability constraint,
+which is respected if the rewrite grammar has no chain- or
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -rules. Then, the number of applications in a production
+is linear and the size of the structure corresponding to the
+partial productions is polynomial. Hence as by a modification of
+ Smolka's algorithm <REF/> consistency of intermediate steps can be checked in quadratic time, the complexity of
+the recognition problem can at most be (nondeterministic) polynomial
+ time. This observation was made in <REF/>, which also has an 
+<!-- MATH: $\mathord{\it NP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -hardness proof of the recognition problem.
+</P>
+<P>
+We further investigate the properties of these restricted AVGs (R-AVGs).
+In the next section, we give some more formal definitions and notations.
+ In Section <CREF/> we show that the class of languages generated by an R-AVG (R-AVGL) includes
+the class of context free languages (CFL). It follows that any easily
+parsable class of languages (like CFL) is a proper
+subset of R-AVGL, unless 
+<!-- MATH: $\mathord{\it P}=\mathord{\it NP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Likewise, R-AVGL is a proper subset of the class of context
+sensitive languages, unless 
+<!-- MATH: $\mathord{\it NP}=\mathord{\it PSPACE}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+ In Section <CREF/> we propose a further refinement on the off-line parsability constraint,
+which allows R-AVGs that respect this constraint to capture
+precisely complexity classes like 
+<!-- MATH: $\mathord{\it NP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+or 
+<!-- MATH: $\mathord{\it NEXP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+That is, for any language L that has an 
+<!-- MATH: $\mathord{\it NP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -parser, there exists
+an R-AVG, say G, such that L=L(G). Though our refinement, the
+honest parsability constraint is probably not a property that
+can be decided for arbitrary R-AVGs,
+we show that R-AVGs can be equipped
+with restricting mechanisms that enforce this property.
+ The techniques that prove Theorem <CREF/> and  Theorem <CREF/> result from Johnson's work. Therefore, the proofs of these theorems are deferred
+to the appendices.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  Definitions and Notation </HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Attribute-Value Grammars </HEADER>
+<P>
+The definitions in this section are in the spirit
+ of <REF/>, Section 3.2]  and <REF/>, Sections 3-4]. Consider three sets of pairwise disjoint symbols.
+<ITEMIZE>
+<ITEM>A, the finite set of constants, denoted (
+<!-- MATH: $a,b,c,\dots$ -->
+<IMAGE TYPE="FIGURE"/>
+ )
+</ITEM>
+<ITEM>V, the countable set of variables, denoted (
+<!-- MATH: $x,y,z,\ldots$ -->
+<IMAGE TYPE="FIGURE"/>
+ )
+</ITEM>
+<ITEM>L, the finite set of attributes, also called features,
+denoted (
+<!-- MATH: $f,g,h,\ldots$ -->
+<IMAGE TYPE="FIGURE"/>
+ )
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+Definition thedefctr:
+An f-edge from x to s is a triple (x,f,s) such that x is
+a variable, f is an attribute, and s is a constant or a variable.
+A path, p, is a, possibly empty, sequence of f-edges
+<!-- MATH: $(x_1,f_1,x_2),(x_2,f_2,x_3),\ldots,(x_{n},f_n,s)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  in which the xi are
+variables and s is either a variable or a constant.
+Often a path is denoted by the sequence of its edges' attributes,
+in reversed order, e.g., 
+<!-- MATH: $p = f_n\ldots f_1$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Let p be a path, ps denotes the path that starts from s,
+where s is a constant only if p is the empty path. If the path
+is nonempty, 
+<!-- MATH: $p = f_n\ldots f_1 \;(n geq 1)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+then s is a variable.
+For paths
+ps and qt we write 
+<!-- MATH: $ps\doteq qt$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+iff p and q start in sand t respectively and end in the same variable or constant.
+The expression 
+<!-- MATH: $ps\doteq qs$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is called a path equation.
+A feature graph is either a pair 
+<!-- MATH: $(a,\emptyset)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+or a pair (x,E) where x is the root and E a finite set of
+f-edges such that:
+1.
+if (y,f,s) and (y,f,t) are in E, then s=t;
+2.
+if (y,f,s) is in E, then there
+is a path from x to y in E.
+</P>
+<P>
+Definition thedefctr:
+An attribute-value language 
+<!-- MATH: ${\cal A}(A,V,L)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+consists of
+sets of logical formulas that describe feature graphs,
+by expressing constraints on the type of paths that can exist within
+the graphs.
+<ITEMIZE>
+<ITEM>The terms of an
+attribute-value language 
+<!-- MATH: ${\cal A}(A,V,L)$ -->
+<IMAGE TYPE="FIGURE"/>
+are the
+constants and the variables 
+<!-- MATH: $s,t\in A\cup V$ -->
+<IMAGE TYPE="FIGURE"/>
+ .
+</ITEM>
+<ITEM>The formulas of an attribute-value language 
+<!-- MATH: ${\cal A}(A,V,L)$ -->
+<IMAGE TYPE="FIGURE"/>
+ are path equations and Boolean combinations
+of path equations. Thus all formulas are either 
+<!-- MATH: $ps\doteq qt$ -->
+<IMAGE TYPE="FIGURE"/>
+ ,
+where
+ps and qt are paths, or
+<!-- MATH: $\phi \wedge \psi$ -->
+<IMAGE TYPE="FIGURE"/>
+ ,
+<!-- MATH: $\phi \vee \psi$ -->
+<IMAGE TYPE="FIGURE"/>
+ ,
+or 
+<IMAGE TYPE="FIGURE"/>
+ ,
+where 
+<IMAGE TYPE="FIGURE"/>
+and
+<IMAGE TYPE="FIGURE"/>
+are formulas.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+Assume a finite set 
+<!-- MATH: $\mathord{\rm Lex}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+(of lexical forms) and a finite set 
+<!-- MATH: $\mathord{\rm Cat}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ (of categories).
+<!-- MATH: $\mathord{\rm Lex}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+will play the role of the set of terminals and 
+<!-- MATH: $\mathord{\rm Cat}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+will play the
+role of the set of nonterminals in the productions.
+</P>
+<P>
+Definition thedefctr:
+A constituent structure tree (CST) is a labeled
+tree in which the internal nodes are labeled with elements of Cat and the
+leaves are labeled with elements of Lex.
+</P>
+<P>
+Definition thedefctr:
+Let T be a constituent structure tree and F be
+a set of formulas in an attribute-value language  
+<!-- MATH: ${\cal A}(A,V,L)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+An annotated constituent structure tree is a triple
+<!-- MATH: $\mathopen{<}T,F,h\mathclose{>}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where h is a function that maps
+internal nodes in T onto variables in F.
+</P>
+<P>
+Definition thedefctr:
+A lexicon is a finite subset of 
+<!-- MATH: $\mathord{\rm Lex}\times
+\mathord{\rm Cat}\times  {\cal A}(A,\{x_0\},L)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+A set of
+syntactic rules is a finite subset of
+<!-- MATH: $\bigcup_{i\geq 1} \mathord{\rm Cat}\times\mathord{\rm Cat}^i\times{\cal A}(A,\{x_0,\ldots,x_i\},L)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+An attribute-value grammar is a triple
+<!-- MATH: $\mathopen{<}\mathord{\rm lexicon},\mathord{\rm rules},\mathord{\rm start}
+\mathclose{>}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+>,
+where lexicon is a lexicon, rules is a set of
+syntactic rules and start is an element of 
+<!-- MATH: $\mathord{\rm Cat}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+Definition thedefctr:
+1.
+ <REF/>, p .150]  A class 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+of sets is recursively presentable iff there is an
+effective enumeration 
+<!-- MATH: $M_1, M_2, \ldots$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+of deterministic Turing
+machines which halt on all their inputs, and such that 
+<!-- MATH: ${\cal C} = \{
+L(M_i) \mid i = 1, 2, \ldots \}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+2.
+We say that a class of grammars 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is recursively
+presentable iff the class of sets 
+<!-- MATH: $\{L(G) \mid G \in {\cal G} \}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ is recursively presentable.
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  Restricted Attribute-Value Grammars </HEADER>
+<P>
+The only formulas that are allowed in the attribute-value language
+of restricted attribute-value grammars (R-AVGs)
+are path-equations and conjunctions
+of path-equations (i.e. disjunctions and negations are out). We
+will denote the attribute-value language of an R-AVG by
+<!-- MATH: ${\cal A'}(A,V,L)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to make the distinction clear.
+The CST of an R-AVG is produced by a chain- and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -rule free
+regular grammar. The CST of an R-AVG can be either a left-branching
+or a right-branching tree, since the grammar contains
+at most one nonterminal in each rule.
+Definition thedefctr:
+The set of syntactic rules of a restricted attribute-value
+grammar is a subset of 
+<!-- MATH: $\bigcup_{i\geq 1, k\leq 1}
+\mathord{\rm Cat}\times\mathord{\rm Lex}^i\times \mathord{\rm Cat}^k\times {\cal A'}(A,\{x_0,x_k\},L)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+>.
+A restricted attribute-value grammar is a pair
+<!-- MATH: $\mathopen{<}\mathord{\rm rules},\mathord{\rm start}
+\mathclose{>}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+>,
+where rules is a set of syntactic rules and start is
+an element of 
+<!-- MATH: $\mathord{\rm Cat}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+Definition thedefctr:
+An R-AVG 
+<!-- MATH: $\mathopen{<}\mathord{\rm rules},\mathord{\rm start}
+\mathclose{>}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+>
+generates an annotated constituent structure
+tree 
+<!-- MATH: $\mathopen{<}T,F,h\mathclose{>}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+iff
+1.
+the root node of T is start, and
+2.
+every internal node of T is licensed by a syntactic rule, and
+3.
+the set F is consistent, i.e., describes a feature graph.
+Let 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+stand for the formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in which all
+variable y is substituted for variable x.
+An internal node v of an annotated constituent structure tree is
+licensed by a syntactic rule 
+<!-- MATH: $(c_0, l_1,\ldots,l_i,\phi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ iff
+1.
+the node v is labeled with category c0, 
+<!-- MATH: $h(v) = n_0$ -->
+h(v) = n0, and
+2.
+all daughters of v are leaves, which are labeled with
+<!-- MATH: $l_1 \ldots l_i$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+3.
+<!-- MATH: $\phi[x_0/n_0]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is in the set F.
+An internal node v of an annotated constituent structure tree is
+licensed by a syntactic rule 
+<!-- MATH: $(c_0, l_1,\ldots,l_i, c_1,\phi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ iff
+1.
+the node v is labeled with category c0, 
+<!-- MATH: $h(v) = n_0$ -->
+h(v) = n0, and
+2.
+one of v's daughters is an internal node, v1, which is
+labeled with category c1, and 
+<!-- MATH: $h(v_1) = n_1$ -->
+h(v1) = n1, and
+3.
+the daughters of v that are leaves are labeled with
+<!-- MATH: $l_1 \ldots l_i$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+4.
+<!-- MATH: $\phi[x_0/n_0, x_1/n_1]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is in the set F.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  Weak Generative Capacity
+</HEADER>
+<P>
+ In <REF/>, it is shown that the recognition problem for
+R-AVGs is 
+<!-- MATH: $\mathord{\it NP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -complete. This seems to indicate that although
+the mechanism for generating CSTs in R-AVGs is extremely simple, the
+generative capacity of R-AVGs is different from the generative
+capacity of e.g., context free languages (CFLs), which have a polynomial
+ time parsing algorithm <REF/>. Yet, a priori, there may exist CFLs that do not have an R-AVG.
+</P>
+<P>
+    Let L be a context free language. There exists an
+R-AVG G such that L=L(G).
+</P>
+<P>
+Proof.If L is a context free language, then there exists
+a context free grammar G' in Greibach normal form such that L=L(G').
+From this grammar G', we can construct a pushdown store
+M that accepts exactly the words in L(G')=L. Such a pushdown store
+M is actually a finite state automaton M' with a stack S.
+The finite state automaton M' may be simulated by a
+chain- and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -rule free regular grammar.
+Furthermore, we can construct an attribute-value language
+<!-- MATH: ${\cal A'}(A,V,L)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+that simulates the stack S.
+Thus it should be clear that there exists an R-AVG G that
+produces word w iff 
+<!-- MATH: $w \in L(G')$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+ Details of this construction are deferred to Appendix <CREF/>. 
+</P>
+<IMAGE TYPE="FIGURE"/>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  The Honest Parsability Constraint and Consequences
+</HEADER>
+<P>
+ According to Theorem <CREF/>, it is unlikely that the languages generated by R-AVGs can be limited to those languages with a
+polynomial time recognition algorithm.
+ Trautwein <REF/> showed that all R-AVGs have nondeterministic polynomial time algorithms. Is it perhaps
+the case that any language that has a nondeterministic polynomial
+time recognition algorithm can be generated by an R-AVG. Does
+there exist a tight relation between time bounded machines and R-AVGs
+as e.g., between LBAs and CSLs? The answer is that the off-line
+parsability constraint that forces the R-AVG to have no chain-
+or 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ -rules
+is just too restrictive to allow such a connection.
+The following trick to alleviate this problem has been observed earlier
+in complexity theory. The off-line
+ parsability constraint(OLP) <REF/> relates the amount of ``work'' done by the grammar to produce a string
+linearly to the number of terminal symbols produced. It is therefore
+a sort of honesty constraint that is also demanded of functions
+that are used in e.g., cryptography. There the deal is, for each
+polynomial amount of work done to compute the function at least
+one bit of output must be produced. In such a way, for polynomial
+time computable functions one can guarantee that the inverse of
+the function is computable in nondeterministic polynomial time.
+</P>
+<P>
+As a more liberal constraint on R-AVGs we propose an analogous
+variation on the OLP
+Definition thedefctr:
+A grammar G satisfies the Honest Parsability
+Constraint(HPC) iff there exists a polynomial p s.t. for each win L(G) there exists a derivation with at most 
+<!-- MATH: $p(\mathopen|w\mathclose|)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ steps.
+</P>
+<P>
+From Smolka's algorithm and Trautwein's observation it trivially
+follows that any attribute-value grammar that satisfies the
+HPC (HP-AVG) has an 
+<!-- MATH: $\mathord{\it NP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+recognition algorithm. The problem with the
+HPC is of course that it is not a syntactic property of grammars.
+The question whether a given AVG satisfies the HPC (or the OLP for
+that matter) may well be undecidable.
+Nonetheless, we can produce a set of rules that,
+when added to an attribute-value grammar enforces the
+HPC. The newly produced language is then a subset of the old
+produced language with an 
+<!-- MATH: $\mathord{\it NP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+recognition algorithm.
+Because of the fact that our addition may simulate any polynomial
+restriction, we regain the full class of AVG's that satisfy the HPC.
+In fact
+</P>
+<P>
+Theorem  4.1   
+The class, P-AVGL, of languages produced by the HP-AVGs
+is recursively presentable.
+</P>
+<P>
+We will give
+a detailed construction of such a set of rules in
+ Appendix <CREF/>. The existence of such a set of rules and the work of Johnson now gives the following theorem.
+</P>
+<P>
+    For any language L that has an 
+<!-- MATH: $\mathord{\it NP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+recognition
+algorithm, there exists a
+restricted attribute-value grammar G that respects
+the HPC and such that L=L(G).
+</P>
+<P>
+Proof.(Sketch)
+Let M be the Turing machine that decides 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Use
+a variation of Johnson's construction of a Turing machine
+to create an R-AVG
+that can produce any string w that is recognized by M. Add the
+set of rules that guarantee that only strings that can be produced
+with a polynomial number of rules can be produced by the grammar.
+</P>
+<IMAGE TYPE="FIGURE"/>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Veer out the HPC </HEADER>
+<P>
+Instead of creating a counter of logarithmic size as we do in
+ Appendix <CREF/>, it is quite straightforward to construct a counter of linear size (or exponential size if there is enough
+time). In fact, for well-behaved functions, the construction of a
+counter gives a method to enforce any desired time bound constraint on
+the recognition problem for attribute-value grammars.
+For instance, for nondeterministic exponential time we could define
+the Linear Dishonest Parsability Constraint (LDP) (allowing a linear
+exponential number of steps) which would give.
+</P>
+<P>
+Theorem  5.1   
+The class of languages generated by R-AVGs obeying the
+LDP condition is exactly 
+<!-- MATH: $\mathord{\it NE}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Acknowledgements </HEADER>
+<P>
+We are indebted to E. Aarts and W.C. Rounds for their valuable
+suggestions on an early presentation of this work.
+</P>
+<DIV ID="6.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+J. Balczar, J. Daz, and J. Gabarr.
+Structural Complexity I.
+Springer-Verlag, New York, 1988.
+</P>
+<P>
+P. Blackburn and E. Spaan.
+A modal perspective on the computational complexity of attribute
+  value grammar.
+Journal of Logic, Language and Information, 2(2):129-169,
+  1993.
+</P>
+<P>
+N. Chomsky.
+Three models for the description of language.
+IRE Transactions on Information Theory, 2(3):113-124, 1956.
+</P>
+<P>
+J. Earley.
+An efficient context-free parsing algorithm.
+Communications of the Association for Computing Machinery,
+  13(2):94-102, February 1970.
+</P>
+<P>
+J. Hopcroft and J. Ullman.
+Introduction to Automata Theory, Languages, and Computation.
+Addison Wesley, Reading, MA, 1979.
+</P>
+<P>
+M. Johnson.
+Attribute-Value Logic and the Theory of Grammar, volume 16 of
+  CSLI Lecture Notes.
+CSLI, Stanford, 1988.
+</P>
+<P>
+C. Perrault.
+On the mathematical properties of linguistic theories.
+Computational Linguistics, 10(3-4):165-176, 1984.
+</P>
+<P>
+G. Smolka.
+Feature-constraint logics for unification grammars.
+Journal of Logic Programming, 12(1):51-87, 1992.
+</P>
+<P>
+T. Sudkamp.
+Languages and Machines: An introduction to the Theory of
+  Computer Science.
+Addison Wesley, Reading, MA, 1988.
+</P>
+<P>
+M. Trautwein.
+Assessing complexity results in feature theories.
+ILLC Research Report and Technical Notes Series LP-95-01,
+  University of Amsterdam, Amsterdam, 1995.
+Submitted to the CMP-LG archive.
+</P>
+</DIV>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>  Simulating a Context Free Grammar in GNF
+</HEADER>
+<P>
+A context free grammar (CFG) is a quadruple
+<!-- MATH: $\langle N, \Sigma, P, S \rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where N is a set of nonterminals,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a set of terminals, P is a set of productions,
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the start nonterminal.
+A CFG is in Greibach normalform (GNF) if, and only if, the
+productions are of one of the following
+forms, where 
+<!-- MATH: $a\in\Sigma, A\in N, A_1\ldots A_n \in N\setminus\{S\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ and
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ the empty string (c.f., <REF/>,  <REF/>): 
+</P>
+<P>
+Given a GNF 
+<!-- MATH: $G = \langle N, \Sigma, P, S \rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+we can construct a restricted attribute-value grammar (R-AVG)
+G' that simulates grammar G. R-AVG G' consists
+of the same set of nonterminals and terminals as GNF G.
+The productions of R-AVG G' are described by
+ Table <CREF/>. The only two attributes of R-AVG G' are  TOP and
+ REST. R-AVG G' contains |N| + 1 atomic values, one atomic
+value for each nonterminal and the special atomic value $.
+The R-AVG G' uses the feature graph to
+encode a push-down stack, similar to the encoding of a list.
+The stack will be used to store the
+nonterminals that still have to be rewritten.
+</P>
+<P>
+The three syntactic abbreviations below are used to clarify the simulation.
+We use represent a stack by a Greek letter, or a string of symbols;
+the top of the stack is the leftmost symbol of the string.
+Let x0 encode a stack 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+then the formulas in
+the abbreviation 
+<!-- MATH: $\mbox{\sc push}(A_0\ldots A_n)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+express that x1 encodes
+a stack 
+<!-- MATH: $A_0\ldots A_n\gamma$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Likewise, the formulas in the
+abbreviation 
+<!-- MATH: $\mbox{\sc pop}(A)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+express that x0 encodes a stack
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and X1 encodes the stack 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The abbreviation
+ EMPTY-STACK expresses that x0 encodes an empty stack.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+We have to prove that GNF Gand its simulation by R-AVG G'generate (almost) the same language. Obviously, R-AVG G'cannot generate the empty string. However,
+for all non-empty strings the following theorem holds.
+</P>
+<P>
+Theorem  6.1   
+Start nonterminal S of GNF Gderives string 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+(
+<!-- MATH: $\alpha \in \Sigma^+$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ )
+if, and only if,
+start nonterminal S of R-AVG G'derives string 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+with the empty stack.
+</P>
+<P>
+Proof.There are two cases to consider. First, S derives string 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ in one step. Second, S derives string 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in more than one
+step. The lemma below is needed in the proof of the second case.
+</P>
+<P>
+Case I
+Let start nonterminal S derive string 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in one step.
+GNF G contains a production
+<!-- MATH: $S \rightarrow \alpha$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+iff R-AVG G'   contains a production 
+<!-- MATH: $S \rightarrow \alpha$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+with the equation
+    EMPTY-STACK.
+   So, S derives 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in a
+   derivation of GNF G iff S derives 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+with an empty stack in the derivation of R-AVG G'.
+Case II
+Initial nonterminal S of GNF G derives
+   string 
+<!-- MATH: $\alpha=\beta\beta'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in more than one step iff there is a
+   left-most derivation 
+<!-- MATH: $S \stackrel{*}{\Rightarrow} \beta A
+\Rightarrow
+   \beta\beta'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+. GNF G contains production
+<!-- MATH: $A \rightarrow \beta'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+iff R-AVG G' contains production
+<!-- MATH: $A \rightarrow \beta'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+with the equation
+    EMPTY-STACK. By the next lemma: 
+<!-- MATH: $S \stackrel{*}{\Rightarrow}
+\beta A$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+iff 
+<!-- MATH: $S \stackrel{*}{\Rightarrow} \beta A$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+with
+   the empty stack.
+   Hence S derives 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+for GNF G iff
+   S derives 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+with empty stack for R-AVG G'.
+</P>
+<IMAGE TYPE="FIGURE"/>
+</DIV>
+<DIV ID="8" DEPTH="1" R-NO="8"><HEADER>  Constructing an Honestly Parsable Attribute-Value
+Grammar
+</HEADER>
+<P>
+In this section we show how to add a binary counter to an
+attribute-value grammar (AVG). This counter enforces the
+Honest-Parsability Constraint (HPC) upon the AVG. To keep
+this section legible we sometimes use the
+attribute-value matrices (AVMs) as descriptions.
+ In Section <CREF/>, we show how to create a counter for the AVG.
+ In Section <CREF/> we show how to extend the syntactic rules and the lexicon
+of the AVG.
+</P>
+<DIV ID="8.1" DEPTH="2" R-NO="1"><HEADER>  Arithmetic by AVGs </HEADER>
+<P>
+We start with a little bit of arithmetic.
+</P>
+<DIV ID="8.1.1" DEPTH="3" R-NO="1"><HEADER>  Natural numbers. </HEADER>
+<P>
+The AVMs below encode natural numbers in binary
+notation.  The sequences of attributes  0 and  1 in these
+AVMs
+encode natural numbers, from least- to most-significant bit.
+The attribute  V has value 1 (or 0) if, and only if,
+it has a sister attribute  1 (or  0).
+1.
+The AVMs 
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc v} 0\\\mbox{\sc 0} \mbox{\it +} \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc v} 1\\\mbox{\sc 1} \mbox{\it +} \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+        encode the natural numbers zero and one.
+2.
+The AVMs 
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc v} 0\\\mbox{\sc 0} [F] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+        and 
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc v} 1\\\mbox{\sc 1} [F] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+encode
+        natural numbers iff the AVM [F] encodes a natural number.
+</P>
+<DIV ID="8.1.1.1" DEPTH="4" R-NO="1"><HEADER>  Syntactic rules that tests two numbers for equality. </HEADER>
+<P>
+Assume a nonterminal A with some AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc n} [F]\\\mbox{\sc m} [H] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where [F] and [H] encode
+natural number x and y, respectively.
+We present one syntactic rule that derives from this
+nonterminal A a nonterminal B with AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc n} [F]\\\mbox{\sc m} [H] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if x = y.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+Clearly, this simple test takes one step. A more sophisticated
+test, which also tests for inequality, would compare [F]and [G] bit-by-bit.  Such a test would take
+<!-- MATH: $O(\min(\log(x),\log(y)))$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $=O(\min(\mathopen|[F]\mathclose|,\mathopen|[H]\mathclose|))$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ derivation steps.
+</P>
+</DIV>
+<DIV ID="8.1.1.2" DEPTH="4" R-NO="2"><HEADER>  Syntactic rules that multiply by two. </HEADER>
+<P>
+Assume a nonterminal A with some AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc n} [F] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where [F] encodes natural number x.
+We present one syntactic rule that derives from this
+nonterminal A a nonterminal B with the AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc n} [H] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where [H] encodes natural number 2x.
+</P>
+<P>
+The number  N in [H] equals two times  N in [F]if, and only if, the least-significant bit of  N in [H]is 0, and the remaining bits form the same sequence as the
+number  N in [F]. Multiplication by two takes one derivation
+step.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+</DIV>
+<DIV ID="8.1.1.3" DEPTH="4" R-NO="3"><HEADER>  Syntactic rules that increments by one. </HEADER>
+<P>
+Assume a nonterminal A with some AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc n} [F] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where [F] encodes natural number x.
+We present five syntactic rules that derive from this
+nonterminal A a nonterminal C with AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc n} [H] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where [H] encodes natural number x+1.
+</P>
+<P>
+The increment of  N requires two additional pointers in the
+AVM of A: attribute  P points to the next bit
+that has to be incremented; attribute  Q points to the
+most-significant bit of the (intermediate) result.
+These additional pointers are hidden from the
+AVMs of the nonterminals A and C.
+</P>
+<P>
+ The five rules from Table <CREF/> increment  N by one. Nonterminal A rewrites, in one or more steps, to nonterminal
+C, potentially through a number of nonterminals B.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+ The first and fourth rule of Table <CREF/> state that adding one to a zero bit sets
+this bit to one and ends the increment. The second and third rule state
+that adding one to a one bit sets this bit to zero and the increment
+continues.  The fifth rule states that adding one to the
+most-significant bit
+sets this bit to zero and yields a new most-significant one bit.
+We claim that 
+<!-- MATH: $A \stackrel{*}{\Rightarrow} C$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ takes 
+<!-- MATH: $O(\log(x)) = O(\mathopen|[F]\mathclose|)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+derivation steps.
+</P>
+<P>
+Rules, similar to the ones above, can be given that decrement
+the attribute  N by one. We only have to take a little
+extra care that the number 0 cannot be decremented.
+</P>
+</DIV>
+<DIV ID="8.1.1.4" DEPTH="4" R-NO="4"><HEADER>  Syntactic rules that sum two numbers. </HEADER>
+<P>
+In this section we use the previous test and increment rules
+(indicated by =).
+Assume a nonterminal A with some AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc n} [F]\\\mbox{\sc m} [H] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where [F] and [H] encode
+natural number x and y, respectively.
+ We present syntactic rules (Table <CREF/>-<CREF/>) that derive from this
+nonterminal A a nonterminal C with AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc n} [F']\\\mbox{\sc m} [H] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+ where [F'] encodes the natural number x + y.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+The increment of  N by  M is similar to the
+increment by one. Here, three additional pointers are required:
+the attributes  P and  Q point to the bits in  N and
+ M respectively that have to be summed next; attribute  R
+points to the most-significant bit of the (intermediate) result.
+In the addition two states
+are distinguished. In the one state, the carry bit is zero, indicated
+by nonterminal A'. In the other state, the carry bit is one,
+indicated by nonterminal B.
+We claim that 
+<!-- MATH: $A \stackrel{*}{\Rightarrow} C$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ takes 
+<!-- MATH: $O(\max(\log(x), \log(y))) = O(\max(\mathopen|[F]\mathclose|,\mathopen|[H]\mathclose|))$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ derivation steps.
+</P>
+</DIV>
+<DIV ID="8.1.1.5" DEPTH="4" R-NO="5"><HEADER>  Syntactic rules that sum a sequence of numbers. </HEADER>
+<P>
+In this section we use the previous summation rules
+(indicated by =).
+Assume a nonterminal A with some AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc l} [F'] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where [F'] encodes a list of numbers. To wit
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+where [Gi] encodes natural number xi.
+ We present syntactic rules (Table <CREF/>) that derive from this nonterminal A a nonterminal B with AVM
+<!-- MATH: $\left[\begin{array}{ll} \mbox{\sc suml} [F]\\\mbox{\sc l} [F'] \end{array}\right]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where [F] encodes the natural number 
+<!-- MATH: $\Sigma_i x_i$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+The summation requires an additional pointer in the
+AVM [F']: attribute  P points to the next element
+in the list that has to be summed.
+We claim that 
+<!-- MATH: $A \stackrel{*}{\Rightarrow} B$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ takes 
+<!-- MATH: $O(\Sigma_i\,\log(x_i)) = O(\mathopen|[F']\mathclose|)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+derivation steps.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="8.2" DEPTH="2" R-NO="2"><HEADER>  Creating a counter of logarithmic size
+</HEADER>
+<P>
+Create an AVM of the following form:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Attribute  COUNTER is used to distinguish the AVMs
+that encodes the counter from those in the
+original attribute-value grammar. We will neglect the
+attribute  COUNTER in the remainder of this section, because it is
+not essential here.
+The attributes  SIZE,  N,  M and  POLY
+encode natural numbers.
+The attribute  SIZE records the size of the string that will be
+generated.  The attribute  POLY records the maximum number of
+derivation steps that is allowed for a string of size  SIZE.
+The attributes  N and  M are auxiliary numbers.
+</P>
+<P>
+The construction of the counter starts with an initiation-step.
+The further construction of the counter consists of cycles of two
+phases. Each cycle starts in nonterminal A.
+</P>
+<DIV ID="8.2.1" DEPTH="3" R-NO="1"><HEADER>  Initiation step and first phase. </HEADER>
+<P>
+The initiation-step sets the numbers  SIZE and  N to 0,
+and the numbers  M and  POLY to 1.
+In the first phase of each cycle, the numbers  SIZE and  N
+are incremented by 1.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<DIV ID="8.2.1.1" DEPTH="4" R-NO="1"><HEADER>  The second phase of the cycle. </HEADER>
+<P>
+In this phase the numbers  N and  M are compared.
+If  N is twice  M, then (i) number
+ POLY is extended by k bits, (ii) number  M is doubled,
+and (iii) number  N is set to 0.
+If  N is less than twice  M, nothing happens.
+</P>
+<P>
+The left rule of the second phase doubles the number  M in
+the second and the third equation.
+The test ``Is  N equal to 2 M?'' therefore reduces to one
+(the first) equation.
+The fourth equation extend the number  POLY with k bits.
+The fifth and sixth equations set the number  N to 0.
+</P>
+<P>
+The right rule is always applicable. If the right rule is used where
+the left rule was applicable, then the number  N will never be
+equal to 
+<!-- MATH: $2\mbox{\sc m}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in the rest of the derivation. Thus  POLY will
+not be extended any more.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+We claim that the left rule appears 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+times and the right
+rule O(n) times in a derivation for input of size n.
+Obviously, the number  POLY is 
+<!-- MATH: $O(2^{k\log{i}}) = O(i^k)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+when
+the number  SIZE is i.
+</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="8.3" DEPTH="2" R-NO="3"><HEADER>  From AVG to HP-AVG
+</HEADER>
+<P>
+In this section we show how to transform an AVG
+into an AVG that satisfies the HPC (HP-AVG).
+Since all computation steps of the HP-AVG
+only require a linear amount of derivation steps,
+total derivations of HP-AVGs have polynomial length.
+</P>
+<P>
+We can divide the attributes of the HP-AVG into two groups. The
+attributes that encode the counters, and the attributes of the
+original AVG. The former will be embedded under the attribute
+ COUNTER, the latter under the attribute  GRAMMAR.
+In the sequel, we mean by 
+<!-- MATH: $\phi|\mbox{\sc grammar}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+the formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ embedded under the attribute  GRAMMAR, i.e., the formula
+obtained from 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+by substituting the variables xi by
+<!-- MATH: $\mbox{\sc grammar}(x_i)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+The HP-AVG is obtained from the AVG in three steps: change
+the start nonterminal, the lexicon and the syntactic rules.
+First, the HP-AVG contains the rules of the previous section, which
+ construct the counter. The nonterminal S from Table <CREF/> is the start nonterminal of the HP-AVG. For the nonterminal A the start
+ nonterminal of the AVG is taken. Nonterminal B from Table <CREF/> is a fresh nonterminal, not occurring in the AVG.
+</P>
+<P>
+Second, the HP-AVG contains an extension of the lexicon of the AVG.
+The entries of the lexicon are extended in the following way. The size
+of the lexical form is set to one, and the amount of derivation steps
+is zero. Thus, if 
+<!-- MATH: $(w,X,\phi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the lexicon of the AVG,
+then 
+<!-- MATH: $(w,X,\psi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the lexicon of the HP-AVG, where
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Third, the HP-AVG contains extensions of the syntactic rules of the AVG.
+The syntactic rules are extended in the following way. The numbers
+ POLY and  SIZE of the daughter nonterminals are collected in
+the lists  PLIST and  SLIST. Both lists are summed.
+The number  SIZE of the mother nonterminal is equal to
+the sum of  SIZE's,
+and the number  POLY of the mother nonterminal is one
+more than the sum of  POLY's.
+Thus, if 
+<!-- MATH: $(X_0,X_1,\ldots,X_n, \phi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ is a syntactic rule of the AVG, then 
+<!-- MATH: $(X_0,X_1,\ldots,X_n, \psi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ is a syntactic rule of the HP-AVG, where
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Now, a derivation for the HP-AVG starts with a nondeterministic
+construction of a counter  SIZE with value n and a counter
+ POLY with value O(n[k]). Then, the derivation of the original
+AVG is simulated, such that
+(i)
+ the mother nonterminal produces a string of size n if, and only if
+ the daughter nonterminals together produce a string of size n, and
+(ii)
+ the mother nonterminal makes n[k]+1 derivation steps if, and only if
+ the daughter nonterminals together make n[k] derivation steps.
+</P>
+<DIV ID="8.3.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  The author was supported in part by HCM grant
+        ERB4050PL93-0516.
+  The author was supported by the Foundation for language,
+        speech and logic (TSL), which is funded by the Netherlands
+        organization for scientific research (NWO)
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

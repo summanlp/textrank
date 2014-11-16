@@ -1,0 +1,2328 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>TYPED FEATURE STRUCTURES AS DESCRIPTIONS</TITLE>
+<ABSTRACT>
+<P>
+A description is an entity that can be interpreted as true or false of
+an object, and using feature structures as descriptions accrues
+several computational benefits.  In this paper, I create an explicit
+interpretation of a typed feature structure used as a description,
+define the notion of a satisfiable feature structure, and create a
+simple and effective algorithm to decide if a feature structure is
+satisfiable.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  INTRODUCTION </HEADER>
+<P>
+Describing objects is one of several purposes for which linguists use
+feature structures.  A description is an entity that can be
+interpreted as true or false of an object.  For example, the
+conventional interpretation of the description `it is black' is true
+of a soot particle, but false of a snowflake.  Therefore, any use of a
+feature structure to describe an object demands that the feature
+structure can be interpreted as true or false of the object.  In this
+paper, I tailor the semantics of [<REF/>] to suit the typed
+feature structures of [<REF/>], and so create an
+explicit interpretation of a typed feature structure used as a
+description.  I then use this interpretation to define the notion of a
+satisfiable feature structure.
+</P>
+<P>
+Though no feature structure algebra provides descriptions as
+expressive as those provided by a feature logic, using feature
+structures to describe objects profits from a large stock of available
+computational techniques to represent, test and process feature
+structures.  In this paper, I demonstrate the computational benefits
+of marrying a tractable syntax and an explicit semantics by creating a
+simple and effective algorithm to decide the satisfiability of a
+feature structure.  Gerdemann and Gtz's Troll type resolution
+system implements both the semantics and an efficient refinement of
+the satisfiability algorithm I present here (see [<REF/>],
+[<REF/>] and [<REF/>]).
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  A FEATURE STRUCTURE SEMANTICS </HEADER>
+<P>
+A signature provides the symbols from which to construct typed feature
+structures, and an interpretation gives those symbols meaning.
+[
+Definition
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a signature iff
+[
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a sextuple 
+<!-- MATH: $\langle\mbox{\fr Q},\mbox{\fr T},\preceq,\S,\mbox{\fr A},\mbox{\fr F}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+<!-- MATH: $\mbox{\fr Q}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a set,
+</P>
+<P>
+<!-- MATH: $\langle\mbox{\fr T},\preceq\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a partial order,
+</P>
+<P>
+<!-- MATH: $\S=
+\left\{
+\sigma\in\mbox{\fr T}
+\left|
+\begin{tabular}{l}
+for each$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $,
+\\
+\hspace{4pt}if$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a set,
+</P>
+<P>
+<!-- MATH: $\mbox{\fr F}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a partial function from the Cartesian product of 
+<!-- MATH: $\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ to 
+<!-- MATH: $\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+</P>
+<P>
+for
+each 
+<!-- MATH: $\tau\in\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+each 
+<!-- MATH: $\tau'\in\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\mbox{\fr F}(\tau,\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined and
+<!-- MATH: $\tau\preceq\tau'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ then
+<!-- MATH: $\mbox{\fr F}(\tau',\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $\mbox{\fr F}(\tau,\alpha)\preceq\mbox{\fr F}(\tau',\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+]
+Henceforth, I tacitly work with a signature
+<!-- MATH: $\langle\mbox{\fr Q},\mbox{\fr T},\preceq,\S,\mbox{\fr A},\mbox{\fr F}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+I call members of 
+<!-- MATH: $\mbox{\fr Q}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+states,
+members of 
+<!-- MATH: $\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+types, 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+subsumption, members of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+species,
+members of 
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+attributes, and 
+<!-- MATH: $\mbox{\fr F}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+appropriateness.
+[
+Definition
+</P>
+<P>
+I is an interpretation iff
+[
+I is a triple 
+<!-- MATH: $\langleU,S,A\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+U is a set,
+</P>
+<P>
+S is a total function from U to 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+A is a total function from 
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to the set of partial functions from
+U to U,
+</P>
+<P>
+for
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $A(\alpha)(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined
+then
+<!-- MATH: $\mbox{\fr F}(S(u),\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $\mbox{\fr F}(S(u),\alpha)\preceq S(A(\alpha)(u))$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+]
+]
+</P>
+<P>
+for
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\mbox{\fr F}(S(u),\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined
+then
+<!-- MATH: $A(\alpha)(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined.
+]
+]
+]
+]
+Suppose that I is an interpretation 
+<!-- MATH: $\langleU,S,A\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+I call each
+member of U an object in I.
+</P>
+<P>
+Each type denotes a set of objects in I.  The denotations of the
+species partition U, and S assigns each object in I the unique
+species whose denotation contains the object: object u is in the
+denotation of species 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+iff 
+<!-- MATH: $\sigma=S(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Subsumption encodes
+a relationship between the denotations of species and types: object
+u is in the denotation of type 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+iff 
+<!-- MATH: $\tau\preceq S(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+So,
+if 
+<!-- MATH: $\tau_1\preceq\tau_2$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+then the denotation of type 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+contains
+the denotation of type 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+Each attribute denotes a partial function from the objects in I to
+the objects in I, and A assigns each attribute the partial
+function it denotes.  Appropriateness encodes a relationship between
+the denotations of species and attributes: if
+<!-- MATH: $\mbox{\fr F}\langle\sigma,\alpha\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined then the denotation of
+attribute 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+acts upon each object in the denotation of species
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to yield an object in the denotation of type
+<!-- MATH: $\mbox{\fr F}\langle\sigma,\alpha\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+but if 
+<!-- MATH: $\mbox{\fr F}\langle\sigma,\alpha\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is
+undefined then the denotation of attribute 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+acts upon no
+object in the denotation of species 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+So, if
+<!-- MATH: $\mbox{\fr F}\langle\tau,\alpha\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined then the denotation of attribute
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+acts upon each object in the denotation of type 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to
+yield an object in the denotation of type 
+<!-- MATH: $\mbox{\fr F}\langle\tau,\alpha\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+I call a finite sequence of attributes a path, and write 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+for the
+set of paths.
+[
+Definition
+</P>
+<P>
+P is the path interpretation function under I iff
+[
+I is an interpretation 
+<!-- MATH: $\langleU,S,A\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+P is a total function from 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to the set of partial functions from
+U to U, and
+</P>
+<P>
+for
+each 
+<!-- MATH: $\langle\alpha_1,\ldots,\alpha_n\rangle\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+<!-- MATH: $P\langle\alpha_1,\ldots,\alpha_n\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the functional composition
+of 
+<!-- MATH: $A(\alpha_1),\ldots,A(\alpha_n)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+I write PI for the path interpretation function under I.
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+F is a feature structure iff
+[
+F is a quadruple 
+<!-- MATH: $\langleQ,q,\delta,\theta\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+Q is a finite subset of 
+<!-- MATH: $\mbox{\fr Q}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a finite partial function from the Cartesian product of
+Q and 
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to Q,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a total function from Q to 
+<!-- MATH: $\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+</P>
+<P>
+for
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+for
+some 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+runs to q' in F,
+]
+]
+where
+<!-- MATH: $\langle\alpha_1,\ldots,\alpha_n\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+runs to q' in F iff
+[
+<!-- MATH: $\langle\alpha_1,\ldots,\alpha_n\rangle\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+</P>
+<P>
+for
+some 
+<!-- MATH: $\{q_0,\ldots,q_n\}\subseteq Q$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+q=q0,
+</P>
+<P>
+for
+each i[n,
+[
+<!-- MATH: $\delta(q_i,\alpha_{i+1})$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $\delta(q_i,\alpha_{i+1})=q_{i+1}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+]
+</P>
+<P>
+qn=q'.
+]
+]
+]
+Each feature structure is a connected Moore machine (see [<REF/>]) with finitely many states, input alphabet 
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and output
+alphabet 
+<!-- MATH: $\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+F is true of u under I iff
+[
+F is a feature structure 
+<!-- MATH: $\langleQ,q,\delta,\theta\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+I is an interpretation 
+<!-- MATH: $\langleU,S,A\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+u is an object in I, and
+</P>
+<P>
+for
+each 
+<!-- MATH: $\pi_1\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+each 
+<!-- MATH: $\pi_2\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+runs to q' in F, and
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+runs to q' in Fthen
+<!-- MATH: $P_I(\pi_1)(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined,
+<!-- MATH: $P_I(\pi_2)(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined,
+<!-- MATH: $P_I(\pi_1)(u)=P_I(\pi_2)(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+<!-- MATH: $\theta(q')\preceq S(P_I(\pi_1)(u))$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+]
+[
+Definition
+</P>
+<P>
+F is a satisfiable feature structure iff
+[
+F is a feature structure, and
+</P>
+<P>
+for
+some interpretation I and
+some object u in I,
+F is true of u under I.
+]
+]
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  MORPHS </HEADER>
+<P>
+The abundance of interpretations seems to preclude an effective
+algorithm to decide if a feature structure is satisfiable.  However, I
+insert morphs between feature structures and objects to yield an
+interpretation free characterisation of a satisfiable feature
+structure.
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+M is a semi-morph iff
+[
+M is a triple 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a nonempty subset of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is an equivalence relation over 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+for
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+each 
+<!-- MATH: $\pi_1\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+<!-- MATH: $\pi_2\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\pi_1\alpha\in\Delta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+<!-- MATH: $\langle\pi_1,\pi_2\rangle\in\Gamma$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ then
+<!-- MATH: $\langle\pi_1\alpha,\pi_2\alpha\rangle\in\Gamma$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+]
+]
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a total function from 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+for
+each 
+<!-- MATH: $\pi_1\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+<!-- MATH: $\pi_2\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+if
+<!-- MATH: $\langle\pi_1,\pi_2\rangle\in\Gamma$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ then
+<!-- MATH: $\Lambda(\pi_1)=\Lambda(\pi_2)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+]
+</P>
+<P>
+for
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\pi\alpha\in\Delta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ then
+<!-- MATH: $\pi\in\Delta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\mbox{\fr F}(\Lambda(\pi),\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $\mbox{\fr F}(\Lambda(\pi),\alpha)\preceq\Lambda(\pi\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+]
+[
+Definition
+</P>
+<P>
+M is a morph iff
+[
+M is a semi-morph 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+</P>
+<P>
+for
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\pi\in\Delta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+<!-- MATH: $\mbox{\fr F}(\Lambda(\pi),\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined
+then
+<!-- MATH: $\pi\alpha\in\Delta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+]
+Each morph is the Moshier abstraction (see [<REF/>]) of a
+connected and totally well-typed (see [<REF/>]) Moore
+machine with possibly infinitely many states, input alphabet 
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+output alphabet 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+M abstracts u under I iff
+[
+M is a morph 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+I is an interpretation 
+<!-- MATH: $\langleU,S,A\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+u is an object in I,
+</P>
+<P>
+for
+each 
+<!-- MATH: $\pi_1\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+<!-- MATH: $\pi_2\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+<!-- MATH: $\langle\pi_1,\pi_2\rangle\in\Gamma$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ iff
+<!-- MATH: $P_I(\pi_1)(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined,
+<!-- MATH: $P_I(\pi_2)(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $P_I(\pi_1)(u)=P_I(\pi_2)(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+]
+]
+</P>
+<P>
+for
+each 
+<!-- MATH: $\sigma\in\S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+<!-- MATH: $\langle\pi,\sigma\rangle\in\Lambda$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ iff
+<!-- MATH: $P_I(\pi)(u)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $\sigma=S(P_I(\pi)(u))$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+]
+[
+Proposition
+</P>
+<P>
+For
+each interpretation I and
+each object u in I,
+[
+some unique morph abstracts u under I.
+]
+]
+I thus write of the abstraction of u under I.
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+u is a standard object iff
+[
+u is a quadruple 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a morph, and
+</P>
+<P>
+<!-- MATH: $\mbox{\rm E}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is an equivalence class under 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+I write 
+<!-- MATH: $\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+for the set of standard objects, write 
+<!-- MATH: $\widetilde{S}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+for the
+total function from 
+<!-- MATH: $\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where
+[
+for
+each 
+<!-- MATH: $\sigma\in\S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle\in\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+<!-- MATH: $\widetilde{S}\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle=\sigma$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ iff
+for
+some 
+<!-- MATH: $\pi\in\mbox{\rm E}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\Lambda(\pi)=\sigma$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+]
+]
+]
+and write 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+for the total function from 
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to the set of partial
+functions from 
+<!-- MATH: $\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to 
+<!-- MATH: $\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where
+[
+for
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+each 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle\in\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+<!-- MATH: $\langle\Delta',\Gamma',\Lambda',\mbox{\rm E}'\rangle\in\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+<!-- MATH: $\AA(\alpha)\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $\AA(\alpha)\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle
+=\langle\Delta',\Gamma',\Lambda',\mbox{\rm E}'\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+for
+some 
+<!-- MATH: $\pi\in\mbox{\rm E}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\pi\alpha\in\mbox{\rm E}'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+[
+Lemma
+</P>
+<P>
+<!-- MATH: $\langle\widetilde{U},\widetilde{S},\AA\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is an interpretation.
+]
+I write 
+<!-- MATH: $\widetilde{I}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+for 
+<!-- MATH: $\langle\widetilde{U},\widetilde{S},\AA\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+[
+Lemma
+</P>
+<P>
+For
+each 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle\in\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+each 
+<!-- MATH: $\langle\Delta',\Gamma',\Lambda',\mbox{\rm E}'\rangle\in\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+<!-- MATH: $P_{\widetilde{I}}(\pi)\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $P_{\widetilde{I}}(\pi)\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle
+=\langle\Delta',\Gamma',\Lambda',\mbox{\rm E}'\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+for
+some 
+<!-- MATH: $\pi'\in\mbox{\rm E}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\pi'\pi\in\mbox{\rm E}'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+[
+By induction on the length of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+[
+Lemma
+</P>
+<P>
+For
+each 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle\in\widetilde{U}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\mbox{\rm E}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the equivalence class of the empty path under 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ then
+the abstraction of 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda,\mbox{\rm E}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+under
+<!-- MATH: $\widetilde{I}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+[
+Proposition
+</P>
+<P>
+For
+each morph M,
+[
+for
+some interpretation I and
+some object u in I,
+[
+M is the abstraction of u under I.
+]
+]
+]
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+F approximates M iff
+[
+F is a feature structure 
+<!-- MATH: $\langleQ,q,\delta,\theta\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+M is a morph 
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+</P>
+<P>
+for
+each 
+<!-- MATH: $\pi_1\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+each 
+<!-- MATH: $\pi_2\in\P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+runs to q' in F, and
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+runs to q' in Fthen
+<!-- MATH: $\langle\pi_1,\pi_2\rangle\in\Gamma$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+<!-- MATH: $\theta(q')\preceq\Lambda(\pi_1)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+]
+A feature structure approximates a morph iff the Moshier abstraction
+of the feature structure abstractly subsumes (see [<REF/>]) the morph.
+[
+Proposition
+</P>
+<P>
+For
+each interpretation I,
+each object u in I and
+each feature structure F,
+[
+[
+F is true of u under Iiff
+F approximates the abstraction of u under I.
+]
+]
+]
+</P>
+<P>
+[
+Theorem
+</P>
+<P>
+For each feature structure F,
+[
+F is satisfiable
+iff
+F approximates some morph.
+]
+]
+[
+From
+ propositions <CREF/>  and <CREF/>. ]
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  RESOLVED FEATURE STRUCTURES </HEADER>
+<P>
+ Though theorem <CREF/> gives an interpretation free characterisation of a satisfiable feature
+structure, the characterisation still seems to admit of no effective
+algorithm to decide if a feature structure is satisfiable.  However, I
+ use theorem <CREF/> and resolved feature structures to yield a less general
+interpretation free characterisation of a satisfiable feature
+structure that admits of such an algorithm.
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+R is a resolved feature structure iff
+[
+R is a feature structure 
+<!-- MATH: $\langleQ,q,\delta,\rho\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a total function from Q to 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+</P>
+<P>
+for
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\delta(q',\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined
+then
+<!-- MATH: $\mbox{\fr F}(\rho(q'),\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $\mbox{\fr F}(\rho(q'),\alpha)\preceq\rho(\delta(q',\alpha))$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+]
+Each resolved feature structure is a well-typed (see [<REF/>]) feature structure with output alphabet 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+R is a resolvant of F iff
+[
+R is a resolved feature structure 
+<!-- MATH: $\langleQ,q,\delta,\rho\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+F is a feature structure 
+<!-- MATH: $\langleQ,q,\delta,\theta\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+</P>
+<P>
+for
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\theta(q')\preceq\rho(q')$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+[
+Proposition
+</P>
+<P>
+For
+each interpretation I,
+each object u in I and
+each feature structure F,
+[
+[
+F is true of u under Iiff
+some resolvant of F is true of u under I.
+]
+]
+]
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+<!-- MATH: $\langle\mbox{\fr Q},\mbox{\fr T},\preceq,\S,\mbox{\fr A},\mbox{\fr F}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is rational iff
+for
+each 
+<!-- MATH: $\sigma\in\S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\mbox{\fr F}(\sigma,\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined
+then
+for
+some 
+<!-- MATH: $\sigma'\in\S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\mbox{\fr F}(\sigma,\alpha)\preceq\sigma'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+]
+]
+[
+Proposition
+</P>
+<P>
+If
+<!-- MATH: $\langle\mbox{\fr Q},\mbox{\fr T},\preceq,\S,\mbox{\fr A},\mbox{\fr F}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is rational
+then
+for
+each resolved feature structure R,
+R is satisfiable.
+]
+[
+Suppose that 
+<!-- MATH: $R=\langleQ,q,\delta,\rho\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a bijection
+from ordinal 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Let
+[
+<!-- MATH: $\Delta_0=
+\left\{
+\pi
+\left|\begin{tabular}{l}
+for some$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $\Gamma_0=
+\left\{
+\langle\pi_1,\pi_2\rangle
+\left|\begin{tabular}{l}
+for some$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $\Lambda_0=
+\left\{
+\langle\pi,\sigma\rangle
+\left|\begin{tabular}{l}
+for some$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+let
+[
+<!-- MATH: $\Delta_{n+1}=
+\Delta_n
+\cup
+\left\{
+\pi\alpha
+\left|\begin{tabular}{l}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ (_n(),)
+<!-- MATH: $is defined
+\end{tabular}\right.\right\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $\Gamma_{n+1}=
+\Gamma_n
+\cup
+\left\{
+\langle\pi_1\alpha,\pi_2\alpha\rangle
+\left|\begin{tabular}{l}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $\Lambda_{n+1}=
+\Lambda_n
+\cup
+\left\{
+\langle\pi\alpha,\beta(\xi)\rangle
+\left|\begin{tabular}{l}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ (_n(),)()
+<!-- MATH: $\end{tabular}\right.\right\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\langle\Delta_n,\Gamma_n,\Lambda_n\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a
+semi-morph.  Let
+[
+<!-- MATH: $\Delta=\bigcup\{\Delta_n\mid n\in\mbox{\rm I\hspace{-.5mm}N}\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+</P>
+<P>
+<!-- MATH: $\Gamma=\bigcup\{\Gamma_n\mid n\in\mbox{\rm I\hspace{-.5mm}N}\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+</P>
+<P>
+<!-- MATH: $\Lambda=\bigcup\{\Lambda_n\mid n\in\mbox{\rm I\hspace{-.5mm}N}\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+]
+<!-- MATH: $\langle\Delta,\Gamma,\Lambda\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a morph that R approximates.
+ By theorem <CREF/>, Ris satisfiable. ]
+</P>
+<P>
+[
+Theorem
+</P>
+<P>
+If
+<!-- MATH: $\langle\mbox{\fr Q},\mbox{\fr T},\preceq,\S,\mbox{\fr A},\mbox{\fr F}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is rational
+then
+for each feature structure F,
+[
+F is satisfiable
+iff
+F has a resolvant.
+]
+]
+[
+From
+ propositions <CREF/>  and <CREF/>. ]
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  A SATISFIABILITY ALGORITHM </HEADER>
+<P>
+In this section, I use
+ theorem <CREF/> to show how - given a rational signature that meets reasonable computational
+conditions - to construct an effective algorithm to decide if a
+feature structure is satisfiable.
+</P>
+<P>
+[
+Definition
+</P>
+<P>
+<!-- MATH: $\langle\mbox{\fr Q},\mbox{\fr T},\preceq,\S,\mbox{\fr A},\mbox{\fr F}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is computable iff
+[
+<!-- MATH: $\mbox{\fr Q}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are countable,
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is finite,
+</P>
+<P>
+for some effective function 
+<!-- MATH: $\mbox{\tt SUB}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+for
+each 
+<!-- MATH: $\tau_1\in\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+<!-- MATH: $\tau_2\in\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\tau_1\preceq\tau_2$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ then
+<!-- MATH: $\mbox{\tt SUB}(\tau_1,\tau_2)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`true'
+otherwise
+<!-- MATH: $\mbox{\tt SUB}(\tau_1,\tau_2)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`false', and
+]
+]
+]
+</P>
+<P>
+for some effective function 
+<!-- MATH: $\mbox{\tt APP}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+for
+each 
+<!-- MATH: $\tau\in\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each 
+<!-- MATH: $\alpha\in\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+<!-- MATH: $\mbox{\fr F}(\tau,\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined
+then
+<!-- MATH: $\mbox{\tt APP}(\tau,\alpha)=\mbox{\fr F}(\tau,\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ otherwise
+<!-- MATH: $\mbox{\tt APP}(\tau,\alpha)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ `undefined'.
+]
+]
+]
+]
+]
+[
+Proposition
+</P>
+<P>
+If
+<!-- MATH: $\langle\mbox{\fr Q},\mbox{\fr T},\preceq,\S,\mbox{\fr A},\mbox{\fr F}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is computable
+then
+for
+some effective function 
+<!-- MATH: $\mbox{\tt RES}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+for
+each feature structure F,
+[
+<!-- MATH: $\mbox{\tt RES}(F)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+a list of the resolvants of F.
+]
+]
+]
+[
+Since 
+<!-- MATH: $\langle\mbox{\fr Q},\mbox{\fr T},\preceq,\S,\mbox{\fr A},\mbox{\fr F}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is computable, for some
+effective function 
+<!-- MATH: $\mbox{\tt GEN}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+for
+each finite 
+<!-- MATH: $Q\subseteq\mbox{\fr Q}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+<!-- MATH: $\mbox{\tt GEN}(Q)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+a list of the total functions from Q to 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+]
+]
+for some effective function 
+<!-- MATH: $\mbox{\tt TEST}_1$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+for
+each finite set Q,
+each finite partial function 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+from the Cartesian product of
+Q and 
+<!-- MATH: $\mbox{\fr A}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to Q, and
+each total function 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+from Q to 
+<!-- MATH: $\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+for
+each 
+<!-- MATH: $\langleq,\alpha\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in the domain of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+<!-- MATH: $\mbox{\fr F}(\theta(q),\alpha)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is defined, and
+<!-- MATH: $\mbox{\fr F}(\theta(q),\alpha)\preceq\theta(\delta(q,\alpha))$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ]
+then
+<!-- MATH: $\mbox{\tt TEST}_1(\delta,\theta)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`true'
+otherwise
+<!-- MATH: $\mbox{\tt TEST}_1(\delta,\theta)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`false',
+]
+]
+]
+and for some effective function 
+<!-- MATH: $\mbox{\tt TEST}_2$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+for
+each finite set Q,
+each total function 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+from Q to 
+<!-- MATH: $\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+each total function 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+from Q to 
+<!-- MATH: $\mbox{\fr T}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+[
+if
+for
+each 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+<!-- MATH: $\theta_1(q)\preceq\theta_2(q)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ then
+<!-- MATH: $\mbox{\tt TEST}_2(\theta_1,\theta_2)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`true'
+otherwise
+<!-- MATH: $\mbox{\tt TEST}_2(\theta_1,\theta_2)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`false'.
+]
+]
+]
+Construct 
+<!-- MATH: $\mbox{\tt RES}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+as follows:
+[
+for
+each feature structure 
+<!-- MATH: $\langleQ,q,\delta,\theta\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+set
+<!-- MATH: $\mbox{$\Sigma_{\mbox{\scriptsize\rm in}}$ }=\mbox{\tt GEN}(Q)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+<!-- MATH: $\mbox{$\Sigma_{\mbox{\scriptsize\rm out}}$ }=\langle \rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+while
+<!-- MATH: $\mbox{$\Sigma_{\mbox{\scriptsize\rm in}}$ }=\langle\rho,\rho_1,\ldots,\rho_i\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is not empty
+</P>
+<P>
+[do
+=
+set
+<!-- MATH: $\mbox{$\Sigma_{\mbox{\scriptsize\rm in}}$ }=\langle\rho_1,\ldots,\rho_i\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+[
+if
+<!-- MATH: $\mbox{\tt TEST}_1(\delta,\rho)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`true',
+<!-- MATH: $\mbox{\tt TEST}_2(\theta,\rho)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`true', and
+<!-- MATH: $\mbox{$\Sigma_{\mbox{\scriptsize\rm out}}$ }=\langle\rho_1',\ldots,\rho_j'\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ then
+set
+<!-- MATH: $\mbox{$\Sigma_{\mbox{\scriptsize\rm out}}$ }=\langle\rho,\rho_1',\ldots,\rho_j'\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ]
+]
+</P>
+<P>
+[
+if
+<!-- MATH: $\mbox{$\Sigma_{\mbox{\scriptsize\rm out}}$ }=\langle\rho_1,\ldots,\rho_n\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ then
+output 
+<!-- MATH: $\langle\langleQ,q,\delta,\rho_1\rangle,\!...,
+\langleQ,q,\delta,\rho_n\rangle\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is an effective algorithm, and
+[
+for
+each feature structure F,
+[
+<!-- MATH: $\mbox{\tt RES}(F)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+a list of the resolvants of F.
+]
+]
+]
+</P>
+<P>
+[
+Theorem
+</P>
+<P>
+If
+<!-- MATH: $\langle\mbox{\fr Q},\mbox{\fr T},\preceq,\S,\mbox{\fr A},\mbox{\fr F}\rangle$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is rational and computable
+then
+for
+some effective function 
+<!-- MATH: $\mbox{\tt SAT}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+[
+for each feature structure F,
+[
+[
+if
+F is satisfiable
+then
+<!-- MATH: $\mbox{\tt SAT}(F)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`true
+otherwise
+<!-- MATH: $\mbox{\tt SAT}(F)=$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+`false'.
+]
+]
+]
+]
+[
+ From theorem <CREF/> and  proposition <CREF/>. ]
+</P>
+<P>
+Gerdemann and Gtz's Troll system (see [<REF/>],
+[<REF/>] and [<REF/>]) employs
+an efficient refinement of 
+<!-- MATH: $\mbox{\tt RES}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to test the satisfiability of
+feature structures.  In fact, Troll represents each feature structure
+as a disjunction of the resolvants of the feature structure.  Loosely
+speaking, the resolvants of a feature structure have the same
+underlying finite state automaton as the feature structure, and differ
+only in their output function.  Troll exploits this property to
+represent each feature structure as a finite state automaton and a set
+of output functions.  The Troll unifier is closed on these
+representations.  Thus, though 
+<!-- MATH: $\mbox{\tt RES}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is computationally expensive,
+Troll uses 
+<!-- MATH: $\mbox{\tt RES}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+only during compilation, never during run time.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  References </HEADER>
+<P>
+[
+Robert Carpenter The logic of typed feature structures.
+Cambridge tracts in theoretical computer science 32.  Cambridge
+University Press, Cambridge, England.  1992.
+</P>
+<P>
+Dale Gerdemann.  Troll: type resolution system, user's guide.
+Sonderforschungsbereich 340 technical report.
+Eberhard-Karls-Universitt, Tbingen, Germany.  Forthcoming.
+</P>
+<P>
+Dale Gerdemann and Paul John King.  The correct and efficient
+implementation of appropriateness specifications for typed feature
+structures.  In these proceedings.
+</P>
+<P>
+Thilo Gtz.  A normal form for typed feature structures.
+Master's thesis.  Eberhard-Karls-Universitt, Tbingen, Germany.
+1993.
+</P>
+<P>
+Paul John King.  A logical formalism for head-driven phrase
+structure grammar.  Doctoral thesis.  The University of Manchester,
+Manchester, England.  1989.
+</P>
+<P>
+E. F. Moore.  `Gedanken experiments on sequential machines'.  In Automata Studies.  Princeton University Press, Princeton, New Jersey,
+USA.  1956.
+</P>
+<P>
+Michael Andrew Moshier.  Extensions to unification grammar for
+the description of programming languages.  Doctoral thesis.  The
+University of Michigan, Ann Arbor, Michigan, USA.  1988.
+]
+</P>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

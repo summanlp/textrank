@@ -1,0 +1,1027 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>A Labelled Analytic Theorem Proving Environment for Categorial Grammar
+</TITLE>
+<ABSTRACT>
+<P>
+We present a system for the investigation of computational
+  properties of categorial grammar parsing based on a labelled
+  analytic tableaux theorem prover. This proof method allows us to
+  take a modular approach, in which the basic grammar can be kept
+  constant, while a range of categorial calculi can be captured by
+  assigning different properties to the labelling algebra. The theorem
+  proving strategy is particularly well suited to the treatment of
+  categorial grammar, because it allows us to distribute the
+  computational cost between the algorithm which deals with the
+  grammatical types and the algebraic checker which constrains the
+  derivation.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>    Background
+</HEADER>
+<P>
+A current trend in logic is to attempt to incorporate semantic
+information into the domain of
+ deduction, <REF/>, <REF/>. An area for which  this strategy is particularly useful is the problem of
+categorial
+grammar parsing. The categorial grammar research programme requires
+the use of a range of logical calculi for linguistic
+description. Some researchers have considered labelled deduction as a
+ tool for implementing categorial parsers <REF/>,  <REF/>, and this paper can be seen as a new contribution to this field.
+</P>
+<P>
+In this paper we aim for a modular approach, in which the basic
+grammar is kept constant, while different calculi can be implemented
+and experimented with by constraining the derivations produced by the
+theorem prover.  At present, our system covers the classical Lambek
+Calculus, L, as well as the non-associative Lambek calculus
+ NL, <REF/>, and variants such as Van Benthem's  <REF/> LP, LPC, LPE and LPCE, and their non-associative counterparts. The system is based on
+labelled analytic deduction, particularly on the LKE method, developed
+ by D'Agostino and Gabbay <REF/>.  LKE is similar to a Smullyan-style tableau system, in which the derivations obey the
+sub-formula principle, but it improves on efficiency by restricting
+the number of branching rules to just one. Different categorial logics
+are handled by assigning different properties to the labelling
+algebra, while the basic syntactic apparatus remains the same.  This
+allows the user to experiment with various linguistic properties
+without having in principle to modify the grammar itself.
+</P>
+<P>
+The basic structure of the paper is as follows. In section
+ <CREF/>, we introduce the family of categorial calculi, and discuss some of the linguistic arguments which have been put
+forward in the literature with regard to these calculi.
+ In section <CREF/>, we introduce the logical apparatus on which the system is based, describe the algorithm and
+ prove some of the  properties mentioned in section <CREF/> within this framework. We also show how different grammars can be
+characterised and present a worked example.
+ In section <CREF/> the system is compared with other strategies for  dealing with  multiple categorial logics, such as
+hybrid formalisms and unification-based Gentzen-style deduction. In
+this section, we also suggest some ways to improve the efficiency of
+the system, and strategies  for dealing with the complexity of
+labelled unification.
+</P>
+<DIV ID="1.1" DEPTH="2" R-NO="1"><HEADER>    A Family of Categorial Calculi and Their Linguistic Applications
+</HEADER>
+<P>
+Categorial Grammars can be formalised in terms of a hierarchy of well
+understood and mathematically transparent logics, which yield as
+theorems  a range of combinatorial operations. However the precise
+ nature of the
+combinatorial power required for an adequate characterisation of
+natural language is still very much a matter of debate. For this
+reason, it is desirable to have a means of systematically testing the
+linguistic consequences of adopting various calculi. In this section
+we give an overview of the linguistic applications of some of the
+calculi in the hierarchy, with a view towards motivating the
+usefulness of a generic categorial theorem prover as a tool for
+linguistic study.
+</P>
+<P>
+The combinatorial
+possibilities of expressions in general can be characterised in terms
+of  reduction laws. In R1-R6 below, we give some  reduction
+ laws discussed in <REF/>, which have been found to be  linguistically useful.. 
+</P>
+<P>
+It is possible to define a hierarchy of logical calculi, each of which
+admits one or more of R1-R6 as theorems; from the purely
+applicative  calculus AB, of Ajdukiewicz and Bar-Hillel,
+ <REF/>, which supports only R1, to the full Lambek calculus L, which supports all the above laws. Calculi
+intermediate in power between  AB and L have been
+ explored (e.g. Dependency Categorial Grammar <REF/>), as well as stronger calculi which extend the power of L through
+the addition of structural rules.
+</P>
+<P>
+Much of the interest in using categorial grammars for
+linguistic research derives from the possibilities they offer for
+characterizing a flexible notion of constituency. This has been found
+particularly useful in the development of theories of coordination,
+and incremental interpretation.
+For example, assuming standard lexical type assignments, the following
+right node raised sentence cannot be derived in AB, but does
+receive a derivation in a system which includes R3, with
+each conjunct assigned the type indicated.
+ <EQN/> 
+</P>
+<P>
+A calculus which includes  composition, R2, will allow  a
+function to apply to an unsaturated argument, and it is this property
+ which allows Ades and Steedman <REF/> to treat long distance dependencies, and motivates much of Steedman's later work on
+incremental interpretation.
+</P>
+<P>
+ Dowty <REF/> uses the combination of composition, R2  and lifting,  R4,
+ to derive examples of non-constituent
+coordination such as  John gave mary a book and Susan a record.
+</P>
+<P>
+We can increase the power of L by adding the
+structural transformations Permutation, Contraction and
+Expansion, to derive the calculi  LP, LPC, LPE
+and LPCE. The structural transformation  Permutation, which
+removes the restrictions on the linear order of types, allows us
+to go beyond the purely concatenative derivations of L.
+This allows us to deal with sentences exhibiting non-standard constituent
+order. For example, Moortgat suggests using permutation for dealing
+with heavy NP-shift in examples similar to the following
+ <REF/>: 
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+ In (<CREF/>), the bracketed constituents can be ``rearranged'' via permutation so that a derivation is possible that employs the standard
+type ((NP
+<!-- MATH: $\backslash$ -->
+<EQN/>
+S)/PP)/NP for the ditransitive verb   gave.
+</P>
+<P>
+In  L, while it is possible to specify a type
+missing an argument on
+its left or right periphery, it is not possible to specify a type
+missing an argument ``somewhere in the middle'',  making it
+impossible to deal with non-peripheral extraction. However,
+as Morrill et al show, permutation provides the additional power
+ necessary to account for this phenomenon <REF/>. 
+</P>
+<P>
+In addition to permutation, there are also linguistic examples which
+ motivate  contraction (e.g. gapping, <REF/>) and expansion  (e.g. right dislocation, <REF/>). However it is universally recognized that a system employing the unrestricted use of structural
+transformations would be far too powerful for any useful
+linguistic application, since it would allow arbitrary word order
+variation, copying and deletion. For this reason, a goal of current
+research is to build a system in which the resource  freedom of the
+more powerful calculi can be exploited when required,  while the basic
+resource  sensitivity of L is retained in the general case. One
+such approach is to employ structural modalities
+ <REF/>, which are operators that explicitly mark those types which are permitted to be manipulated by specific structural
+ transformations. 
+</P>
+</DIV>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    A framework for Categorial Deduction
+</HEADER>
+<P>
+In this section we describe the theorem proving framework for
+categorial deduction. We start by setting up basic ideas of categorial
+logic, giving formal definitions of the core logical language. Then we
+move on to the  theorem proving strategy, introducing the LKE approach
+ <REF/> and the algebraic apparatus used to characterise different calculi.
+</P>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  The core syntax </HEADER>
+<P>
+We assume that there is a finite set of atomic grammatical categories
+which will be represented by special symbols: NP for
+noun phrases, S for sentences, etc. So, the set of
+well-formed categories can be defined as below.
+</P>
+<P>
+ <EQN/>  
+</P>
+<P>
+Our purpose in this section is to define a prcedure
+which will enable us to verify, given an entailment relation 
+<!-- MATH: $\ensuremath{\vdash \;}$ -->
+<EQN/>,
+whether or not such a relation holds for the logic
+being considered.
+</P>
+<P>
+Many proof procedures for classical logic have been proposed: natural
+deduction, Gentzen's sequents, analytic (Smullyan style) tableaux,
+etc. Among these, methods which conform to the sub-formula principle
+are particularly interesting, as far as automation is concerned. See
+ <REF/> for a survey. Most of these methods, along with proof methods developed for resource logics, such as Girard's proof
+nets (a variant of Bibel's connection method), can be used for
+ categorial logic. Leslie <REF/> presents and compares some categorial versions of these procedures for the standard Lambek
+calculus L, taking into account complexity and proof presentation
+issues. Although tableau systems are not discussed in
+ <REF/>, a close relative, the cut-free sequent calculus is presented as being the one which represents the best compromise
+between implementability and display of the proof.
+</P>
+<P>
+Smullyan style tableau systems, however, have been shown to be inherently
+ inefficient <REF/>. They cannot even simulate truth-tables in polynomial time. The main reason for this is the fact
+that many of the Smullyan tableau expansion rules cause the proof tree to
+branch, thus increasing the complexity of the search. Moreover,
+keeping track of the structure of the derivations represents an extra
+source of complexity, which in most categorial parsers
+ <REF/>,<REF/> is reflected in expensive unification algorithms employed for dealing with substructural implication. In
+order to cope with efficiency and generality, we have chosen the LKE
+ system <REF/> as the proof theoretic basis of our  approach. LKE is an analytic (its derivations exhibit  the sub-formula property) method of proof by refutation which has only one branching rule. In addition, its formulae are
+labelled according to a labelling algebra which will determine the
+ closure conditions for the proof trees. In what follows, we shall concentrate on explaining our version of the system, the heuristics that we have found
+useful for dealing with particularities of the calculi covered, and
+the relevant results for these calculi. The usual completeness and
+soundness results (with respect to the algebraic semantic provided)
+ are already given in <REF/>, so we will not discuss them here.
+</P>
+<P>
+We have mentioned that the condition for a branch to be considered
+closed in a standard
+tableau is that both a formula and its negation occur on it. The
+calculus defined above presents no negation, though. So, we have to
+appeal to some extrinsic mechanism  to express
+contradiction. In Smullyan's original formulation, the formulae
+occurring in a derivation were all preceded by signs: T or F.
+For instance, assume that we want to prove A 
+<!-- MATH: $\ensuremath{\Rightarrow\;}$ -->
+<EQN/>A in classical logic.
+We start by saying that the formula is false, prefixing it by F, and
+try to find a refutation for F A 
+<!-- MATH: $\ensuremath{\Rightarrow\;}$ -->
+<EQN/>A. For this to be the case both
+T A (the antecedent) and F  A (the consequent) have to be the case,
+yielding a contradiction. In classical logic we can interpret T and F
+as assertion and denial respectively, and so we can incorporate F into
+the language as negation,
+obtaining uniform notation by eliminating the need for signed
+formulae. In our approach, since negation is not defined in the
+language, we shall make use of signed formulae as proof theoretic
+devices. T and F will be used to indicate whether or not a certain string
+available for combination to produce a new one.
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>  The generalised parsing strategy </HEADER>
+<P>
+If we had restricted the system to dealing with signed formulae, we
+would have a proof procedure for an implicational fragment of standard
+propositional logic enriched with backwards implication and
+conjunction. However, we have seen that the Lambek calculus does not
+exhibit any of the structural properties of standard logic, and that
+different calculi may be obtained by varying structural
+transformations. Therefore, we need a mechanism for keeping track of
+the structure of our proofs. This mechanism is provided by labelling
+each formula in the derivation with information
+   tokens. 
+</P>
+<P>
+Labels will act not only as mechanisms for encoding the structure of
+the proof, from a proof-theoretic perspective, but will also serve as
+means to propagate semantic information through the derivation. A
+label can be seen as an information token supporting the information
+conveyed by the signalled formula it labels. Tokens may convey
+different degrees of informativeness, so we shall assume that they are
+ordered by an anti-symmetric, reflexive and transitive relation, 
+<!-- MATH: $\ensuremath{\sqsubseteq \;}$ -->
+<EQN/>,
+so that an expression like x 
+<!-- MATH: $\ensuremath{\sqsubseteq \;}$ -->
+<EQN/>y asserts that y is at least as
+informative as x (i.e. verifies at least as many sentences as x). We
+also assume that this semantic relation, ``verifies'', is closed under
+deductibility.
+</P>
+<P>
+It is natural to suppose that, as well as categories, information
+tokens can be composed. We have seen that a type S/NP
+can combine with a type NP to produce an S. If we assume that there
+are tokens x and y verifying respectively S/NP and NP, how would we
+represent the token that verifies S? Firstly, we define a token
+composition operation 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>.
+Then, we assume that, a priori, the order
+in which the categories appear in the string matters. So, a minimal
+information token verifying S would be x 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>y. As we shall see below,
+the constraints we impose on 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>will ultimately determine which
+inferences will be valid. For instance, if we assume that the order in
+which the types occur is not relevant, then we may allow permutation
+on the operands, so that x 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>y 
+<!-- MATH: $\ensuremath{\sqsubseteq \;}$ -->
+<EQN/>y 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>x; if we assume that
+contraction is a structural property of the calculus then the string
+[S/NP, NP, NP] will also yield an S, since  y 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>y 
+<!-- MATH: $\ensuremath{\sqsubseteq \;}$ -->
+<EQN/>y, etc.
+Let's formalise these notions by defining an algebraic structure,
+called Information frame.
+</P>
+<P>
+ <EQN/>  
+</P>
+<P>
+Combinations of types are accounted for in the labelling algebra by
+the composition operator. Now, we need to define an algebraic
+counterpart for syntactic composition, 
+<!-- MATH: $\ensuremath{\bullet \;}$ -->
+<EQN/>,
+itself. When a formula
+like S/NP 
+<!-- MATH: $\ensuremath{\bullet \;}$ -->
+<EQN/>NP is verified by a token x, this is because its
+components were available for combination, and consequently were
+verified by some other tokens. Now, suppose S/NP was verified by a
+token, say a. What would be the appropriate token for NP, such that
+S/NP combined with NP would be verified by x? It certainly would not
+be more informative than x. Moreover, if the expression S/NP 
+<!-- MATH: $\ensuremath{\bullet \;}$ -->
+<EQN/>NP
+were to stand for the composition of the (informational) meanings of
+its components, then the label for NP would have to verify, when
+combined with a, at most as much information as x. In order to express
+this, we define the label for NP as being the greatest y s.t.
+x is at least as informative as a combined with y. This token will be
+represented by x 
+<!-- MATH: $\ensuremath{\swarrow}$ -->
+<EQN/>a. In general, x 
+<!-- MATH: $\ensuremath{\swarrow}$ -->
+<EQN/>y 
+<!-- MATH: $\ensuremath{\buildrel \rm def \over = \;}$ -->
+<EQN/>
+<!-- MATH: $\ensuremath{\bigsqcup}$ -->
+<EQN/>{z
+<!-- MATH: $\ensuremath{\mid}$ -->
+<EQN/>
+y 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>z 
+<!-- MATH: $\ensuremath{\sqsubseteq \;}$ -->
+<EQN/>x}. An analogous operation, 
+<!-- MATH: $\ensuremath{\nearrow}$ -->
+<EQN/>,
+can be defined
+to cope with cases in which it is necessary to find the
+appropriate  label for the first operand by reversing the
+order of the tokens in the definition above. Some properties of
+<!-- MATH: $\ensuremath{\swarrow}$ -->
+ <EQN/><REF/>: 
+</P>
+<P>
+y \ensuremath{\circ \;} (x \ensuremath{\swarrow} y)  \ensuremath{\sqsubseteq \;}  x
+\end{eqnarray} -->
+</P>
+<P>
+\textnormal{\texttt{1}}{}  \ensuremath{\sqsubseteq \;}  x \ensuremath{\swarrow} x
+\end{eqnarray} -->
+</P>
+<P>
+(x \ensuremath{\swarrow} y) \ensuremath{\circ \;} z  \ensuremath{\sqsubseteq \;}  (x \ensuremath{\circ \;} z) \ensuremath{\swarrow} y
+\end{eqnarray} -->
+</P>
+<P>
+(x \ensuremath{\swarrow} y) \ensuremath{\swarrow} z  \ensuremath{\sqsubseteq \;}  x \ensuremath{\swarrow} (y \ensuremath{\circ \;} z)
+\end{eqnarray} -->
+</P>
+<P>
+Having set the basic elements of our proof-theoretic apparatus, we are
+now able to define the components of a derivation as follows:
+ <EQN/>  
+A derivation, or proof will be a tree structure built according to
+certain syntactic rules. These rules will be called expansion
+rules, since their application will invariably expand the tree
+structure. There are three sorts of expansion rules: those which
+expand the tree by generating two formulae from a single one occurring
+previously in the derivation, those which expand the tree by combining
+two formulae into a third one which is then added to the tree, and the
+branching rule. The first kind of rule corresponds to what is called
+<!-- MATH: $\ensuremath{\alpha_{}}$ -->
+<EQN/>-rule in Smullyan tableaux; these rules will be called
+<!-- MATH: $\ensuremath{\alpha_{}}$ -->
+<EQN/>-rules here as well. The second and third kinds have no
+equivalents in standard tableau systems. We shall refer to the
+second kind as 
+<!-- MATH: $\ensuremath{\sigma_{}}$ -->
+<EQN/>-rules, and to the branching rule as
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>-rule - after Smullyan's, even though his branching rules are
+ different. Figure <CREF/> summarises the expansion rules to be employed by the system. A deduction bar says that if the formula(e)
+appearing above it occurs in the tree, then the formula(e) below it
+should be added to the tableau. The rules are easily interpreted
+according to the intuitions assigned above to signs, formulae and
+information tokens. A rule like 
+<!-- MATH: $\ensuremath{\alpha_{(i)}}$ -->
+<EQN/>,
+for example, says that if
+A
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>B is not available for combination and x verifies such
+information, then this is because there is an A available at some token a,
+but the combination of a and x (notice that the order is relevant) does
+not produce B.
+Given the expansion rules, the definition of the main data
+structure to be manipulated by the theorem proving (parsing) algorithm
+is straightforward: a derivation tree, 
+<!-- MATH: $\ensuremath{\mathcal{T} }$ -->
+<EQN/>,
+is simply a binary tree
+built from a set of given formulae by applying the rules. The next
+step is to define the conditions for a tree to be regarded as
+complete. Completion along with inconsistency are the notions upon
+which the algorithm's termination depends. It can be readily seen on
+ Figure <CREF/> that for a finite set of formulae, the number of times 
+<!-- MATH: $\ensuremath{\alpha_{}}$ -->
+<EQN/>
+and 
+<!-- MATH: $\ensuremath{\sigma_{}}$ -->
+<EQN/>
+rules can be applied increasing the
+number of SLFs (nodes) in 
+<!-- MATH: $\ensuremath{\mathcal{T} }$ -->
+<EQN/>#94
+is finite. Unbounded application
+of  
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>,
+however, might expand the tree indefinitely. In order to
+assure termination, applications of 
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>
+will be restricted to
+sub-formulae of formulae in 
+<!-- MATH: $\ensuremath{\mathcal{T} }$ -->
+<EQN/>.
+These notions are formalised in
+ Definition <CREF/>. 
+ <EQN/>  
+Now, the first step towards building a counter-model for the denial of
+the formula to be proved is the search for a tree containing potential
+contradictions. Whether or not a  potentially inconsistent tree is a
+counter-model for the formula will depend ultimately upon the
+constraints on the labelling algebra. This form of inconsistency is
+defined below.
+ <EQN/>  
+Given the definitions above, we are ready to define an algorithm for
+expanding linearly the derivation tree. For efficiency reasons
+non-branching rules will be exhaustively applied before we move on to
+employing 
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+ <EQN/>-rules. Definition <CREF/> presents the basic  procedure for generating linear expansion for a branch. The complete LKE algorithm, Definition    <CREF/>, which uses the procedure below, will be presented after we have
+discussed tableau closure from the information frame perspective.
+</P>
+<P>
+ <EQN/>  
+</P>
+<P>
+We have seen above that the labels are means to propagate information
+about the formulae through the derivation tree. From a semantic
+viewpoint, the calculi addressed in this paper are obtained by varying
+the structure assigned to the set of formulae in the
+ derivation. Therefore, in order to verify whether a branch is closed for a
+calculus one has to verify whether the information frame satisfies the
+constraints which characterise the calculus. For instance, the
+standard Lambek calculus L does not allow any sort of structural
+manipulation of formulae apart from associativity; LP allows
+formulae to be permuted; LPE allows permutations and expansion
+(i.e. if B can be proved from the sequent <EQN/>,
+A, <EQN/>,
+then B can
+be proved from <EQN/>,
+A, A, <EQN/>); LPC allows permutation and
+contraction; etc. The definition below sets the algebraic counterparts
+of these properties.
+</P>
+<P>
+ <EQN/>  
+</P>
+<P>
+Now, we say that a branch is closed with respect to the
+labelling algebra if it contains SLFs of the form T X : x and F X : y,
+where x 
+<!-- MATH: $\ensuremath{\sqsubseteq \;}$ -->
+<EQN/>y. Likewise, a tree is closed if it contains only closed
+branches.  Checking for label closure will depend on the calculus
+being used, and consists basically of reducing information token
+expressions to a normal form, via properties
+ (<CREF/>)-(<CREF/>), and then matching tokens and/or variables that might have been introduced by applications of the
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>-rule according to the properties or combination of properties
+ (Definition <CREF/>) that characterise the calculus considered.  It should be noticed that, in addition to the basic algorithm, heuristics
+might be employed to account for specific linguistic aspects. Some
+examples: (a) it could be assumed that all the bracketing for the
+strings is to the right thus favouring an incremental approach; (b)
+type reuse could be blocked at the level of the formulae, reducing the
+the computational cost of searches for label closure, since most of
+the calculi in the family covered by the system are resource
+sensitive; (c) priority could be given to juxtaposed strings for
+<!-- MATH: $\ensuremath{\sigma_{}}$ -->
+ <EQN/>-rule application, etc. Definition <CREF/> gives the general procedure for tableau expansion, abstracted from the heuristics
+mentioned above.
+</P>
+<P>
+ <EQN/>  
+</P>
+<P>
+As it is, the algorithm defined above constitutes a semi-decision
+procedure. This is due to the fact that even though the search space
+for signed formulae is finite, the search space for the labels is
+infinite. The labels introduced via 
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>-rules are in fact
+universally quantified variables which must be instantiated during the
+label unification step. This represents no problem if we are dealing
+with theorems, i.e. trees which actually close. However, for completed
+trees with an open branch, the task might not terminate.  In order to
+overcome this problem and bind the unification procedure we restrict
+label (variable) substitutions to the set of tokens occurring in the
+derivation -- similarly to the way parameter instantiation is dealt
+with by liberalized quantification rules for first-order logic
+tableaux.  In practice, the strategy adopted to reduce label
+complexity also employs the following refinements: (i) the tableau is
+linearly expanded keeping track of the choices made when
+<!-- MATH: $\ensuremath{\sigma_{}}$ -->
+<EQN/>-rules are applied (the options are kept in a stack); (ii)
+once this first step is finished, if the tableau is still open, then
+backtrack is performed until either the choices left over are
+exhausted or closure is achieved; (iii) only then is the 
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>-rule
+applied. This explains the role played by the heuristics mentioned
+ above. We are now able to establish some results regarding the  reduction laws mentioned in section    <CREF/>. 
+</P>
+<P>
+Proposition  1  (Reduction Laws)    
+Let X, Y and Z be types, and 
+<!-- MATH: $\ensuremath{\mathcal{L} \;}$ -->
+<EQN/>an information frame. The
+  properties R1-R5 hold:
+</P>
+<P>
+    The proofs are obtained by straightforward application of
+ Definition <CREF/> and Definition <CREF/>. Below we illustrate the method by proving (R1) and
+(R2):
+(R1)
+To prove right application we start by
+assuming that it is verified by the identity token 1. From this we
+  have: 1- T X/Y 
+<!-- MATH: $\ensuremath{\bullet \;}$ -->
+<EQN/>Y : m, 2- F X : 1 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>m = m. Then, we apply
+<!-- MATH: $\ensuremath{\alpha_{(iii)}}$ -->
+<EQN/>
+to 1 obtaining 3- T X/Y : n and 4- T Y : m 
+<!-- MATH: $\ensuremath{\swarrow}$ -->
+<EQN/>n.
+  The next step is to combine 3 and 4 via 
+<!-- MATH: $\ensuremath{\sigma_{(iv)}}$ -->
+<EQN/>
+getting 5- T X
+  : n 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>(m 
+<!-- MATH: $\ensuremath{\swarrow}$ -->
+<EQN/>n). Now we have a potential closure caused by 5 and
+   2. If we apply property (<CREF/>) to the label for 5 we find   that n 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>(m 
+<!-- MATH: $\ensuremath{\swarrow}$ -->
+<EQN/>n) 
+<!-- MATH: $\ensuremath{\sqsubseteq \;}$ -->
+<EQN/>m, which satisfies the closure condition
+  thus closing the tableau.
+(R2)
+Let's prove left composition. As we did
+  above, we start with: 1- T Z
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>Y 
+<!-- MATH: $\ensuremath{\bullet \;}$ -->
+<EQN/>Y
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>X : m and 2- F Z
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>X : 1
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>m. Applying 
+<!-- MATH: $\ensuremath{\alpha_{(iii)}}$ -->
+<EQN/>
+to 1 we get: 3- T Z
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>Y : a and 4- T
+  Y
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>X : m 
+<!-- MATH: $\ensuremath{\swarrow}$ -->
+<EQN/>a. Now, we may apply 
+<!-- MATH: $\ensuremath{\alpha_{(i)}}$ -->
+<EQN/>
+to 2 and get: 5- T Z
+  : b and 6- F X : b 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>m. Then, combining 3 and 5 via 
+<!-- MATH: $\ensuremath{\sigma_{(i)}}$ -->
+<EQN/>:
+  7- T Y : b 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>a. And finally 4 and 7 through the same rule: 8- T X
+  : (b 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>a) 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>(m 
+<!-- MATH: $\ensuremath{\swarrow}$ -->
+<EQN/>a). The closure condition for 8 and 6 is
+  achieved as follows: 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Even though L does not enjoy finite axiomatizability, the results
+above suggest that the calculus finds a natural characterization in LKE
+for associative information frames. In particular,
+the Division Rule (R6) can be regarded as L's
+characteristic theorem, since it is not derivable in weaker calculi
+such as AB, NL, and F. If we do not allow associative
+frames, we get NL. Stronger calculi such as LP,
+ LPE, LPC and LPCE <REF/> can be obtained for the same general
+framework by assigning further properties to 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>in the labelling
+algebra. Frames exhibiting combinations of monotonicity, expansivity,
+commutativity and contraction allow us to characterise these
+substructural calculi. Algebras that are both associative and
+commutative describe LP. Adding expansivity (weakening)
+to LP results in LPE. Associativity,
+commutativity and contraction describe LPC frames. LPCE is
+obtained by combining the properties of LPC and LPE
+algebras.
+</P>
+<P>
+We end this section with a simple example requiring associativity:
+show, in L, that an NP (John), combined with a type
+(NP
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>S)/NP (  likes) yields S/NP, i.e a type which combined with a NP will result
+ in a sentence (Proof <CREF/>). 
+</P>
+<P>
+Proof  3   
+Let's assume the following type-string
+  correspondence:  NP for  John, (NP
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>S)/NP for likes.
+  The expression we want to
+  find a counter-model for is: 1- F NP 
+<!-- MATH: $\ensuremath{\bullet \;}$ -->
+<EQN/>(NP
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>S)/NP 
+<!-- MATH: $\ensuremath{\vdash_{\! L} \;}$ -->
+<EQN/>
+S/NP. Therefore, the following has to be
+  proved: 2- T NP 
+<!-- MATH: $\ensuremath{\bullet \;}$ -->
+<EQN/>(NP
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>S)/NP : m and 3-  F S/NP : m.
+  We proceed by breaking 2 and 3 down
+  via 
+<!-- MATH: $\ensuremath{\alpha_{(iii)}}$ -->
+<EQN/>,
+obtaining:
+4- T  NP  : a,
+5- T  (NP
+<!-- MATH: $\ensuremath{\backslash}$ -->
+<EQN/>S)/NP  : m
+<!-- MATH: $\ensuremath{\swarrow}$ -->
+<EQN/>a,
+6- T  NP  : b, and
+7- F  S  : (m 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>b). 
+Now we start applying 
+<!-- MATH: $\ensuremath{\sigma_{}}$ -->
+<EQN/>-rules (annotated on the
+right-hand side of each line):
+We have derived a potential inconsistency between 7 and 9. Turning
+our attention to the information tokens, we verify closure for L
+as follows:
+</P>
+</DIV>
+<DIV ID="2.3" DEPTH="2" R-NO="3"><HEADER>    Comparison with Existing Approaches
+</HEADER>
+<P>
+Early implementations of CG parsing relied on cut-free Gentzen
+sequents implemented via backward chaining mechanisms
+ <REF/>. Apart from the fact that it lacks generality, since implementing more powerful calculi would involve modifying the code in
+order to accommodate new structural rules, this approach presents
+several sources of inefficiency. The main ones are: the
+generate-and-test strategy employed to cope with associativity, the
+non-determinism in the branching rules and in rule application itself.
+The impact of the latter form of non-determinism over efficiency can
+be reduced by testing branches for count invariance prior to
+their expansion and by performing sequent proof normalisation.
+However, non-determinism due to splitting in the proof structure still
+remains. As we move on to stronger logics and incorporate structural
+modalities such problems tend to get even harder.
+</P>
+<P>
+An improved attempt to deal uniformly with multiple calculi is
+ presented in <REF/>. In that paper, the theorem prover employed is based on proof nets, and the characterisation of different
+calculi is taken care of by labelling the formulae. For substructural
+calculi stronger than L, much of the complexity (perhaps too
+much) is shifted to the label unification procedures. A strategy for
+improving such procedures by compiling labels into higher-order logic
+ programming clauses is presented in <REF/> for NL and L. However, a comprehensive solution to the problem of binding
+label unification, a problem which arises as we move from sequents
+to labelled proof nets, has not been presented yet. Moreover, as
+ discussed in <REF/>, if we consider that the system is to be used as a parser, as a tool for linguistic study, the proof net style
+of derivation does not provide the clearest or most intuitive display of
+ the proofs. 
+</P>
+<P>
+In our approach, the burden of parsing is not so concentrated in label
+unification but is more evenly divided between the theorem prover and
+the algebraic checker. This is mainly due to the fact that the system
+allows for a controlled degree of non-determinism, present in the
+<!-- MATH: $\ensuremath{\sigma_{}}$ -->
+<EQN/>-rules, which enables us to reduce the introduction of
+variables in the labelling expressions to a minimum. We believe this
+represents an improvement on previous attempts. Besides this,
+controlling composition via bounded backtrack opens the possibility of
+implementing heuristics reflecting linguistic and contextual
+knowledge. In fact, we verify that, under the
+appropriate application of rules, we are able to eliminate the
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>-rule for a class of theorems.
+</P>
+<P>
+Proposition  1  (Elimination Theorem)    
+All closed LKE-trees  derivable by the application of the set
+  of rules 
+<!-- MATH: $\ensuremath{\mathcal{R} \;}$ -->
+<EQN/>=
+  {
+<!-- MATH: $\ensuremath{\alpha_{(i)}}$ -->
+<EQN/>,...,
+<!-- MATH: $\ensuremath{\alpha_{(iii)}}$ -->
+<EQN/>,
+<!-- MATH: $\ensuremath{\sigma_{(i)}}$ -->
+<EQN/>,...,
+<!-- MATH: $\ensuremath{\sigma_{(vi)}}$ -->
+<EQN/>,
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>} can
+  be also derived from 
+<!-- MATH: $\ensuremath{\mathcal{R} \;}$ -->
+<EQN/>- {
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>} + { assoc }.
+</P>
+<P>
+The proof of this proposition can be done by defining an abstract
+  Gentzen relation, proving a substitution lemma with respect to
+ the labelling algebra (as in <REF/>), and showing that our consequence relation is closed under the relevant Gentzen conditions
+even if no 
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>
+rule is employed. The proof appeals to the fact that
+no formula signed by F can occur in the sequents on the left-hand side
+of the entailment relation, since the calculi presented here do not
+ have negation. We believe that this result shows that, even though LKE label unification might
+be computationally expensive for substructural logics in general,
+the system seems to be well suited for categorial logics. We
+ refer the reader to <REF/> for a more comprehensive discussion of these issues.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    Conclusions and Further Work
+</HEADER>
+<P>
+We have described a framework for the study of categorial logics with
+different degrees of expressivity on a uniform basis, providing a tool
+for testing the adequacy of different CGs to a variety of linguistic
+phenomena. From a practical point of view, we have investigated
+the effectiveness and generality issues of a parsing strategy for CG
+opening an avenue for future developments. Moreover, we have pointed out
+some strategies for improving on efficiency and for dealing with more
+expressive languages, including structural modalities.
+</P>
+<P>
+The architecture proposed seems promising. Its flexibility with
+respect to the variety of logics it deals with, and its modularity
+suggest some natural extensions to the present work.  Among them:
+implementing a semantic module based on Curry-Howard correspondence
+between type deduction and <EQN/>-terms, adding local control of
+structural transformations (structural modalities) to the language,
+increasing expressivity in the information frames for covering calculi
+weaker than L (e.g. Dependency Categorial Grammar
+ <REF/>), exploiting the derivational structure encoded in the labels  to define heuristics for models of human
+attachment preferences  etc.  Problems for further investigation might
+include: the treatment of polymorphic types (by incorporating rules
+for dealing with quantification analogous to Smullyan's 
+<!-- MATH: $\ensuremath{\delta \;}$ -->
+<EQN/>and 
+<!-- MATH: $\ensuremath{\gamma \;}$ -->
+ <EQN/>rules <REF/> <REF/>), and complexity issues regarding how the general architecture proposed here would behave
+under more standard theorem proving methods.
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+A. Ades and M. Steedman.
+On the order of words.
+Linguistics and Philosphy, 4:517-558, 1982.
+</P>
+<P>
+K. Ajdukiewicz.
+Die syntaktische konnexitt.
+Studia Philosophica, 1(1-27), 1935.
+(Translation in S. McCall (ed) Polish Logic 1920-1939 Oxford).
+</P>
+<P>
+Association for Computational Linguistics.
+7[th] Conference of the European Chapter of the ACL,
+  Dublin, Ireland, March 1995. Morgan Kaufmann.
+</P>
+<P>
+Guy Barry and Glyn Morrill.
+Studies in Categorial Grammar, volume 5 of Edinburgh
+  Working Papers in Cognitive Science.
+Centre for Cognitive Science, 1990.
+</P>
+<P>
+J. Barwise, D. Gabbay, and C. Hartonas.
+On the logic of information flow.
+Bulletin of the IGPL, 3(1):7-50, 1995.
+http://www.mpi-sb.mpg.de/guide/staff/ohlbach/igpl/Bulletin.html.
+</P>
+<P>
+Johan van Benthem.
+The semantics of variety.
+In Wojciech Buszkowski, Witold Marciszewski, and Johan van Benthem,
+  editors, Categorial Grammar, volume 25, chapter 6, pages 141-151. John
+  Benjamins Publishing Company, Amsterdam, 1988.
+</P>
+<P>
+Marcello D'Agostino and Dov Gabbay.
+A generalization of analytic deduction via labelled deductive systems
+  I: Basic substructural logics.
+Journal of Automated Reasoning, To appear.
+Revised in March 1994.
+</P>
+<P>
+Marcello D'Agostino and Marco Mondadori.
+The taming of the cut.
+Journal of Logic and Computation, 4:285-319, 1994.
+</P>
+<P>
+David Dowty.
+Type raising, functional composition, and non-constituent
+  conjunction.
+In Deirdre Wheeler Richard T. Oehrle, Emmon Bach, editor,   Categorial Grammars and Natural Language Structures, pages 153-197. Reidel
+  Publishing Co, Dordrecht, 1988.
+</P>
+<P>
+Melvin Fitting.
+First-order Logic and Automatic Theorem Proving.
+Texts and Monographs in Computer Science. Springer-Verlag, New York,
+  1990.
+</P>
+<P>
+Dov M. Gabbay.
+LDS - Labelled Deductive Systems, volume 1 -- foundations.
+Technical Report MPI-I-94-223, Max-Planck-Institut fr
+  Informatik, 1994.
+</P>
+<P>
+Mark Hepple Glyn Morrill, Neil Leslie and Guy Barry.
+Categorial deductions and structural operations.
+ In Barry and Morrill <REF/>, pages 1 - 21. 
+</P>
+<P>
+Joachim Lambek.
+On the calculus of syntactic types.
+In Proceedings of the Symposia in Applied Mathematics, volume
+  XII, pages 166-178, Providence, Rhode Island, 1961. American Mathematics
+  Society.
+</P>
+<P>
+Neil Leslie.
+Contrasting styles of categorial derivations.
+ In Barry and Morrill <REF/>, pages 113-126. 
+</P>
+<P>
+Saturnino F. Luz Filho and Patrick Sturt.
+A new approach to categorial theorem proving.
+In preparation.
+</P>
+<P>
+Michael Moortgat.
+Categorial Investigations.
+Foris Publications, Dordrecht, 1988.
+</P>
+<P>
+Michael Moortgat.
+Labelled deductive systems for categorial theorem proving.
+Technical Report OTS-WP-CL-92-003, OTS, Utrecht, NL, 1992.
+</P>
+<P>
+Michael Moortgat.
+Lecture notes on categorial grammar.
+Reader for the course on Categorial Grammar given at the 5[th]  ESSLLI - University of Lisbon, August 1993.
+</P>
+<P>
+Glyn Morril.
+Higher-order logic programming of categorial deduction.
+ In EACL95 <REF/>, pages 133-140. 
+</P>
+<P>
+Martin Pickering and Guy Barry.
+Dependency categorial grammar and coordination.
+Linguistics, 31(5):855-902, 1993.
+</P>
+<P>
+Raymond M Smullyan.
+First-Order Logic, volume 43 of Ergebnisse der Mathematik
+  und ihrer Grenzgebiete.
+Springer-Verlag, Berlin, 1968.
+</P>
+<DIV ID="3.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  Supported by CNPq
+   Brazilian Research Council Research Studentship No. 200210/93-9
+  Supported by ESRC  Research Studentship No.
+R00429334338
+  We adopt the Lambek notation, in which
+  X/Y is a function which ``takes'' a Y to its right to yield an X,
+  and Y
+<!-- MATH: $\backslash$ -->
+<EQN/>X is a function which ``takes'' a  Y to its left to
+  yield  an X.
+  Systems which allow the selective use of structural
+transformations may be implemented in the general framework presented
+here, although we do not address this issue.
+  For standard propositional logic, it has been shown
+  that LKE can simulate standard tableau in polynomial time, but the
+  converse is not true.
+  A
+  formula is proved by building a counter-model for its negation.
+  See section
+   <CREF/> for a discussion of how LKE, unlike proof nets   or standard tableaux, enables us to reduce the computational cost of
+  label unification.
+ ] for a proof theoretic    motivated, LDS approach, and <REF/> for an approach   based on a finer-grained, semantically motivated information
+  structure.
+  The
+  reader will notice that if we had allowed 
+<!-- MATH: $\ensuremath{\sigma_{2}}$ -->
+<EQN/>
+formulae to
+  search for 
+<!-- MATH: $\ensuremath{\sigma_{1}}$ -->
+<EQN/>
+types for combination, in the same way that 
+<!-- MATH: $\ensuremath{\sigma_{1}}$ -->
+<EQN/>s
+  search for 
+<!-- MATH: $\ensuremath{\sigma_{2}}$ -->
+<EQN/>s,
+  then linear expansion would not terminate for some cases.
+  Consider for example the infinite sequence of 
+<!-- MATH: $\ensuremath{\sigma_{}}$ -->
+<EQN/>
+applications:
+  T A / B: x, T B / A : y, T A : z, T B : y 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>z, T A : x 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>(y 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>
+z), T B : y 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>(x 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>(y 
+<!-- MATH: $\ensuremath{\circ \;}$ -->
+<EQN/>z)),...  A
+  strategy to allow unrestricted 
+<!-- MATH: $\ensuremath{\sigma_{}}$ -->
+<EQN/>-application  without running
+  into non-terminating procedures, as well as
+  other practical and computational issues is discussed in
+   <REF/>. 
+  For instance, resource sensitive logics such as
+  linear logic are frequently characterised in terms of multisets to
+  keep track of the ``use'' of formulae throughout the derivation.
+   Furthermore, as we will show in section    <CREF/>, if associativity is allowed at the syntactic level then it is possible
+to eliminate the branching rule for the class of calculi discussed
+here.
+  Proof nets and sequent
+  normalisation have also been employed to get around
+  spurious ambiguity (i.e. multiple proof for the same
+  sentence, with the same semantics). Our approach does not exhibit
+  this problem.
+  Of course, without the 
+<!-- MATH: $\ensuremath{\beta_{}}$ -->
+<EQN/>
+rule not all open
+  trees generated will constitute downward saturated sets, since they
+  might contain formulae which are not completely analysed.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

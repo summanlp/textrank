@@ -1,0 +1,738 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>On Using Selectional Restriction in Language Models for Speech
+Recognition</TITLE>
+<ABSTRACT>
+<P>
+In this paper, we investigate the use of selectional restriction - the
+constraints a
+predicate imposes on its arguments - in a language model for speech
+recognition. We
+use an un-tagged corpus, followed by a public domain tagger and a very simple
+finite
+state machine to obtain verb-object pairs from unrestricted English text. We
+then
+measure the impact the knowledge of the verb has on the prediction of the
+direct object
+in terms of the perplexity of a cluster-based language model. The results show
+that even
+though a clustered bigram is more useful than a verb-object model, the
+combination of the
+two leads to an improvement over the clustered bigram model.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+The constraint a predicate imposes on its arguments is called selectional
+restriction.
+For example, in the sentence fragment ``She eats x'', the verb ``eat'' imposes
+a constraint
+on the direct object ``x'': ``x'' should be something that is usually being
+eaten. This
+phenomenon has received considerable attention in the linguistic community and
+it was
+ recently explained in statistical terms in <REF/>. Because it restricts subsequent nouns and because nouns account for a large part of the perplexity
+ (see <REF/>), it seems natural to try to use selectional restriction in a language model for speech recognition. In this
+paper,
+we report on our work in progress on this topic. We begin by  presenting in
+section
+ <CREF/> the process we use to obtain training and testing data from unrestricted
+English text.
+The data constitutes the input to a clustering algorithm and a language model,
+both of which
+ are described in section <CREF/>. In section <CREF/>, we present the results we have obtained so far, followed by conclusions in section
+ <CREF/>. 
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    Training and Testing Data
+</HEADER>
+<P>
+In order to use  selectional restriction in a language model for speech
+recognition, we
+have to be able to identify the predicate and its argument in naturally
+occurring,
+unrestricted English text in an efficient manner. Since the parsing of
+unrestricted text
+is a yet unsolved, complicated problem by itself, we do not attempt to use a
+sophisticated
+parser. Instead, we use the un-tagged version of the Wall Street
+Journal Corpus (distributed by ACL/DCI), Xerox's public domain tagger
+ (described in <REF/>) and a very simple deterministic finite-state automaton to identify verbs and their direct objects.
+The resulting data is certainly very noisy, but, as opposed to more
+accurate data obtained from a sophisticated parser,  it would be feasible to
+use
+this method in a speech recogniser. The finite-state automaton we use only
+ has three states and it is shown in Figure <CREF/>. 
+The circles correspond
+to states and the arcs to transitions.
+The input to the automaton
+consists of a sequence of words with associated tags. The words and tags
+  are classified into
+three different events:
+<ITEMIZE>
+<ITEM>V : the word is a verb (iff its tag starts with ``v'', ``b'' or ``h'')
+</ITEM>
+<ITEM>PP: the word is a preposition (iff its tag is ``in'')
+</ITEM>
+<ITEM>NC: the word starts a new clause (iff its tag is
+``.'',``:'',``;'',``!'',``?'',``cs'' or
+begins with ``w'')
+</ITEM>
+</ITEMIZE>
+All other words and tags do not lead to a change in the state of the automaton.
+Intuitively, state 1 corresponds to the beginning of a new clause without
+having seen its verb,
+state 2 to a clause after having seen its verb
+and state 3 to a prepositional phrase.
+Given this automaton, we then consider  each occurrence
+of a noun (e.g. tag ``nn'')  to be
+<ITEMIZE>
+<ITEM>a direct object if we are currently in state 2; the corresponding verb is
+considered to be the one that caused the last transition into state 2;
+</ITEM>
+<ITEM>part of  a prepositional phrase if we are currently in state 3; the
+corresponding
+preposition is considered to be the one that caused the last transition into
+state 3;
+</ITEM>
+<ITEM>unconstrained by a predicate or preposition (for example a subject) if we
+are in state 1.
+</ITEM>
+</ITEMIZE>
+The automaton then outputs a sequence of verb-object pairs, which constitute
+our training and testing data.
+ Examples of the output of the automaton  are shown in Table <CREF/>. Entries that would not normally be considered verb-object pairs are marked with
+``*''.
+The data is very noisy because errors can be
+introduced both by the tagger (which makes its decisions based on a small
+window of words) and
+by the overly simplistic finite state automaton (for example, not all
+occurrences of ``cs''
+and ``w'' constitute a new clause). Given this data, the goal of our language
+model is to
+predict the direct objects and we will measure the influence
+the knowledge of the preceding verb has on this prediction in terms of
+perplexity.
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    The Language Model
+</HEADER>
+<P>
+We can formulate the task of the language model as the
+prediction of  the value of some variable Y (e.g. the
+next word) based on some knowledge about the past encoded by
+variables 
+<!-- MATH: $X_{1}, ..., X_{n}$ -->
+X1, ..., Xn.
+In our case, Y is the next direct object and the only knowledge we have about
+the past is
+the identity of the previous verb encoded by the variable X. The most
+straight forward way
+would be to directly estimate the conditional probability distribution
+<!-- MATH: $p(Y=y_{l}|X=x_{k})$ -->
+p(Y=yl|X=xk).
+However, because
+of sparse training data, it is often difficult to estimate this distribution
+directly.
+Class based models, that group elements 
+<!-- MATH: $x_{k} \in {\cal X}$ -->
+<EQN/>
+into classes
+<!-- MATH: $g_{x}=G_{1}(x_{k})$ -->
+gx=G1(xk)and elements 
+<!-- MATH: $y_{l} \in {\cal Y}$ -->
+<EQN/>into classes 
+<!-- MATH: $g_{y}=G_{2}(y_{l})$ -->
+gy=G2(yl) can be used to alleviate this problem. The
+conditional probability distribution
+is then calculated as
+</P>
+<P>
+<!-- MATH: \begin{equation}
+p_{G}(y_{l}|x_{k})=p(G_{2}(y_{l})|G_{1}(x_{k})) * p(y_{l}|G_{2}(y_{l})),
+\end{equation} -->
+</P>
+<P>
+which generally requires less
+training data
+ . In the following, let 
+<!-- MATH: $(X[i], Y[i]), 1 \leq i \leq N$ -->
+<EQN/>
+denote the values of Xand Y at the
+i[th] data point and let 
+<!-- MATH: $(G_{1}[i], G_{2}[i])$ -->
+(G1[i], G2[i]) denote the corresponding
+classes.
+How can we obtain the classification functions G1 and G2automatically, given only
+a set of N data points 
+<!-- MATH: $(X[i], Y[i])$ -->
+(X[i], Y[i]) ?
+ In the following (sections <CREF/>, <CREF/>, <CREF/>), we describe a method which is almost identical to
+ the one presented in  <REF/>. The only  difference is that
+ in <REF/>,  the elements of variables X and Y are identical (the data consists of bigrams),
+ thus requiring only one clustering function G. In our case, however, the variables X and Y contain different elements (verbs and objects
+respectively), and we thus
+produce two clustering functions G1 and G2.
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>    Maximum-Likelihood Criterion
+</HEADER>
+<P>
+In order to automatically find classification functions G1 and G2,
+which - as a shorthand -
+ we will also denote as G, we first convert the classification problem into
+an optimisation problem.
+Suppose the function F(G) indicates how good the classification G (composed
+of G1 and G2) is. We can then
+reformulate the classification problem as finding the classification G that
+maximises F:
+</P>
+<P>
+<!-- MATH: \begin{equation}
+G = argmax_{G^{'} \in {\cal G}} F(G^{'}),
+\end{equation} -->
+</P>
+<P>
+where <EQN/>
+contains the set of possible classifications which are at our
+disposal.
+</P>
+<P>
+What is a suitable function F, also called optimisation criterion? Given a
+classification function
+G, we can estimate the probabilities 
+<!-- MATH: $p_{G}(y_{l}|x_{k})$ -->
+pG(yl|xk) of equation
+ <CREF/> using the maximum likelihood estimator, e.g. relative frequencies:
+<!-- MATH: \begin{eqnarray}
+p_{G}(y_{l}|x_{k})  =  p(G_{2}(y_{l})|G_{1}(x_{k})) * p(y_{l}|G_{2}(y_{l}))\\
+ =  \frac{N(g_{x}, g_{y})}{N(g_{x})} * \frac{N(g_{y}, y)}{N(g_{y})},
+\end{eqnarray} -->
+where 
+<!-- MATH: $g_{x}=G_{1}(x_{k})$ -->
+gx=G1(xk), 
+<!-- MATH: $g_{y}=G_{2}(y_{l})$ -->
+gy=G2(yl) and N(x) denotes the number
+of times x occurs in the data.
+Given these probability estimates 
+<!-- MATH: $p_{G}(y_{l}|x_{k})$ -->
+pG(yl|xk), the likelihood FMLof the training data, e.g. the probability of the training data being generated
+by our probability
+estimates 
+<!-- MATH: $p_{G}(y_{l}|x_{k})$ -->
+pG(yl|xk), measures how well the training data is
+represented by the
+ estimates and can be used as optimisation criterion (<REF/>). 
+</P>
+<P>
+In the following, we will derive an optimisation function FML in terms
+of frequency counts observed in the training data.
+The likelihood of the
+training data FML is simply
+<!-- MATH: \begin{eqnarray}
+F_{ML}  =  \prod_{i=1}^{N} p_{G}(Y[i]|X[i])\\
+ =   \prod_{i=1}^{N} \frac{N(G_{1}[i], G_{2}[i])}{N(G_{1}[i])} *
+\frac{N(G_{2}[i], Y[i])}{N(G_{2}[i])}.
+\end{eqnarray} -->
+Assuming that the classification is unique, e.g. that G1 and G2 are
+functions,
+we have 
+<!-- MATH: $N(G_{2}[i], Y[i])=N(Y[i])$ -->
+N(G2[i], Y[i])=N(Y[i])(because Y[i] always occurs with the same class G2[i]). Since we try to
+optimise FML with respect to G, we
+can remove any term that does not depend on G, because it will not influence
+our optimisation. It is
+thus equivalent to optimise
+<!-- MATH: \begin{eqnarray}
+F^{'}_{ML}  =  \prod_{i=1}^{N} f(X[i], Y[i])\\
+ =  \prod_{i=1}^{N} \frac{N(G_{1}[i], G_{2}[i])}{N(G_{1}[i])} *
+\frac{1}{N(G_{2}[i])} .
+\end{eqnarray} -->
+If, for two pairs 
+<!-- MATH: $(X[i], Y[i])$ -->
+(X[i], Y[i]) and 
+<!-- MATH: $(X[j], Y[j])$ -->
+(X[j], Y[j]), we have
+<!-- MATH: $G_{1}(X[i])=G_{1}(X[j])$ -->
+G1(X[i])=G1(X[j]) and
+<!-- MATH: $G_{2}(Y[i])=G_{2}(Y[j])$ -->
+G2(Y[i])=G2(Y[j]), then we know that 
+<!-- MATH: $f(X[i], Y[i])=f(X[j], Y[j])$ -->
+f(X[i], Y[i])=f(X[j], Y[j]).
+We can thus regroup identical terms to obtain
+</P>
+<P>
+<!-- MATH: \begin{equation}
+F^{'}_{ML}= \prod_{g_{x}, g_{y}} [ \frac{N(g_{x}, g_{y})}{N(g_{x})} *
+\frac{1}{N(g_{y})} ] ^{N(g_{x}, g_{y})},
+\end{equation} -->
+</P>
+<P>
+where the product is over all possible pairs 
+<!-- MATH: $(g_{x}, g_{y})$ -->
+(gx, gy).
+Because N(gx) does not depend on gy and N(gy) does not depend on
+gx, we can
+simplify this again to
+</P>
+<P>
+<!-- MATH: \begin{equation}
+F^{'}_{ML}= \prod_{g_{x}, g_{y}} N(g_{x}, g_{y})^{N(g_{x}, g_{y})}
+\prod_{g_{x}} \frac{1}{N(g_{x})}^{N(g_{x})}
+\prod_{g_{y}} \frac{1}{N(g_{y})}^{N(g_{y})}.
+\end{equation} -->
+</P>
+<P>
+Taking the logarithm, we obtain the equivalent optimisation criterion
+<!-- MATH: \begin{eqnarray}
+F^{''}_{ML}  =   \sum_{g_{x}, g_{y}}  N(g_{x}, g_{y}) * log( N(g_{x}, g_{y}
+)) -
+\sum_{g_{x}} N(g_{x}) * log ( N(g_{x}))\\
+  -   \sum_{g_{y}} N(g_{y}) * log ( N(g_{y})) \nonumber .
+\end{eqnarray} -->
+</P>
+<P>
+FML is the maximum likelihood optimisation criterion and we could use it
+to find good classifications
+G. However, the problem with this maximum likelihood criterion is that we
+first estimate the probabilities
+<!-- MATH: $p_{G}(y_{l}|x_{k})$ -->
+pG(yl|xk) on the training data T and then, given
+<!-- MATH: $p_{G}(y_{l}|x_{k})$ -->
+pG(yl|xk), we evaluate
+the classification G on T. In other words, both the classification G and
+the estimator
+<!-- MATH: $p_{G}(y_{l}|x_{k})$ -->
+pG(yl|xk) are trained on the same data. Thus, there will not be any
+unseen event, a fact
+that overestimates the power for generalisation of the class based model. In
+order to avoid this, we will
+ in section <CREF/> incorporate a cross-validation technique directly into the optimisation
+criterion.
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>    Leaving-One-Out Criterion
+</HEADER>
+<P>
+The basic principle of cross-validation is to split the training data T into
+a ``retained'' part
+TR and a ``held-out'' part TH. We can then use TR to estimate
+the probabilities
+<!-- MATH: $p_{G}(y_{l}|x_{k})$ -->
+pG(yl|xk) for a given classification G,  and TH to evaluate
+how well the
+classification G performs. The so-called
+leaving-one-out technique is a special case of cross-validation
+ (<REF/>, pp.75]). It divides the data into N-1 samples as ``retained'' part and only one sample
+as ``held-out'' part. This is repeated N-1 times, so that each sample is
+once in the ``held-out'' part. The advantage of this approach is that all
+samples
+are used in the ``retained'' and in the ``held-out'' part, thus making very
+efficient
+use of the existing data. In other words, our  ``held-out'' part TH to
+evaluate
+a classification G is the entire set of data points; but when we calculate
+the
+probability of the i[th] data point, we assume that our probability
+distribution
+<!-- MATH: $p_{G}(y_{l}|x_{k})$ -->
+pG(yl|xk) was estimated on all the data expect point i.
+</P>
+<P>
+Let Ti denote the data without the pair 
+<!-- MATH: $(X[i], Y[i])$ -->
+(X[i], Y[i]) and
+<!-- MATH: $p_{G,T_{i}}(y_{l}|x_{k})$ -->
+pG,Ti(yl|xk) the probability estimates based on a given
+classification G and
+training corpus Ti. Given a particular Ti, the probability of the
+``held-out''
+part 
+<!-- MATH: $(X[i], Y[i])$ -->
+(X[i], Y[i]) is 
+<!-- MATH: $p_{G,T_{i}}(y_{l}|x_{k})$ -->
+pG,Ti(yl|xk). The probability of the
+complete corpus,
+where each pair is in turn considered the ``held-out'' part is the
+leaving-one-out likelihood LLO
+</P>
+<P>
+<!-- MATH: \begin{equation}
+L_{LO}=\prod_{i=1}^{N} p_{G,T_{i}}(Y[i]|X[i]).
+\end{equation} -->
+</P>
+<P>
+In the following, we will derive an optimisation function FLO by
+specifying how
+<!-- MATH: $p_{G,T_{i}}(Y[i]|X[i])$ -->
+pG,Ti(Y[i]|X[i]) is estimated from frequency counts.
+ First we rewrite 
+<!-- MATH: $p_{G,T_{i}}(Y[i]|X[i])$ -->
+pG,Ti(Y[i]|X[i]) as usual (see equation
+ <CREF/>): 
+p_{G,T_{i}}(y_{l}|x_{k})  =  P_{G,T_{i}}(G_{2}(y_{l})|G_{1}(x_{k}))*P_{G,
+T_{i}}(y_{l}|G_{2}(y_{l}))\\
+ =  \frac{p_{G,T_{i}}(g_{x}, g_{y})}{p_{G,T_{i}}(g_{x})} *
+\frac{p_{G,T_{i}}(g_{y}, y_{l})}{p_{G,T_{i}}(g_{y})},
+\end{eqnarray} -->
+where 
+<!-- MATH: $g_{x}=G_{1}(x_{k})$ -->
+gx=G1(xk) and 
+<!-- MATH: $g_{y}=G_{2}(y_{l})$ -->
+gy=G2(yl).
+ Now we will specify how we estimate each term in equation <CREF/>. 
+</P>
+<P>
+As we saw before, 
+<!-- MATH: $p_{G,T_{i}}(g_{y}, y_{l})=p_{G,T_{i}}(y_{l})$ -->
+pG,Ti(gy, yl)=pG,Ti(yl) (if the
+classification G2is a function) and since 
+<!-- MATH: $p_{T_{i}}(y_{l})$ -->
+pTi(yl) is actually independent of G, we
+can drop it
+out of the maximization and thus need not specify an estimate for it.
+</P>
+<P>
+As we will see later, we can guarantee that every class
+gx and gy has been seen at least once in the
+``retained'' part and we can thus use relative counts as estimates for class
+uni-grams:
+p_{G,T_{i}}(g_{x})  =  \frac{N_{T_{i}}(g_{x})}{N_{T_{i}}}\\
+p_{G,T_{i}}(g_{y})  =  \frac{N_{T_{i}}(g_{y})}{N_{T_{i}}}.
+\end{eqnarray} -->
+</P>
+<P>
+In the case of the class bi-gram, we might have to predict unseen events
+ . We therefore use the absolute discounting
+ method (<REF/>), where the counts are reduced by a constant value b [ 1and where the gained probability mass is redistributed over unseen events. Let
+<!-- MATH: $n_{0,T_{i}}$ -->
+n0,Ti be the number of unseen pairs 
+<!-- MATH: $(g_{x}, g_{y})$ -->
+(gx, gy) and 
+<!-- MATH: $n_{+,T_{i}}$ -->
+n+,Tithe number of
+seen pairs 
+<!-- MATH: $(g_{x}, g_{y})$ -->
+(gx, gy), leading to the following smoothed estimate
+<!-- MATH: \begin{eqnarray}
+\lefteqn{ p_{G,T_{i}}(g_{x}, g_{y})} \nonumber \\
+ =  \left\{ \begin{array}{ll}
+\frac{N_{T_{i}}(g_{x}, g_{y}) - b}{N_{T_{i}}}  \mbox{if $N_{T_{i}}(g_{x},
+g_{y})>0$ }\\
+\frac{n_{+, T_{i}}*b}{n_{0,T_{i}}*N_{T_{i}}}  \mbox{if $N_{T_{i}}(g_{x},
+g_{y})=0$ }\\
+\end{array}
+\right.
+\end{eqnarray} -->
+Ideally, we would make b depend on the classification, e.g. use
+<!-- MATH: $b=\frac{n_{1}}{n_{1}+2*n_{2}}$ -->
+<EQN/>,
+where
+n1 and n2 depend on G. However, due to computational reasons, we
+use, as suggested in
+ <REF/>, the empirically determined constant value b=0.75 during clustering.
+The probability distribution 
+<!-- MATH: $p_{G,T_{i}}(g_{x}, g_{y})$ -->
+pG,Ti(gx, gy) will always be
+evaluated on the
+``held-out'' part 
+<!-- MATH: $(X[i], Y[i])$ -->
+(X[i], Y[i]) and with 
+<!-- MATH: $g_{x,i}=G_{1}[i]$ -->
+gx,i=G1[i] and
+<!-- MATH: $g_{y,i}=G_{2}[i]$ -->
+gy,i=G2[i] we obtain
+\lefteqn{ p_{G,T_{i}}(g_{x,i}, g_{y,i})} \nonumber \\
+ =  \left\{ \begin{array}{ll}
+\frac{N_{T_{i}}(g_{x,i}, g_{y,i}) - b}{N_{T_{i}}}  \mbox{if
+$N_{T_{i}}(g_{x,i}, g_{y,i})>0$ }\\
+\frac{n_{+, T_{i}}*b}{n_{0,T_{i}}*N_{T_{i}}}  \mbox{if $N_{T_{i}}(g_{x,i},
+g_{y,i})=0$ }\end{array}
+\right.
+\end{eqnarray} -->
+</P>
+<P>
+In order to facilitate future regrouping of terms, we can now express the
+counts
+<!-- MATH: $N_{T_{i}}, N_{T_{i}}(g_{x})$ -->
+NTi, NTi(gx) etc.
+in terms of the counts of
+the complete corpus T as follows:
+N_{T_{i}}  =  N_{T} - 1\\
+N_{T_{i}}(g_{x})  =  N_{T}(g_{x}) - 1 \\
+N_{T_{i}}(g_{y})  =  N_{T}(g_{y}) - 1 \\
+N_{T_{i}}(g_{x,i}, g_{y,i})  =   N_{T}(g_{x,i}, g_{y,i})-1\\N_{T_{i}}  = 
+N_{T} - 1 \\
+n_{+, T_{i}}  =  \left\{
+\begin{array}{ll}
+n_{+, T}  \mbox{if $N_{T}(g_{x,i}, g_{y,i})>1$ }\\
+n_{+, T} - 1   \mbox{if $N_{T}(g_{x,i}, g_{y,i})=1$ }\\
+\end{array} \right. \\
+n_{0,T_{i}}  =   \left\{
+\begin{array}{ll}
+n_{0,T}  \mbox{if $N_{T}(g_{x,i}, g_{y,i})>1$ }\\
+n_{0, T} - 1   \mbox{if $N_{T}(g_{x,i}, g_{y,i})=1$ }\end{array} \right.
+\end{eqnarray} -->
+All we have left to do now is to substitute all the expressions back into
+ equation <CREF/>. After dropping 
+<!-- MATH: $p_{G,T_{i}}(y_{l})$ -->
+pG,Ti(yl) because it is independent of G we get
+<!-- MATH: \begin{eqnarray}
+F'_{LO}  =  \prod_{i=1}^{N} \frac{p_{G,T_{i}}(g_{x,i},
+g_{y,i})}{p_{G,T_{i}}(g_{x,i})} * \frac{1}{p_{G,T_{i}}(g_{y,i})}\\
+ =  \prod_{g_{x}, g_{y}} ( p_{G,T_{i}}(g_{x}, g_{y}))^{N(g_{x}, g_{y})} *
+\prod_{g_{x}} (\frac{1}{p_{G,T_{i}}(g_{x})})^{N(g_{x})} *
+\prod_{g_{y}} (\frac{1}{p_{G,T_{i}}(g_{y})})^{N(g_{y})} .
+\end{eqnarray} -->
+ We can now substitute equations <CREF/>, <CREF/> and  <CREF/>, using  the counts of the whole corpus of equations <CREF/> to <CREF/> . After having dropped
+terms independent of G, we obtain
+<!-- MATH: \begin{eqnarray}
+F''_{LO}  =  \prod_{g_{x}, g_{y} : N(g_{x},g_{y})  > 1 } (N_{T}(g_{x}, g_{y})
+-1 -b )^{N_{T}(g_{x}, g_{y})} *
+\left( \frac{(n_{+,T}-1)*b}{(n_{0,T}+1)} \right)^{n_{1,T}}\\
+  *  \prod_{g_{x}} \left( \frac{1}{(N_{T}(g_{x}-1))} \right)^{N_{T}(g_{x})}
+* \prod_{g_{y}} \left( \frac{1}{(N_{T}(g_{y}-1))} \right)^{N_{T}(g_{y})}
+\nonumber ,
+\end{eqnarray} -->
+where n1,T is the number of pairs 
+<!-- MATH: $(g_{x}, g_{y})$ -->
+(gx, gy) seen exactly once in
+T(e.g. the number of pairs that will be unseen when used as ``held-out'' part).
+Taking the logarithm, we obtain the final optimisation criterion F'''LO
+<!-- MATH: \begin{eqnarray}
+F'''_{LO}  =  \sum_{g_{x}, g_{y}:N_{T}(g_{x}, g_{y})>1} N_{T}(g_{x}, g_{y}) *
+log ( N_{T}(g_{x}, g_{y}) - 1 - b )\\
+ +  n_{1,T} * log ( \frac{b*(n_{+, T}-1)}{(n_{0,T}+1)} ) \nonumber \\
+  -  \sum_{g_{x}} N_{T}(g_{x}) * log (  N_{T}(g_{x}) - 1 ) - \sum_{g_{y}}
+N_{T}(g_{y}) * log (  N_{T}(g_{y}) - 1 )
+\nonumber .
+\end{eqnarray} -->
+</P>
+</DIV>
+<DIV ID="3.3" DEPTH="2" R-NO="3"><HEADER>    Clustering Algorithm
+</HEADER>
+<P>
+Given the F'''LO maximization criterion, we use the algorithm in Figure
+ <CREF/> to find a good clustering function G. The algorithm tries to make local changes by moving words between
+classes, but only if
+it improves the value of the optimisation function. The algorithm will converge
+because the
+optimisation criterion is made up of logarithms of probabilities and thus has
+an upper limit and
+because the value of the optimisation criterion increases in each iteration.
+However, the solution
+found by this greedy algorithm is only locally optimal and it depends on the
+starting conditions.
+Furthermore, since the clustering of one word affects the future clustering of
+other words, the
+ order in which words are moved is important. As suggested in <REF/>, we sort the words by
+the number of times they occur such that the most frequent words, about which
+we know
+the most,  are clustered first. Moreover, we do not consider infrequent words
+(e.g. words
+with occurrence counts smaller than 5) for clustering, because the
+information they
+provide is not very reliable. Thus, if we start out with an initial clustering
+in which no cluster
+occurs only once, and if we never move words that occur only once,
+then we will never have a cluster which occurs only once.
+Thus, the assumption we made earlier,
+when we decided to estimate cluster uni-grams by frequency counts, can be
+guaranteed.
+</P>
+<P>
+We will now determine the complexity of the algorithm. Let MX and MYbe
+the maximal number of clusters for X and Y, let |X| and |Y| be the
+number
+of possible values for X and Y, let 
+<!-- MATH: $M=max(M_{X}, M_{Y})$ -->
+M=max(MX, MY),
+<!-- MATH: $W=max(|X|, |Y|)$ -->
+W=max(|X|, |Y|) and let I be the number of iterations.
+When we move x from gx to g'x in the inner loop
+(the situation is symmetrical for y), we need
+to change the counts 
+<!-- MATH: $N(g_{x}, g_{y})$ -->
+N(gx, gy) and 
+<!-- MATH: $N(g'_{x}, g_{y})$ -->
+N(g'x, gy) for all gy.
+The amount by which we need to change the counts is equal to the
+number of times X occurred with cluster gy. Since this amount is
+independent of g'x, we need to calculate it only once for each x.
+The amount can then be looked up in constant time within the loop, thus
+making the inner loop of order M. The inner loop is executed once for every
+cluster x can be moved to, thus giving a complexity of the order of M[2].
+For
+each x, we needed to calculate the number of times x occurred with all
+clusters gy. For that  we have to sum up all the bigram counts
+<!-- MATH: $N(x,y):G_{2}(y)=g_{y}$ -->
+N(x,y):G2(y)=gy, which is on the order of W, thus giving a complexity
+of the order
+of  W+M[2]. The two outer loops are executed I and W times thus giving
+a total complexity of the order of 
+<!-- MATH: $I*W*(W+M^{2})$ -->
+I*W*(W+M[2]).
+</P>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>    Results
+</HEADER>
+<P>
+In the experiments performed so far, we work with 200,000 verb-object pairs
+extracted from
+the 1989 section of the Wall Street Journal corpus. The data contains about
+19,000different direct object tokens, about 10,000 different verb tokens and about
+140,000 different
+token pairs. We use 
+<!-- MATH: $\frac{3}{4}$ -->
+<EQN/>
+of the data as training and the rest as
+testing data. For
+computational reasons, we have so far restricted the number of possible
+clusters to 50, but
+we hope to be able to increase that in the future. The perplexity on the
+testing
+text using the clustering algorithm on the verb-object pairs is shown in Table
+ <CREF/>. For comparison, the table also contains the perplexity of a normal uni-gram
+model
+(e.g. no predictor variable X) and the performance of the clustering
+algorithm on the
+usual bi-gram data (e.g. the word immediately preceding the direct object as
+predictor variable X).
+We can see that the verb contains considerable information about the direct
+object and
+leads to a reduction in perplexity of about 18%. However, the immediately
+preceding word
+leads to an even bigger reduction of about 34%.
+We also tried a linear interpolation of the two clustered models
+</P>
+<P>
+<!-- MATH: \begin{equation}
+p_{interpol}(y_{l})= \lambda * p_{verb-object}(y_{l}) + (1-
+\lambda)*p_{bigram}(y_{k}).
+\end{equation} -->
+</P>
+<P>
+On a small set of unseen data,
+we determined the best value (out of 50 possible values in ]0,1[)
+of the interpolation parameter <EQN/>.
+ As shown in Table <CREF/>, the interpolated model leads to an overall perplexity reduction of 43% compared to the uni-gram, which corresponds to a
+reduction of about 10%
+over the normal bi-gram perplexity.
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>    Conclusions
+</HEADER>
+<P>
+From a purely linguistic perspective, it would be slightly surprising to find
+out that
+the word immediately preceding a direct object can be used better to predict it
+than the preceding verb. However, this conclusion can not  be drawn
+from our results because of the noisy nature of the data. In other words, the
+data contains pairs like (is, chairman), which would usually not
+be considered as a verb-direct object pair. It is possible, that more accurate
+data (e.g.
+fewer, but only correct pairs) would lead to a different result. But the
+problem with fewer pairs would of course be that the model can be used in fewer
+cases, thus reducing the usefulness to a language model that
+would predict the entire text (rather than just the direct objects). The
+results
+thus support the common language modeling practice, in that bi-gram events (by
+themselves)
+seem to be more useful than this linguistically derived predictor (by itself).
+Nevertheless,
+the interpolation results also show that this linguistically derived
+predictor is useful as a complement to a standard class based bigram model.
+In the future, we hope to consolidate these early findings
+by more experiments involving a higher number of clusters and a larger data
+set.
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Doug Cutting, Julian Kupiec, Jan Perdersen, and Penelope Sibun.
+A practical part-of-speech tagger.
+In Conference on Applied Natural Language Processing, pages
+  133-140. Trento, Italy, 1992.
+</P>
+<P>
+R. O. Duda and P.E. Hart.
+Pattern Classification and Scene Analysis.
+Wiley, New York, 1973.
+</P>
+<P>
+Fred Jelinek.
+Self-organized language modeling for speech recognition.
+In Alex Waibel and Kai-Fu Lee, editors, Readings in Speech
+  Recognition, pages 450-506. Morgan Kaufmann, San Mateo, CA, 1990.
+</P>
+<P>
+Reinhard Kneser and Hermann Ney.
+Improved clustering techniques for class-based statistical language
+  modelling.
+In European Conference on Speech Communication and Technology,
+  pages 973-976. Berlin, Germany, September 1993.
+</P>
+<P>
+Hermann Ney and Ute Essen.
+Estimating `small' probabilities by leaving-one-out.
+In European Conference on Speech Communication and Technology,
+  pages 2239-2242. Berlin, Germany, 1993.
+</P>
+<P>
+Philip Stuart Resnik.
+Selection and Information: A Class-Based Approach to Lexical
+  Relationships.
+Ph.D. Thesis, Computer and Information Science, University of
+  Pennsylvania, PA, 1993.
+</P>
+<P>
+Joerg Peter Ueberla.
+Analyzing and Improving Statistical Language Models for Speech
+  Recognition.
+PhD thesis, School of Computing Science, Simon Fraser University,
+  Burnaby, B.C., V5A 1S6, Canada, May 1994.
+</P>
+<DIV ID="5.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  This is a revised version of the original
+technical report,
+prepared for the cmp-lg server.
+The work was supported by NSERC operating grant OGP0041910.
+  ``v'' corresponds to most forms of most verbs,
+``b'' corresponds to forms of ``to be'',
+``h'' corresponds to forms of ``to have'',
+``cs'' contains words like ``although'', ``since'' and
+``w'' contains words like ``who'', ``when''. The tagset we use is the
+one provided by the tagger and for more information please refer to
+ <REF/>. 
+  As an example, if <EQN/>
+and  <EQN/>
+have 10,000 elements
+each, and if we
+use 200 classes for G1 and for G2, then the original model has to
+estimate
+<!-- MATH: $10,000*10,000=1*10^{8}$ -->
+10,000*10,000=1*10[8] probabilities whereas the class based model only needs
+to
+estimate 
+<!-- MATH: $200*200 + 200*10,000=2.04*10^{6}$ -->
+200*200 + 200*10,000=2.04*10[6].
+  It is possible that using two clustering functions would be
+beneficial even if the two
+variables have the same elements.
+  If 
+<!-- MATH: $(X[i], Y[i])$ -->
+(X[i], Y[i]) occurs only once in the complete corpus, then
+<!-- MATH: $p_{G,T_{i}}(Y[i]|X[i])$ -->
+pG,Ti(Y[i]|X[i]) will have to be calculated based on the corpus
+Ti, which does not
+contain any occurrences of 
+<!-- MATH: $(X[i], Y[i])$ -->
+(X[i], Y[i]).
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

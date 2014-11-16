@@ -1,0 +1,1597 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Assessing Complexity Results in Feature Theories</TITLE>
+<ABSTRACT>
+<P>
+In this paper, we assess the complexity results of
+formalisms that describe the
+feature theories used in computational linguistics.
+We show that from these complexity results
+no immediate conclusions can be drawn about the complexity of
+the recognition
+problem of unification grammars using these feature
+theories.
+On the one hand, the complexity of feature
+theories does not provide an upper bound for the complexity
+of such unification grammars.
+On the other hand, the complexity of feature
+theories need not provide a lower bound.
+Therefore, we argue for formalisms that describe
+actual unification grammars instead of feature theories.
+Thus the complexity results of these formalisms
+judge upon the hardness of unification
+grammars in computational linguistics.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+Recently, there has been a growing interest in research on formalizing
+feature theory.
+Some formalisms that appeared lately are the feature algebra of
+ <REF/>, the modal logic of <REF/>,  the deterministic finite automata of <REF/>, and  the first-order predicate logic of <REF/>. These formalisms describe the use of feature theory in
+computational linguistics. They are a source of interesting
+technical research, and various complexity results have been achieved.
+However, we argue that such formalisms offer little help to
+computational linguists in practice.
+The grammatical theories used in computational linguistics do not
+consist of bare feature theories.
+The feature theories that are used in computational linguistics are
+contained in unification grammars. These unification grammars
+consist of constituent structure components, and feature theories.
+We claim that the complexity results from the formalisms do no
+longer hold when a feature theory
+and a constituent structure component are combined into
+a unification grammar.
+</P>
+<P>
+In this paper, we will focus on the complexity results that are obtained
+from formalizing feature theories.
+We will prove that these complexity results do not hold if we consider
+unification grammars that use these feature
+theories in addition to a constituent structure component.
+First we will show, that the complexity of
+a unification grammar theory may be higher than the
+complexity of its feature theory and constituent structure components.
+Second we will explain, that the complexity of a unification grammar
+may be lower than the complexity of the formalized feature theory.
+</P>
+<P>
+Both proofs put the complexity results that have been achieved in a
+different perspective. The first proof
+implies that the complexity of a feature
+theory does not provide an upper bound for the complexity
+of grammars using that feature theory. The second proof
+implies that the  complexity of a feature
+theory might not provide a lower bound for the complexity
+of grammars using that feature theory.
+Therefore, we argue that if one is interested in the complexity of
+unification grammars that are used in grammars, one should look at the
+complexity of these unification grammars as a whole.
+No insight in the complexity of a unification grammar is gained by
+looking only at the complexity of its components in isolation.
+</P>
+<P>
+The outline of this paper is as follows. The next section contains
+the preliminaries on complexity theory and feature theory. In
+ Section <CREF/>, we introduce a simple feature theory: a feature theory with only reentrance.
+ In Section <CREF/>, we present a unification grammar that uses this simple feature theory.
+We show that the recognition problem of this grammar is harder than
+the unification problem of the feature theory and the recognition
+problem of the constituent structure component.
+ In Section <CREF/>, we explain why the recognition problem of a unification grammar might be of lower
+complexity than the unification problem of the feature theory.
+ In Section <CREF/>, we present our conclusions.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  Preliminaries </HEADER>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Complexity Theory. </HEADER>
+<P>
+In complexity theory one tries to determine the complexity of
+problems. The complexity is measured by the amount of time and
+space needed to solve a problem. Usually, one considers decision
+problems: problems that are answered  `Yes' or `No'.
+Often we are interested in the distinction between tractable
+and intractable problems. A problem is tractable if
+its solution requires an amount of steps that is polynomial in the
+size of the input: we say that the problem requires
+polynomial time. Likewise, we speak of linear time, etcetera.
+The tractable problems are also called `P problems'.
+The intractable problems are called `NP-hard problems'. The easiest
+intractable problems are the `NP-complete problems'. It is
+unknown whether NP-complete problems have polynomial time solutions.
+However we know, that solutions for NP-complete problems can
+be guessed and checked in polynomial time. It is strongly
+believed that the class of P problems and the class of
+NP-complete problems are different, although this is yet
+unproven.
+</P>
+<P>
+There is a direct manner to determine the upper bound
+complexity of a problem,
+if there is an algorithm that solves the problem: determine the
+complexity of that algorithm.
+An indirect way to determine the lower bound
+complexity of a problem is the reduction.
+A reduction from some problem A to some problem B maps
+instances of problem A onto instances of problem B.
+</P>
+<P>
+The reductions that we will consider are known as polynomial time,
+many-one reductions. These many-one reductions are subject to
+two conditions:
+(1) the reductions are easy to compute, and
+(2) the reductions preserve the answers.
+A reduction from A to B is easy to compute, if the mapping takes
+polynomial time.
+A reduction preserves answers if the answer to the instance of A is
+the same as the answer to the instance of B. That is, the answer
+to the instance of A is `Yes' if, and only if,
+the answer to the instance of B is also `Yes'.
+</P>
+<P>
+A reduction is an elegant way to classify a problem as intractable.
+Suppose problem B is a problem with unknown complexity.
+Let there be a reduction f from an NP-hard problem A to problem B.
+Furthermore, let f conform to the two conditions above.
+By an indirect proof, it follows from this reduction that
+B is at least as hard as A.
+Hence B is also an NP-hard problem. If we also prove that we can guess
+a solution for B and check that guessed solution in polynomial time,
+then B is an NP-complete problem.
+</P>
+<P>
+A well-known NP-complete problem is  SATISFIABILITY (SAT).
+</P>
+<P>
+Definition  2.1   
+ SATISFIABILITY 
+ INSTANCE:
+ A formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+from propositional logic, in conjunctive
+ normalform.  
+ QUESTION:
+ Is there an assignment of truth-values to the propositional
+ variables of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+such that 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is true?
+</P>
+<P>
+The instances of  SATISFIABILITY are formulas in conjunctive
+normalform, i.e., the formulas are conjunctions of
+clauses. The clauses are disjunctions of literals, and the literals are
+positive and negative occurrences of propositional variables.
+We call formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+a satisfiable formula
+if an assignment exists that makes formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+true.
+</P>
+<P>
+An assignment assigns either the value true or
+the value false to each propositional variable.
+Given such an assignment, we can determine the truth-value of a
+formula.
+The formula 
+<!-- MATH: $\varphi \,=\, (\gamma_1\wedge\ldots\wedge\gamma_m)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ is true if, and only if, each clause, 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+is true.
+A clause 
+<!-- MATH: $\gamma \,=\, (l_1 \vee\ldots\vee l_m)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ is true if, and only if, at least one literal, li, is true.
+A positive (negative) literal, li = pj (
+<!-- MATH: $l_i = \overline{p_j}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ),
+is true if, and only if, the variable pj is
+assigned the value true (false).
+</P>
+<DIV ID="2.1.1" DEPTH="3" R-NO="1"><HEADER>  Feature theory. </HEADER>
+<P>
+Although there is no such thing as a universal feature theory, there
+is a general understanding of its abstract objects.
+These abstract objects describe the internal information or
+properties of words and phrases.
+Properties that these abstract objects typically have
+are the case, the gender, the number, and the tense of
+words and phrases.
+</P>
+<P>
+The properties of abstract objects can be combined to form new
+abstract objects. This operation is called unification.
+The unification of abstract objects combines all the properties of
+these abstract objects, provided that the properties are
+not contradictory.
+</P>
+<P>
+All kinds of additions to these rudiments of feature theory have been
+presented in the literature. We will not discuss them here, but
+ refer to Section <CREF/>, in which we introduce a feature theory that serves our purposes.
+</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  A simple feature theory
+</HEADER>
+<P>
+In this section we will present a simple
+feature theory. The feature theory contains reentrance, but
+no negation or disjunction.
+Although this feature theory is simple, it contains
+many aspects from other feature theories.
+ In addition, Section <CREF/> shows that combining this simple feature theory with a simple
+constituent structure component results in a
+difficult unification grammar.
+</P>
+<P>
+In the first part of this section, we will
+formalize the notion of a feature theory.
+In the second part of this section, we will
+present an algorithm that solves
+the unification problem in an amount of time that is quadratic
+in the size of its input.
+This part should convince the reader that the feature theory
+is indeed simple.
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>  The feature theory formally. </HEADER>
+<P>
+Although a universal feature theory does not exist,
+there is a general understanding of its objects.
+The object of feature theories are abstract linguistic objects,
+e.g., an object `sentence', an object `masculine third person singular',
+an object `verb', an object `noun phrase'. These
+abstract objects have properties, like, tense, number, predicate,
+subject. The values of these properties are either atomic, like,
+present and singular, or abstract objects, like, verb and noun
+phrase.
+</P>
+<P>
+The abstract objects can be represented as rooted graphs
+(`feature-graphs'). The nodes of these graphs stand for abstract
+objects, and the edges represent the properties.
+More formally, a feature-graph is either a pair 
+<!-- MATH: $(a, \emptyset)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where a is an
+atomic value and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the empty set, or a pair (x, E),
+where x is a root node, and E is a finite, possibly empty set of
+edges such that (1) for each property and all nodes there is at
+most one edge that represents the property departing from the node,
+and (2) if there
+is an edge in E from node y to node z, then there is a path
+in E leading from node x to node y.
+</P>
+<P>
+As an example consider the following abstract objects and
+simplified feature-graph.
+</P>
+<P>
+Example(s)
+<ITEMIZE>
+<ITEM>Sentence: A man walks 
+        This abstract object has property  TENSE with value
+        present, property  SUBJECT with value Noun phrase:
+        A man, and property  PREDICATE with value Verb: walks.
+</ITEM>
+<ITEM>Noun phrase: A man 
+        has property  NUMBER with value singular.
+</ITEM>
+<ITEM>Verb: walks 
+        also has property  NUMBER with value singular.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+The abstract objects are fully described by their properties and their
+values.
+Multiple descriptions for the properties and values of the abstract
+linguistic objects are presented in the literature.
+A formal description language for these
+properties and values of the abstract linguistic objects is
+a sublanguage of predicate logic with equality, FL,
+ introduced by <REF/>. 
+</P>
+<P>
+Assume three pair-wise disjunct sets of symbols: the set of constants
+A, the set of variables V, and the set of attributes L.
+The attributes (denoted by f, g, h or capitalized strings)
+correspond to the properties of
+the abstract objects,
+the variables (denoted by x, y, z) correspond to the abstract
+objects, and
+the constants (denoted by a, b, c or italicized strings)
+correspond to the atomic values.
+Let s, t denote variables or constants, and let
+a path (denoted by p, q) be a finite, possible empty sequence of
+attributes.
+</P>
+<P>
+Definition  3.1   
+The terms of the description language FL are the elements
+from V and A.
+The formulas of the description language (FL-formulas) are
+equations, and conjunctions:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if 
+<!-- MATH: $\varphi, \psi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are formulas, p, q are paths, and s, t are
+terms.  The formulas of the following form are called
+primitive formulas:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The description language FL is interpreted as a special
+ algebra in <REF/>. However for our purposes it suffices to interpret the formulas
+as feature graphs. The formula
+<!-- MATH: $s \doteq t$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is interpreted as: the terms s and t denote the
+same node in the feature-graph.
+The formula 
+<!-- MATH: $fs \doteq t$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is interpreted as:
+there is an edge with label ffrom the node denoted by s to the node denoted by tin the feature-graph.
+</P>
+<P>
+ As an example, consider the feature-graph given in Figure <CREF/>. The following formula describes the feature-graph,
+provided that the proper sets A, V and L are given.
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Another familiar, intuitive description is the attribute-value matrix
+notation. An attribute-value matrix (AVM) is a set of attribute-value pairs.
+The values of the attribute-value pairs are boxlabels, and atomic
+values or AVMs, where equal boxlabels denote equal values. The
+elements of an AVM are written below one another. The total
+set is written between squared brackets.
+</P>
+<P>
+ For instance, the feature-graph given in Figure <CREF/> could be represented by the following attribute-value matrix.
+The box-labels 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+are used to denote that the two attributes
+ NUMBER have the same value.
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The AVM notation is intuitive because AVMs strongly resemble
+feature-graphs. We can view the opening brackets and the
+atomic values of an AVM as nodes. The outermost bracket is the
+root-node. The attributes of the AVM can be view as edges with the
+attribute as their label. The box-labels identify nodes in the
+feature-graph.
+</P>
+<P>
+In this paper we will use both the AVMs and the FL-formulas as a
+description language. Because AVMs can be transformed in linear time
+ into formulas <REF/>, Section 6] the use of different notations should cause no confusion.
+</P>
+<DIV ID="3.1.1" DEPTH="3" R-NO="1"><HEADER>  Unification in FL. </HEADER>
+<P>
+Let A and B be abstract linguistic objects, or feature-graphs,
+that are described by the FL-formulas 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+respectively.  The unification of A and B is described by
+FL-formula 
+<!-- MATH: $\varphi \wedge \psi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ if and only if 
+<!-- MATH: $\varphi \wedge \psi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+describes a
+feature-graph.
+In the final part of this section
+we will present an efficient algorithm that
+determines whether an FL-formula describes a feature-graph.
+Hence we can view the algorithm as a unification algorithm.
+</P>
+<DIV ID="3.1.1.1" DEPTH="4" R-NO="1"><HEADER>  Unification in AVM. </HEADER>
+<P>
+Let A and B be abstract linguistic objects, or feature-graphs,
+that are described by the AVMs [F] and [G],
+respectively.  The unification of A and B is denoted by
+<!-- MATH: $[F] \sqcup [G]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The algorithm of the final part of this section can be used
+to compute the AVM 
+<!-- MATH: $[F] \sqcup [G]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+efficiently, in the following way.
+</P>
+<P>
+First, there is a linear time algorithm that
+transforms AVMs into FL formulas.
+Second, the algorithm of the final part of this section can
+easily be modified
+such that it also outputs the feature-graph that is described by
+an FL-formula. Since the modified algorithm will remain
+efficient, the feature-graph will be small.
+Finally, there is a trivial, linear time, algorithm that transforms
+feature-graphs into AVMs.
+</P>
+</DIV>
+<DIV ID="3.1.1.2" DEPTH="4" R-NO="2"><HEADER>  This feature theory is simple. </HEADER>
+<P>
+In the remainder of this section we will show that the feature theory
+is simple. We will provide an algorithm, called  FEATUREGRAPHSAT, that
+determines whether a formula of the description language describes a
+feature-graph.
+The algorithm is a slight modification of the constraint-solving
+ algorithm in <REF/>, Section 5]. 
+</P>
+<P>
+The algorithm  FEATUREGRAPHSAT can be used to
+determine whether two abstract objects can be unified: if the formulas
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+describe abstract objects, then 
+<!-- MATH: $\varphi \wedge
+\psi$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+describes their unification if, and only if, the unification
+exists. So we may say that the algorithm solves the unification
+problem.
+</P>
+<P>
+The algorithm  FEATUREGRAPHSAT below
+determines syntactically whether a formula is
+satisfiable in some feature algebra. Because there is a 1-1
+correspondence between
+satisfiable formulas and feature-graphs, the algorithm determines
+whether a formula describes a feature-graph.
+The algorithm first transforms any formula by means of syntactic
+simplification rules into a normal form. Then
+this normal form is checked syntactically in order to see
+whether the formula is satisfiable.
+</P>
+<P>
+The correctness and the complexity of the algorithm  FEATUREGRAPHSAT
+ follow from <REF/>, Section 5]. The function  TRANSFORM, the procedure  SIMPLIFY, the clash-freeness test and
+the acyclicity test can all be computed in an amount of time that is
+quadratic in the size of the formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Hence the algorithm  FEATUREGRAPHSAT takes quadratic time,
+and thus shows that the feature theory is indeed simple.
+</P>
+<P>
+ ALGORITHM FEATUREGRAPHSAT  INPUT: 		Formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+from the                description language.  OUTPUT: 		1) `Yes' if 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+describes an acyclic                feature-graph, or         2) `No' otherwise.Begin AlgorithmEach 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is of the form 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where p, q are paths,s,t are terms.  TRANSFORM 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+into a set of primitive formulas:                   
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+ SIMPLIFY the set P, yielding set S, until no further                simplification is possible. If set S is clash-free and acyclic, then		Exit with answer `Yes', else 		Exit with answer `No'. End Algorithm
+</P>
+<P>
+ FUNCTION TRANSFORM         INPUT: 		Formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+from the                description language.  OUTPUT: 		A set of primitive formulas 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Begin Function 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where Step 0. 		
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Step 1. 		
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+, where y is a        fresh variable Step 2. 		
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+, where         yi (
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ )
+are fresh variables, and y is a variable        introduced in step 1. End Function
+</P>
+<P>
+In the procedure  SIMPLIFY we will use the following
+notations. We use [x/s]P to denote the set that is obtained from
+P by replacing every occurrence of variable x by term s, and
+<!-- MATH: $s \doteq t\,\\,P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+to denote the set 
+<!-- MATH: $\{s \doteq t\}\cup P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+provided that 
+<!-- MATH: $s \doteq t \not\in P$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+  PROCEDURE SIMPLIFY (c.f., <REF/>)        INPUT: 		Set of primitive formulas P. OUTPUT: 		Simplified set of primitive formulas S. Begin ProcedureDo while one of the following four simplification rules isapplicable    1. 		 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if x occurs in P and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+   2. 		
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+   3. 		
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+   4. 		
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+   End while    Exit with the simplified form of set P, S. End Procedure
+</P>
+<P>
+Lemma  3.1   
+A simplified set of primitive formulas S is clash-free if
+1.
+S contains no formula 
+<!-- MATH: $fa \doteq s$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+2.
+S contains no formula 
+<!-- MATH: $a \doteq b$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+such that 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+ ProofFrom <REF/>, Proposition 5.4]. 
+</P>
+<P>
+Lemma  3.2   
+A simplified set of primitive formulas S is acyclic if, and only
+if, S does not contain a sequence of formulas 
+<!-- MATH: $f_i x_i \doteq
+x_{i+1}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+<!-- MATH: $f_n x_n \doteq x_1$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+(
+<!-- MATH: $1 \leq i \leq n$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ).
+</P>
+<P>
+ProofBy induction on the length of a cycle.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  No upper bound
+</HEADER>
+<P>
+An novice in complexity theory might expect
+that a problem is not harder
+than the problem's hardest component. However,
+combining problems may yield a problem that is harder than each of the
+problems when considered separately.
+For instance,
+ <REF/> combines context-free grammars with a  simple feature theory similar to the one in Section <CREF/>. Of course, both the
+satisfiability problem of this feature theory and
+the universal recognition problem of context-free grammars are
+decidable.
+Nevertheless, Johnson shows that the universal recognition problem
+of the combination is undecidable in general.
+Johnson also proves that this problem is decidable under the restriction that
+the context-free grammar does not contain detours. This restriction
+is called the `Off-line Parsability Constraint'.
+</P>
+<P>
+From Johnson's work, we see that combining problems may change
+the complexity from decidable to undecidable.
+We claim that combining problems may change also
+the complexity from tractable to intractable.
+Hence, even when we confine ourselves to decidable problems,
+the complexity of the recognition problem of a unification grammar that
+uses some feature theory may be higher than
+the complexity of the
+satisfiability problem of that feature theory.
+The claim shows that even under the Off-line Parsability Constraint
+the complexity of the feature theory still does not provide an upper
+bound on the complexity of the unification grammar.
+</P>
+<P>
+In the next section we will present a fixed regular grammar.
+Then we combine this regular grammar with the feature theory from
+ Section <CREF/> into a unification grammar. The recognition problem of this unification grammar is decidable,
+because the regular grammar does not contain detours.
+Finally, we will prove by a reduction from  SATISFIABILITY
+that the recognition problem of this unification grammar is NP-hard,
+which proves the claim by example.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>  A fixed regular grammar
+</HEADER>
+<P>
+The regular language that we want to recognize is
+<!-- MATH: $(\sharp ((0\cup 1)^* (p \cup\overline{p}))^+  )^*$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The rules of a regular grammar G' that generates this language are
+ given in Table <CREF/>. 
+</P>
+<P>
+     The regular grammar in Table    <CREF/> generates the language 
+<!-- MATH: $(\sharp ((0\cup 1)^* (p \cup\overline{p}))^+)^*$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+Many other regular grammars could be given for the same language.
+However, the one presented, as will be seen later, is sufficient for our
+purposes here: that is, the reduction from  SATISFIABILITY.
+Obviously, the recognition problem of fixed regular grammar
+takes linear time.
+</P>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>  Combining a regular grammar and a feature
+theory
+</HEADER>
+<P>
+In this section, we will present the unification grammar G, which is
+a combination of the regular grammar from the previous section and
+ the feature theory from Section <CREF/>. There are multiple formalisms for unification grammars.
+Most of these formalisms distinguish two components: a constituent
+structure and a feature graph. The two components are related
+by a mapping from the nodes in the constituent structure to the nodes
+in the feature graph.
+</P>
+<P>
+ Table <CREF/> contains the grammar rules of unification grammar G.
+ The notation for the grammar is similar to <REF/>.  The rules of Section <CREF/> are annotated with formulas taken  from the feature theory given in Section <CREF/>. The set of attributes is 
+<!-- MATH: $\{\mbox{\sc assign},
+\mbox{\sc new}, \mbox{\sc v}, \mbox{\sc 0}, \mbox{\sc 1}\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+the set of atomic values is
+<!-- MATH: $\{\mbox{\em +}, \mbox{\em -}\}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The linear rewrite rules describe how constituents are formed.
+The formulas indicate how nodes of the feature-graphs
+are related to the non-terminals of the rewrite rules.
+</P>
+<P>
+ The second rule in the first line of Table <CREF/> will be used to explain the notation.
+The non-terminal on the left-hand side of the rewrite rule is related
+to the node denoted by variable x0.
+The leftmost non-terminal on the right-hand side of the rewrite rule
+is related to the node denoted by variable x1.
+The first conjunct of the formula states that the values of the
+attributes  ASSIGN is the same for the nodes related to the
+non-terminals S and T.
+The second conjunct requires that the attribute  ASSIGN
+of the node related to the non-terminal S has also the same
+value as the
+attribute  NEW of node related to the non-terminal T.
+We will clarify the use of the grammar by means
+of an example.
+</P>
+<P>
+Example(s)We will show the potential derivation of the string
+<!-- MATH: $w = \sharp 1 0 p \sharp 1 0 \overline{p}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+ On the left of the figures <CREF/> and <CREF/> the constituent structure trees are given. The non-terminals
+are related to nodes in the feature-graphs by undirected arcs.
+ We present the first steps (figure <CREF/>) and the `final'  result (figure <CREF/>) of the potential derivation. The reader should check that the feature-graph indeed conforms to the
+formulas of the applied rules.
+</P>
+<P>
+ The potential feature-graph in figure <CREF/> shows that the rightmost
+node should have two different atomic values, indicated by + or -.
+Hence this potential feature graph is not valid.  Consequently, the
+derivation given above fails, and the string
+<!-- MATH: $w = \sharp 1 0 p \sharp 1 0 \overline{p}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+cannot be generated.
+</P>
+<P>
+ The following fact results from fact <CREF/> and the previous example,
+which showed that 
+<!-- MATH: $w = \sharp 1 0 p \sharp 1 0 \overline{p}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ cannot be generated by G.
+</P>
+<P>
+Fact  4.2   
+The language recognized by the unification grammar Gis a proper subset of the regular language
+<!-- MATH: $(\sharp ((0\cup 1)^* (p \cup\overline{p}))^+  )^*$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+The following fact will be useful in the proof of
+ Lemma <CREF/>. The fact states that if S derives  
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in
+d steps
+(
+<!-- MATH: $S \Rightarrow^d w_i\,S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ), then there are two intermediate stages.
+First, S derives
+<!-- MATH: $\sharp v^i_1\ldots v^i_{k-1}\,T$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in a steps.
+This T derives 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+in b steps.
+Finally, this A derives 
+<!-- MATH: $v^i_{k+1}\ldots v^i_n\,S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ in csteps.
+</P>
+<P>
+    If 
+<!-- MATH: $S \Rightarrow^d w_i\,S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where
+<!-- MATH: $w_i = \sharp v^i_1\ldots v^i_n$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+<!-- MATH: $v^i_j \in (0\cup 1)^* (p \cup\overline{p})$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+then
+there is a 
+<!-- MATH: $v^i_k = b_1\ldots b_m l$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $(1 \leq k \leq n)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+such that
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $(d = a + b + c)$ -->
+(d = a + b + c)and the feature structure
+<!-- MATH: $[\mbox{\sc new} [\mbox{\sc $b_1$ } \ldots [\mbox{\sc $b_m$ }\,\alpha]\ldots]]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ is associated with T,
+where 
+<!-- MATH: $\alpha = [\mbox{\sc v}\,\mbox{\em +}]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if l = p,
+and   
+<!-- MATH: $\alpha = [\mbox{\sc v}\,\mbox{\em -}]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if 
+<!-- MATH: $l = \overline{p}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+</DIV>
+<DIV ID="4.3" DEPTH="2" R-NO="3"><HEADER>  The reduction from SAT. </HEADER>
+<P>
+In the previous section we combined the regular grammar from
+ Section <CREF/> and the feature theory from  Section <CREF/> into a unification grammar G. Both the recognition problem of this regular grammar,
+and the
+satisfiability problem of this feature
+theory take polynomial time.
+However, we will prove that the recognition problem of
+the unification grammar G is NP-hard.
+Thus the complexity of the
+feature theory does not provide an upper bound on the complexity of
+the  grammar that used this feature theory.
+</P>
+<P>
+First, we will give the reduction from the NP-complete problem SAT
+to the recognition problem
+of G. Then we will show that this reduction is
+computable in polynomial time
+and answer preserving.
+Thus we have proven that the recognition problem of
+the unification grammar G is NP-hard.
+</P>
+<P>
+The reduction from SAT to the recognition problem of Gmaps propositional logical formulas onto strings.
+We assume, without loss of generality, that the indices
+of the propositional logical variables are in binary representation.
+This reduction, f, is defined by the following four equations:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+    The reduction f maps formula 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+onto string
+<!-- MATH: $w = f(\varphi) = w_1\ldots w_n$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where
+<!-- MATH: $w_i = \sharp v^i_1\ldots v^i_n$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+v[i]j is a string of the form 
+<!-- MATH: $(0\cup 1)^* (p \cup\overline{p})$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+    The reduction f is computable in linear time.
+</P>
+<P>
+ProofBy induction on the construction of SAT formulas.
+</P>
+<P>
+    Let 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+be a propositional logical formula in conjunctive
+normalform, and f the reduction stated above.
+Formula 
+<!-- MATH: $\varphi = \gamma_1 \wedge\ldots\wedge \gamma_m$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a
+satisfiable formula if, and only if, string 
+<!-- MATH: $w = f(\varphi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is in the
+language generated by G.
+</P>
+<P>
+ProofThe proof of this lemma is split in two subproofs. First, we will prove
+that if 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is satisfiable, then w is in the language generated
+by G. Second, we will prove that if
+<!-- MATH: $w = f(\varphi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is in the language generated by G,
+then 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is satisfiable.
+</P>
+<DIV ID="4.3.1" DEPTH="3" R-NO="1"><HEADER>  Only if: </HEADER>
+<P>
+ let 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+be a satisfiable formula.
+Then there is an assignment g such that
+<ITEMIZE>
+<ITEM>(1) if g assigns a truth-value to one occurrence of a variable,
+then g assigns that truth-value to all occurrences of that variable
+in the formula. In other words, g is consistent.
+</ITEM>
+<ITEM>(2) g assigns truth to the formula. That is, in each clause,
+g assigns truth to some literal.
+</ITEM>
+</ITEMIZE>
+We have to show that 
+<!-- MATH: $w = f(\varphi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is generated by G. According
+ to Fact <CREF/>  <!-- MATH: $w = w_1\ldots w_m$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+This string w is
+generated by G if, and only if, the string 
+<!-- MATH: $w_1\ldots w_m$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is
+derived by S. Moreover, 
+<!-- MATH: $S \Rightarrow^* w_1\ldots w_m$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if and
+only if 
+<!-- MATH: $S \Rightarrow^*  w_i S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+ By Fact <CREF/>, each derivation  <!-- MATH: $S \Rightarrow^* w_i S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+has the
+following intermediate steps:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Let us assume that
+<!-- MATH: $S \;\Rightarrow^* \sharp v^i_1\ldots v^i_{k-1} T$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+only if the
+assignment g assigns truth to the k-th literal in the i-th
+clause of 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+This k-th literal in the i-th clause, is either
+<!-- MATH: $p_{b_1\ldots b_l}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+or 
+<!-- MATH: $\overline{p_{b_1\ldots b_l}}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+In the first
+case g assigns truth-value true to variable 
+<!-- MATH: $p_{b_1\ldots b_l}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+in
+the second case g assigns truth-value false to variable
+<!-- MATH: $p_{b_1\ldots b_l}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+By induction on the number of substrings wi, we will prove that
+under the above made
+assumption S derives 
+<!-- MATH: $w_1\ldots w_m$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+One substring wm:
+Let S0 = S derive wm S (
+<!-- MATH: $w_m = \sharp v^m_1\ldots v^m_n$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ),
+where k depends on the assignment g:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The non-terminal S derives the empty string in one step.
+Thus the feature structure associated with S is
+<!-- MATH: $[\mbox{\sc assign}\; [\mbox{\sc v}\; \mbox{\em +}]]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The feature structure associated with T is the unification of
+<!-- MATH: $[\mbox{\sc new} [\mbox{\sc $b_1$ }\ldots [\mbox{\sc $b_l$ }\,\alpha] \ldots ]]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+the feature structure associated with S:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+where 
+<!-- MATH: $\alpha = [\mbox{\sc v}\,\mbox{\em +}]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if 
+<!-- MATH: $v^i_k = b_1\ldots b_l p$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and 
+<!-- MATH: $\alpha = [\mbox{\sc v}\,\mbox{\em -}]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if 
+<!-- MATH: $v^i_k = b_1\ldots b_l\overline{p}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+The feature structure associated with S0 is
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+None of the unifications fails, and thus S derives wm.
+</P>
+<P>
+More than one substring wi:
+Let S0 = S derive wi S (
+<!-- MATH: $w_i = \sharp v^i_1\ldots v^i_n$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ):
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+By the induction hypothesis, we assume that S derives 
+<!-- MATH: $w_{i+1}\ldots
+w_m$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Moreover, the feature structure associated with S is
+<!-- MATH: $[\mbox{\sc assign} [\mbox{\sc v}\; \mbox{\em +}]] \sqcup \beta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+= 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is a feature structure of the form 
+<!-- MATH: $[\mbox{\sc $c_1$ }\ldots
+[\mbox{\sc $c_{l'}$ }\,\alpha''] \ldots ]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+or a unification of such feature
+structures.
+The feature structure associated with T is the unification of
+<!-- MATH: $[\mbox{\sc new} [\mbox{\sc $b_1$ }\ldots [\mbox{\sc $b_l$ }\,\alpha] \ldots ]]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and
+the feature structure associated with S:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+In the case that v[i]k is a prefix of wi the feature
+ structure (<CREF/>) is associated with S0. In the other cases, there is an intermediate step
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ and feature structure (<CREF/>) is associated with F, where 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is the unification of
+<!-- MATH: $[\mbox{\sc $b_1$ }\ldots [\mbox{\sc $b_l$ }\,\alpha] \ldots ]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+</P>
+<P>
+<!-- MATH: \begin{equation}
+\left[\begin{array}{ll}          [\mbox{\sc $b_1$ }\ldots [\mbox{\sc $b_l$ }\,\alpha] \ldots ] \\
+\mbox{\sc assign}   \sqcup \\
+                [\mbox{\sc v}\; \mbox{\em +}] \sqcup \beta  \end{array}\right]
+\end{equation} -->
+</P>
+<P>
+ In all cases the unification in (<CREF/>) fails only if  
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ contains 
+<!-- MATH: $[\mbox{\sc $b_1$ }\ldots [\mbox{\sc $b_l$ }\,\alpha'] \ldots ]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+and
+<!-- MATH: $\alpha\sqcup\alpha'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+fails. But, 
+<!-- MATH: $\alpha\sqcup\alpha'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ fails only if g assigns
+both truth-value true and truth-value false to variable
+<!-- MATH: $p_{b_1\ldots b_l}$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+Hence
+<!-- MATH: $\alpha\sqcup\alpha'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ would fail only if g would be inconsistent, which g is not.
+Hence there is a derivation for string 
+<!-- MATH: $w = f(\varphi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ if 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is satisfiable.
+</P>
+<DIV ID="4.3.1.1" DEPTH="4" R-NO="1"><HEADER>  If: </HEADER>
+<P>
+ suppose that 
+<!-- MATH: $w = f(\varphi)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+is in the language
+generated by G.
+ By fact <CREF/>  <!-- MATH: $w = w_1\ldots w_m$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ,
+where
+<!-- MATH: $w_i = \sharp v^i_1\ldots v^i_m$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+We will prove that for all i, there is a k such that
+<ITEMIZE>
+<ITEM>1) 
+<!-- MATH: $S \;\Rightarrow^* \sharp v^i_1\ldots v^i_{k-1} T
+\;\Rightarrow^* \sharp v^i_1\ldots  v^i_n S$ -->
+<IMAGE TYPE="FIGURE"/>
+</ITEM>
+<ITEM>2) the feature structure associated with the non-terminal S        that derives w contains 
+<!-- MATH: $[\mbox{\sc assign}\:[\mbox{\sc $b_1$ }\ldots
+[\mbox{\sc $b_l$ }\,\alpha]\ldots ] ]$ -->
+<IMAGE TYPE="FIGURE"/>
+where
+<!-- MATH: $\alpha = [\mbox{\sc v}\,\mbox{\em +}]$ -->
+<IMAGE TYPE="FIGURE"/>
+if 
+<!-- MATH: $v^i_k = b_1\ldots b_l p$ -->
+<IMAGE TYPE="FIGURE"/>
+ ,
+and
+<!-- MATH: $\alpha = [\mbox{\sc v}\,\mbox{\em -}]$ -->
+<IMAGE TYPE="FIGURE"/>
+if 
+<!-- MATH: $v^i_k = b_1\ldots b_l\overline{p}$ -->
+<IMAGE TYPE="FIGURE"/>
+ .
+</ITEM>
+<ITEM>3) the feature structure associated with the non-terminal S        that derives w does not contain both
+<!-- MATH: $[\mbox{\sc assign}\:[\mbox{\sc $b_1$ }\ldots [\mbox{\sc $b_l$ }
+[\mbox{\sc v}\,\mbox{\em +}]]\ldots ] ]$ -->
+<IMAGE TYPE="FIGURE"/>
+and
+<!-- MATH: $[\mbox{\sc assign}\:[\mbox{\sc $b_1$ }\ldots [\mbox{\sc $b_l$ }
+[\mbox{\sc v}\,\mbox{\em -}]]\ldots ] ]$ -->
+<IMAGE TYPE="FIGURE"/>
+Then the feature structure associated with the non-terminal Sthat derives w encodes a consistent assignment for 
+<IMAGE TYPE="FIGURE"/>
+that
+makes every clause of 
+<IMAGE TYPE="FIGURE"/>
+true.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+Obviously, 
+<!-- MATH: $S \Rightarrow^* w$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+if, and only if, 
+<!-- MATH: $S \Rightarrow^* w_i S$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .
+ Hence 1) and 2) follow from fact <CREF/>. Because S derives w, the feature structure associated with S does not contain
+contradicting information: 3) follows.
+This completes the second subproof.
+</P>
+<P>
+The previous lemma proves that the reduction f from SAT
+ to the recognition problem of the unification grammar Gis answer preserving. Lemma <CREF/> proves that this reduction f is computable in polynomial time.
+Hence these two lemmas together prove that the recognition
+problem of the unification grammar G is NP-hard.
+ <REF/> show that the complexity result of the recognition problem for unification grammars
+that combine a regular grammar and
+ the feature theory from Section <CREF/> is strengthened. An additional NP upper bound is proven
+for an arbitrary string and grammar,
+which results in an
+NP-complete recognition problem.
+</P>
+<P>
+Lemma  4.8   
+Let w be any string and G be any
+unification grammar that combines a regular grammar and
+ the feature theory from Section <CREF/>. Then the recognition problem for w and G is NP-complete.
+</P>
+<P>
+ProofAn NP-hard lower bound is proven above. An NP upper bound
+is proven when we can guess a solution, and check
+that solution in polynomial time.
+The NP upper bound is proven as follows.
+</P>
+<P>
+Given a string w and a grammar G, we can guess a sequence of
+O(|w|) rules that encode the derivation for w. The guessed
+rules describe a constituent structure tree and a set of formulas.
+First, we must check that the constituent structure tree described
+by the rules has yield w. Second, we have
+to check that the set of formulas describes some feature-graph.
+</P>
+<P>
+The first check is trivial. The second check is performed by the
+ algorithm  FEATUREGRAPHSAT from Section <CREF/>. Clearly, both checks only take polynomial time.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  On lower bounds
+</HEADER>
+<P>
+The previous section shows the complexity of a feature
+theory does not provide an upper bound for the complexity
+of a unification grammar that uses this feature theory.
+The question that arises is whether the complexity of a feature
+theory provides a lower bound for the complexity
+of such a unification grammar.
+</P>
+<P>
+In general, it seems that the complexity of the combination of
+two problems is at least as hard as the complexity of these
+two problems in isolation. So one would be tempted to answer
+the question
+above in the affirmative. However, if a problem A contains
+information about solutions for a problem B, and vice versa,
+then the combination of A and B may have lower complexity than Aand B in isolation.  For instance, let problem A be the complement
+of problem B. Then the combinations `A or B' and `A and B'
+have the trivial solutions `always answer yes' and `always answer no',
+respectively.
+</P>
+<P>
+To be more specific, in the case of unification grammars,
+there seem to be easy reductions from the unification problem
+of a feature theory to the recognition problem of arbitrary
+unification grammars that use this feature theory.
+In some specific situations, however, these reductions do not exist.
+Below, we will present some examples of situations in which the
+feature theory does not provide a lower bound for the
+recognition problem.
+</P>
+<P>
+Example(s)
+<ITEMIZE>
+<ITEM>The feature theory does not provide a lower bound if
+        the complexity of the recognition problem of the
+        grammar component provides a lower bound for the complexity of
+        the recognition problem of the unification grammar.
+        Consider for instance the class of grammars that generate
+        a finite language.
+        The combination of a feature theory with a grammar from this
+        class yields a unification grammar that generates a finite
+        language. Obviously, the recognition problem of this
+        unification grammar
+        does not depend on the unification problem of the feature
+        theory. Hence the lower bound complexity of this class of
+        unification grammars is not provided by the complexity of the
+        feature theory.
+</ITEM>
+<ITEM>The feature theory does not provide a lower bound if the
+        unification grammar uses only a fragment of the feature theory.
+        This happens when the unification grammar formalism
+        restricts the unification. For instance, the unification grammar
+        formalism may demand that feature structures are unified at the
+        outermost attributes. This demand implies that the size of the
+        feature structures that appear in the fixed unification grammar is
+        bounded. Consequently, there have to be feature structures in
+        the feature theory that cannot be encoded by the unification
+        grammar.
+One may object that the obligatory
+        unification at the outermost attribute should be incorporated
+        in the formalization of the feature theory. Thus reducing
+        the complexity of the unification problem of the feature theory.
+        However, there is no predefined way to construct unification
+        grammars from a feature theory and a grammar component. So,
+        there may be many blurred restrictions on the unification.
+        These blurred restrictions are the cause that the formalization
+        of the feature theory
+        may be too expressive and that the unification grammar uses
+        only a fragment of the feature theory.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+The two examples show that not in all
+situations the complexity of the unification problem of the
+feature theory provides a lower bound for the complexity of
+the recognition problem of the unification grammar. In some special
+cases the complexity of the unification grammar may be lower than
+the complexity of the feature theory.
+Hence care has to be taken for
+drawing overhasty conclusions about the lower bound complexity of
+the unification grammar from the complexity of the feature theory.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Conclusions
+</HEADER>
+<P>
+In this paper, we have assessed the complexity results of
+formalizations that intend to describe feature theories in
+computational linguistics.
+These formalizations do not take the constituent structure
+component of unification grammars into account. As a result,
+the complexity of the unification problem of
+feature theories does not provide an upper bound, and need not provide
+a lower bound, for the complexity of the recognition problem of
+unification grammars using these theories.
+</P>
+<P>
+Thus the complexity results that have been achieved in
+the formalisms of feature theories
+are not immediately relevant for unification
+grammars used in computational linguistics.
+Complexity analyses will only contribute to computational linguistics
+if the analyzed formalizations are connected closely with actual
+unification grammars.
+Therefore, we argue for formalisms that describe
+unification grammars as a whole instead of bare feature theories.
+</P>
+<DIV ID="6.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Franz Baader, Hans-Jrgen Brckert, Bernhard Nebel, Werner Nutt, and Gert
+  Smolka.
+On the expressivity of feature logics with negation, functional
+  uncertainty, and sort equations.
+Journal of Logic, Language and Information, 2(1):1-18, 1993.
+</P>
+<P>
+Patrick Blackburn and Edith Spaan.
+A modal perspective on the computational complexity of attribute
+  value grammar.
+Journal of Logic, Language and Information, 2(2):129-169,
+  1993.
+</P>
+<P>
+Mark Johnson.
+Attribute-Value Logic and the Theory of Grammar, volume 16 of
+  CSLI Lecture Notes.
+CSLI, Stanford, 1988.
+</P>
+<P>
+Robert T. Kasper and William C. Rounds.
+The logic of unification in grammar.
+Linguistics and Philosophy, 13:35-58, 1990.
+</P>
+<P>
+Gert Smolka.
+Feature-constraint logics for unification grammars.
+Journal of Logic Programming, 12(1):51-87, 1992.
+</P>
+<P>
+Leen Torenvliet and Marten Trautwein.
+Features that count.
+Presented at CLIN V (Fifth Computational Linguistics in the
+  Netherlands Meeting), December 1994.
+</P>
+<DIV ID="6.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  This research was supported by the
+        Linguistic Research Foundation, which is funded by the Netherlands
+        organisation for scientific research, NWO
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

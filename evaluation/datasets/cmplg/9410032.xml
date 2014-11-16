@@ -1,0 +1,249 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Planning Argumentative Texts</TITLE>
+<ABSTRACT>
+<P>
+This paper presents PROVERB a text planner for
+argumentative texts. PROVERBs main feature is that it combines global
+hierarchical planning and unplanned organization of text with respect
+to local derivation relations in a complementary way.  The former
+splits the task of presenting a particular proof into subtasks of
+presenting subproofs.  The latter simulates how the next intermediate
+conclusion to be presented is chosen under the guidance of the local
+focus.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>   Introduction
+</HEADER>
+<P>
+This paper presents a text planner for the verbalization of natural
+ deduction (ND) style proofs <REF/>. Several similar attempts can be found in previous work. Developed before the era of NL
+ generation, the system EXPOUND of D. Chester <REF/> can be characterized as an example of direct translation: Although a
+sophisticated linearization is applied on the input ND proofs, the
+steps are then translated locally in a template driven way.  ND proofs
+were tested as input to an early version of the MUMBLE system of
+ D. McDonald <REF/>, the main aim however, was to show the feasibility of the architecture. A more recent attempt can be found in
+ THINKER <REF/>, which implements several interesting but isolated proof presentation strategies, without giving a comprehensive
+underlying model.
+</P>
+<P>
+Our computational model can therefore be viewed as the first serious attempt
+at a comprehensive computational model that produces adequate
+argumentative texts from ND style proofs. The main aim is to show how
+existing text planning techniques can be adapted for
+this particular application. To test its feasibility, this
+computational model is implemented in a system called PROVERB.
+</P>
+<P>
+Most current NL text planners assume that language generation is
+planned behavior and therefore adopt a hierarchical planning approach
+ <REF/>,<REF/>,<REF/>,<REF/>.  Nonetheless there is psychological evidence that language has an unplanned, spontaneous
+ aspect as well <REF/>.  Based on this observation, researchers have exploited organizing text with respect to some local relations.
+ Sibun <REF/> implemented a system generating descriptions for objects with a strong domain structure, such as houses, chips and
+families. Once a discourse is started, local structures suggest the
+next objects available. Instead of planning globally, short-range
+strategies are employed to organize a short segment of text. From a
+computational point of view, a hierarchical planner elaborates
+recursively on the initial communicative goal until the final
+subgoals can be achieved by applying a primitive operator. A text
+generator based on the local organization, in contrast, repeatedly chooses a
+part of the remaining task and carries it out.
+</P>
+<P>
+The macroplanner of PROVERB combines hierarchical
+planning with local organization in a uniform planning framework.
+The hierarchical planning is realized by so-called top-down
+presentation operators that split the task of presenting a particular
+proof into subtasks of presenting subproofs. While the overall
+planning mechanism follows the RST-based planning approach
+ <REF/>,<REF/>, the planning operators more closely resemble the  schemata in schema-based planning <REF/>,<REF/>.  Bottom-up presentation operators are devised to simulate the unplanned aspect,
+where the next intermediate conclusion to be presented is chosen
+under the guidance of the local focus mechanism in a more
+spontaneous way. Since top-down operators embody explicit
+communicative norms, they are always given a higher priority. Only
+when no top-down presentation operator is applicable, will a bottom-up
+presentation operator be chosen.
+</P>
+<P>
+This distinction between planned and unplanned presentation leads to a
+very natural segmentation of the discourse into an attentional
+ hierarchy, since, following the theory of Grosz and Sidner <REF/>, there is a one-to-one correspondence between the intentional
+hierarchy and the attentional hierarchy. This attentional hierarchy is
+used to make reference choices for inference methods and for
+previously presented intermediate conclusions. The inference choices are the
+ main concern of the microplanner of PROVERB(see <REF/>). 
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>   Context of Our Research </HEADER>
+<P>
+The text planner discussed in this paper is the macroplanner of
+PROVERB, which translates machine-found proofs in several steps into
+natural language. PROVERB adopts a reconstructive approach:
+Once a proof in a machine oriented formalism is generated in the proof
+development environment <EQN/>- MKRP
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>   The Framework of the Macroplanner
+</HEADER>
+<P>
+The macroplanner of PROVERB elaborates on communicative goals,
+selects and orders pieces of information to fulfill these goals.  The
+output is an ordered sequence of proof communicative act
+  intentions (PCAs). PCAs can be viewed as speech acts in our domain
+of application.
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>  Planning Framework </HEADER>
+<P>
+PROVERB combines the two above mentioned presentation modes by
+encoding communication knowledge for both top-down planning and
+bottom-up presentation in form of operators in a uniform planning
+framework. Since top-down presentation operators embody explicit
+communicative norms, they are given a higher priority. A bottom-up
+presentation is chosen only when no top-down presentation operator
+applies. The overall planning framework is realized by the function
+Present. Taking as input a subproof, Present repeatedly
+executes a basic planning cycle until the input subproof is conveyed.
+Each cycle carries out one presentation operator, where Present
+always tries first to choose and apply a top-down operator. If
+impossible, a bottom-up operator will be chosen.  The function   Present is first called with the entire proof as the presentation
+task. The execution of a top-down presentation operator may generate
+subtasks by calling it recursively.  The discourse produced by each
+call to Present forms an attentional unit (compare the
+subsection below).
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>  The Discourse Model and the Attentional Hierarchy </HEADER>
+<P>
+The discourse carried out so far is recorded in a discourse
+  model.  Rather than recording the semantic objects and their
+properties, our discourse
+model consists basically of the part of the input proof tree which has
+already been conveyed.  The discourse model is also segmented into an
+attentional hierarchy, where subproofs posted by a top-down presentation
+operators as subtasks constitute attentional units.
+The following are some notions useful for the formulation of the
+presentation operators:
+</P>
+<P>
+<ITEMIZE>
+<ITEM>Task is the subproof in the input proof whose
+  presentation is the current task.
+</ITEM>
+<ITEM>Local focus is the intermediate conclusion last
+  presented, while the semantic objects involved in the local focus are
+  called the focal centers.
+</ITEM>
+</ITEMIZE>
+</P>
+</DIV>
+<DIV ID="3.3" DEPTH="2" R-NO="3"><HEADER>  Proof Communicative Acts
+</HEADER>
+<P>
+PCAs are the primitive actions planned during the macroplanning to
+achieve communicative goals. Like speech acts, PCAs can be defined in
+terms of the communicative goals they fulfill as well as their
+possible verbalizations.  Based on an analysis of
+proofs in mathematical textbooks, each PCA has as goal a combination
+of the following subgoals:
+</P>
+<P>
+1.
+Conveying a step of the derivation. The simplest PCA is the operator Derive. Instantiated as below:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+ depending on the reference choices, a possible
+verbalization is given as following:
+</P>
+<P>
+``Because a is an element of S1 and S1 is a subset of
+  S2, according to the definition of subset, a is an element of
+  S2.''
+</P>
+<P>
+2.
+Updates of the global attentional structure.
+  These PCAs sometimes also convey a partial plan for the further
+  presentation. Effects of this group of PCAs include: creating new
+  attentional units, setting up partially premises and the goal of a new
+  unit, closing the current unit, or reallocating the attention of the
+  reader from one attentional unit to another. The PCA
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+creates two attentional units with A and B as the
+assumptions, and Formula as the goal by producing the
+verbalization:
+</P>
+<P>
+``To prove Formula, let us consider the two
+cases by assuming A and B.''
+</P>
+<P>
+Thirteen PCAs are currently employed in PROVERB. See
+ <REF/> for more details. 
+</P>
+</DIV>
+<DIV ID="3.4" DEPTH="2" R-NO="4"><HEADER>  Structure of the Planning Operators </HEADER>
+<P>
+Although top-down and bottom-up presentation activities are of a
+conceptually different nature, the corresponding communication
+knowledge is uniformly encoded as presentation operators in a
+planning framework, similar to the plan operators in other generation
+ systems <REF/>,<REF/>,<REF/>,<REF/>. In general, presentation operators map an original presentation task into a
+sequence of subtasks and finally into a sequence of PCAs.
+ All of them have the following four
+slots:
+<ITEMIZE>
+<ITEM>Proof: a proof schema, which characterizes the syntactical
+  structure of a proof segment for which this operator is designed.
+  It plays the role of the goal slot in the traditional planning
+  framework.
+</ITEM>
+<ITEM>Applicability Condition: a predicate.
+</ITEM>
+<ITEM>Acts: a procedure which essentially carries out a sequence
+  of presentation acts. They are either primitive PCAs, or are
+  recursive calls to the procedure Present for subproofs.
+</ITEM>
+<ITEM>Features: a list of features which helps to select the best
+  of a set of applicable operators.
+</ITEM>
+</ITEMIZE>
+</P>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>   Top-Down Planning
+</HEADER>
+<P>
+This section elaborates on the communicative norms concerning how a
+proof to be presented can be split into subproofs, as well as
+how the hierarchically-structured subproofs can be mapped onto some
+linear order for presentation.  In contrast with operators employed
+in RST-based planners that split goals according to the rhetorical
+structures, our operators encode standard schemata for presenting
+proofs, which contain subgoals. The top-down
+presentation operators are roughly divided into two categories:
+</P>
+<P>
+<ITEMIZE>
+<ITEM>schemata-based operators encoding complex schemata for the
+  presentation of proofs of a specific pattern (twelve of them are currently
+integrated in PROVERB),
+</ITEM>
+<ITEM>general operators embodying general presentation norms,
+  concerning splitting proofs and ordering subgoals.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+</P>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

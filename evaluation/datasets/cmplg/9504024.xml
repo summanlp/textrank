@@ -1,0 +1,619 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>A Morphographemic Model for Error Correction in Nonconcatenative
+Strings</TITLE>
+<ABSTRACT>
+<P>
+This paper introduces a spelling correction system which integrates
+seamlessly with morphological analysis using a multi-tape formalism.
+Handling of various Semitic error problems is illustrated, with
+reference to Arabic and Syriac examples.  The model handles errors
+vocalisation, diacritics, phonetic syncopation and morphographemic
+idiosyncrasies, in addition to Damerau errors.  A complementary
+correction strategy for morphologically sound but morphosyntactically
+ill-formed words is outlined.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>    Introduction
+</HEADER>
+<P>
+Semitic is known amongst computational linguists, in particular
+computational morphologists, for its highly inflexional morphology.
+Its root-and-pattern phenomenon not only poses difficulties for a
+morphological system, but also makes error detection a difficult
+task. This paper aims at presenting a morphographemic model which can
+cope with both issues.
+</P>
+<P>
+The following convention has been adopted. Morphemes are represented
+in braces, { }, surface (phonological) forms in solidi, / /, and
+orthographic strings in acute brackets, <EQN/>
+<EQN/>.
+In examples of
+grammars, variables begin with a capital letter. Cs denote consonants,
+Vs denote vowels and a bar denotes complement. An asterisk, *,
+indicates ill-formed strings.
+</P>
+<P>
+The difficulties in morphological analysis and error detection in
+Semitic arise from the following facts:
+<ITEMIZE>
+<ITEM><EQN/>
+A Semitic stem consists of a <EQN/>
+         and a <EQN/>,
+arranged according to a <EQN/>.
+For example, Arabic /kuttib/ `caused to
+         write - perfect passive' is composed from the root morpheme
+         {ktb} `notion of writing' and the vowel melody morpheme
+         {ui} `perfect passive'; the two are arranged according to
+         the pattern morpheme {CVCCVC} `causative'. This phenomenon
+          is analysed by <REF/> along the lines of           autosegmental phonology <REF/>. The analysis           appears in (1).   
+<EQN/>
+</ITEM>
+<ITEM><EQN/>
+Orthographically, Semitic texts appear in
+         three forms: (i) <EQN/>
+do not incorporate
+          any short vowels but <EQN/>, e.g. Arabic <EQN/>ktb<EQN/> for /katab/,
+         /kutib/ and /kutub/, but <EQN/>kaatb<EQN/>
+for /kaatab/ and
+         /kaatib/; (ii) <EQN/>
+incorporate
+         some short vowels to clarify ambiguity, e.g. <EQN/>kutb<EQN/>
+for /kutib/ to distinguish it from /katab/; and (iii) <EQN/>
+incorporate full vocalisation, e.g. <EQN/>
+<EQN/><EQN/>
+<EQN/>.
+</ITEM>
+<ITEM><EQN/>
+Semitic languages employ a
+         large number of diacritics to represent <EQN/>
+          short vowels, doubled letters, and nunation. Most editors allow the user to enter          such diacritics above and below letters. To speed data entry,
+         the user usually enters the base characters (say a paragraph) and
+         then goes back and enters the diacritics. A common mistake is
+         to place the cursor one extra position to the left when
+         entering diacritics. This results in the vowels being shifted
+         one position, e.g. *<EQN/>wkatubi<EQN/>
+instead of <EQN/>
+wakutib<EQN/>.
+</ITEM>
+<ITEM><EQN/>
+The quality of the perfect and imperfect
+         vowels of the basic forms of the Semitic verbs are
+         idiosyncratic. For example, the Syriac root {ktb} takes
+         the perfect vowel <EQN/>,
+e.g. /ktab/, while the root
+         {n<EQN/>t} takes the vowel <EQN/>,
+e.g. /n<EQN/>et/. It is
+         common among learners to make mistakes such as */kteb/ or
+         */n<EQN/>at/.
+</ITEM>
+<ITEM><EQN/>
+A consonantal segment may be
+         omitted from the <EQN/>
+surface form, but maintained
+         in the <EQN/>
+surface from. For example, Syriac
+         <EQN/>
+<EQN/> 
+
+</ITEM>
+<ITEM><EQN/>
+The application of a morphographemic
+          rule may have constraints as on which lexical morphemes it
+          may or may not apply. For example, the glottal stop [<EQN/>]
+          at the end of a stem may become [w] when followed by the
+          relative adjective morpheme {iyy}, as in Arabic
+          /samaa<EQN/>+iyy/ 
+<!-- MATH: $\rightarrow$ -->
+<EQN/>
+/samaawiyy/ `heavenly', but
+          /hawaa<EQN/>+iyy/ 
+<!-- MATH: $\rightarrow$ -->
+<EQN/>
+/hawaa<EQN/>iyy/ `of
+          air'. 
+</ITEM>
+<ITEM><EQN/>
+In broken plurals, diminutives
+          and deverbal nouns, the user may enter a morphologically
+          sound, but morphosyntactically ill-formed word. We shall
+          discuss this in more detail in
+           section <CREF/>. 
+</ITEM>
+</ITEMIZE>
+To the above, one adds language-independent issues in spell checking
+such as the four Damerau transformations: omission, insertion,
+ transposition and substitution <REF/>. 
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    A Morphographemic Model
+</HEADER>
+<P>
+This section presents a morphographemic model which handles error
+ detection in non-linear strings. Subsection <CREF/> presents  the formalism used, and subsection <CREF/> describes the model. 
+</P>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>    The Formalism
+</HEADER>
+<P>
+In order to handle the non-linear phenomenon of Arabic, our model
+ adopts the two-level formalism presented by <REF/>, with the  multi tape extensions in <REF/>. Their formalism appears in (2).
+<EQN/>
+The special symbol * is a wildcard matching any context, with no
+length restrictions.  The operator 
+<!-- MATH: $\Leftrightarrow$ -->
+<EQN/>
+caters for obligatory
+rules. A lexical string maps to a surface string iff they can be
+partitioned into pairs of lexical-surface subsequences, where each
+pair is licenced by a 
+<!-- MATH: $\Rightarrow$ -->
+<EQN/>
+or 
+<!-- MATH: $\Leftrightarrow$ -->
+<EQN/>
+rule, and no
+partition violates a 
+<!-- MATH: $\Leftrightarrow$ -->
+<EQN/>
+rule. In the multi-tape
+version, lexical expressions (i.e.  LLC,  LEX and  RLC)
+are <EQN/>-tuple of regular expressions of the form (x1, x2,
+<EQN/>,
+xn): the <EQN/>th expression refers to symbols on the
+<EQN/>th tape; a nill slot is indicated by 
+<!-- MATH: $\varepsilon$ -->
+ <EQN/>. Another extension is giving  LLC the ability to contain ellipsis, <EQN/>
+, which indicates the (optional)
+omission from  LLC of tuples, provided that the tuples to the
+left of <EQN/>
+are the first to appear on the left of  LEX.
+</P>
+<P>
+In our morphographemic model, we add a similar formalism for
+expressing error rules (3).
+<EQN/>
+</P>
+<P>
+The error rules capture the correspondence between the error surface
+and the correct surface, given the surrounding partition into surface
+and lexical contexts.  They happily utilise the multi-tape format and
+integrate seamlessly into morphological analysis.  PLC and PRC above
+are the left and right contexts of both the lexical and (correct)
+surface levels.  Only the 
+<!-- MATH: $\Rightarrow$ -->
+<EQN/>
+is used (error is not obligatory).
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>    The Model
+</HEADER>
+<DIV ID="2.2.1" DEPTH="3" R-NO="1"><HEADER>  Finding the error </HEADER>
+<P>
+Morphological analysis is first called with the assumption that
+the word is free of errors.  If this fails, analysis is attempted
+again without the `no error' restriction.
+The error rules are then considered when ordinary
+morphological rules fail.  If no error rules succeed, or lead to
+a successful partition of the word, analysis backtracks to try the
+error rules at successively earlier points in the word.
+</P>
+<P>
+For purposes of simplicity and because on the whole is it likely that
+ words will contain no more than one error <REF/>,<REF/>, normal `no error' analysis
+usually resumes if an error rule succeeds.  The exception occurs with
+ a vowel shift error (<CREF/>).  If this error rule succeeds, an expectation of further shifted vowels is set up, but no other error
+rule is allowed in the subsequent partitions.  For this reason rules
+are marked as to whether they can occur more than once.
+</P>
+</DIV>
+<DIV ID="2.2.2" DEPTH="3" R-NO="2"><HEADER>  Suggesting a correction </HEADER>
+<P>
+Once an error rule is selected, the corrected surface is substituted for
+the error surface, and normal analysis continues - at the same position.
+The substituted surface may be in the form of a variable, which
+is then ground by the normal analysis sequence of lexical matching over
+the lexicon tree. In this way only lexical words are considered, as
+the variable letter can only be instantiated to letters branching out
+from the current position on the lexicon tree.  Normal prolog backtracking
+to explore alternative rules/lexical branches applies throughout.
+</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    Error Checking in Arabic
+</HEADER>
+<P>
+We demonstrate our model on the Arabic verbal stems shown in (4)
+ <REF/>. Verbs are classified according to their <EQN/>
+(M): there are 15
+trilateral measures and 4 quadrilateral ones.  Moving horizontally
+across the table, one notices a change in vowel melody (active {a},
+passive {ui}); everything else remains invariant.  Moving
+vertically, a change in canonical pattern occurs; everything else
+remains invariant.
+</P>
+<P>
+ Subsection <CREF/> presents a simple two-level grammar which  describes the above data. Subsection <CREF/> presents error checking.
+</P>
+<P>
+<EQN/>
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>    Two-Level Rules
+</HEADER>
+<P>
+The lexical level maintains three lexical tapes
+ <REF/>,<REF/>: pattern tape, root tape and vocalism tape; each tape scans a lexical tree. Examples of pattern morphemes
+are: {c1v1c2v1c3} (M 1),
+{c1c2v1nc3v2c4} (M Q3). The root morphemes
+are {ktb} and {<EQN/>}, and the vocalism morphemes are {a}
+(active) and {ui} (passive).
+</P>
+<P>
+The following two-level grammar handles the above data. Each lexical
+expression is a triple; lexical expressions with one symbol assume
+<!-- MATH: $\varepsilon$ -->
+<EQN/>
+on the remaining positions.
+<EQN/>
+</P>
+<P>
+(4) gives three general rules: R0
+allows any character on the first lexical tape to surface,
+e.g. infixes, prefixes and suffixes.  R1 states that any P <EQN/>{c1, c2, c3, c4} on the first (pattern) tape and C on
+the second (root) tape with no transition on the third (vocalism) tape
+corresponds to C on the surface tape; this rule sanctions consonants.
+Similarly, R2 states that any P <EQN/>
+{v1, v2} on the pattern
+tape and V on vocalism tape with no transition on the root tape
+corresponds to V on the surface tape; this rule sanctions vowels.
+<EQN/>
+(4) gives two boundary rules: R3 is used for non-stem
+morphemes, e.g. prefixes and suffixes. R4 applies to stem morphemes
+reading three boundary symbols simultaneously; this marks the end of a
+stem. Notice that LLC ensures that the right boundary rule is invoked
+at the right time.
+</P>
+<P>
+Before embarking on the rest of the rules, an illustrated example
+seems in order. The derivation of <EQN/> (M Q5,
+passive), from the three morphemes
+{c1c2v1nc3v2c4}, {<EQN/>} and {ui}, and the
+suffix {a} `3rd person' is illustrated in (5).
+<EQN/>
+The numbers between the surface tape and the lexical tapes indicate the rules
+which sanction the moves.
+<EQN/>
+Resuming the description of the grammar, (5) presents spreading
+rules. Notice the use of ellipsis to indicate that there can be tuples
+separating  LEX and LLC, as far as the tuples in LLC are the nearest ones
+to  LEX. R5 sanctions the spreading (and gemination) of consonants. R6
+sanctions the spreading of the first vowel. Spreading examples appear in
+(6).
+<EQN/>
+</P>
+<P>
+The following rules allow for the different possible orthographic
+vocalisations in Semitic texts:  
+<EQN/>
+where <EQN/>
+= (v1,
+<!-- MATH: $\varepsilon$ -->
+<EQN/>,V)<EQN/>(Pc1,C1,
+<!-- MATH: $\varepsilon$ -->
+<EQN/>)
+and
+<EQN/>
+= (Pc2,C2,
+<!-- MATH: $\varepsilon$ -->
+<EQN/>).
+</P>
+<P>
+R7 and R8 allow the optional deletion of short vowels in non-stem and
+stem morphemes, respectively; note that the lexical contexts make sure
+that long vowels are not deleted. R9 allows the optional deletion of a
+short vowel what is the cause of spreading.
+For example the rules sanction both /katab/ (M 1, active) and /kutib/
+(M 1, passive) as interpretations of <EQN/>ktb<EQN/>
+as showin in
+(7).
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>    Error Rules
+</HEADER>
+<P>
+Below are outlined error rules resulting from peculiarly Semitic
+problems.  Error rules can also be constructed in a similar vein to
+deal with typographical Damerau error (which also take care of the
+issue of wrong vocalisms).
+</P>
+<P>
+<EQN/>
+</P>
+<DIV ID="3.2.1" DEPTH="3" R-NO="1"><HEADER>    Vowel Shift
+</HEADER>
+<P>
+A vowel shift error rule will be tried with a partition on a (short)
+vowel which is not an expected (lexical) vowel at that position.
+Short vowels can legitimately be omitted from an orthographic representation
+- it is this fact which contributes to the problem of vowel shifts.
+A vowel is considered shifted if the same vowel has been omitted
+earlier in the word.  The rule deletes the vowel from the surface. Hence
+in the next pass of (normal) analysis, the partition is analysed as
+a legitimate omission of the <EQN/>
+vowel.  This prepares for the next
+shifted vowel to be treated in exactly the same way as the first. The
+expectation of this reapplication is allowed for in reap = y.
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+In the rules above, `X' is the shifted vowel.  It is deleted from the surface.
+The partition contextual tuples consist of  [RULE NAME, SURF, LEX].  The
+ LEX element is a tuple itself of  [PATTERN, ROOT, VOCALISM].
+In E0 the shifted vowel was analysed earlier as an omitted stem vowel
+(om_stmv),
+whereas in E1 it was analysed earlier as an omitted spread vowel (om_sprv).
+The surface/lexical restrictions in the contexts could be written out
+in more detail, but both rules make use of the fact that those
+contexts are analysed by other partitions, which check that they meet the
+conditions for an omitted stem vowel or omitted spread vowel.
+</P>
+<P>
+For example, *<EQN/><EQN/><EQN/>
+will be interpreted as <EQN/><EQN/><EQN/>.
+The `E0's on the rule number line indicate where the vowel shift rule was
+applied to replace an error surface vowel with 
+<!-- MATH: $\varepsilon$ -->
+<EQN/>.
+The error surface vowels
+are written in italics.
+</P>
+<P>
+<EQN/>
+</P>
+</DIV>
+<DIV ID="3.2.2" DEPTH="3" R-NO="2"><HEADER>  Deleted Consonant </HEADER>
+<P>
+Problems resulting from phonetic syncopation can be treated as
+accidental omission of a consonant, e.g.  *<EQN/><EQN/>,
+<EQN/><EQN/>.
+<EQN/>
+</P>
+</DIV>
+<DIV ID="3.2.3" DEPTH="3" R-NO="3"><HEADER>  Deleted Long Vowel </HEADER>
+<P>
+Although the error probably results from a different fault, a deleted
+long vowel can be treated in the same way as a deleted consonant.
+With current transcription practice, long vowels are commonly written
+as two characters - they are possibly better represented as a single,
+distinct character.
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The form *<EQN/>tuktib<EQN/>
+can be interpreted as either <EQN/>tukuttib<EQN/>
+with a deleted consonant (geminated `t') or <EQN/>tukuutib<EQN/>
+with a deleted long vowel.
+</P>
+<P>
+<EQN/>
+</P>
+</DIV>
+<DIV ID="3.2.4" DEPTH="3" R-NO="4"><HEADER>  Substituted Consonant </HEADER>
+<P>
+One type of morphographemic error is that consonant substitution may
+not take place before appending a suffix.  For example /samaa<EQN/>/
+`heaven' + {iyy} `relative adjective' surfaces as <EQN/>samaawiyy<EQN/>,
+where <EQN/>
+<!-- MATH: $\rightarrow$ -->
+<EQN/>
+w in the given context. A common
+mistake is to write it as *<EQN/>samma<EQN/>iyy<EQN/>.
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The `glottal_change' rule would be a normal morphological spelling change
+rule, incorporating contextual constraints (e.g. for the morpheme boundary)
+as necessary.
+</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>   Broken Plurals, Diminutive and Deverbal Nouns
+</HEADER>
+<P>
+This section deals with morphosyntactic errors which are independent
+of the two-level analysis. The data described below was obtained from
+ Daniel Ponsford (personal communication), based on <REF/>. 
+</P>
+<P>
+Recall that a Semitic stems consists of a root morpheme and a
+vocalism morpheme arranged according to a canonical pattern morpheme.
+As each root does not occur in all vocalisms and patterns, each
+lexical entry is associated with a feature structure which indicates
+<EQN/>
+the possible patterns and vocalisms for a particular
+root. Consider the nominal data in (8).
+<EQN/>
+Patterns marked with * are morphologically plausible, but do not occur
+lexically with the cited nouns. A common mistake is to choose the wrong
+pattern.
+</P>
+<P>
+In such a case, the two-level model succeeds in finding two-level
+analyses of the word in question, but fails when parsing the word
+morphosyntactically: at this stage, the parser is passed a root,
+vocalism and pattern whose feature structures do not unify.
+</P>
+<P>
+Usually this feature-clash situation creates the problem of which
+ constituent to give preference to <REF/>.  Here the vocalism indicates the inflection (e.g. broken plural) and the preferance of
+vocalism pattern for that type of inflection belongs to the root.  For
+example *<EQN/>kidaas<EQN/>would be analysed as root {kds} with
+a broken plural vocalism.  The pattern type of the vocalism clashes
+with the broken plural pattern that the root expects.  To correct, the
+morphological analyser is executed in generation mode to generate the
+broken plural form of {kds} in the normal way.
+</P>
+<P>
+The same procedure can be applied on diminutive and deverbal nouns.
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>   Conclusion
+</HEADER>
+<P>
+The model presented corrects errors resulting from combining
+nonconcatenative strings as well as more standard morphological or
+spelling errors.  It covers Semitic errors relating to vocalisation,
+diacritics,
+phonetic syncopation and morphographemic idiosyncrasies.  Morphosyntactic
+issues of broken plurals, diminutives and deverbal nouns can be handled
+by a complementary correction strategy which also depends on morphological
+analysis.
+</P>
+<P>
+Other than the economic factor, an important advantage of combining
+morphological analysis and error detection/correction is the way the lexical
+tree associated with the analysis can be used to determine correction
+possibilities.
+The morphological analysis proceeds by selecting rules that
+hypothesise lexical strings for a given surface string. The rules are
+accepted/rejected by checking that the lexical string(s) can extend
+along the lexical tree(s) from the current position(s).  Variables
+introduced by error rules into the surface string are then instantiated by
+associating surface with lexical, and matching lexical strings to
+the lexicon tree(s).  The system is unable to consider correction
+characters that would be lexical impossibilities.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Acknowledgements </HEADER>
+<P>
+The authors would like to thank their supervisor Dr Stephen
+Pulman. Thanks to Daniel Ponsford for providing data on the broken
+plural and Nuha Adly Atteya for discussing Arabic examples.
+</P>
+<DIV ID="6.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Abduh, D. (1990).
+<EQN/>
+[Difficulties in automatic spell
+  checking of Arabic].
+In <EQN/>.
+In Arabic.
+</P>
+<P>
+Damerau, F. (1964).
+A technique for computer detection and correction of spelling errors.
+<EQN/>,
+7(3):171-6.
+</P>
+<P>
+Goldsmith, J. (1976).
+<EQN/>.
+PhD thesis, MIT.
+Published as <EQN/>,
+Oxford 1990.
+</P>
+<P>
+Kay, M. (1987).
+Nonconcatenative finite-state morphology.
+In <EQN/>,
+pages 2-10.
+</P>
+<P>
+Kiraz, G.
+Computational analyses of Arabic morphology.
+Forthcoming in Narayanan, A. and Ditters, E., editors, <EQN/>.
+Intellect. Article <EQN/>
+in <EQN/>
+archive.
+</P>
+<P>
+Kiraz, G. (1994).
+Multi-tape two-level morphology: a case study in Semitic non-linear
+  morphology.
+In <EQN/>,
+volume 1, pages 180-6.
+</P>
+<P>
+Kiraz, G. and Grimley-Evans, E. (1995).
+Compilation of n:1 two-level rules into finite state automata.
+Manuscript.
+</P>
+<P>
+Langer, H. (1990).
+Syntactic normalization of spontaneous speech.
+In <EQN/>,
+pages 180-3.
+</P>
+<P>
+McCarthy, J. (1981).
+A prosodic theory of nonconcatenative morphology.
+<EQN/>,
+12(3):373-418.
+</P>
+<P>
+Pollock, J. and Zamora, A. (1983).
+Collection and characterization of spelling errors in scientific and
+  scholarly text.
+<EQN/>,
+  34(1):51-8.
+</P>
+<P>
+Pulman, S. and Hepple, M. (1993).
+A feature-based formalism for two-level phonology: a description and
+  implementation.
+<EQN/>,
+7:333-58.
+</P>
+<P>
+Wehr, H. (1971).
+<EQN/>.
+Spoken Language Services, Ithaca.
+</P>
+<DIV ID="6.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  <EQN/>
+  <EQN/>
+  We have used the CV model
+         to describe pattern morphemes instead of prosodic terms
+         because of its familiarity in the computational linguistics
+         literature. For the use of moraic and affixational models in
+         handling Arabic morphology computationally, see
+          <REF/>. 
+  `Mothers of reading', these are
+         consonantal letters which play the role of long vowels, and
+         are represented in the pattern morpheme by VV (e.g. /aa/,
+         /uu/, /ii/).  <EQN/>
+cannot be omitted from
+         the orthographic string.
+  When
+         indefinite, nouns and adjectives end in a <EQN/>
+[n]
+         which is represented in the <EQN/>
+form by
+         special diacritics.
+  For other issues with respect to
+           syntactic dependencies, see <REF/>. 
+  Our
+implementation interprets rules directly; hence, we allow 
+<!-- MATH: $\varepsilon$ -->
+<EQN/>.
+If
+the rules were to be compiled into automata, a genuine symbol, e.g. 0,
+must be used. For the compilation of our formalism into automata, see
+ <REF/>. 
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

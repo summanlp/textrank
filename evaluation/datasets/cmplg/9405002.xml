@@ -1,0 +1,343 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>TEMPORAL RELATIONS: REFERENCE OR DISCOURSE COHERENCE?</TITLE>
+<ABSTRACT>
+<P>
+The temporal relations that hold between events described by
+successive utterances are often left implicit or underspecified.  We
+address the role of two phenomena with respect to the recovery of
+these relations: (1) the referential properties of tense, and (2) the
+role of temporal constraints imposed by coherence relations.  We
+account for several facets of the identification of temporal
+relations through an integration of these.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Introduction </HEADER>
+<P>
+Tense interpretation has received much attention in linguistics
+ <REF/>,<REF/>,<REF/>, inter alia] and natural language processing
+ <REF/>,<REF/>,<REF/>, inter alia]. Several researchers
+ <REF/>,<REF/>,<REF/>,<REF/> have sought to explain the temporal relations induced by tense by treating
+it as anaphoric, drawing on Reichenbach's separation between event,
+ speech, and reference times <REF/>.  Specifically, to account for the forward progression of time induced by
+successive simple past tenses in a narrative, they treat the simple
+past as referring to a time evoked by a previous past tense.  For
+instance, in Hinrichs's <REF/> proposal,
+ accomplishments and achievements introduce a new reference point that is temporally ordered after the time of the event itself, ``ensuring
+that two consecutive accomplishments or achievements in a discourse
+are always ordered in a temporal sequence.''
+On the other hand, Lascarides and Asher <REF/> take the
+view that temporal relations are resolved purely as a by-product of
+reasoning about coherence relations holding between utterances, and in
+doing so, argue that treating simple and complex tenses as
+anaphoric is unnecessary.  This approach parallels the treatment of
+pronoun resolution espoused by Hobbs <REF/>, in which
+pronouns are modeled as free variables that are bound as a by-product
+of coherence resolution.  The Temporal Centering framework
+ <REF/> integrates aspects of both approaches, but patterns with the first in treating tense as
+anaphoric.
+</P>
+<P>
+We argue that aspects of both analyses are necessary to account for
+the recovery of temporal relations.  To demonstrate our approach we
+ will address the following examples; passages (<CREF/>-b) are taken from Lascarides and Asher <REF/>:
+</P>
+<P>
+  Max slipped.  He spilt a bucket of water. 
+</P>
+<P>
+Max slipped.  He had spilt a bucket of water.
+</P>
+<P>
+Max slipped because he spilt a bucket of water.
+</P>
+<P>
+Max slipped because he had spilt a bucket of water.
+ Passage (<CREF/>) is understood as a narrative, indicating that the spilling was subsequent to the slipping.  Passages
+ (<CREF/>-d) are instead understood as the second clause explaining the first, indicating that the reverse temporal ordering holds.  We address two related questions; the first arises from
+treating the simple past as anaphoric.  Specifically, if a treatment
+such as Hinrichs's is used to explain the forward progression of time
+ in example (<CREF/>), then it must be explained why sentence  (<CREF/>) is as felicitous as sentence (<CREF/>).  That is, one would predict a clash of temporal relations for sentence
+ (<CREF/>), since the simple pasts induce the forward progression of time but the conjunction indicates the reverse temporal ordering.
+The second question arises from assuming that all temporal relations
+are recovered solely from reasoning with coherence relations.
+Specifically, because the use of the simple past in passage
+ (<CREF/>) is as felicitous as the past  perfect in passage (<CREF/>) under the explanation interpretation (in these cases indicated explicitly by because),
+ then it must be explained why passage (<CREF/>) is not  understood as an explanation as is passage (<CREF/>), where in each case the relationship needs to be inferred.  We present our
+analysis in the next section, and account for these facts in
+Section 3.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  The Account </HEADER>
+<P>
+We postulate rules characterizing the referential nature of tense and
+the role of discourse relations in further constraining the temporal
+relations between clauses.  The rules governing tense are:
+</P>
+<P>
+1.
+Main verb tenses are indefinitely referential, creating a new temporal
+entity under constraints imposed by its type (i.e., past,
+present, or future) in relation to a discourse reference
+ time tR.  For instance, a main verb past tense introduces a new temporal entity t under the constraint
+prior-to(t,tR).  For simple tenses tR is the speech
+time, and therefore simple tenses are not anaphoric.
+</P>
+<P>
+2.
+Tensed auxiliaries in complex tenses are anaphoric, identifying
+tR as a
+previously existing temporal entity.  The indefinite main verb tense
+is then ordered with respect to this tR.
+The tenses used may not completely specify the implicit temporal
+relations between the described events.  We claim that these relations
+may be further refined by constraints imposed by the coherence
+relation operative between clauses.  We describe three coherence
+relations relevant to the examples in this paper and give
+ temporal constraints for them. 
+</P>
+<P>
+Narration:
+</P>
+<P>
+The Narration relation is characterized by a series of events
+displaying forward movement of time, such as in passage
+ (<CREF/>). As did Lascarides and Asher <REF/>, we capture this ordering as a constraint imposed by the Narration
+ coherence relation itself: 
+</P>
+<P>
+If 
+<!-- MATH: $Narration(A,B)$ -->
+Narration(A,B) then 
+<!-- MATH: $t_{A} < t_{B}$ -->
+tA [ tB
+</P>
+<P>
+Parallel:
+</P>
+<P>
+The Parallel relation relates utterances that share a common topic.  This
+relation does not impose constraints on the temporal relations between the
+events beyond those provided by the tenses themselves.  For instance,
+ if passage (<CREF/>) was uttered in response to the question What bad things happened to Max today? (inducing a Parallel
+relation instead of Narration), a temporal ordering among the
+sentences is no longer implied.
+</P>
+<P>
+Explanation:
+</P>
+<P>
+The Explanation relation denotes a cause-effect relationship with
+ reversed clause ordering, as in sentences (<CREF/>-d). Therefore, the second event is constrained to preceding the
+first:
+</P>
+<P>
+If Explanation(A,B) then 
+<!-- MATH: $t_{B} < t_{A}$ -->
+tB [ tA
+</P>
+<P>
+To summarize the analysis, we claim that tense operates as indefinite
+reference with respect to a possibly anaphorically-resolved discourse
+reference time.  The temporal relations specified may be further
+refined as a by-product of establishing the coherence relationship
+extant between clauses, Narration being but one such relation.
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  Examples </HEADER>
+<P>
+We now analyze the examples presented in Section 1, repeated below,
+using this approach:
+</P>
+<P>
+  Max slipped.  He spilt a bucket of water. 
+</P>
+<P>
+Max slipped.  He had spilt a bucket of water.
+</P>
+<P>
+Max slipped because he spilt a bucket of water.
+</P>
+<P>
+Max slipped because he had spilt a bucket of water.
+</P>
+<P>
+The implicit ordering on the times indefinitely evoked by the simple
+ pasts in passage (<CREF/>) results solely from understanding it  as a Narration.  In passage (<CREF/>), the auxiliary had refers to the event time of the slipping, and thus the past tense on
+spill creates a temporal entity constrained to precede that
+time.  This necessitates a coherence relation that is consistent with this
+temporal order, in this case, Explanation.  In passage
+ (<CREF/>), the times evoked by the simple pasts are further ordered by the Explanation relation indicated by because,
+resulting in the backward progression of time.  In passage
+ (<CREF/>), both the tense and the coherence relation order the times in backward progression.
+</P>
+<P>
+Restating the first problem noted in Section 1, if treating the simple
+past as anaphoric is used to account for the forward progression of
+ time in passage (<CREF/>), then one would expect the existence  of the Explanation relation in passage (<CREF/>) to cause a  temporal clash, where in fact passage (<CREF/>) is perfectly felicitous.  No clash of temporal relations is predicted by our
+account, because the use of the simple pasts do not in
+themselves imply a specific ordering between them.  The Narration
+relation orders the times in forward progression in passage
+ (<CREF/>) and the Explanation relation orders them in backward  progression in passage (<CREF/>). The Parallel relation would specify no ordering (see the potential context for passage
+ (<CREF/>) given in Section 2). 
+</P>
+<P>
+Restating the second problem noted in Section 1, if temporal relations
+can be recovered solely from reasoning with coherence relations, and
+ the use of the simple past in passage (<CREF/>) is as felicitous as the past perfect in passage
+ (<CREF/>) under the Explanation interpretation, then one asks  why passage (<CREF/>) is not understood as an Explanation as is  passage (<CREF/>), where in each case the relationship needs to be inferred.  We hypothesize that hearers assume that speakers are
+engaging in Narration in absence of a specific cue to the contrary.
+ The use of the past perfect (as in passage (<CREF/>)) is one such cue since it implies reversed temporal ordering; the use of an
+explicit conjunction indicating a coherence relation other than
+ Narration (as in passages (<CREF/>-d)) is another such cue.  While passage (<CREF/>) could be understood as an Explanation on semantic grounds, the hearer assumes Narration since no other
+relation is cued.
+</P>
+<P>
+We see several advantages of this approach over that of Lascarides and
+Asher <REF/>.  First, LA note the
+ incoherence of example (<CREF/>) ? Max poured a cup of coffee.  He had entered the room.
+   in arguing that the past perfect should not be treated as anaphoric:
+Theories that analyse the distinction between the
+simple past and pluperfect purely in terms of different relations
+between reference times and event times, rather than in terms of
+ event-connections, fail to explain why [(<CREF/>)] is acceptable  but [(<CREF/>)] is awkward.  <REF/>, pg. 470]  Example (<CREF/>) indeed shows that coherence relations need to be utilized to account for temporal relations, but it does not bear on
+the issue of whether the past perfect is anaphoric.  The incoherence
+ of example (<CREF/>) is predicted by both their and our accounts by virtue of the fact that there is no coherence relation that
+ corresponds to Narration with reverse temporal ordering. In addressing this example, LA specify a special rule (the Connections When
+Changing Tense (CCT) Law) that stipulates that a sentence containing
+the simple past followed by a sentence containing the past perfect can
+be related only by a subset of the otherwise possible coherence relations.
+However, this subset contains just those relations that are predicted
+to be possible by accounts treating the past perfect as anaphoric;
+they are the ones that do not constrain the temporal order of the
+events against displaying backward progression of time.  Therefore, we
+see no advantages to adopting their rule; furthermore,
+they do not comment on what other laws have to be stipulated to
+account for the facts concerning other possible tense combinations.
+</P>
+<P>
+Second, to explain why the Explanation relation can be inferred for
+ passage (<CREF/>) but not for passage (<CREF/>), LA stipulate that their causal Slipping Law
+(stating that spilling can cause slipping) requires that the CCT Law
+be satisfied.  This constraint is imposed only to require that the
+second clause contain the past perfect instead of the simple past.
+However, this does not explain why the use of the simple past is
+perfectly coherent when the Explanation relationship is indicated
+ overtly as it is in sentence (<CREF/>), nor do they adequately explain why CCT must be satisfied for this causal law and not for
+those supporting similar examples for which they successfully
+infer an unsignaled Explanation relation (see discussion of example
+(2), pg. 463).
+</P>
+<P>
+Third, the LA account does not explain why the
+past perfect cannot stand alone nor discourses generally be opened
+ with it; consider stating sentence (<CREF/>) in isolation: 
+</P>
+<P>
+ Max had spilt a bucket of water.  Intuitively, such usage is infelicitous because of a dependency on a
+contextually salient time which has not been previously introduced.
+This is not captured by the LA account because
+sentences containing the past perfect are treated as sententially
+equivalent to those containing the simple past.  On the other hand,
+sentences in the simple past are perfectly felicitous in standing
+alone or opening a discourse, introducing an asymmetry in accounts
+treating the simple past as anaphoric to a previously evoked time.
+All of these facts are explained by the account given here.
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Conclusion </HEADER>
+<P>
+We have given an account of temporal relations whereby (1) tense is
+resolved indefinitely with respect to a possibly
+anaphorically-resolved discourse reference time, and (2) the resultant
+temporal relations may be further refined by constraints that
+coherence relations impose.  This work is being expanded to
+address issues pertaining to discourse structure and inter-segment
+coherence.
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Acknowledgments </HEADER>
+<P>
+This work was supported in part by National Science Foundation Grant
+IRI-9009018, National Science Foundation Grant IRI-9350192, and a
+grant from the Xerox Corporation.  I would like to thank Stuart
+Shieber and Barbara Grosz for valuable discussions and comments on
+earlier drafts.
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Erhard Hinrichs.
+1986.
+Temporal anaphora in discourses of english.
+Linguistics and Philosophy, 9:63-82.
+</P>
+<P>
+Jerry Hobbs.
+1979.
+Coherence and coreference.
+Cognitive Science, 3:67-90.
+</P>
+<P>
+Megumi Kameyama, Rebecca Passoneau, and Massimo Poesio.
+1993.
+Temporal centering.
+In Proceedings of the 31st Conference of the Association for
+  Computational Linguistics (ACL-93), pages 70-77, Columbus, Ohio, June.
+</P>
+<P>
+Alex Lascarides and Nicolas Asher.
+1993.
+Temporal interpretation, discourse relations, and common sense
+  entailment.
+Linguistics and Philosophy, 16(5):437-493.
+</P>
+<P>
+John Nerbonne.
+1986.
+Reference time and time in narration.
+Linguistics and Philosophy, 9:83-95.
+</P>
+<P>
+Barbara Partee.
+1984.
+Nominal and temporal anaphora.
+Linguistics and Philosophy, 7:243-286.
+</P>
+<P>
+Hans Reichenbach.
+1947.
+Elements of Symbolic Logic.
+Macmillan, New York.
+</P>
+<P>
+Bonnie Lynn Webber.
+1988.
+Tense as discourse anaphor.
+Computational Linguistics, 14(2):61-73.
+</P>
+<DIV ID="5.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  We will limit the scope of
+this paper by restricting the discussion to accomplishments and
+achievements.
+  This term is borrowed from Kameyama et al.
+<REF/>.
+  We assume here that the two
+clauses in question are related directly by a coherence relation.
+This may not be the case; for instance the use of a past perfect may
+signal the start of an embedded discourse segment, as in Webber's
+ flower shop example <REF/>,<REF/>.  How this account is to be extended to address coherence at the discourse segment level
+is the subject of future work.
+  The Cause-Effect relation
+also has this ordering constraint.
+  For
+instance, in the same way that Explanation corresponds to Cause-Effect
+with reverse temporal ordering.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

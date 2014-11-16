@@ -1,0 +1,867 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Integrating Gricean and Attentional Constraints</TITLE>
+<ABSTRACT>
+<P>
+This paper concerns how to generate and understand
+discourse anaphoric noun phrases.
+I present the results of an
+analysis of all discourse anaphoric noun phrases (N=1,233) in a corpus of ten
+narrative monologues, where the choice between a definite
+pronoun or phrasal NP conforms largely to
+Gricean constraints on informativeness.  I discuss Dale 
+Reiter's [] recent model and show how it can be
+augmented for understanding as well as generating the range of data
+presented here.  I argue that integrating
+ centering <REF/> <REF/> with this model can be applied uniformly to discourse anaphoric pronouns and phrasal
+NPs.  I conclude with a hypothesis for
+addressing the interaction between local and
+global discourse processing.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>    Introduction
+</HEADER>
+<P>
+This paper concerns how to generate and understand discourse anaphoric
+noun phrases, or noun phrases (NPs) that evoke a discourse entity
+already in the discourse model (Webber webber78).
+Dale dale89 dale92 implements Gricean
+constraints on informativeness for generating discourse anaphoric NPs.
+However, his model follows the tradition of assuming that distinct
+constraints govern pronouns versus phrasal NPs
+ (cf. <REF/> <REF/>). Centering gjw83 kameyama85, a model of local
+attentional state sidner79, has been applied primarily to
+definite pronouns.  I argue that Gricean constraints should be applied
+equally to discourse anaphoric pronouns and phrasal NPs, and that
+integrating centering and informational constraints covers a broader
+ range of cases.  In <CREF/>, I present an analysis of all discourse anaphoric NPs (N=1,233) in a corpus of ten narratives
+showing that semantic explicitness depends largely on informational
+constraints.  Discourse anaphoric NPs almost never provide new
+information, and are rarely more informative than necessary.  In
+ <CREF/>, I show how Dale  Reiter's dalereiter94 generation model can be augmented to apply uniformly to pronouns and
+phrasal NPs for both generation and understanding.  While centering
+has been used to account for informationally under-specified pronouns,
+I argue that centering also accounts for certain over-specified
+ phrasal NPs.  In <CREF/>, I integrate centering with the augmented Gricean model and discuss the extended coverage.  Results in
+ <CREF/> include a one-way correlation of overly informative discourse anaphoric NPs with shifts in global discourse structure.  In
+the conclusion, I discuss directions for extending the integrated
+model in ways that might indirectly account for this correlation.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>    Analysis of a Coded Corpus
+</HEADER>
+<P>
+In this section, I present the results of an analysis of all discourse
+anaphoric NPs in a corpus of spoken narratives directed at the
+question of how informative NPs are, relative to their contexts of
+occurrence.  The first subsection describes the corpus and coding
+features. The next subsection presents results showing that discourse
+anaphoric NPs in the corpus, whether pronominal or phrasal, are rarely
+more informative than necessary, and if so, tend to occur at shifts in
+global discourse structure.
+</P>
+<P>
+ Fig. <CREF/> identifies four possibilities regarding the semantic informativeness of an NP relative to its context.  Three of them
+pertain to the following Gricean principles, referred to by
+Dale dale89 as informational adequacy and efficiency: the
+speaker should be sufficiently informative to unambiguously identify
+the intended referent (adequacy), and the speaker should be no more
+informative than necessary (efficiency).  The boxed pronouns in (2a)
+ of Fig. <CREF/> are both adequate and efficient (well-specified): it is clear what the pronouns refer to; less informative forms (zero
+pronouns) would be ungrammatical.  The phrasal NPs in (2b) are
+adequate but not efficient (over-specified).  The pronominal NP in
+(2c) is inadequate (under-specified; efficiency does not apply to
+inadequate NPs): ``it'' could refer either to the ladder or the
+tree. A fourth possibility is that an NP may perform two functions, to
+identify the referent and to add information about it, as in (2d)
+ (over-determined). In Fig. <CREF/>, the feature +/- increasing distinguishes between over-determined and over-specified NPs.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<DIV ID="2.1" DEPTH="2" R-NO="1"><HEADER>  Data Coding </HEADER>
+<P>
+The corpus consists of ten narrations from Chafe's Pear
+stories chafe80.  Chafe recorded and transcribed subjects who
+had been asked to view the same movie and describe it to a second
+person.  The movie contained seven sequential episodes about a man
+picking pears. It had a vivid sound track, but no language.  As part
+of a long term study of the relationship between linguistic features
+and discourse structure []
+ [] [],
+discourse anaphoric NPs in the corpus had already been coded for
+coreference relations and location.  Location of an NP is represented
+here in terms of the containing sentential utterance and discourse
+ segment, as described below.  Fig. <CREF/> illustrates an excerpt. 
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+Chafe chafe80 identified three types of prosodic phrases from
+graphic displays of intonation contours.  A period indicates a phrase
+terminated by a pitch fall, a question mark indicates final level or
+rising pitch, and a comma indicates phrase final--not
+sentence-final--intonation.  The transcriptions here show all repeated
+and incomplete words and phrases, non-lexical articulations such as
+``uh, um, tsk'', and vowel lengthening as indicated by `-'.  Pause
+locations are shown as `[ps]'.
+</P>
+<P>
+Sentential utterances are defined be a non-overlapping sequence of
+units that completely covers the discourse.  Briefly, a new sentential
+utterance begins with a functionally independent clause (FIC) if it is
+immediately adjacent to the preceding FIC.  Otherwise it begins at the
+onset of the prosodic phrase where the next FIC begins.  An FIC is a
+tensed clause that is not a verb argument, a restrictive relative
+clause, or one of a set of formulaic ``interjection'' clauses (e.g.,
+``You know'' with no clausal argument; for full details
+ cf. <REF/>).  Material between clauses includes sentence or word fragments, and non-lexical articulations (e.g.,
+``um'').  Locations and sequence numbers of the seven sentential
+ utterances in Fig. <CREF/> are shown in column 2. 
+</P>
+<P>
+The global context is structured into sequential segments,
+multi-utterance units whose utterances are presumed to be more related
+to one another semantically and pragmatically than to other
+ utterances.  The segments numbered 6-8 (col. 1 of Fig. <CREF/>) were derived from an empirical study described
+in []. Each narrative was segmented by 7 new,
+untrained subjects.  Subjects were instructed to place segment
+boundaries in transcripts whenever the narrator had finished one
+communicative task and begun a new one.  They were restricted to
+placing boundaries between prosodic phrases.  To focus their attention
+on the criterion, subjects' were also instructed to label segments
+with a brief description of the speaker's intention.
+</P>
+<P>
+The size and number of segments per subject per narrative varied widely,
+from a rate of 5.5% to 41.3% (Avg.=16%), with segment widths ranging
+from 1 to 49 phrases (Avg.=5.9).  Despite this variation, the number of
+times 4 to 7 subjects assigned boundaries in the same place was
+extremely significant (using Cochran's Q cochran50;
+cf. []).  We took agreement among at least 4
+subjects as the threshold for empirically validated boundaries.
+</P>
+<P>
+A surface constituent is considered to be a discourse anaphoric NP if
+it occurs in free variation with syntactically prototypical NPs, and
+ corefers with a preceding NP (cf. <REF/>).  One type of empty category is also included, namely zero pronoun subjects of
+ FICs conjoined by ``,'', ``and'', etc.  In Fig. <CREF/>, the sequence of coreferential NPs used to refer to the little boy are
+ coindexed.  Segments 7 and 8 in Fig. <CREF/> both begin with an utterance containing an NP referring to the boy.  At the onset of
+segment 7, a phrasal NP is used to refer to him (U30) whereas at
+the onset of segment 8 (U33), a definite pronoun is used.  But
+a pronoun could have replaced the phrasal NP in U30 with no
+loss of information.  So the phrasal NP is over-specified but
+not over-determined; the attributes ``boy'' and ``little''
+were already mentioned in U28.  The pronoun subject in U33is locally well-specified because the boy is the only animate entity
+mentioned in U32; it is globally well-specified because the boy
+is the only entity in the discourse with a bicycle.
+</P>
+</DIV>
+<DIV ID="2.2" DEPTH="2" R-NO="2"><HEADER>    Analysis of Informational Constraints
+</HEADER>
+<P>
+The goal of the analysis is to determine whether relative
+informativeness of NPs correlates with global discourse structure
+ (cf. <REF/> <REF/>). Any phrasal NP that is discourse anaphoric is potentially
+over-specified, whereas a definite pronoun will only be over-specified
+if a zero pronoun could have been used.  I first sorted the discourse
+anaphoric NPs in the corpus (N=1,233) into the three categories of
+phrasal NPs (PhrNPs; N=563), explicit pronouns (PROs: definite,
+indefinite, demonstrative; N=544), and zero pronominals (ZPs; N=126).
+Then I identified all pairs of coindexed NPs where NP2 was more
+explicit than NP1.  This procedure identified 128 discourse
+anaphoric NPs in the corpus that were potentially over-specified or
+over-determined.  The sole over-determined NP, illustrated in
+ Fig. <CREF/>, occurs relatively late in the narrative (U85); it seems mainly to provide contrast (cf. ``that old man'' vs. those little boys'').
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+Potentially over-specified NPs were sorted into four mutually exclusive
+categories--well-specified, segment onset, attentional shift, and
+reiterative.  A potentially over-specified NP is well-specified if a
+less explicit form would have been ambiguous or unclear.  The containing
+utterance is included in the context since the proposition expressed in
+an utterance can disambiguate a referring expression.  A potentially
+over-specified NP that is not well-specified, but which occurs in the
+first utterance of a new segment, is classified as a segment onset.  The
+segments in the coded Pear corpus arguably contain intra-segmental
+shifts of attention associated with changes in temporal aspect, or
+shifts in discourse reference time (for definitions assumed here,
+cf. []). The third category, attentional shift,
+consists of these cases.  A fourth catch-all category includes, e.g.,
+repetitions, repairs, contrastive NPs and unexplained cases.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+ Table <CREF/> indicates that most potentially over-specified NPs (N=127) were either well-specified (46%) or occur at an empirically
+verified segment onset (16%) or a hypothesized attentional shift
+(23%).  Of the 69 NPs whose nearest antecedent was in a distinct
+segment, 29% occurred at a segment onset.  Over a third (36%) of the
+NPs whose antecedent was in the same segment, and 12% of those whose
+antecedent was in a distinct segment occurred at an intra-segmental
+attentional shift. In sum, in the coded Pear corpus, NPs that re-evoke
+existing entities seem to be rarely over-specified (68/1233, or 5.5%)
+or over-determined (1/1233).  Of the 68 over-specified cases (columns
+2-5), 20 (30%) correlate with segment onsets independently identified
+by naive subjects, and 29 (42%) appear to correlate with
+intra-segmental attentional shifts.  Thus, an over-specified NP is
+more likely than not to correlate with an attentional shift (72%).
+Note however, that the reverse implication does not hold, that is, it
+is not the case that a segment shift is likely to be signalled by an
+over-specified NP.
+</P>
+</DIV>
+<DIV ID="2.3" DEPTH="2" R-NO="3"><HEADER>    Focused Attribute Sets
+</HEADER>
+<P>
+To account for the choice of modifiers in phrasal discourse anaphoric
+NPs, it is necessary to determine how attributes are selected from the
+information known about a discourse entity.  According to
+Grice's grice75 maxim of quality, speakers should be relevant.
+With respect to discourse anaphoric NPs in the Pear stories, NP
+modifiers are derived from what I refer to as focussed attribute sets,
+independent of whether the NP is over-specified.  Focussed attribute
+sets comprise the following three categories of relevance.  First, an
+attribute set can be in focus because it was mentioned in the most
+ recent phrasal NP.  For example, in Fig. <CREF/>, the boy is referred to in U30 as ``the little boy,'' repeating
+attributes mentioned in the last phrasal NP referring to the boy (in
+U28).
+</P>
+<P>
+Second, the focussed attribute set may specify the most recently
+mentioned location of an entity.  The subject NP in U17 of
+ Fig. <CREF/> (<CREF/>) refers to one man as ``the man up in the tree'' to distinguish him from the second man who came by with a goat.  The tree is the last mutually known location of
+the former.  Finally, an attribute set can be in focus because it
+pertains to a key narrative event that the entity has been an agent
+of.  Intuitively, an event is more central to a narrative the more
+difficult it is to describe the narrative without mentioning that
+event.  Operationally, key events occur more frequently than others
+both within and across narratives.  For example, the main adult
+character is often described as ``the pear picker,'' or as
+``the man who was picking pears'' (see U108 of
+ Fig. <CREF/>, <CREF/>), and so on; the other main character is often described as ``the thief,'' ``the boy
+who stole the pears,'' ``the boy with the pears,'' and so on.
+</P>
+<P>
+How to order the focussed attribute sets for a given discourse entity
+is a topic for further investigation. Here, I simply assume that the
+three types of attribute sets mentioned above--where applicable--are
+in focus.  I also assume that the focussed attribute sets of an entity
+(FAVe) are updated as the discourse progresses.
+</P>
+</DIV>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    Modelling Informativeness of NPs
+</HEADER>
+<P>
+The data reported above indicates that in the Pear corpus, definite
+pronouns and phrasal NPs are rarely over-specified or over-determined.
+In this section, I describe a processing model to account for this
+observation.  In the next section, I discuss how centering can be
+integrated with this model to account for under-specified pronouns,
+and certain over-specified phrasal NPs.  First, I briefly review
+Dale's dale89 dale92 model, including his more recent
+work with Reiter dalereiter94.  Then I modify this model to
+apply to understanding as well as generation; to include the current
+utterance in the context of evaluation; to apply informational
+constraints uniformly to pronouns and phrasal NPs; and to select
+modifiers on the basis of focused attribute-value pairs.
+</P>
+<DIV ID="3.1" DEPTH="2" R-NO="1"><HEADER>    Distinguishing Descriptions
+</HEADER>
+<P>
+Dale dale89 generates anaphoric
+pronouns and phrasal NPs by distinct means.  In
+EPICURE dale89, a system for generating
+recipes, a definite pronoun is always generated to refer to the
+`discourse center', which is analogous to the backward-looking center
+ of <REF/> <REF/>, but is domain specific. It is the entity that results from the next recipe operation.  For example,
+rice1 will be the center after an utterance of Stir the
+rice1.
+</P>
+<P>
+Dale dale89 requires phrasal NPs to be
+distinguishing descriptions.  As in Webber webber78, Dale
+assumes that the discourse model represents the discourse entities
+that have already been evoked, and the attribute-value pairs
+describing them.  For any set of entities U,
+Dale dale89 defines a distinguishing
+description of an entity e in U to be a set of attribute-value pairs
+that are true of e, and of no other members of U.  This enforces
+adequacy.  He defines a minimal distinguishing description to be one
+where the cardinality of the attribute-value pairs cannot be reduced.
+ This addresses efficiency. 
+</P>
+<P>
+Dale dale89 defines the discriminatory
+power (<EQN/>)
+of an attribute-value pair [A, V] that is true
+of a discourse entity e in a universe of entities U in terms of the
+cardinality N of U, and the total number n of entities in U that
+[A, V] is true of:
+</P>
+<P>
+<EQN/>
+ranges in value from 0 to 1.  If <EQN/>
+is true of only
+one of the entities in the set U, then 
+ <!-- MATH: ${{\cal F}_{<A, \: V>}}$ -->  <EQN/>  is 1,  and <EQN/>  is a distinguishing description of the entity.    
+</P>
+<P>
+  Dale's dale89 algorithm for  constructing a distinguishing description of e in U, given a set  <EQN/>  of attribute-value pairs that are true of e, briefly  works as follows.  First compute <EQN/>  for each member of <EQN/>.  If all values of <EQN/>  are 0, no unique description can be  constructed.  Otherwise, select the attribute-value pair with the  highest value to add to the description, and reset U to be only those  entities in the initial U that the selected attribute-value pair is  true of.  Repeat this process, terminating when an attribute-value  pair with a discriminatory power of 1 has been selected.  The selected  attribute-value pairs constitute the input description for a surface  NP.    
+</P>
+<P>
+  In recent work, Dale  Reiter dalereiter94 enforce a  range of Gricean constraints using an algorithm based on human  behavior that is simpler and faster than their previous  algorithms <REF/> <REF/>. It performs less length-oriented optimization, thus balancing brevity against
+lexical preference.  The output NPs are not guaranteed to be maximally
+short because humans occasionally use unnecessary modifiers.  The
+5.5% rate of over-specified discourse anaphoric NPs in the Pear data
+also supports the relaxation of brevity, but is partly conditioned by
+ attentional factors (cf.<CREF/>-<CREF/>). 
+</P>
+</DIV>
+<DIV ID="3.2" DEPTH="2" R-NO="2"><HEADER>    C_describe
+</HEADER>
+<P>
+In this section I illustrate the role of 
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+in processing
+definite pronouns and phrasal NPs.
+C_describe is a 4-place relation among a discourse entity E, a
+surface NP, the current utterance context <EQN/>,
+and the
+discourse context C that requires 
+<!-- MATH: $\lambda NP \lambda U$ -->
+<EQN/>
+to be a
+distinguishing description of E relative to C.  For generation, NP is
+solved for given an instantiation of the remaining three arguments,
+whereas E is solved for during understanding (assuming Prolog's
+control structure).
+</P>
+<P>
+A definite pronoun that is a distinguishing description is also a
+minimal distinguishing description because its length is 1. In
+generation, C
+<!-- MATH: $\_describe$ -->
+<EQN/>
+attempts first to find a definite pronoun to
+satisfy the uninstantiated NP argument, succeeding if the pronoun is a
+distinguishing description.  For generating the pronoun ``he''
+ in U4 of Fig. <CREF/>, the arguments of  <!-- MATH: $c\_describe$ -->
+<EQN/>
+are:
+</P>
+<P>
+  <!-- MATH: \begin{eqnarray}
+\lefteqn{c\_describe(e_{1}, \: NP,}\\
+\nonumber \lefteqn{\hspace{.15in}
+\lambda X \: fills'(X,``his \: thing'',``pears''), \: FS_{1})}
+\end{eqnarray} -->
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+The utterance context is assumed to be a feature structure co-indexed
+with any relevant discourse entities other than the uninstantiated
+ variable E.  By using the utterance as part of the input in solving for NP, given information that appears
+anywhere in the current utterance can filter entities from the
+discourse context, following
+Dale's dale89 algorithm.  New
+information about an entity in the utterance is not mutually known,
+ and has no discriminatory power <REF/>. 
+</P>
+<P>
+For present purposes, the last argument of 
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+is first
+instantiated to the most recent focus space, and in turn to other
+focus spaces until a solution is found.
+Dale dale89 takes the universe of
+ discourse to be partitioned into focus spaces (cf. <REF/>), with the most recent focus space being the most accessible, and making no
+assumptions regarding relative accessibility of earlier focus spaces.
+Similar assumptions are made here.  I assume that segment boundaries
+in the Pear corpus correspond to focus spaces, and that some focus
+spaces may be composed of others. I assume the existence of an
+inference mechanism that constrains how focus spaces are signalled
+during generation, and how focus spaces are inferred during
+understanding.  In recent work, for example, Litman and I report on
+algorithmic methods for identifying segment boundaries in the Pear
+corpus using features of prosody, cue words and referential
+NPs [].  Given such a mechanism, a new focus
+space would be added to the discourse model after a
+segment onset has been processed.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+ In (<CREF/>), FS1 appears as the initial context argument of 
+<!-- MATH: $c\_describe$ -->
+<EQN/>.
+The only animate entity in FS1 is e1,
+previously described as a man picking pears in a pear tree who looks
+like a farmer, is plump, has a mustache, and is wearing a white apron
+(utterances 1-3, not shown here).  The feature structures
+corresponding to all but one of the definite pronouns ``he, she,
+ it'' or ``they'' will be rejected as a description of e1because e1 is neither plural, non-animate or female. The pronoun ``he'', represented as the attribute-value pairs ([type: human], [gender: male], [cardinality: 1]),
+not only describes e1, it is also a minimal distinguishing
+description.
+</P>
+<P>
+An analogous process applies to understanding the same pronoun in
+U4, with the entity variable E uninstantiated, NP instantiated to
+``he'', and the utterance and discourse context instantiated as
+above.  Given a distinguishing description, there is
+guaranteed to be exactly one solution to E. However, the search
+problem increases with the size of the context.  Partitioning the
+search space into focus spaces controls the search through the
+discourse model to some degree.  (Integrating centering with
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+as described below guides the search even
+further.)  For present purposes, 
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+returns E instantiated
+to e1 after searching through the entities in FS1.
+The remaining NPs exemplified here are understood in a similar fashion.
+</P>
+<P>
+Given a context where there is no definite pronoun solution to NP,
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+will attempt to construct a phrasal NP, preferably with
+ no modifiers.  In Fig. <CREF/>, a new, singular, male, human entity is added to the context at U8: a boy who comes by on a bicycle
+(e2).  Subsequent references to the boy or the man must
+discriminate between them.  The utterance context for the subject NP
+of U9--
+<!-- MATH: $\lambda \: X \: in'(X,``the
+\; tree'')$ -->
+<EQN/>--does not identify e1 because U5--``he
+comes down''--leads to the inference that the man is no longer in
+the tree.  However, e1 is a male adult and e1 is a male
+child, a distinction encoded by the common nouns ``man'' versus
+``boy''.  Since ``man'' is what Dale 
+Reiter dalereiter94 refer to as a basic attribute, ``man'' will be selected as the head noun.  The determiner will be
+definite because the entity is already in the context (but
+ cf. <REF/>).  The resulting NP the man is a minimal distinguishing description because no pronoun is
+a distinguishing description.
+</P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+<P>
+ Fig. <CREF/> illustrates a context where a phrasal NP without modifiers could not both have a head noun that specifies a basic
+attribute, and be a distinguishing description.  It also illustrates
+the problematic nature of relations among distinct focus spaces.  In
+generating the subject NP in U17, the last argument of
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+is first instantiated to FS4.  The pears referred
+to in U15 of segment 4 are some pears that e1 picked, so in
+order to interpret U15, e1 must be brought into focus.  This
+side-effect of resolving the reference to the pears could be
+implemented by adding e1 to FS4, or by resetting the current
+focus space to a more encompassing focus structure that includes
+FS3 and FS4.  I believe further empirical work is needed to
+resolve such issues.  In any case, I assume that the context for
+generating U17 includes both e1 and e2.  Because these
+two entities are the same type, a distinguishing description of
+e1 must contain discriminatory modifiers.  Features for
+generating the modifiers are selected from FAVe1, which here
+contains only two sets of salient attributes. Since e1's location
+is the most recently evoked, it is used in generating the NP.
+</P>
+<P>
+Above, I noted that centering can add structure to the search space
+ for understanding discourse anaphoric NPs.  Fig. <CREF/> illustrates another reason to integrate centering with 
+<!-- MATH: $c\_describe$ -->
+<EQN/>.
+ In U10 of Fig. <CREF/>, the subject NP (``the boy'') is not a pronoun even though the utterance context is a distinguishing
+description of e2.  The boy (e2) is mutually known to have
+been on a bicycle at the time of the event mentioned in utterance
+U8.  Temporal processing (cf. []) would lead
+to the inference that the boy is still on the bicycle after U9.
+Thus a definite pronoun is presumably well-specified, and the model
+presented so far would generate ``he''.  However, a pronoun
+would produce a garden path effect in this context; i.e., it would be
+interpreted as referring to the man until ``bicycle'' has been
+processed.
+</P>
+</DIV>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>    Centering and Informativeness
+</HEADER>
+<P>
+The 
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+relation has three limitations that centering can
+compensate for.  First, 
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+constrains the semantic content
+of a discourse anaphoric NP, but not its grammatical role.  Second, as
+noted below, centering predicts that a pronoun can be under-specified.
+Third, an explanation is needed for the over-specified NP the
+ boy in U10 of Fig. <CREF/>.  In this section, I indicate how centering is interleaved with 
+<!-- MATH: $c\_describe$ -->
+<EQN/>.
+Centering is a more
+local process so it applies first.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>    Centering
+</HEADER>
+<P>
+Centering is a model of local focus of attention that constrains the
+ use of definite pronouns <REF/> <REF/>.  One of the  discourse entities <REF/> evoked by an NP in an utterance  Ui may be the backward-looking center (CB) <REF/> of Ui, the current local focus of attention.  Alternatively, the CB
+of Ui (CBUi) might not be explicitly mentioned (realized)
+ in the utterance <REF/>.  The discourse entities mentioned in Ui comprise the forward looking centers (CFs), ordered by
+increasing obliqueness of grammatical
+ role <REF/> <REF/> to represent the likelihood that they will be mentioned in the subsequent utterance.  The
+ centering principle <REF/> predicts that if CBUi and CB
+<!-- MATH: $_{U_{i-1}}$ -->
+Ui-1 are the same entity, then the NP evoking CBUiwill be a third person, definite pronoun.
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+ Example (<CREF/>) illustrates that where the semantics of the utterance and commonsense reasoning do not discriminate among possible
+referents for an ambiguous pronoun, there is an independent effect of
+local attentional constraints.  Centering predicts that the preferred
+ interpretation of the pronoun in (<CREF/>) is Carmella.  But in this context, neither the pronoun alone nor the utterance is a distinguishing
+description of anyone, so the pronoun is under-specified.
+</P>
+<P>
+ <EQN/> 
+</P>
+<P>
+ Kameyama kameyama85 used examples like (<CREF/>) to illustrate how commonsense reasoning and lexical semantics can
+override the default centering predictions for pronoun interpretation.
+Centering would predict that `Carmella' is the backward-looking center
+ of (<CREF/>), and that the default interpretation of the pronoun in  (<CREF/>) would thus be `Carmella'.  Instead, (<CREF/>) is interpreted as a continuation of the description of the perceptual
+ event in (<CREF/>).  Kameyama kameyama86 posits property sharing of features of adjacent utterances as a constraint on CB,
+where the shared property can be subject (or non-subject) grammatical
+ role (cf. <REF/>), as in (<CREF/>), or what she refers  to as empathy, as in (<CREF/>).  Note that because `Rachel' is already known to be the object of the perceptual event in
+ (<CREF/>), the utterance context in (<CREF/>) is a distinguishing description of `Rachel.'
+</P>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>    Integrated Model
+</HEADER>
+<P>
+<IMAGE TYPE="TABLE"/>
+<IMAGE TYPE="TABLE"/>
+ Fig. <CREF/> shows all of one segment and part of another one where the subject pronouns of all the utterances are coreferential.  On the
+one hand, the CB of the segment initial utterance U108 is the
+same as the CB of U107, conflicting with the idea expressed
+ in <REF/> that centering transitions reflect global discourse  coherence (cf. <REF/>).  On the other hand, integrating centering and 
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+can account for both NPs in U108and support inferences consistent with a global focus shift.
+</P>
+<P>
+ Earlier in the narrative excerpted in Fig. <CREF/>, three boys helped the pear thief after he had fallen off of his bicycle, and were
+rewarded with three pears.  Segment 21 describes their adventures
+after the pear thief leaves.  In generating utterance U108, the
+input to the generator will be a representation of an event in which
+the boys eat their pears. The set of three boys is designated as the
+new CB.  Because CB
+<!-- MATH: $_{U_{108}}$ -->
+U108 is the same as CB
+<!-- MATH: $_{U_{107}}$ -->
+U107, it
+ should be realized as a pronoun <REF/>, and by property  sharing <REF/> <REF/>, it should be realized as the subject of the current utterance.  Centering and Gricean
+constraints coincide here in that the definite pronoun ``they''
+is also a minimal distinguishing description.
+</P>
+<P>
+To generate the phrasal NP object in U108, the process is
+analogous to that discussed above for generating ``the man up in
+ the tree'' in Fig. <CREF/>. The context argument of 
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+is first set to Cf
+<!-- MATH: $_{U_{107}}$ -->
+U107.  Since neither
+Cf
+<!-- MATH: $_{U_{107}}$ -->
+U107 nor the most accessible focus space (FS21)
+contains a representation of e2, the context argument will be
+reset until e2 is in a focus space on the focus stack.  Focussed
+attribute sets are then used to generate the relative clause.
+</P>
+<P>
+For understanding the subject NP in U108, recall that centering
+applies before 
+<!-- MATH: $c\_describe$ -->
+<EQN/>.
+The subject pronoun will be assumed to
+realize the CB of the utterance, and will be assigned the default
+interpretation of e1.  Application of 
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+leads to the
+recognition that ``they'' is also a distinguishing description
+of e1 relative to CF
+<!-- MATH: $_{U_{107}}$ -->
+U107. In this fashion, centering
+prunes the search space to the single entity satisfying the
+informational constraints imposed by 
+<!-- MATH: $c\_describe$ -->
+<EQN/>.
+In understanding
+the object NP, the context argument must be instantiated to a more
+inclusive focus space, since neither the previous utterance nor the
+previous segment contains any entities described by this NP.
+</P>
+<P>
+The integrated model also accounts for the problematic phrasal NP
+ in Fig. <CREF/>, discussed above.  We saw that for U9 and U10, repeated below, the phrasal subject of U9 was
+well-specified, but the phrasal subject of U10 was
+over-specified, and a pronoun would be generated instead. But
+as noted above, a pronoun subject would have a garden path effect.
+</P>
+<P>
+U9:  
+the man (e1) is in the tree (e3),
+U10:
+and the boy (e2) gets off the bicycle (e4),
+</P>
+<P>
+Kameyama's version of centering kameyama86 differs
+ from <REF/> in allowing an utterance to have a null CB. U10 would have a null CB because there is no definite pronoun
+constrained by property sharing that corefers with an NP in the
+previous utterance; in fact no NPs in U10 refer to entities
+mentioned in U9.  A definite pronoun subject in U10 would be
+assumed to be CBU10 and would be inferred to refer to e1.
+This accounts for the garden path effect.  Consequently, a pronoun
+must be blocked.  Because no entity in U9 is referred to in
+U10, the input for generating U10 will be annotated as
+having a NULL CB. This imposes output constraints requiring the
+subject and object NPs to be other than definite pronouns.  As a
+consequence, 
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+will not try to find a pronoun solution to
+the uninstantiated NP argument.  In the first phrasal NP solution, the
+head would denote a basic category and the NP would have no
+modifiers, thus generating the existing phrase ``the boy''.  In
+sum, centering relaxes the constraint otherwise imposed by
+<!-- MATH: $c\_describe$ -->
+<EQN/>
+that an NP cannot be over-specified.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>    Conclusion
+</HEADER>
+<P>
+I have presented an analysis of discourse anaphoric phrasal NPs in a
+corpus of narrative monologues showing that pronouns and phrasal NPs
+are rarely over-specified.  Future research should indicate to what
+degree this generalization applies to other genres and modalities.
+Centering predicts conditions under which an under-specified pronoun
+can be used, but says little about the interpretation of phrasal NPs.
+I have outlined a processing model that integrates the attentional
+constraints of centering with aspects of Grice's maxims of quantity
+and quality.  For enforcing the maxim of quantity, I rely on Dale's
+algorithm for constructing distinguishing
+descriptions dale89 dale92,
+which I apply uniformly to
+pronouns and phrasal NPs for both generation and understanding.  For
+enforcing the maxim of quality, I combine aspects of Dale 
+Reiter's dalereiter94 preferred attributes with the construct
+of focussed attribute sets derived from the corpus analysis.  In
+contrast to Dale  Reiter dalereiter94, distinguishing
+descriptions are evaluated using the current utterance context as a
+filter, and by instantiating the discourse context successively to the
+Cf list of the preceding utterance, then the current focus space, then
+other focus spaces, until a solution is found.
+</P>
+<P>
+Centering provides one mechanism for relaxing the requirement that an
+NP (either pronominal or phrasal) should be a distinguishing
+description.  Another mechanism would be needed to relax informational
+constraints at shifts in focus structure, so as to account for the
+one-way implication of over-specified NPs with global shifts of
+ attention (Table <CREF/>).  However, further investigation is needed to determine how to integrate local and global discourse
+processing.  When neither the Cf list nor the current focus space is
+the appropriate context for understanding or generating a discourse
+anaphoric NP, I have assumed that either an earlier focus space or a
+more inclusive one must be accessed.  Some of the examples presented
+here suggest that the contextual dependencies captured by the use of
+focused attributes might constrain the relation of each new utterance
+to the global discourse model.  For example, the segment onset in
+ Fig. <CREF/> (U108) contains two NPs, one of which is the same as the CB of the preceding utterance.  Maintaining the same CB relates
+U108 and its focus space (FS22) to the most recent focus
+space FS21.  But the object NP expresses attributes last
+mentioned in segment 17, thus relating U108 to the earlier focus
+space FS17.  If the global structure is a tree, the relation of
+U107 to both segments 21 and 17 might indicate how high up in the
+tree to locate the new focus space.  Alternatively, an investigation
+of such relations might provide evidence about the nature of global
+structure, such as whether it is a tree or a lattice.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Acknowledgements </HEADER>
+<P>
+This work was partly supported by NSF grant IRI-91-13064.
+Thanks to Robert Dale, Ehud Reiter, and Megumi Kameyama
+for valuable comments on ideas presented here.
+</P>
+<DIV ID="6.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+W. L. Chafe.
+The Pear Stories.
+Ablex Publishing Corporation, Norwood, NJ, 1980.
+</P>
+<P>
+W. G. Cochran.
+The comparison of percentages in matched samples.
+Biometrika, 37:256-266, 1950.
+</P>
+<P>
+R. Dale and E. Reiter.
+Computational interpretations of the Gricean maxims
+  in the generation of referring expressions.
+To appear in Cognitive Science.
+</P>
+<P>
+R. Dale.
+Cooking up references.
+In Proceedings of the 27th Annual ACL, 1989.
+</P>
+<P>
+R. Dale.
+Generating Referring Expressions..
+MIT Press, Cambridge, MA, 1992.
+</P>
+<P>
+H. P. Grice.
+Logic and conversation.
+In Syntax and Semantics, Vol. 3: Speech Acts, pages 41-58.
+  Academic Press, New York, 1975.
+</P>
+<P>
+B. J. Grosz and C. L. Sidner.
+Attention, intentions and the structure of discourse.
+Computational Linguistics, 12:175-204, 1986.
+</P>
+<P>
+B. J. Grosz, A. K. Joshi, and S. Weinstein.
+Providing a unified account of definite noun phrases in discourse.
+In Proceedings of the 21st ACL, 1983.
+</P>
+<P>
+Barbara J. Grosz, A. K. Joshi, and S. Weinstein.
+Towards a computational theory of discourse interpretation, 1986.
+Ms.
+</P>
+<P>
+M. Kameyama, R. J. Passonneau, and M. Poesio.
+Temporal centering.
+In Proceedings of the 31st ACL, 1993.
+</P>
+<P>
+M/ Kameyama.
+Zero Anaphora: The Case of Japanese.
+PhD thesis, Stanford University, 1985.
+</P>
+<P>
+M. Kameyama.
+A property-sharing constraint in centering.
+In Proceedings of the 24st ACL, 1986.
+</P>
+<P>
+D. Litman and R. Passonneau.
+Combining multiple knowledge sources for discourse segmentation.
+In Proceedings of the 33rd ACL, 1995.
+</P>
+<P>
+D. Litman and R. Passonneau.
+Developing algorithms for discourse segmentation.
+In Working Notes of AAAI Spring Symposium Series on Empirical
+  Methods in Discourse Interpretation and Generation, 1995.
+</P>
+<P>
+R. J. Passonneau and D. Litman.
+Intention-based segmentation: Reliability and correlation with
+  linguistic cues.
+In Proceedings of the 31st ACL, 1993.
+</P>
+<P>
+R. J. Passonneau and D. Litman.
+Empirical Analysis of Three Dimensions of Spoken
+        Discourse: Segmentation, Coherence and Linguistic Devices.
+In E. Hovy and D. Scott, eds., Burning Issues in Discourse.
+Springer Verlag, To appear.
+</P>
+<P>
+Rebecca J. Passonneau.
+Getting at discourse referents.
+In Proceedings of the 27th ACL, 1989.
+</P>
+<P>
+R. J. Passonneau.
+Protocol for coding discourse referential noun phrases 
+and their antecedents.
+Technical report, Columbia University, 1994.
+</P>
+<P>
+R. J. Passonneau.
+Frame shifts: Perlocutionary meaning and discourse reference.
+In Conference on Focus and Natural Language Processing,
+  Kassel,  Germany, 1994.
+</P>
+<P>
+R. J. Passonneau.
+Interaction of the segmental structure of discourse with
+  explicitness of discourse anaphora.
+In E. Prince, A. Joshi, and M. Walker, eds.,   Proceedings of the Workshop on Centering Theory in Naturally Occurring
+  Discourse. Oxford University Press, To appear.
+</P>
+<P>
+R. Reichman.
+Getting Computers to Talk Like You and Me.
+MIT Press, Cambridge, Massachusetts, 1985.
+</P>
+<P>
+E. Reiter.
+Generating appropriate natural language object descriptions.
+PhD thesis, Harvard University, 1990.
+</P>
+<P>
+C. L. Sidner.
+Towards a computational theory of definite anaphora
+  comprehension inEnglish discourse.
+Technical report, MIT AI Lab, 1979.
+</P>
+<P>
+B. Webber.
+A formal approach to discourse anaphora.
+Technical Report 3761, Bolt Beranek and Newman Inc., 1978.
+</P>
+<DIV ID="6.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  The work reported here
+was not supported by Bellcore.
+  Cf.  Reiter reiter90
+for a discussion of problems in generating maximally efficient NPs
+using Dale's framework, and Dale  Reiter dalereiter94
+for an argument that maximal efficiency is psychologically
+implausible.
+  For simplicity, the utterance context represents
+certain semantic arguments as quoted strings.
+  For
+simplicity, I am ignoring the difference between grammatical gender
+and sex.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

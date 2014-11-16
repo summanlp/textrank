@@ -1,0 +1,817 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Specifying Intonation from Context for Speech Synthesis</TITLE>
+<ABSTRACT>
+<P>
+This paper presents a theory and a computational implementation for
+generating prosodically appropriate synthetic speech in response to
+database queries.  Proper distinctions of contrast and emphasis are
+expressed in an intonation contour that is synthesized by rule under
+the control of a grammar, a discourse model, and a knowledge base.
+The theory is based on Combinatory Categorial Grammar, a formalism
+which easily integrates the notions of syntactic constituency,
+semantics, prosodic phrasing and information structure.  Results from
+our current implementation demonstrate the system's ability to
+generate a variety of intonational possibilities for a given sentence
+depending on the discourse context.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER> Introduction </HEADER>
+<P>
+One source of unnaturalness in the output of many text-to-speech systems
+stems from the involvement of algorithmically generated default
+intonation contours, applied under minimal control from syntax and
+semantics.  The intelligibility of the speech produced by these
+systems is a tribute to both the resilience of human language
+understanding and the ingenuity of the algorithms' inventors.  It
+has often been noted, however, that the results frequently sound
+unnatural when taken in context, and may on occasion mislead the
+hearer.
+It is for this reason that a number of discourse-model-based speech
+generation systems have been proposed, in which intonation contour is
+determined from context or the model.  Work in this area includes an
+early study by Young and Fallside ([<REF/>]), and studies by
+Terken ([<REF/>]), Houghton ([<REF/>]), Isard and
+Pearson ([<REF/>]), Davis and
+Hirschberg ([<REF/>]), Hirschberg ([<REF/>]), and
+Zacharski et al.
+([<REF/>]), although the representations of information structure
+and its relation to syntax employed by these authors are rather different
+from those proposed here.
+ Consider the exchange shown in <CREF/>, which is an artificial example modeled on the domain of TraumAID, a medical expert system in
+the context of which we are investigating spoken language
+ output. This particular example is slightly unrealistic in that TraumAID acts purely as a
+critiquing device and does not possess such an interactive query
+system for its knowledge base; nor is it likely that such a query
+system would be of practical use in the trauma surgery.  However,
+such examples are useful for present purposes since they force
+unambiguously contrastive contexts that motivate intonational focus
+and contrastive stress.
+ In example <CREF/>, capitals indicate stress and brackets informally indicate the intonational phrasing.  The intonation contour
+is indicated more formally using a version of Pierrehumbert's notation
+(cf. Pierrehumbert [<REF/>], Pierrehumbert and Hirschberg
+ [<REF/>]). In this notation, L+H* and H* are different high pitch accents. LH% (and its relative LH$) and
+L (and its relatives LL% and LL$) are rising and low boundaries
+respectively.  The difference between members of sets like L, LL% and
+LL$ boundaries embodies Pierrehumbert and Beckman's ([<REF/>])
+distinction between intermediate phrase boundaries, intonational
+ phrase boundaries, and utterance boundaries. We shall skate over the former distinction here, noting only that utterance boundaries are distinguished from the
+others by a greater degree of lengthening and pausing.
+ The other annotations in <CREF/> indicate that the intonational tunes L+H* LH% (or the related L+H* LH$) and H* L (or the related
+H* LL$) convey two distinct kinds of
+discourse information.  First, both H* and L+H* pitch accents mark the
+word that they occur on (or rather, some element of its
+interpretation) for ``focus'', which in
+ the context of such simple queries as example <CREF/> usually implies contrast of some kind.  Second, the tunes as a whole mark the
+constituent that bears them (or rather, its interpretation) as having
+a particular function in the discourse.  We have argued at length
+elsewhere that, at least in this same restricted class of dialogues,
+the function of the L+H* LH% and L+H* LH$ tunes is to mark the
+``theme'' - that
+is, ``what the participants have agreed to talk about''.  The
+H* L(L%/$) tune marks the ``rheme'' - that is, ``what the speaker has
+to say'' about the theme.  This phenomenon is a strong one: the same
+intonation contour sounds quite anomalous in the context of a question
+that does not establish an appropriate theme, such as ``which
+procedure is needed for the persistent  PNEUMOTHORAX?''.  The
+advantage for present purposes of Pierrehumbert's system, like other
+autosegmental approaches, is that the entire tune
+can be defined independently of the particular string that it occurs
+with, by interpolation of pitch contour between the pitch-accent(s)
+and the boundary for those parts bearing no tonal annotation.  It
+will be notationally convenient to speak of the latter as bearing
+``null tone''.  (Of course such elements may
+bear pitch and even secondary accent, and the
+specification of such details of the interpolated contour is by no
+means a trivial matter.
+However, we do not believe that anything hangs crucially on our use of
+this theory of intonation, rather than some other.)
+<ITEMIZE>
+<ITEM>[Q:] I know that a  LEFT thoracostomy is needed for the  SIMPLE
+pneumothorax,
+</ITEM>
+<ITEM>[A:]
+</ITEM>
+</ITEMIZE>
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER> Combinatory Prosody </HEADER>
+<P>
+From the example in the preceding section, it is clear that
+intonational units corresponding to theme or rheme
+need not always correspond to a traditional syntactic
+constituent.  Since many problems in the analysis and synthesis of spoken
+language result from this apparent independence of syntactic and
+intonational phrase boundaries, we have chosen to base our system
+on Combinatory Categorial Grammar (CCG), a formalism that
+generalizes the notion of surface constituency, allowing multiple
+derivations and constituent structures for sentences, including ones in
+which the subject and verb of a transitive sentence can exist as a
+constituent, complete with an interpretation.
+CCG (Steedman [<REF/>]) is an extension of
+Categorial Grammar (CG).  Elements like verbs are associated with a
+syntactic ``category'' which identifies them as functions, and
+specifies the type and directionality of their arguments and the type
+of their result.  We use a notation in which a rightward-combining
+functor over a domain 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  into a range 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  is written 
+<!-- MATH: $\alpha
+/ \beta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+, while the corresponding leftward-combining functor is written
+<!-- MATH: $\alpha\backslash\beta$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .  
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  and 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  may themselves be
+function categories.   For example, a transitive verb is a function
+from (object) NPs into predicates - that is, into functions from
+(subject) NPs into S, written as follows:
+<!-- MATH: $(S\backslash NP)/NP$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+We also need the following two rules of functional application, where
+X and Y are variables over categories:
+ FUNCTIONAL APPLICATION:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ These rules allow the function category <CREF/>  is a simple example: 
+Traumaid   recommends   lavage
+--------   ----------   ------
+   NP      (S\NP)/NP      NP
+           -------------------]
+                   S\NP
+-----------------------[
+           S
+The syntactic types in this derivation are simply a reflection of the
+corresponding semantic
+types, apart from the addition of directional information.  If we
+ expand the category <CREF/> to express the semantics of the transitive verb,
+the same context-free derivation can be made to build a
+compositional interpretation, 
+<!-- MATH: $({\em recommend}'\ {\em lavage}')\ {\em
+traumaid}'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+.  One way of writing such an interpreted category that is
+particularly convenient for translating into unification-based
+programming languages like Prolog is the following:
+<!-- MATH: $\it (S:recommend'~x~y\backslash NP:y)/NP:x$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ In <CREF/>, syntactic types are paired with a semantic interpretation via the colon operator, and the category is that of a
+function from NPs (with interpretation 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ) to functions
+from NPs (with interpretation 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ) to Ss (with
+interpretation 
+<!-- MATH: $\it recommend'~x~y$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ).   Constants in
+interpretations bear primes, variables do not, and there is a
+convention of left-associativity, so that 
+<!-- MATH: $recommend'~x~y$ -->
+recommend' x y is
+equivalent to 
+<!-- MATH: $(recommend'~x)~y$ -->
+(recommend' x) y.
+CCG extends this strictly context-free categorial base in two respects.  First,
+all arguments, such as NPs, bear only type-raised categories, such as
+<!-- MATH: $S/(S\backslash NP)$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .  That is to say that the category of an NP,
+rather than being that of a simple argument, is that of a function
+over functions-over-such-arguments, namely verbs and the like.
+Similarly, all functions into such categories, such as
+determiners, are functions into the raised categories, such as
+<!-- MATH: $(S / (S \backslash NP)) /N$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .  For example, subject NPs bear the
+following category in the full notation:
+traumaid := 
+<!-- MATH: $\it S:s/(S:s\backslash NP:traumaid')$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+The derivation of the same simple transitive sentence using
+ type-raised categories is illustrated in example <CREF/>  in the abbreviated notation. 
+Traumaid  recommends        lavage
+--------  ----------  ------------------
+S/(S\NP)  (S\NP)/NP   (S\NP)\((S\NP)/NP)
+          ------------------------------[
+                     S\NP
+-------------------------]
+           S
+Second, the combinatory rules are extended to include functional
+composition, as well as application:
+ FORWARD COMPOSITION (]B):
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+This rule allows a second syntactic derivation for the above sentence, as
+ shown in example <CREF/>. 
+Traumaid  recommends   lavage
+--------  ----------  --------
+S/(S\NP)  (S\NP)/NP   S\(S/NP)
+--------------------]B
+        S/NP
+        ----------------------[
+                 S
+The original reason for making these moves was to capture the fact
+that fragments like Traumaid recommends, which in traditional
+terms are not regarded as syntactic constituents, can nevertheless
+ take part in coordinate constructions, like <CREF/>, and form the residue of relative clause formation, as in
+ <CREF/>. 
+<ITEMIZE>
+<ITEM>[a.] You propose, and Traumaid recommends, lavage.
+</ITEM>
+<ITEM>[b.] The treatment that Traumaid recommends
+</ITEM>
+</ITEMIZE>
+The full extent of this theory (which covers unbounded rightward and
+leftward ``movement'', and a number of other types of supposedly
+``non-constituent'' coordination), together with the general class of
+rules from which the composition rule is drawn, and the problem of
+processing in the face of such associative rules, is discussed in the
+earlier papers, and need not concern us here.  The point for present
+purposes is that the partition of the sentence into the object and a
+non-standard constituent (
+<!-- MATH: $\it S:recommend'~x~traumaid'/NP:x$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ ) makes
+this theory structurally and semantically perfectly suited to the
+demands of intonation, as exhibited in exchanges like the
+ following: 
+<ITEMIZE>
+<ITEM>[Q:] I know that the surgeon recommends a left thoracotomy,
+but what does Traumaid recommend?
+</ITEM>
+<ITEM>[A:] 
+( T RAUMAID recommends) ( LA VAGE.)
+L+H* 		 LH% 		  H* LL$ 
+</ITEM>
+</ITEMIZE>
+We can therefore directly incorporate intonational constituency in
+syntax, as follows (cf. Steedman [<REF/>]).  First,
+we assign to each constituent an autonomous prosodic category,
+expressing its potential for combination with other prosodic
+categories.  Then we lock these two structural systems together via
+the following principle, which says that syntactic and prosodic
+constituency must be isomorphic:
+ PROSODIC CONSTITUENT CONDITION:
+Combination of two syntactic categories via a syntactic combinatory
+rule is only allowed if their prosodic categories can also combine
+via a prosodic combinatory rule.
+One way to accomplish this is to give pitch accents the category of
+functions from boundaries to intonational/intermediate phrases.
+As in CCG, categories consist of a (prosodic) structural type, and an
+(information structural) interpretation, associated via a colon.  The pitch
+ accents have the following functional types: 
+We further assume, following Bird ([<REF/>]),
+that the presence of a pitch accent causes some element(s) in the
+translation of the category to be marked as focused, a matter which
+we will for simplicity assume to occur at the level of the lexicon.  For
+example, when recommends bears a pitch accent, its category will
+be written as follows:
+<!-- MATH: $(S:*recommend'~x~y\backslash NP:y)/NP:x$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+We depart from earlier versions of this theory in assuming that
+boundaries are not simply arguments of such functions, but are
+ rather akin to type-raised arguments, as follows: 
+These categories closely correspond to Pierrehumbert's distinction
+between  various levels of phonological phrases.  For example, the
+boundary L maps an
+H* pitch accent into an intermediate phrase rheme, p:rheme.
+The LH% boundary maps an L+H* pitch accent onto a full intonation
+phrase, which it is convenient for present purposes to write as
+p:theme.   (In a fuller notation we would make the distinction
+between intermediate and intonational phrases explicit, but for
+present purposes it is irrelevant).  The LH$ boundary
+maps the same L+H* pitch accent
+into an utterance-level thematic phrase, written u:theme.
+The categories that result from the combination of a pitch
+accent and a boundary may or may not
+constitute entire prosodic phrases, since there may be
+prenuclear material bearing null tone.  There may also be
+material bearing null tone separating the
+pitch accent(s) from the boundary.  (Both possibilities are
+ illustrated in <CREF/>).   We therefore assign the following category to the null tone, which can thereby
+apply to the right to any non-functional category of the form
+X:Y, and compose to the right with any function into such a
+category, including another null tone, to yield the same category:
+It is this omnivorous category that allows intonational tunes to be
+spread over arbitrarily large constituents, since it allows the pitch
+accent's desire for a boundary to propagate via composition into the
+null tone category, as in the earlier papers.
+In order to allow the derivation to proceed above the level of
+complete prosodic phrases identifying themes and rhemes, we need the two
+ unary category-changing rules shown in <CREF/> to change the phonological category of complete themes  and rhemes. 
+These rules change the prosodic category either to
+utterance, or to an endocentric function over that category.
+These types capture the fact that the
+LL$ and LH$ boundaries can only occur at the end of a sentence, thereby
+correcting an overgeneration in some early versions of this theory
+noted by Bird ([<REF/>]).  The fact that
+utterance is an atom rather than a
+term of the form X:Y is important, since it means that it can
+unify only with another utterance.   This is vital to the preservation of the
+ intonation structure. 
+The application of the above two rules to a complete intonational
+phrase should be thought of as precipitating a side-effect whereby a
+copy of the category 
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+  is associated with the clause as its
+theme or rheme.  (We gloss over details of how
+this is done, as well as a number of further
+complications arising in sentences with more than one rheme).
+In Steedman ([<REF/>]), a related set of rules of which
+the present ones form a subset are shown to be well-behaved with a
+ wide range of examples.  Example <CREF/>. 
+      Traumaid                  recommends             lavage
+        L+H*                        LH%                  H* LL$
+-----------------------  --------------------------  -----------
+S:s/(S:s\NP:*traumaid') (S:recommend'x y\NP:y)/NP:x  NP:*lavage'
+     p:theme/b:lh          p:theme\(p:theme/b:lh)      u:rheme
+------------------------SYN-----------------------]B
+------------------------PHON----------------------[
+           S:recommend' x *traumaid'/NP:x
+                      p:theme
+           =============PHON=============            ====PHON===
+           S:recommend' x *traumaid'/NP:x            NP:*lavage'
+                 utterance/utterance                  utterance
+           -------------------------SYN-------------------------]
+           -------------------------PHON------------------------]
+                      S: recommend' *lavage' *traumaid'
+                                 utterance
+<ITEMIZE>
+<ITEM>[Theme:] 
+<!-- MATH: $S:recommend'~z~{*traumaid'}/NP:z$ -->
+S:recommend' z *traumaid'/NP:z
+</ITEM>
+<ITEM>[Rheme:] 
+<!-- MATH: $NP:*lavage$ -->
+NP:*lavage
+</ITEM>
+</ITEMIZE>
+Note that it is the identification of the theme and rheme at
+the stage before the final reduction
+that determines the information structure for the response, for it is
+at this point that
+discourse elements like the theme of the answer can be defined, and can be
+used in semantically-driven synthesis of intonation contour directly
+from the grammar.
+Of course, such effusively informative intonation contours are
+comparatively rare in normal dialogues.  A more usual response to the
+ question ``What does Traumaid recommend?'' in <CREF/> would put low pitch - that is, the null tone in Pierrehumbert's terms - on
+everything except the focus of the rheme, lavage, as in
+ <CREF/>. 
+Traumaid recommends  LA VAGE.
+H* LL$ 
+Such an utterance is of course ambiguous as to whether the theme is
+traumaid or what traumaid recommends.  The earlier papers show
+that such ``unmarked'' themes, which include no primary pitch accent because
+they are entirely background, can be captured by a ``Null Theme
+Promotion Rule'', as follows:
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+This rule says that any sequence bearing the null tone can be
+regarded as an ``unmarked'' intermediate phrase theme.
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>Modeling Contrast</HEADER>
+<P>
+The preceding remarks about the ambiguity of unmarked themes should
+make it clear that in general the information structure of the
+response to a query cannot be identified on the basis of the question
+alone, but requires information from the discourse model as well, to
+ which we now turn. 
+This remark applies even more strongly to the assignment of focus and
+the corresponding pitch accents in the generation of the response, as
+Davis and Hirschberg ([<REF/>]), and Hirschberg
+([<REF/>]), among others, have pointed out.  That is, while it
+might appear as though pitch-accents could be assigned on some basis
+such as the mention or non-mention of the relevant words in the theme
+of the query, such an expedient will often break down.  Consider the
+following example, which might be produced by such a strategem, since
+the words ``left'' and ``thoracotomy'' do not occur in the theme Which
+ incision: Q:
+Which incision does  TRAUMAID prefer?
+A:
+( T RAUMAID prefers) (a  L EFTthora C OTomy.)
+L+H* 		 LH% 		 H* 		 H* LL$ 
+In some contexts, including the null context, this intonation contour
+will indeed be appropriate.  However, in any context where thoracotomy
+procedures are already established as the set of procedures in question,
+the pitch accent on thoracotomy in
+the response will be inappropriate and perhaps even misleading.
+ For example, in <CREF/> below, the noun thoracotomy must remain unstressed while the adjective left must be accented in
+the response, despite having been explicitly mentioned in the text of
+ the question. Here the question itself establishes a contextual set.  The fact that
+the entity that is referenced in the response must be contrasted with
+other alternatives in this set on the relevant property requires the
+assignment of a pitch accent to the corresponding word.
+Q:
+Does Traumaid prefer a  LEFT thoracotomy or a 
+RIGHT thoracotomy?
+A:
+(Traumaid prefers) (a  LEFT thoracotomy.)The mere fact that alternatives are contrasted on a given
+property is not enough however to mandate the inclusion of a pitch accent on
+the corresponding linguistic material.   The property in question
+must restrict contrastively at the relevant point in the semantic
+evaluation, before a pitch accent is forced.
+Thus, in a situation in which the choices include a left thoracotomy,
+a right thoracotomy, a left thoracostomy and a right thoracostomy,
+ the response to question <CREF/>, in which the adjective is unstressed, is perfectly
+ appropriate: Q:
+Does Traumaid prefer a  LEFT thora COTomy or a
+ RIGHT thora COSTomy?
+A:
+(Traumaid prefers) (a left thora COTomy).This example suggests that the set that is being considered by the
+time the adjective is semantically evaluated is no longer the entire
+set including the left and right thoracotomy and thoracostomy
+procedures.  In fact, it is not even the set containing only the left
+thoracotomy and right thoracostomy procedures, but rather the set
+containing only the left thoracotomy procedure, which by definition
+does not stand in contrast to any other thoracotomy procedure by
+virtue of the property of being performed on the left side.  This set
+arises because the noun thoracotomy restricts over the set including
+the left thoracotomy and the right thoracostomy procedures.
+To see this, consider the next exchange, uttered in the same
+situation.
+Q:
+Does Traumaid prefer a  LEFT thora COTomy, a 
+RIGHT thora COTomy or a  LEFT thora COSTomy?
+A:
+(Traumaid prefers) (a  LEFT thora COTomy).Here the set established by the question is restricted by the noun in
+the rheme of the answer to be a set of two thoracotomy procedures
+(both left and right).  Since they are distinguished by the property
+left, the corresponding linguistic material must be accented.
+The algorithm for determining which items are to be stressed for
+ reasons of contrast works as follows. For a given object x, we associate a set of properties which are essential for
+constructing an expression that uniquely refers to x, as well as a
+set of objects (and their referring properties) which might be
+considered alternatives to x with respect to the database
+under consideration.  The set of alternatives is restricted by
+properties or objects explicitly mentioned in the theme of the
+question.  Then for each property of x in turn, we restrict the set
+of alternatives to include only those objects having the given
+property.  If imposing this restriction decreases the size of the set
+of alternatives, then the given property serves to distinguish xfrom its alternatives, suggesting that the corresponding linguistic
+material should be stressed.
+Besides determining the location of primary sentence stress,
+contrastive properties may also necessitate adopting non-standard
+lexical stress patterns.  For example, in the following
+question/answer pair, the normal lexical stress on thor switches
+to pneu in pneumothorax because pneumothorax stands
+in contrast to hemothorax.
+Q:
+I know which procedure is recommended for the simple
+hemothorax.
+But which condition is a left  THORACOSTOMY
+recommended for?
+A:
+A left  THORACOSTOMY is recommended for the
+simple  PNEUmothorax.In the current implementation, such lexical stress shift is handled by
+identifying the lexical contrast properties in the alternative set
+representations and supplying separate pronunciations in the lexicon.
+However, when such properties are determined to stand in contrast to one
+another, the alternate pronunciation could in principle be generated by
+employing the methods described above within the lexicon.
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER> The Implementation</HEADER>
+<P>
+The present paper is an attempt to apply the theories outlined in the
+preceding sections to the task of specifying contextually
+appropriate intonation for natural language responses to database
+ queries.  The architecture of the system (shown in Figure <CREF/>) identifies the key modules of the system, their relationships to the
+database and the underlying grammar, and the dependencies among their
+inputs and outputs.
+The process begins with a fully segmented and prosodically annotated
+representation of a spoken query, as shown in example
+ <CREF/>.  We employ a simple bottom-up shift-reduce parser, making direct use of the combinatory
+prosody theory described above, to identify the semantics of the
+question.  The inclusion of prosodic categories in the grammar allows
+the parser to identify the information structure within the question
+ as well, marking ``focused'' items with *, as shown in <CREF/>. For the moment, unmarked themes are handled by taking the longest
+unmarked constituent permitted by the syntax.
+I know what the  CAT scan is for, 
+but  W HICH condition does  URIN ALYSIS address? 
+L+H* 		 LH% 		 H* 		 LL$ 
+Proposition:
+<!-- MATH: $s : \lambda x [condition(x) \ address(*urinalysis, x)]$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+Theme:
+<!-- MATH: $s: \lambda x [condition(x) \ address(*urinalysis, x)]/$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+<!-- MATH: $(s:address(*urinalysis, x)/np:x)$ -->
+(s:address(*urinalysis, x)/np:x)
+Rheme:
+<!-- MATH: $s:address(*urinalysis, x)/np:x$ -->
+s:address(*urinalysis, x)/np:x
+The content generation module, which has the task of determining the
+semantics and information structure of the response, relies on several
+simplifying assumptions.  Foremost among these is the notion that the
+rheme of the question is the sole determinant of the theme of the
+response, including the specification of focus (although the type of
+pitch accent that eventually marks the focus will be different in the
+response).  The overall semantic structure of the response can be
+determined by instantiating the variable in the lambda expression
+corresponding to the wh-question with a simple Prolog query.
+Given the syntactic and focus-marked semantic representation for the
+response, along with the syntactic and focus-marked semantic
+representation for the theme of the response, a representation for the
+rheme of the response can be worked out from the CCG rules.  The
+assignment of focus for the rheme of the response (i.e.  the
+instantiated variable) must be worked out from scratch, on the basis
+of the alternative sets in the database, as described in section 3.
+ For the question given in <CREF/>, the content generator produces the following:
+Proposition:
+<!-- MATH: $s:address(*urinalysis, *hematuria)$ -->
+s:address(*urinalysis, *hematuria)
+Theme:
+<!-- MATH: $s:address(*urinalysis, x)/np:x$ -->
+s:address(*urinalysis, x)/np:x
+Rheme:
+<!-- MATH: $np:*hematuria$ -->
+np:*hematuria
+From the output of the content generator, the CCG generation
+module produces a string of words and Pierrehumbert-style markings
+ representing the response, as shown in <CREF/>. 
+urinalysis@lhstar addresses@lh hematuria@hstarllb
+The final aspect of generation involves translating such a string into
+a form usable by a suitable speech synthesizer.  The current
+implementation uses the Bell Laboratories TTS system (Liberman and
+Buchsbaum [<REF/>]) as a post-processor to synthesize the speech
+wave itself.
+</P>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>Results</HEADER>
+<P>
+The system described above produces quite sharp and natural-sounding
+distinctions of intonation contour in minimal pairs of queries like
+ those in examples <CREF/>, which should be read as concerning a single patient with multiple wounds.  These examples
+illustrate the system's capability for producing appropriately
+different intonation contours for a single string of words under the
+control of discourse context. If the responses in these examples are
+interchanged, the results sound distinctly unnatural in the given
+ contexts. 
+ Examples <CREF/> illustrate the necessity of the theme/rheme distinction.  Although the pitch accent locations in
+the responses in these examples are identical, occurring on thoracostomy and simple, the alternation in the
+theme and rheme tunes is necessary to convey the intended proposition
+in the given contexts.
+ Examples <CREF/> show that the system makes appropriate distinctions in focus placement
+within themes and rhemes based on context.  Although the responses in these two
+sentences possess the same intonational tunes, the pitch accent
+location is crucial for conveying the appropriate contrastive
+properties.
+ Examples <CREF/> manifest the eight basic combinatorial possibilities for pitch accent placement and tune
+selection produced by our program for the given sentence.
+The inclusion of contrastive lexical stress shift increases the
+number of intonational possibilities even more, as exemplified in
+ <CREF/>. 
+Q:
+I know what's recommended for the  pneumothorax,
+but which procedure   is recommended for the  SI pneumothorax?
+L+H* 		 LH% 		 H* 		 LL$ 
+A:
+A left  THORAC OST OMY   isrecommended for the  SI MPLE pneumothorax.
+H* 		 L 		 L+H* 		 LH$ 
+Q:
+I know what's recommended for the  PERSISTENTpneumothorax,
+but which pneumothorax   is a left  THORAC OSTOMYrecommended for?
+L+H* 		 LH% 		 H* 		 LL$ 
+A:
+A left  THORAC OSTOMY is recommendedfor  the S IMPLE pneumothorax.
+L+H* 		 LH% 		 H* 		 LL$ 
+Q:
+I know what's recommended for the  PERITONITIS,
+but which procedure   is recommended for the simplepneumo T HORax?
+L+H* 		 LH% 		 H* LL$ 
+A:
+A left  THORAC OST OMY   isrecommended for the simple pneumo THORax.
+H* 		 L 		 L+H* LH$ 
+Q:
+I know what's recommended for the  PERITONITIS,
+but which condition   is a left  THORAC OSTOMYrecommended for?
+L+H* 		 LH% 		 H* 		 LL$ 
+A:
+A left  THORAC OSTOMY is recommendedfor  thesimple pneumo THORax.
+L+H* 		 LH% 		 H* LL$ 
+Q:
+A  RIGHT thoracostomy is recommended for the  pneumothorax,
+but which thoracostomy   is recommended for the  S pneumothorax?
+L+H* 		 LH% 		 H* 		 LL$ 
+A:
+A  L EFT thoracostomy   isrecommended for the  S IMPLE pneumothorax.
+H* 		 L 		 L+H* 		 LH$ 
+Q:
+A  RIGHT thoracostomy is recommended for the pneumothorax,
+but which pneumothorax   is a  L EFT thoracostomyrecommended for?
+L+H* 		 LH% 		 H* 		 LL$ 
+A:
+A  LEFT thoracostomy is recommended for  the S IMPLE pneumothorax.
+L+H* 		 LH% 		 H* 		 LL$ 
+Q:
+A  RIGHT thoracostomy is recommended for somecondition,
+but which thoracostomy   is recommended for the simplepneumo THORax?
+L+H* 		 LH% 		 H* LL$ 
+A:
+A  L EFT thoracostomy   isrecommended for the simple pneumo THORax.
+H* 		 L 		 L+H* LH$ 
+Q:
+A  RIGHT thoracostomy is recommended for somecondition,
+but which condition   is a  L EFTthoracostomy recommended for?
+L+H* 		 LH% 		 H* 		 LL$ 
+A:
+A  LEFT thoracostomy is recommended for  thesimple pneumo THORax.
+L+H* 		 LH% 		 H* LL$ 
+Q:
+I know which procedure is recommended for the simplehemothorax,
+but which procedure   is recommended for the simple P NEUmothorax?
+L+H* 		 LH% 		 H* 		 LL$ 
+A:
+A left  THORAC OST OMY   isrecommended for the simple  PNEUmothorax.
+H* 		 L 		 L+H* 		 LH$ 
+Q:
+I know which procedure is recommended for the simplehemothorax,
+but which condition   is a left  THORAC OSTOMYrecommended for?
+L+H* 		 LH% 		 H* 		 LL$ 
+A:
+A left  THORAC OSTOMY is recommendedfor  thesimple  P NEUmothorax.
+L+H* 		 LH% 		 H* 		 LL$ 
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>Conclusions</HEADER>
+<P>
+The results show that is possible to generate synthesized spoken
+responses with contextually appropriate intonational contours in a
+database query task.  Many important problems remain, both because of
+the limited range of discourse-types and intonational tunes considered
+here, and because of the extreme oversimplification of the discourse
+model (particularly with respect to the ontology, or variety of types
+of discourse entities).  Nevertheless, the system presented here has a
+number of properties that we believe augur well for its extension to
+richer varieties of discourse, including the types of monologues and
+commentaries that are more appropriate for the actual TraumAID domain.
+Foremost among these is the fact that the system and the underlying
+theory are entirely modular.  That is, any of its components can be
+replaced without affecting any other component because each is
+entirely independent of the particular grammar defined by the lexicon
+and the particular knowledge base that the discourse concerns.  It is
+only because CCG allows us to unify the structures implicated
+in syntax and semantics on the one hand, and intonation and discourse
+information on the other, that this modular structure can be so simply
+attained.
+</P>
+</DIV>
+<DIV ID="7" DEPTH="1" R-NO="7"><HEADER>Acknowledgments</HEADER>
+<P>
+Preliminary versions of some sections in the present paper were
+published as Prevost and Steedman ([<REF/>]).  We are
+grateful to the audiences at those meetings, to ATT Bell
+Laboratories for allowing us access to the TTS speech synthesizer, to
+Mark Beutnagel, Julia Hirschberg, and Richard Sproat for patient
+advice on its use, to Abigail Gertner for advice on Traumaid, to
+Janet Pierrehumbert for discussions on notation, and to the anonymous
+referees for many helpful suggestions.  The usual
+disclaimers apply.  The research was supported in part by NSF grant
+nos. IRI90-18513, IRI90-16592, IRI91-17110 and CISE IIP-CDA-88-22719,
+DARPA grant no.  N00014-90-J-1863, ARO grant no.  DAAL03-89-C0031, and
+grant no.  R01-LM05217 from the National Library of Medicine.
+</P>
+</DIV>
+<DIV ID="8" DEPTH="1" R-NO="8"><HEADER>Footnotes</HEADER>
+<P>
+  The examples used throughout the paper are based on a
+the domain of TraumAID, which is currently under development at the
+University of Pennsylvania (Webber et al. [<REF/>]).  The
+lay reader may find it useful to know that a thoracostomy is the
+insertion of a tube into the chest, and pneumothorax refers to
+the presence of air or gas in the pleural cavity.
+  A brief summary of Pierrehumbert's notation
+can be found in Steedman ([<REF/>]).
+  Since utterance
+boundaries always coincide with an intonational phrase boundary, this
+distinction is often left implicit in the literature, both being
+written with % boundaries.  For purposes of synthesis, however, the
+distinction is important.
+  It may be helpful for the
+reader to know that lavage refers to the therapeutic cleansing
+of an organ.
+  It is important to
+realize that the semantics of the type raised categories and of the
+application rules ensures that this derivation yields an S with the
+ same interpretation as the earlier derivation <CREF/>, namely 
+<!-- MATH: $\it recommend'~lavage'~traumaid'$ -->
+</P>
+<IMAGE TYPE="FIGURE"/>
+<P>
+ .  At first glance, it looks as
+though type-raising will expand the lexicon alarmingly.  One way round
+this problem is discussed in
+Steedman ([<REF/>]).
+  As before, it is important to realize that the semantics of the
+categories and of the new rule of functional composition guarantee
+that the S
+yielded in this derivation bears exactly the same interpretation as
+ the original purely applicative derivation <CREF/>. 
+  A similar argument in a related categorial
+framework is made by Moortgat ([<REF/>]).
+  Here we are ignoring the possibility of multiple pitch accents in the
+same prosodic phrase, but cf. Steedman ([<REF/>]).
+  Note
+again that $ boundaries are often conflated with % intonational
+phrase boundaries in the literature.  These categories, which in some
+sense imply that boundaries are phonological heads, constitute a
+modification to previous versions of the present theory that brings it
+more closely into line with the proposals in Pierrehumbert and
+Hirschberg ([<REF/>]).  The idea that boundaries are functors
+has been independently proposed by Kirkeby-Garstad and Polgardi
+(p.c.).
+  These rules represent another minor
+departure from the earlier papers.
+  The category has the effect of preventing further composition into the
+null tone achieved in the earlier papers by a restriction on forward
+prosodic composition.
+  Note that since the raised
+object category is not crucial, it has been replaced by NP for ease of reading
+comprehension.  Also note the focus-marking effect of the pitch accents.
+  See Prevost and Steedman ([<REF/>])
+for an investigation of how much one can get away with on the basis of
+the question alone.
+  It may be helpful to point out that a thoracotomy is a surgical incision of the chest wall, and a thoracostomy is the insertion of a tube into the chest.
+  In using these examples to motivate the
+treatment of contrast in the system, we go beyond the class of
+discourses that are actually handled by the system as currently
+implemented.  We are in fact glossing over a number of subtle problems
+concerning the theme-rheme structures that are involved, and the
+precise reflection of these information structures in intonation.
+  That is not to claim that the adjective cannot carry a pitch
+accent, of course.
+  We omit a more detailed
+description of the algorithm and its associated data structures for
+the sake of brevity.  A more detailed account and numerous examples
+are given in Prevost and Steedman ([<REF/>]).
+  We stress that we do not start
+with a speech wave, but a representation that one might obtain from a
+hypothetical system that translates such a wave into strings of words
+with Pierrehumbert-style intonation markings.
+  Full
+descriptions of the CCG generation algorithm are given in
+Prevost and Steedman ([<REF/>]).
+  The first line of each query is for reader
+assistance only, and is not processed by the system described here.
+The waves files corresponding to the examples in this section
+are available by anonymous ftp from ftp.cis.upenn.edu, under the
+directory /pub/prevost/speechcomm.
+</P>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

@@ -1,0 +1,2 @@
+
+FOR several years , physicists , mathematicians and computer scientists have been worrying at the problem of how to make a quantum computer - - a device that would out - perform conventional ( or " classical " ) computers as thoroughly as conventional computers have beaten the abacus . Each switch ( known in this context as a " qubit " ) could then , in effect , be doing two calculations at once . They worked out that the same effect could be achieved by using the total opposite: a sea of molecules , jostling and tumbling like a band of excitable schoolchildren . 

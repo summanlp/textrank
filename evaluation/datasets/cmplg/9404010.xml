@@ -1,0 +1,817 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>Intensional Verbs Without Type-Raising or Lexical Ambiguity</TITLE>
+<ABSTRACT>
+<P>
+We present an analysis of the semantic interpretation of intensional
+verbs such as seek that allows them to take direct objects of
+either individual or quantifier type, producing both de dicto
+and de re readings in the quantifier case, all without needing
+to stipulate type-raising or quantifying-in rules.  This simple
+account follows directly from our use of logical deduction in
+linear logic to express the relationship between syntactic structures
+and meanings.  While our analysis resembles current categorial
+approaches in important ways
+ (<REF/>,<REF/>,<REF/>,<REF/>), it differs from them in allowing the greater type flexibility of
+ categorial semantics (<REF/>) while maintaining a precise connection to syntax. As a result, we are able to provide
+derivations for certain readings of sentences with intensional verbs
+and complex direct objects that are not derivable in current purely
+categorial accounts of the syntax-semantics interface.  The analysis
+forms a part of our ongoing work on semantic interpretation within the
+framework of Lexical-Functional Grammar.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  Theoretical Background </HEADER>
+<P>
+As a preliminary to presenting our analysis of intensional verbs,
+we outline our approach to semantic interpretation in LFG.
+</P>
+<P>
+It is well known that surface constituent structure does not always
+provide the optimal set of constituents or hierarchical structure to
+guide semantic interpretation.  This has led to efforts to develop
+more abstract structures for the representation of relevant syntactic
+information.  We follow Kaplan and Bresnan (1982)
+ and <REF/> in taking the
+functional structure or f-structure of LFG as the primary
+input to semantic interpretation. The syntactic structures of LFG, the
+constituent structure or c-structure and the f-structure, are
+related by means of a functional correspondence, represented in Figure
+ <CREF/> by solid lines leading from nodes of the c-structure tree  to f-structures (<REF/>). 
+In more recent work, <REF/> and
+<REF/> have proposed to extend
+the theory of correspondences to other structures, called projections.  Here, we will appeal to a semantic projection
+<EQN/>,
+relating f-structures and their meanings. Notationally, a
+subscript <EQN/>
+will indicate the semantic or <EQN/>
+projection
+of an f-structure f, so that the semantic projection of f will be
+written <EQN/>.
+ In Figure <CREF/>, dotted lines represent the relation between f-structures and their semantic projections.
+Finally, as shown in the figure,
+the semantic projection <EQN/>
+of an f-structure f can be put in
+correspondence with a meaning <EQN/>:
+<!-- MATH: $f_\sigma \makebox[1.2em]{$\leadsto$ }\phi$ -->
+<EQN/>
+Informally, we read this expression as ``the meaning of f is
+<EQN/>''.  We use expressions of this sort to lexically associate
+meanings with f-structures, as in the following lexical entry
+for the word Bill:
+The first line of this lexical entry:
+(<EQN/>
+PRED) =  `BILL'
+says (roughly) that the word Bill introduces an f-structure <EQN/>whose  is `Bill'.  The second line:
+<!-- MATH: $\uparrow_\sigma \makebox[1.2em]{$\leadsto$ }\mbox{\it Bill}\/$ -->
+<EQN/>says that the meaning of that f-structure is 
+<!-- MATH: $\mbox{\it Bill}\/$ -->
+<EQN/>.
+When a
+lexical entry is used, the metavariable `<EQN/>' is instantiated
+with some constant f denoting an f-structure
+ (<REF/>, page 183]).  In particular, the term 
+<!-- MATH: $\uparrow_\sigma$ -->
+<EQN/>
+is instantiated to the semantic projection
+<!-- MATH: $f_{\sigma}$ -->
+<EQN/>
+of f and the formula 
+<!-- MATH: $\uparrow_\sigma \makebox[1.2em]{$\leadsto$ }
+\mbox{\it Bill}\/$ -->
+<EQN/>
+is instantiated to 
+<!-- MATH: $f_{\sigma}
+\makebox[1.2em]{$\leadsto$ }\mbox{\it Bill}\/$ -->
+<EQN/>,
+asserting that the meaning of f is 
+<!-- MATH: $\mbox{\it Bill}\/$ -->
+<EQN/>.
+</P>
+<P>
+More complicated lexical entries give not only meanings for
+f-structures, but also instructions for assembling f-structure
+meanings from the meanings of other f-structures.  We distinguish a
+meaning language, in which we represent the meanings of
+f-structures, and a composition language or glue
+language, in which we describe how to assemble the meanings of
+f-structures from the meanings of their substructures. Each lexical
+entry will contain a composition language formula, its meaning
+constructor, specifying how a lexical entry contributes to the
+meaning of any structure in which it participates.
+</P>
+<P>
+In principle, the meaning language can be any suitable logic. Here,
+since we are concerned with the semantics of intensional verbs, we
+will use Montague's higher-order intensional logic IL.  The
+expressions that appear on the right side of the 
+<!-- MATH: $\makebox[1.2em]{$\leadsto$ }$ -->
+<EQN/>
+connective
+ in lexical entries like (<CREF/>) above are (usually open) terms in the meaning language.
+</P>
+<P>
+Our composition language is a fragment of linear logic with
+higher-order quantification. While the resource sensitivity of linear
+logic is crucial to our overall interpretation framework, it does not
+play a central role in the analysis discussed here, so the linear
+connectives can be informally read as their classical
+ counterparts. In contrast to standard approaches, which use the <EQN/>-calculus to combine fragments of meaning via ordered
+applications, we combine fragments of meaning through unordered
+conjunction and implication.  Rather than using <EQN/>-reduction to
+simplify meanings, we rely on deduction, as advocated by Pereira
+(Pereira:SemComp,Pereira:HOD).
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  A Simple Example </HEADER>
+<P>
+We now turn to a simple example to illustrate the framework.  The
+ lexical entries necessary for the example in Figure <CREF/>  are: 
+</P>
+<P>
+The symbol `
+<!-- MATH: $\;\mbox{$-\hspace*{-.4ex}\circ$ }\;$ -->
+<EQN/>' is the linear implication operator of linear
+logic; for this paper, `
+<!-- MATH: $\;\mbox{$-\hspace*{-.4ex}\circ$ }\;$ -->
+<EQN/>' can be thought of as analogous to
+classical implication `
+<!-- MATH: $\rightarrow$ -->
+<EQN/>'.  The formula 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+states that
+the verb left requires a meaning X for its subject,
+<!-- MATH: $(\uparrow \mbox{\sc subj})$ -->
+<EQN/>;
+when that meaning is provided, the
+meaning for the sentence will be 
+<!-- MATH: $\mbox{\it leave}\/(X)$ -->
+<EQN/>.
+When the words Bill and left are used in a sentence, the metavariable
+<EQN/>
+will be instantiated to a particular f-structure, and the
+meaning given in the lexical entry will be used as the meaning of that
+f-structure.
+</P>
+<P>
+ Here we repeat the f-structure in Figure <CREF/>, including labels for ease of reference:
+f:
+<!-- MATH: $\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `leave'\hspace{.2em}}\vskip .8ex
+\vskip
+.4ex\hbox{\hspace{.2em}\subj\hspace{1em}$g$ :\(\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `Bill'\hspace{.2em}}\vskip .8ex}\right]\)\hspace{.2em}}\vskip .8ex}\right]$ -->
+<EQN/>
+Annotated phrase structure rules provide instructions for assembling
+this f-structure by instantiating the metavariables `<EQN/>' in
+the lexical entries above.  For instance, the metavariable
+`<EQN/>' in the lexical entry for Bill is instantiated to
+the f-structure labeled g.
+</P>
+<P>
+From the instantiated lexical entries of Bill and left, we
+have the following semantic information:
+<!-- MATH: $\begin{array}[t]{ll}
+\mbox{\bf leave}\colon  \forall X.\ g_{\sigma} \makebox[1.2em]{$\leadsto$ }X \;\mbox{$-\hspace*{-.4ex}\circ$ }\;f_{\sigma} \makebox[1.2em]{$\leadsto$ }
+\mbox{\it leave}\/(X)\\
+\mbox{\bf Bill}\colon  g_{\sigma} \makebox[1.2em]{$\leadsto$ }\mbox{\it Bill}\/
+\end{array}$ -->
+<EQN/>
+where leave and Bill are names for their respective
+formulas.  By modus ponens, we deduce:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The elements of the f-structure provide a set of formulas in the
+composition logic that introduce semantic elements and describe how
+they can be combined.  For example, lexical items for words that
+expect arguments, like verbs, typically contribute a formula for
+combining the meanings of their arguments into a result.  Once all the
+formulas are assembled, deduction in the logic is used to infer the
+meaning of the entire structure.  Throughout this process we maintain
+a clear distinction between meanings proper and assertions about
+meaning combinations.
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  Quantification </HEADER>
+<P>
+We now turn to an overview of our analysis of quantification
+(Dalrymple, Lamping, Pereira, and Saraswat 1993).  As a simple
+example, consider the sentence
+Every man left.
+For conciseness, we will not illustrate the combination of the meaning
+constructors for every and man; instead, we will work
+with the derived meaning constructor for the subject every
+man, showing how it combines with the meaning constructor for left to produce a meaning constructor giving the meaning of the
+whole sentence.
+</P>
+<P>
+The basic idea of our analysis of quantified NPs can be seen as a
+logical counterpart at the semantic composition level of the
+generalized-quantifier type assignment for (quantified) NPs
+ (<REF/>). Under that assignment, a NP meaning Qhas type 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+--that is, a function from
+a property, the scope of quantification, to a proposition.  At the
+semantic composition level, we can understand that type as follows. If
+by assuming that x is the entity referred to by the NP we can derive
+S x as the meaning of the scope of quantification, where S is a
+property (a function from entities to propositions), then we can
+derive Q S as the meaning of the whole clause containing the NP.
+</P>
+<P>
+The f-structure for the sentence Every man left is:
+f:
+<!-- MATH: $\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `leave'\hspace{.2em}}\vskip .8ex
+\vskip
+.4ex\hbox{\hspace{.2em}\subj\hspace{1em}$g$ :\(\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\spec\hspace{1em}\sc `every'\hspace{.2em}}\vskip .8ex
+                                     \vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `man'\hspace{.2em}}\vskip .8ex}\right]\)\hspace{.2em}}\vskip .8ex}\right]$ -->
+<EQN/>
+The meaning constructors for every man and left
+ are: 
+</P>
+<P>
+  <!-- MATH: $\begin{array}[t]{lr@{\ }l}
+\mbox{\bf leave}\colon  \forall X.  \/g_{\sigma} \makebox[1.2em]{$\leadsto$ }X
+\;\mbox{$-\hspace*{-.4ex}\circ$ }\;f_{\sigma} \makebox[1.2em]{$\leadsto$ }\mbox{\it leave}\/(X)\\[2ex]
+\mbox{\bf every-man}\colon\  \forall H, S. 
+(\forall x.  g_{\sigma} \makebox[1.2em]{$\leadsto$ }x \;\mbox{$-\hspace*{-.4ex}\circ$ }\;H \makebox[1.2em]{$\leadsto$ }Sx)\\
+ \;\mbox{$-\hspace*{-.4ex}\circ$ }\;H \makebox[1.2em]{$\leadsto$ }\mbox{\it every}\/(z, \mbox{\it man}\/(z), Sz)
+\end{array}$ -->
+<EQN/>
+The meaning constructor for left is as before.  The meaning
+constructor for every
+man quantifies over semantic projections H which constitute possible
+quantification
+scopes; its propositional structure corresponds to the
+standard type assignment, 
+<!-- MATH: $(e\rightarrow t)\rightarrow t$ -->
+<EQN/>.
+It can be
+paraphrased as:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+In the case at hand, the semantic projection <EQN/>
+will be
+ chosen to provide the scope of quantification.  It has exactly the form that the antecedent of every-man expects.  The meaning S will be instantiated to  <!-- MATH: $\lambda
+x. \mbox{\it leave}\/(x)$ -->
+<EQN/>.
+From the premises in
+ (<CREF/>), we can deduce the meaning of the scope f-structure f:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+The resource sensitivity of linear logic ensures that the scope of
+quantification is constructed and used exactly once.
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  Intensional Verbs </HEADER>
+<P>
+We follow Montague (Montague:PTQ) in requiring intensional
+verbs like seek to take an object of NP type.  What is
+interesting is that this is the only step required in our setting to
+obtain the appropriate ambiguity predictions for intensional verbs.
+The de re/de dicto ambiguity of a sentence like Bill seeks a unicorn:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+is a natural consequence, in our setting, of seek taking an NP-type argument.
+</P>
+<P>
+We assign the following lexical entry to the verb seek:
+</P>
+<P>
+The significant fact here is that seek differs from
+an extensional verb such as find below (corresponding to the type
+<!-- MATH: $e\rightarrow e\rightarrow t$ -->
+<EQN/>)
+in its specification of requirements on
+its object:
+Note also the use of the operators ``<EQN/>'' and ``
+<!-- MATH: $\check{\ }$ -->
+<EQN/>'' of
+IL.  Computationally, this implies that our proofs have to be carried
+out in a logic whose terms are (typed) lambda-expressions that satisfy
+<EQN/>,
+<EQN/>
+and <EQN/>-equality and also the law
+<!-- MATH: ${\check{\ }}({\hat{\ }}P)=P$ -->
+<EQN/>,
+for all P.
+</P>
+<P>
+The lexical entry for seek can be paraphrased as follows:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Rather than looking for an entity type meaning for its
+object, the requirement expressed by the subformula labeled (*)exactly describes the form of quantified NP meanings discussed in the
+previous section.  In this case, a quantified NP in the object
+position is one that can accept anything that takes a meaning for
+<!-- MATH: $(\uparrow \obj)_\sigma$ -->
+<EQN/>
+to a meaning for any s, and convert that
+into a meaning for the s.  In particular, the quantified NP a
+unicorn will fill the requirement, as we now demonstrate.
+</P>
+<P>
+The f-structure for Bill seeks a unicorn is:
+f:
+<!-- MATH: $\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `seek'\hspace{.2em}}\vskip .8ex
+\vskip
+.4ex\hbox{\hspace{.2em}\subj\hspace{1em}$g$ :\(\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `Bill'\hspace{.2em}}\vskip .8ex}\right]\)\hspace{.2em}}\vskip .8ex
+           \vskip
+.4ex\hbox{\hspace{.2em}\obj\hspace{1em}$h$ :\(\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\spec\hspace{1em}\sc `a'\hspace{.2em}}\vskip .8ex
+                                    \vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `unicorn'\hspace{.2em}}\vskip .8ex}\right]\)\hspace{.2em}}\vskip .8ex}\right]$ -->
+<EQN/>
+The semantic information associated with this f-structure is:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+These are the premises for the deduction of the meaning of the
+sentence Bill seeks a unicorn.  From the premises Bill
+and seeks, we can conclude by modus ponens:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+Different derivations starting from the premises
+Bill-seeks and a-unicorn will yield the different readings
+of Bill seeks a unicorn that we seek.
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>  De Dicto Reading </HEADER>
+<P>
+The formula a-unicorn
+is exactly what is required by the antecedent
+of Bill-seeks provided that the following substitutions are
+performed:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+We can thus conclude the desired de dicto reading:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+To show how the premises also support a de re reading, we take
+first a short detour through a simpler example.
+</P>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>  Nonquantified Objects </HEADER>
+<P>
+The meaning constructor for seek also allows for
+nonquantified objects as arguments, without needing a special
+type-raising rule.  Consider the f-structure for the sentence Bill seeks Al:
+</P>
+<P>
+f:
+<!-- MATH: $\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `seek'\hspace{.2em}}\vskip .8ex
+\vskip
+.4ex\hbox{\hspace{.2em}\subj\hspace{1em}$g$ :\(\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `Bill'\hspace{.2em}}\vskip .8ex}\right]\)\hspace{.2em}}\vskip .8ex
+           \vskip
+.4ex\hbox{\hspace{.2em}\obj\hspace{1em}$h$ :\(\left[\setlength{\baselineskip}{0pt}  \vcenter{\vskip
+.4ex\hbox{\hspace{.2em}\pred\hspace{1em}\sc `Al'\hspace{.2em}}\vskip .8ex}\right]\)\hspace{.2em}}\vskip .8ex}\right]$ -->
+<EQN/>
+</P>
+<P>
+The lexical entry for Al is analogous to the one for
+Bill.  We begin with the premises Bill-seeks and Al:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+For the derivation to proceed, Al must
+supply the NP meaning constructor that Bill-seeks requires.  This is possible because Al can map a proof <EQN/>of the meaning for s from the meaning for h into a meaning
+for s, simply by supplying 
+<!-- MATH: $h_{\sigma} \makebox[1.2em]{$\leadsto$ }\mbox{\it Al}\/\,$ -->
+<EQN/>
+to <EQN/>.
+ Formally, from Al we can prove (Figure <CREF/>):   <!-- MATH: $\forall P. (\forall x.  h_\sigma \makebox[1.2em]{$\leadsto$ }x
+\;\mbox{$-\hspace*{-.4ex}\circ$ }\;s \makebox[1.2em]{$\leadsto$ }P(x)) \;\mbox{$-\hspace*{-.4ex}\circ$ }\;s \makebox[1.2em]{$\leadsto$ }P(\mbox{\it Al}\/\,)$ -->
+<EQN/>
+This corresponds to the
+Montagovian type-raising of a proper name meaning to an NP meaning,
+and also to the undirected Lambek calculus derivation of
+the sequent 
+<!-- MATH: $e\Rightarrow(e\rightarrow t)\rightarrow t$ -->
+<EQN/>.
+</P>
+<P>
+ Formula (<CREF/>) with the substitutions 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+can then be used to satisfy the
+antecedent of Bill-seeks to yield the desired result:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+It is worth contrasting the foregoing derivation with treatments of
+the same issue in the lambda calculus.  The function 
+<!-- MATH: $\lambda
+x. \lambda P. Px$ -->
+<EQN/>
+raises a term like 
+<!-- MATH: $\mbox{\it Al}\/\,$ -->
+<EQN/>
+to the quantified NP
+form 
+<!-- MATH: $\lambda P. P(\mbox{\it Al}\/\,)$ -->
+<EQN/>,
+so it is easy to modify 
+<!-- MATH: $\mbox{\it Al}\/\,$ -->
+<EQN/>
+to
+make it suitable for seek.  But the conversion must be
+explicitly applied somewhere, either in a meaning postulate or in an
+alternate definition for seek, in order to carry out the
+derivation.  This is because a lambda calculus function must specify
+exactly what is to be done with its arguments and how they will
+interact.  It must presume some functional form of its arguments in
+order to achieve its own function.  Thus, it is impossible to write a
+function that is indifferent with respect to whether its argument is
+Al or 
+<!-- MATH: $\lambda P. P(\mbox{\it Al}\/\,)$ -->
+<EQN/>.
+</P>
+<P>
+In the deductive framework, on the other hand, the exact way in which
+different propositions can interact is not fixed, although it is
+constrained by their (logical and quantificational) propositional
+structure.  Thus 
+<!-- MATH: $h_{\sigma}
+\makebox[1.2em]{$\leadsto$ }\mbox{\it Al}\/\,$ -->
+<EQN/>
+</P>
+</DIV>
+<DIV ID="4.3" DEPTH="2" R-NO="3"><HEADER>  Type Raising and Quantifying In </HEADER>
+<P>
+ The derivation in Figure <CREF/> can be generalized as shown in  Figure <CREF/> to produce the general type-raising theorem:
+  <!-- MATH: $\forall I,Z.\; I \makebox[1.2em]{$\leadsto$ }Z \;\mbox{$-\hspace*{-.4ex}\circ$ }\;(\forall S,P.\; (\forall x. I
+\makebox[1.2em]{$\leadsto$ }x \;\mbox{$-\hspace*{-.4ex}\circ$ }\;S \makebox[1.2em]{$\leadsto$ }P(x)) \;\mbox{$-\hspace*{-.4ex}\circ$ }\;S\makebox[1.2em]{$\leadsto$ }P(Z))$ -->
+<EQN/>
+This theorem can be used to raise meanings of e type to
+<!-- MATH: $(e\rightarrow t)\rightarrow t$ -->
+<EQN/>
+type, or, dually, to quantify into
+verb argument positions. For example, with the variable instantiations
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+we can use transitivity of implication to combine
+ (<CREF/>) with Bill-seeks to derive: 
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+This formula can then be combined with arguments of type e to
+produce a meaning for <EQN/>.
+For instance, it will take the
+non-type-raised 
+<!-- MATH: $h_\sigma \makebox[1.2em]{$\leadsto$ }\mbox{\it Al}\/\,$ -->
+<EQN/>
+to yield the same result
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+as the combination of Bill-seeks with the type-raised version of Al.
+In fact, 
+<!-- MATH: $\mbox{\bf Bill-seeks}'$ -->
+<EQN/>
+corresponds to type 
+<!-- MATH: $e\rightarrow t$ -->
+<EQN/>,
+and can
+thus be used as the scope of a quantifier, which would then quantify
+into the intensional direct object argument of seek. As we will
+presently see, that is exactly what is needed to derive
+de re readings.
+</P>
+</DIV>
+<DIV ID="4.4" DEPTH="2" R-NO="4"><HEADER>  De Re Reading </HEADER>
+<P>
+ We have just seen how theorem (<CREF/>) provides a general mechanism for quantifying into intensional argument
+positions. In particular, it allowed the derivation of 
+<!-- MATH: $\mbox{\bf Bill-seeks}'$ -->
+<EQN/>from Bill-seeks. Now, given the premises
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+and the variable substitutions
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+we can apply modus ponens to derive the de re reading of Bill seeks
+a unicorn:
+</P>
+<P>
+<EQN/>
+</P>
+</DIV>
+<DIV ID="4.5" DEPTH="2" R-NO="5"><HEADER>  A Comparison with Categorial Approaches </HEADER>
+<P>
+The analysis presented here has strong similarities to analyses of the
+same phenomena discussed by <REF/> and
+<REF/>. Following
+<REF/>, they add to an appropriate version of
+ the Lambek calculus (<REF/>) the scope connective <EQN/>,
+subject to the following proof rules:
+</P>
+<P>
+<EQN/>
+</P>
+<P>
+In terms of the scope connective, a quantified noun phrase is given
+the category 
+<!-- MATH: $\mbox{N}\Uparrow\mbox{S}$ -->
+<EQN/>,
+which semantically
+corresponds to the type 
+<!-- MATH: $(e\rightarrow t)\rightarrow t$ -->
+<EQN/>
+</P>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Conclusion </HEADER>
+<P>
+We have shown that our deductive framework allows us to predict the
+correct set of readings for intensional verbs with quantified and
+nonquantified direct objects if we make a single assumption: that
+intensional verbs require a quantified direct object. This assumption
+is, of course, the starting point of the standard Montagovian
+treatment of intensional verbs. But that treatment depends on the
+additional machinery of quantifying in to generate de re
+readings of quantified direct objects, and that of explicit type
+raising to accommodate unquantified direct objects.  In our approach
+those problems are handled directly by the deductive apparatus without
+further stipulation.
+</P>
+<P>
+These results, as well as our previous work on quantifier scope,
+suggest the advantages of a generalized form of compositionality in
+which the semantic contributions of phrases are represented by logical
+formulas rather than by functional abstractions as in traditional
+compositionality. The fixed application order and fixed type
+requirements of lambda terms are just too restrictive when it comes to
+encoding the freer order of information presentation in natural
+language.  In this observation, our treatment is closely related to
+systems of syntactic and semantic type assignment based on the Lambek
+calculus and its variants. However, we differ from those categorial
+approaches in providing an explicit link between functional structures
+and semantic derivations that does not depend on linear order and
+constituency in syntax to keep track of predicate-argument relations.
+Thus we avoid the need to force both syntax and semantics into an
+uncomfortably tight categorial embrace.
+</P>
+</DIV>
+<DIV ID="6" DEPTH="1" R-NO="6"><HEADER>  Acknowledgments </HEADER>
+<P>
+We thank David Israel, Michael Moortgat and Stanley Peters for
+discussions on the subject of this paper.
+</P>
+<DIV ID="6.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Barwise, Jon, and Robin Cooper.
+1981.
+Generalized Quantifiers and Natural Language.
+Linguistics and Philosophy 4:159-219.
+</P>
+<P>
+Carpenter, Bob. 1993.
+Quantification and Scoping: a Deductive Account.
+Submitted for publication.
+</P>
+<P>
+Dalrymple, Mary, Angie Hinrichs, John Lamping, and Vijay Saraswat. 1993.
+The Resource Logic of Complex Predicate Interpretation.
+In Proceedings of the 1993 Republic of China Computational
+  Linguistics Conference (ROCLING).
+Hsitou National Park, Taiwan, September. Computational Linguistics
+  Society of R.O.C.
+</P>
+<P>
+Dalrymple, Mary, John Lamping, Fernando C. N. Pereira, and Vijay Saraswat.
+  1994.
+A Deductive Account of Quantification in LFG.
+In Quantifiers, Deduction, and Context, ed. Makoto Kanazawa,
+  Christopher J. Pin, and Henriette de Swart.
+Stanford, California: Center for the Study of Language and
+  Information.
+</P>
+<P>
+Dalrymple, Mary, John Lamping, and Vijay Saraswat. 1993.
+LFG Semantics Via Constraints.
+In Proceedings of the Sixth Meeting of the European ACL.
+University of Utrecht, April. European Chapter of the Association for
+  Computational Linguistics.
+</P>
+<P>
+Girard, J.-Y.
+1987.
+Linear Logic.
+Theoretical Computer Science 45:1-102.
+</P>
+<P>
+Halvorsen, Per-Kristian.
+1983.
+Semantics for Lexical-Functional Grammar.
+Linguistic Inquiry 14(4):567-615.
+</P>
+<P>
+Halvorsen, Per-Kristian, and Ronald M. Kaplan. 1988.
+Projections and Semantic Description in Lexical-Functional
+  Grammar.
+In Proceedings of the International Conference on Fifth
+  Generation Computer Systems, 1116-1122.
+Tokyo, Japan. Institute for New Generation Systems.
+</P>
+<P>
+Kaplan, Ronald M. 1987.
+Three Seductions of Computational Psycholinguistics.
+In Linguistic Theory and Computer Applications, ed. Peter
+  Whitelock, Harold Somers, Paul Bennett, Rod Johnson, and Mary McGee Wood.
+149-188.
+London: Academic Press.
+</P>
+<P>
+Kaplan, Ronald M., and Joan Bresnan. 1982.
+Lexical-Functional Grammar: A Formal System for Grammatical
+  Representation.
+In The Mental Representation of Grammatical Relations, ed.   Joan Bresnan.
+173-281.
+Cambridge, MA: The MIT Press.
+</P>
+<P>
+Lambek, Joachim.
+1958.
+The Mathematics of Sentence Structure.
+American Mathematical Monthly 65:154-170.
+</P>
+<P>
+Montague, Richard. 1974.
+The Proper Treatment of Quantification in Ordinary English.
+In Formal Philosophy, ed. Richmond Thomason.
+New Haven: Yale University Press.
+</P>
+<P>
+Moortgat, Michael. 1988.
+Categorial Investigations: Logical and Linguistic Aspects of the
+  Lambek Calculus.
+Doctoral dissertation, University of Amsterdam, Amsterdam, The
+  Netherlands.
+</P>
+<P>
+Moortgat, Michael. 1992a.
+Generalized Quantifiers and Discontinuous Type Constructors.
+In Discontinuous Constituency, ed. W. Sijtsma and H. van
+  Horck.
+Berlin, Germany: Mouton de Gruyter.
+To appear.
+</P>
+<P>
+Moortgat, Michael. 1992b.
+Labelled Deductive Systems for Categorial Theorem Proving.
+In Proceedings of the Eighth Amsterdam Colloquium, ed.   P. Dekker and M. Stokhof, 403-423.
+Amsterdam. Institute for Logic, Language and Computation.
+</P>
+<P>
+Morrill, Glyn V. 1993.
+Type Logical Grammar: Categorial Logic of Signs.
+Studies in Linguistics and Philosophy.
+Dordrecht, Holland: Kluwer Academic Publishers.
+To appear.
+</P>
+<P>
+Pereira, Fernando C. N.
+1990.
+Categorial Semantics and Scoping.
+Computational Linguistics 16(1):1-10.
+</P>
+<P>
+Pereira, Fernando C. N. 1991.
+Semantic Interpretation as Higher-Order Deduction.
+In Logics in AI: European Workshop JELIA'90, ed. Jan van
+  Eijck, 78-96.
+Amsterdam, Holland. Springer-Verlag.
+</P>
+<P>
+Saraswat, Vijay A. 1989.
+Concurrent Constraint Programming Languages.
+Doctoral dissertation, Carnegie-Mellon University.
+Reprinted by MIT Press, Doctoral Dissertation Award and Logic
+  Programming Series, 1993.
+</P>
+<P>
+Scedrov, Andre. 1993.
+A Brief Guide to Linear Logic.
+In Current Trends in Theoretical Computer Science, ed.   G. Rozenberg and A. Salomaa.
+World Scientific Publishing Co.
+Revised and expanded version of the article originally appearing in
+  Bulletin of the European Assoc. for Theoretical Computer Science 41,
+  1990.
+</P>
+<P>
+van Benthem, Johan. 1991.
+Language in Action: Categories, Lambdas and Dynamic Logic.
+Amsterdam: North-Holland.
+</P>
+<DIV ID="6.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  Xerox PARC, Palo Alto CA 94304;
+{dalrymple,lamping,saraswat}@parc.xerox.com
+  ATT Bell Laboratories, Murray Hill NJ 07974;
+pereira@research.att.com
+  The c-structure
+and f-structure presented here have been simplified to show only the
+detail necessary for the semantic issues addressed here.  We also do
+not address a number of orthogonal semantic issues (tense and aspect,
+for example), providing only enough details of the representation of
+the meaning of a sentence to illustrate the points relevant to the
+discussion at hand.
+  We make use of linear logic
+ (<REF/>) because its resource sensitivity turns out to be a good match to natural language.  This property of linear logic
+nicely captures, among other things, the LFG requirements of coherence and consistency, and enables a nice treatment of
+ modification (<REF/>), quantification  (<REF/>), and complex predicates  (<REF/>). We make use only of the tensor fragment of linear logic. The fragment is closed under conjunction, universal
+quantification and implication. It arises from transferring to linear
+logic the ideas underlying the concurrent constraint programming
+scheme of Saraswat (Saraswat:PhD). A nice tutorial
+introduction to linear logic itself may be found in Scedrov
+(Scedrov:Linear).
+   In the composition language, we use upper-case letters
+for essentially existential variables, that is, Prolog-like
+variables that become instantiated to particular terms during a
+derivation, and lower-case letters for essentially universal
+variables that stand for new local constants (also called
+eigenvariables) during a derivation.
+  We use throughout the convenient abbreviation
+<!-- MATH: $Q(x,Rx,Sx)$ -->
+Q(x,Rx,Sx) for the application of the generalized quantifier Q to
+restriction R and scope S.
+  From what has
+been said so far, <EQN/>
+could also be chosen to
+provide the scope, leading to a nonsensical result.  As explained in
+our full analysis of quantifiers (Dalrymple, Lamping, Pereira, and
+Saraswat 1993), that problem is avoided by using a family of 
+<!-- MATH: $\makebox[1.2em]{$\leadsto$ }$ -->
+<EQN/>relations indexed by the type of their second argument.  The relation
+for the meaning of the scope of quantification is the one that expects
+a proposition meaning, so <EQN/>
+can not provide
+a scope.
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

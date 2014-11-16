@@ -1,0 +1,116 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>REFERENCE RESOLUTION USING SEMANTIC PATTERNS IN JAPANESE NEWSPAPER ARTICLES</TITLE>
+<ABSTRACT>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>  DISCUSSION </HEADER>
+<P>
+The second and third heuristic methods show high accuracy in
+finding the referents of dousha with ga and ha.
+This means that partial semantic parsing (in which key semantic
+information such as company name, human name, and title is marked) is
+sufficient for reference resolution of important referential
+expressions such as dousha in Japanese.  Moreover, since
+the two modified methods are simple, they will be easily implemented by
+computationally inexpensive finite-state pattern matchers (Hobbs et al.
+1992; Cowie et al. 1993).  Therefore, they will be suitable for large
+scale text processing (Jacobs 1992; Chinchor et al. 1993).
+One important point to realize is that the second and third
+methods, although they are simple to implement,
+achieve something that is rather complicated and may be
+computationally expensive otherwise.  For example, in order to find
+the correct referent of
+a given dousha, you may have to skip one entire paragraph and
+find the referent two paragraphs before, or you may have to choose
+the right company name from several possible company names which
+appear before the given dousha.  The modified methods
+do this correctly most of the time without worrying about
+constructing sometimes complicated syntactic structures of the
+sentences in the search window for the possible referent.
+Another important point is that the modified methods make good use
+of post-nominal particles, especially ha and ga.
+For example, if the referent is located two sentences or
+more before, then the referent (the company name) comes with ha
+almost all the time (35 out of 38 such cases for both dousha).
+It seems that if the referent of the dousha in consideration is
+more than a certain distance before, two sentences in this case,
+then the referent is marked with ha most of the time.
+Kitani also uses this ha or ga marked company names
+as key information in his reference resolution algorithm for
+dousha (Kitani 1994).
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>  CONCLUSION </HEADER>
+<P>
+The locations and contexts of the referents of dousha in
+Japanese Joint-Venture articles are determined by hand.  Three
+heuristic methods are proposed and tested.  The methods which use
+semantic information in the text and its patterns show high accuracy
+in finding the referents (96% for dousha with ga and
+96% for dousha with ha for the unseen test data).
+The high success rates suggest that
+a semantic pattern-matching approach is not only a valid method but
+also an efficient method for reference resolution in the newspaper article
+domains.  Since the Japanese language is highly case-inflected, case
+(particle)
+information is used effectively in these methods for reference
+resolution.  How much one can do with semantic pattern matching for
+reference resolution of similar expressions such as ``the company'' or
+``the Japanese company'' in English newspaper articles is a
+topic for future research.
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>  ACKNOWLEDGEMENT </HEADER>
+<P>
+I would like to thank the Tipster project group at the CRL for their
+inspiration and suggestions.  I would also like to thank Dr. Yorick
+Wilks, Dr. John Barnden, Mr. Steve Helmreich, and Dr. Jim Cowie for
+their productive comments.
+The newspaper articles used in this study are from the Tipster
+Information Extraction project provided by ARPA.
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>  REFERENCES </HEADER>
+<P>
+Chinchor, N., L. Hirschman, and D. Lewis (1993).  Evaluating Message
+Understanding Systems: An Analysis of the Third Message Understanding
+Conference (MUC-3). Computational Linguistics, 19(3),
+pp. 409-449.
+Cowie, J., T. Wakao, L. Guthrie, W. Jin, J. Pustejovsky, and
+S. Waterman (1993).  The Diderot Information Extraction
+System.  In the proceedings of The First Conference of the
+Pacific Association for Computational Linguistics (PACLING 93)
+Simon Fraser University, Vancouver, B.C. Canada, pp. 23-32. 
+Jacobs, P.S. (1992).  Introduction: Text Power and Intelligent
+Systems.  In P.S. Jacobs Ed.,
+Text-Based Intelligent Systems.
+Lawrence Erlbaum Associates, Hillsdale New Jersey, pp. 1-8.
+Hobbs, J., D. Appelt, M. Tyson, J. Bear, and D. Israel (1992).
+SRI International Description of the FASTUS System used for MUC-4.
+In the proceedings of Fourth Message Understanding Conference
+(MUC-4), Morgan Kaufmann Publishers, San Mateo, pp. 269-275.
+Kitani, T. (1994).  Merging Information by Discourse Processing
+for Information Extraction. In the proceedings of the tenth
+IEEE Conference on Artificial Intelligence for Applications,
+pp. 168-173.
+Muraki, K., S. Doi, and S. Ando (1993).  Context Analysis in
+Information Extraction System based on Keywords and Text Structure.
+In the proceedings of the 47th National Conference of
+Information Processing Society of Japan, 3-81. (In Japanese).
+Shibata, M., O. Tanaka, and J. Fukumoto (1990). Anaphora in
+Newspaper Editorials.  In the proceedings of the 40th National
+Conference of Information Processing Society of Japan, 5F-4. (In
+Japanese).
+</P>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  This paper was written when the author was at
+  the Computing Research Laboratory of New Mexico State University.
+  The author has been at University of Sheffield since January 1994.
+</P>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>

@@ -1,0 +1,398 @@
+<?xml version='1.0'?>
+<!DOCTYPE MINIMAL-DOC SYSTEM "mini.dtd">
+<MINIMAL-DOC>
+<TITLE>A CENTERING APPROACH TO PRONOUNS 25th Annual Meeting of the Association of Computational
+Linguistics, 1987 </TITLE>
+<ABSTRACT>
+<P>
+In this paper we present a formalization of the centering
+approach to modeling attentional structure in discourse and use it as
+the basis for an algorithm to track discourse context and bind
+ pronouns. As described in <REF/>, the process of centering attention on entities in the discourse gives rise to the
+intersentential transitional states of continuing, retaining
+and  shifting.
+We propose an extension to these states which handles some
+additional cases of multiple ambiguous pronouns.  The algorithm has
+been implemented in an HPSG natural language system which serves as
+the interface to a database query application.
+</P>
+</ABSTRACT>
+<BODY>
+<DIV ID="1" DEPTH="1" R-NO="1"><HEADER>    Introduction
+</HEADER>
+<P>
+ In the approach to discourse structure developed in <REF/> and  <REF/>, a discourse exhibits both global and local coherence.  On this view, a key element of local coherence is centering, a system of
+rules and constraints that govern the relationship between what the
+discourse is about and some of the linguistic choices made by the
+discourse participants, e.g. choice of grammatical function, syntactic
+structure, and type of referring expression (proper noun, definite or
+indefinite description, reflexive or personal pronoun, etc.).
+Pronominalization in particular serves to focus attention on what is
+being talked about; inappropriate use or failure to use pronouns
+causes communication to be less fluent.  For instance, it takes longer
+for hearers to process a pronominalized noun phrase that is not in
+focus than one that is, while it takes longer to process a
+non-pronominalized noun phrase that is in focus than one that is not
+ <REF/>. 
+</P>
+<P>
+ The <REF/> centering model is based on the following assumptions.  A discourse segment consists of a sequence of utterances
+<!-- MATH: $U_{1}, \ldots ,U_{m}$ -->
+<EQN/>.
+With each utterance Un is associated a
+list of forward-looking centers, Cf(Un), consisting of
+ those discourse entities that are directly realized or realized by linguistic expressions in the utterance. Ranking of an entity on
+this list corresponds roughly to the likelihood that it will be the
+primary focus of subsequent discourse; the first entity on this list
+is the preferred center, Cp(Un).  Un actually centers,
+or is ``about'', only one entity at a time, the backward-looking
+center, Cb(Un).  The backward center is a confirmation of an
+entity that has already been introduced into the discourse; more
+specifically, it must be realized in the immediately preceding
+utterance, Un-1. There are several distinct types of transitions
+from one utterance to the next. The typology of transitions is based
+on two factors: whether or not the center of attention, Cb, is the
+same from Un-1 to Un, and whether or not this entity
+coincides with the preferred center of Un. Definitions of
+ these transition types appear in figure <CREF/>. 
+</P>
+<P>
+These transitions describe how utterances are linked together in
+a coherent local segment of discourse.  If a speaker has a number of
+propositions to express, one very simple way to do this coherently is
+to express all the propositions about a given entity (continuing) before introducing a related entity (retaining) and
+then shifting the center to this new entity. See figure
+ <CREF/>.  Retaining may be a way to signal an intention to shift.  While we do not claim that speakers really behave in such an
+orderly fashion, an algorithm that expects this kind of behavior is
+more successful than those which depend solely on recency or
+parallelism of grammatical function.  The interaction of centering
+with global focusing mechanisms and with other factors such as
+intentional structure, semantic selectional restrictions, verb tense
+and aspect, modality, intonation and pitch accent are topics for
+further research.
+</P>
+<P>
+Note that these transitions are more specific than focus movement
+ as described in <REF/>.  The extension we propose makes  them more specific still.  Note also that the Cb of <REF/> corresponds roughly to Sidner's discourse focus and the Cf to her
+potential foci.
+</P>
+<P>
+The formal system of constraints and rules for centering, as we
+ have interpreted them from <REF/>, are as follows. For each Un in 
+<!-- MATH: $U_{1}, \ldots ,U_{m}$ -->
+<EQN/>:
+<ITEMIZE>
+<ITEM>
+CONSTRAINTS
+1.
+There is precisely one Cb.
+2.
+Every element of Cf(Un) must be realized in Un.
+      3.
+Cb(Un) is the highest-ranked element of 
+<!-- MATH: $Cf(U_{n-1})$ -->
+Cf(Un-1) that
+                 is realized in Un.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+<ITEMIZE>
+<ITEM>
+RULES
+1.
+If some element of 
+<!-- MATH: $Cf(U_{n-1})$ -->
+Cf(Un-1) is realized as a pronoun in
+Un,
+then so is Cb(Un).
+     2.
+Continuing is preferred over retaining which is
+preferred over
+             shifting.
+</ITEM>
+</ITEMIZE>
+</P>
+<P>
+As is evident in constraint 3, ranking of the items on the
+forward center list, Cf, is crucial.  We rank the items in Cf by
+obliqueness of grammatical relation of the subcategorized
+functions of the main verb: that is, first the subject, object, and
+object2, followed by other subcategorized functions, and finally,
+ adjuncts.  This captures the idea in <REF/> that subjecthood contributes strongly to the priority of an item on the Cf list.
+</P>
+<P>
+We are aware that this ranking usually coincides with surface
+constituent order in English.  It would be of interest to examine data
+from languages with relatively freer constituent order (e.g. German)
+to determine the influence of constituent order upon centering when
+the grammatical functions are held constant.  In addition, languages
+that provide an identifiable topic function (e.g. Japanese) suggest
+that topic takes precedence over subject.
+</P>
+<P>
+The part of the HPSG system that uses the centering algorithm for
+pronoun binding is called the pragmatics processor. It interacts with
+another module called the semantics processor, which computes
+representations of intrasentential anaphoric relations, (among other
+things).  The semantics processor has access to information such as
+the surface syntactic structure of the utterance.  It provides the
+pragmatics processor with representations which include of a set of
+ reference markers. Each reference marker is contraindexed with  expressions with which it cannot co-specify. Reference markers also carry information about agreement and
+grammatical function. Each pronominal reference marker has a unique
+index from 
+<!-- MATH: $A_{1}, \ldots ,A_{n}$ -->
+<EQN/>
+and is displayed in the figures in
+the form [POLLARD:A1], where POLLARD is the semantic representation of
+the co-specifier.  For non-pronominal reference markers the surface
+string is used as the index. Indices for indefinites are generated
+from 
+<!-- MATH: $X_{1}, \ldots ,X_{n}$ -->
+<EQN/>.
+</P>
+</DIV>
+<DIV ID="2" DEPTH="1" R-NO="2"><HEADER>     Extension
+</HEADER>
+<P>
+ The constraints proposed by <REF/> fail in certain examples like the following (read with pronouns destressed):
+</P>
+<P>
+Brennan drives an Alfa Romeo.
+   She drives too fast.
+   Friedman races her on weekends.
+   She often beats her.
+</P>
+<P>
+This example is characterized by its multiple ambiguous pronouns
+and by the fact that the final utterance achieves a shift (see figure
+ <CREF/>).  A shift is inevitable because of constraint 3, which states that the Cb(Un) must equal the 
+<!-- MATH: $Cp(U_{n-1})$ -->
+Cp(Un-1) (since the
+<!-- MATH: $Cp(U_{n-1})$ -->
+Cp(Un-1) is directly realized by the subject of Un,
+ ``Friedman'').  However the constraints and rules from <REF/> would fail to make a choice here between the co-specification
+possibilities for the pronouns in Un.  Given that the transition
+is a shift, there seem to be more and less coherent ways to
+shift. Note that the three items being examined in order to
+ characterize the transition between each pair of anchors are the Cb of Un-1, the Cb of Un, and the Cp of
+ Un.  By <REF/> a shift occurs whenever successive Cb's are not the same.  This definition of shifting does not consider
+whether the Cb of Un and the Cp of Un are equal.  It
+seems that the status of the Cp of Un should be as important in
+this case as it is in determining the retaining/chontinuing
+distinction.
+</P>
+<P>
+Therefore, we propose the following extension which handles some
+additional cases containing multiple ambiguous pronouns: we have
+extended rule 2 so that there are two kinds of shifts. A transition
+for Un is ranked more highly if 
+<!-- MATH: $Cb(U_{n}) = Cp(U_{n})$ -->
+Cb(Un) = Cp(Un); this
+state we call shifting-1 and it represents a more coherent way to
+shift.  The preferred ranking is 
+<!-- MATH: $continuing \succ retaining \succ \$ -->
+<EQN/>shifting-1
+<!-- MATH: $\  \succ shifting$ -->
+<EQN/>
+ (see figure <CREF/>). This extension enables us to successfully bind the ``she'' in the
+ final utterance of the example in figure <CREF/> to ``Friedman.'' The appendix illustrates the application of the algorithm
+ to figure <CREF/>. 
+</P>
+<P>
+ Kameyama <REF/> has proposed another extension to the  <REF/> theory - a property-sharing constraint which attempts to enforce a parallellism between entities in successive utterances.  She
+considers two properties: SUBJ and IDENT.  With her
+extension, subject pronouns prefer subject antecedents and non-subject
+pronouns prefer non-subject antecedents. However, structural
+parallelism is a consequence of our ordering the Cf list by
+grammatical function and the preference for continuing over retaining.
+ Furthermore, the constraints suggested in <REF/> succeed in many cases without invoking an independent structural parallelism
+constraint, due to the distinction between continuing and retaining,
+which Kameyama fails to consider.  Her example which we reproduce in
+ figure <CREF/> can also be accounted for using the  continuing/retaining distinction. The third utterance in this example has two interpretations which are both consistent with the centering
+rules and constraints.  Because of rule 2, the interpretation in
+ figure <CREF/> is preferred over the one in figure  <CREF/>. 
+</P>
+</DIV>
+<DIV ID="3" DEPTH="1" R-NO="3"><HEADER>    Algorithm for centering and pronoun binding
+</HEADER>
+<P>
+There are three basic phases to this algorithm.  First the
+proposed anchors are constructed, then they are filtered,
+and finally, they are classified and ranked. The proposed
+anchors represent all the co-specification relationships available for
+this utterance.
+</P>
+<P>
+ Each step is discussed and illustrated in figure <CREF/>. It would be possible to classify and rank the proposed anchors before
+filtering them without any other changes to the algorithm.  In fact,
+using this strategy one could see if the highest ranked proposal
+passed all the filters, or if the next highest did, etc.  The three
+filters in the filtering phase may be done in parallel. The example we
+ use to illustrate the algorithm is in figure <CREF/>. 
+</P>
+</DIV>
+<DIV ID="4" DEPTH="1" R-NO="4"><HEADER>    Discussion
+</HEADER>
+<DIV ID="4.1" DEPTH="2" R-NO="1"><HEADER>  Discussion of the algorithm </HEADER>
+<P>
+The goal of the current algorithm design was conceptual clarity
+rather than efficiency.  The hope is that the structure provided will
+allow easy addition of further constraints and preferences.  It would
+be simple to change the control structure of the algorithm so that it
+first proposed all the continuing or retaining anchors and then the
+shifting ones, thus avoiding a precomputation of all possible anchors.
+</P>
+<P>
+ <REF/> states that a realization may contribute more than one entity to the Cf(U). This is true in cases when a partially
+specified semantic description is consistent with more than one
+interpretation.  There is no need to enumerate explicitly all the
+possible interpretations when constructing possible
+ Cf(U)'s, as long as the associated semantic theory allows partially specified interpretations. This also holds for entities not
+directly realized in an utterance.  On our view, after referring to
+``a house'' in Un, a reference to ``the door'' in Un+1 might
+be gotten via inference from the representation for ``a house'' in
+Cf(Un). Thus when the proposed anchors are constructed there is
+no possibility of having an infinite number of potential Cf's for an
+utterance of finite length.
+</P>
+<P>
+Another question is whether the preference ordering of
+transitions in constraint 3 should always be the same.  For some
+examples, particularly where Un contains a single pronoun and
+Un-1 is a retention, some informants seem to have a preference
+for shifting, whereas the centering algorithm chooses a continuation
+ (see figure <CREF/>).  Many of our informants have no strong preference as to the co-specification of the unstressed ``She'' in
+Un+4.  Speakers can avoid ambiguity by stressing a pronoun
+with respect to its phonological environment.  A computational system
+for understanding may need to explicitly acknowledge this
+ambiguity.
+</P>
+<P>
+A computational system for generation would try to plan a
+retention as a signal of an impending shift, so that after a
+retention, a shift would be preferred rather than a continuation.
+</P>
+</DIV>
+<DIV ID="4.2" DEPTH="2" R-NO="2"><HEADER>  Future Research </HEADER>
+<P>
+Of course the local approach described here does not provide all
+the necessary information for interpreting pronouns; constraints are
+also imposed by world knowledge, pragmatics, semantics and phonology.
+</P>
+<P>
+There are other interesting questions concerning the centering
+algorithm. How should the centering algorithm interact with an
+inferencing mechanism?  Should it make choices when there is more than
+one proposed anchor with the same ranking?  In a database query
+system, how should answers be incorporated into the discourse model?
+How does centering interact with a treatment of definite/indefinite
+NP's and quantifiers?
+</P>
+<P>
+We are exploring ideas for these and other extensions to the
+centering approach for modeling reference in local discourse.
+</P>
+</DIV>
+</DIV>
+<DIV ID="5" DEPTH="1" R-NO="5"><HEADER>  Acknowledgements </HEADER>
+<P>
+We would like to thank the following people for their help and
+insight: Hewlett Packard Lab's Natural Language group, CSLI's DIA
+group, Candy Sidner, Dan Flickinger, Mark Gawron, John Nerbonne, Tom
+Wasow, Barry Arons, Martha Pollack, Aravind Joshi, two anonymous referees, and
+especially Barbara Grosz.
+</P>
+<DIV ID="5.1" DEPTH="2" R-NO="1"><HEADER>Bibliography </HEADER>
+<P>
+Emmon Bach and Barbara H. Partee.
+Anaphora and semantic structure.
+In J. Kreiman and A. Ojeda, editors, Papers from the Parasession
+  on Pronouns and Anaphora, pages 1-28. CLS, Chicago, IL, 1980.
+</P>
+<P>
+Noam Chomsky.
+On binding.
+Linguistic Inquiry, 11:1-46, 1980.
+</P>
+<P>
+Barbara J. Grosz, Aravind K. Joshi, and Scott Weinstein.
+Providing a unified account of definite noun phrases in discourse.
+In Proc. 21st Annual Meeting of the ACL, Association of
+  Computational Linguistics, pages 44-50, 1983.
+</P>
+<P>
+Barbara J. Grosz, Aravind K. Joshi, and Scott Weinstein.
+Towards a computational theory of discourse interpretation.
+Unpublished Manuscript, 1986.
+</P>
+<P>
+Barbara J. Grosz and Candace L. Sidner.
+Attentions, intentions and the structure of discourse.
+Computational Linguistics, 12:175-204, 1986.
+</P>
+<P>
+Raymonde Guindon.
+Anaphora resolution: Short term memory and focusing.
+In Proc. 23st Annual Meeting of the ACL, Association of
+  Computational Linguistics, pages 218-227, Chicago, IL, 1985.
+</P>
+<P>
+Aravind K. Joshi and Scott Weinstein.
+Control of inference: Role of some aspects of discourse structure -
+  centering.
+In Proc. International Joint Conference on Artificial
+  Intelligence, pages 385-387, 1981.
+</P>
+<P>
+Megumi Kameyama.
+A property-sharing constraint in centering.
+In Proc. 24th Annual Meeting of the ACL, Association of
+  Computational Linguistics, pages 200-206, New York, NY, 1986.
+</P>
+<P>
+Peter Sells.
+Coreference and bound anaphora: A restatement of the facts.
+In Choe Berman and McDonough, editors, Proceedings of NELS 16,
+  University of Massachusetts, 1985. GLSA.
+</P>
+<P>
+Ivan Sag and Jorge Hankamer.
+Towards a theory of anaphoric processing.
+Linguistics and Philosophy, 7:325-345, 1984.
+</P>
+<P>
+Candace L. Sidner.
+Focusing for interpretation of pronouns.
+American Journal of Computational Linguistics, 7(4):217-231,
+  1981.
+</P>
+<P>
+Candace L. Sidner.
+Focusing in the comprehension of definite anaphora.
+In M. Brady and R.C. Berwick, editors, Computational Models of
+  Discourse. MIT Press, 1983.
+</P>
+<DIV ID="5.1.1" DEPTH="3" R-NO="1"><HEADER>Footnotes</HEADER>
+<P>
+  U directly realizes c if U is an
+utterance (of some phrase, not necessarily a full clause) for which
+c is the semantic interpretation, and U realizes c if either c is an element of the situation described by the
+utterance U or c is directly realized by some subpart of U.
+ Realizes is thus a generalization of directly realizes<REF/>. 
+  See
+ <REF/> and <REF/> for conditions on coreference. 
+   See <REF/> for definition and discussion of co-specification.  Note that this use
+ of co-specification is not the same as that used in <REF/> 
+  An anchor is a [Cb, Cf] pair for an utterance
+  It seems that property
+sharing of IDENT is still necessary to account for logophoric use of
+pronouns in Japanese.
+  Barbara Grosz, personal communication, and
+ <REF/> 
+</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</MINIMAL-DOC>
