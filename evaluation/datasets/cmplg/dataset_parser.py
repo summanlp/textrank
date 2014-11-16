@@ -30,9 +30,9 @@ for i, filename in enumerate(os.listdir(SRC_DIR)):
     os.makedirs(directory_name)
 
     # Creates a file for the content and a file for the abstract.
-    text_filename = os.path.join(SRC_DIR, TEXT_FILENAME)
+    text_filename = os.path.join(directory_name, TEXT_FILENAME)
     f_text = open(text_filename, 'w')
-    summary_filename = os.path.join(SRC_DIR, SUMM_FILENAME)
+    summary_filename = os.path.join(directory_name, SUMM_FILENAME)
     f_summ = open(summary_filename, 'w')
 
     # Parses the text.
@@ -43,4 +43,3 @@ for i, filename in enumerate(os.listdir(SRC_DIR)):
     for element in tree[2].iter('P'):
         for paragraph in element.itertext():
             f_text.write(paragraph)
-
