@@ -46,3 +46,6 @@ for i, filename in enumerate(os.listdir(SRC_DIR)):
     for element in tree[2].iter('P'):
         for paragraph in element.itertext():
             f_text.write(paragraph)
+
+    f_text.close()
+    f_summ.close()
