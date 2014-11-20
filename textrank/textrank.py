@@ -98,6 +98,9 @@ def get_similarity(s1, s2):
     log_s1 = log10(len(s1_list))
     log_s2 = log10(len(s2_list))
 
+    if log_s1 + log_s2 == 0:
+        return 0
+
     return common_word_count / (log_s1 + log_s2)
 
 
