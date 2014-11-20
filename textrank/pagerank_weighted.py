@@ -5,7 +5,7 @@ CONVERGENCE_THRESHOLD = 0.0001
 def pagerank_weighted(graph, damping=0.85):
     scores = dict.fromkeys(graph.nodes(), 1.0 / len(graph.nodes()))
 
-    for iteration_number in range(100):
+    for iteration_number in xrange(100):
         for i in graph.nodes():
             rank = 1 - damping
             for j in graph.incidents(i):
