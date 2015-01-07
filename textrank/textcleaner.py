@@ -1,10 +1,12 @@
 #encoding: cp850
 
-from gensim.utils import tokenize
-from gensim.utils import lemmatize
+from gensim.utils import tokenize, lemmatize
 from gensim.parsing.preprocessing import strip_numeric, strip_punctuation
+import snowball
 
 import re  	# http://regex101.com/#python para probar regex.
+
+import pdb
 
 SEPARATOR = r"@"
 RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)')  # backup (\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)
@@ -45,9 +47,10 @@ def tokenize_by_sentences(text):
 	Given some text, tokenizes into sentences, applies filters and lemmatizes them.
 	Returns dictionary that map processed sentences to the originals sentences.
 	"""
+	pdb.set_trace()
 	original_sentences = split_sentences(text)
 	filtered_sentences = filter_words(original_sentences)
-	return {item[0]:item[1] for item in zip(filtered_sentences, original_sentences)}
+	return {item[0]:item[1] for item in zip(filtered_sentences, original_sentences) if item[0]}
 
 
 def split_sentences(text):
@@ -77,12 +80,12 @@ def get_sentences(text):
 
 
 def filter_words(tokens):
-	filters = [lambda x: x.lower(), strip_numeric, strip_punctuation, remove_stopwords, lemmatize,
-		lambda x: " ".join(x)]
+	filters = [lambda x: x.lower(), strip_numeric, strip_punctuation, remove_stopwords, 
+		stem_sentence]
 	# filters = []
 
 	apply_filters_to_token = lambda token: apply_filters(token, filters)
-	return filter(None, map(apply_filters_to_token, tokens))
+	return map(apply_filters_to_token, tokens)
 
 
 def apply_filters(sentence, filters):
@@ -95,12 +98,15 @@ def remove_stopwords(sentence):
 	return " ".join(w for w in sentence.split() if w not in STOPWORDS)
 
 
-# Falta bocha por ac :
+language = "english"
+stemmer = snowball.SnowballStemmer(language)
+def stem_sentence(sentence):
+	word_stems = [stemmer.stem(word) for word in sentence.split()]
+	return " ".join(word_stems)
+
+# Falta bocha por aca:
 #  - Corregir bug cuando alguna palabra se transforma a ""
 #  - Ver que se debe hacer con las palabras repetidas (releer paper)
-
-import pdb
-
 
 def tokenize_by_word(text):
 	# pdb.set_trace()
