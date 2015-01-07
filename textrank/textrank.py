@@ -90,19 +90,20 @@ def set_graph_edge_weights(graph):
 
 def get_similarity(s1, s2):
 
-    s1_list = s1.split()
-    s2_list = s2.split()
+    words_sentence_one = s1.split()
+    words_sentence_two = s2.split()
 
-    common_word_count = get_common_word_count(s1_list, s2_list)
+    common_word_count = get_common_word_count(words_sentence_one, words_sentence_two)
 
-    log_s1 = log10(len(s1_list))
-    log_s2 = log10(len(s2_list))
+    log_s1 = log10(len(words_sentence_one))
+    log_s2 = log10(len(words_sentence_two))
 
     return common_word_count / (log_s1 + log_s2)
 
 
-def get_common_word_count(s1_list, s2_list):
-    return sum(1 for w in set(s1_list) if w in set(s2_list))
+def get_common_word_count(words_sentence_one, words_sentence_two):
+    words_set = set(words_sentence_two)
+    return sum(1 for w in words_sentence_one if w in words_set)
 
 
 def main():
