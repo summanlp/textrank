@@ -5,8 +5,8 @@ from pprint import PrettyPrinter
 from pyrouge import Rouge155
 
 # Imports files from a parent directory.
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-from textrank.textrank import textrank
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir, 'textrank'))
+from textrank import textrank
 
 
 """ Script that runs ROUGE to compare the output of a custom summarization tool

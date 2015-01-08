@@ -37,21 +37,21 @@ def compare(sample_text_file_name, custom_sentence_splitter):
     return compare_sentences(output_1, output_2)
 
 
-def nltk_tokenize(file):
-    sample_text = nltk.data.load(file)
+def nltk_tokenize(filename):
+    sample_text = nltk.data.load(filename)
     output_1 = sent_tokenize(sample_text)
     return [sentence.encode('utf8') for sentence in output_1]
 
 
-def my_tokenize(file):
-    with open(file) as text_fp:
+def my_tokenize(filename):
+    with open(filename) as text_fp:
         sample_text = text_fp.read()
 
     return split_into_sentences(sample_text)
 
 
-def tokenize2(file):
-    with open(file) as text_fp:
+def tokenize2(filename):
+    with open(filename) as text_fp:
         sample_text = text_fp.read()
 
     return tc.split_sentences(sample_text)
