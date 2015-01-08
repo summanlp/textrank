@@ -1,6 +1,6 @@
 # encoding: cp850
 
-from gensim.utils import tokenize, lemmatize
+from gensim.utils import tokenize
 from gensim.parsing.preprocessing import strip_numeric, strip_punctuation
 import snowball
 
