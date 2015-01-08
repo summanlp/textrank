@@ -4,7 +4,6 @@ from pagerank_weighted import pagerank_weighted as pagerank
 from textcleaner import tokenize_by_sentences
 from math import log10
 
-import pdb
 
 SUMMARY_LENGTH = .2
 TEST_FILE = "samples/textrank_example.txt"
@@ -39,25 +38,25 @@ def sort_by_apparition(extracted_tokens, tokens, text):
         original_sentence = tokens[extracted]
         try:
             index = text.index(original_sentence)
-            if DEBUG: 
+            if DEBUG:
                 summary.append((original_sentence, index, extracted_tokens[extracted]))
             else:
                 summary.append((original_sentence, index))
 
         except ValueError:
-            print "ERROR: sentence not found: " + original_sentence 
+            print "ERROR: sentence not found: " + original_sentence
 
     summary.sort(key=lambda t: t[1])
     if DEBUG:
         debug_info = lambda item: "({0:.4f}) : {1}".format(item[2], item[0])
-        return [debug_info(item) for item in summary]    
+        return [debug_info(item) for item in summary]
     return [item[0] for item in summary]
 
 
 def extract_tokens(sentences, scores):
     sentences.sort(key=lambda s: scores[s], reverse=True)
     length = len(sentences) * SUMMARY_LENGTH
-    return { sentences[i]: scores[sentences[i]] for i in range(int(length))}
+    return {sentences[i]: scores[sentences[i]] for i in range(int(length))}
 
 
 def get_graph(text):
@@ -109,8 +108,8 @@ def get_common_word_count(s1_list, s2_list):
 
 
 def main():
-    with open(TEST_FILE) as file:
-        text = file.read()
+    with open(TEST_FILE) as test_file:
+        text = test_file.read()
 
     print textrank(text)
 
