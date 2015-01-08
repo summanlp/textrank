@@ -12,9 +12,23 @@ from textrank.textrank import textrank
     comparing it to a 'gold standard' reference summary.
 """
 
-# Initializes ROUGE.
+# Configuration options:
 ROUGE_PATH = os.path.join(os.getcwd(), 'ROUGE-RELEASE-1.5.5')
-rouge_instance = Rouge155(ROUGE_PATH)
+ROUGE_DATA_PATH = os.path.join(ROUGE_PATH, 'data')
+
+ROUGE_OPTIONS = [
+    '-e', ROUGE_DATA_PATH,  # Specify ROUGE_EVAL_HOME directory where the ROUGE data files can be found.
+    '-c', '95',             # Specify CF\% (0 <= CF <= 100) confidence interval to compute.
+    '-2',                   # Compute skip bigram (ROGUE-S) co-occurrence, also specify the maximum gap length between two words (skip-bigram)
+    '-1',
+    '-U',                   # Compute skip bigram as -2 but include unigram, i.e. treat unigram as "start-sentence-symbol unigram"; -2 has to be specified.
+    '-r', '1000',           # Specify the number of sampling point in bootstrap resampling (default is 1000).
+    '-n', '2',              # Compute ROUGE-N up to max-ngram length will be computed.
+    '-a',                   # Evaluate all systems specified in the ROUGE-eval-config-file.
+    '-x'                    # Do not calculate ROUGE-L.
+]
+
+rouge_instance = Rouge155(ROUGE_PATH, ' '.join(ROUGE_OPTIONS))
 
 # pyrouge needs the model summaries to be stored in a directory without subdirectories.
 if not os.path.exists('temp'):
@@ -33,4 +47,8 @@ rouge_instance.system_filename_pattern = 'summ(\d+).txt'
 rouge_instance.model_dir = 'temp'
 rouge_instance.model_filename_pattern = 'temp.txt'
 
-print rouge_instance.convert_and_evaluate()
+o = rouge_instance.convert_and_evaluate()
+
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
+pp.pprint(rouge_instance.output_to_dict(o))
