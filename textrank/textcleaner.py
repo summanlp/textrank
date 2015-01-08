@@ -6,8 +6,6 @@ import snowball
 
 import re  # http://regex101.com/#python para probar regex.
 
-import pdb
-
 SEPARATOR = r"@"
 RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)')  # backup (\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)
 AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)\s(\w)")
@@ -47,7 +45,6 @@ def tokenize_by_sentences(text):
     Given some text, tokenizes into sentences, applies filters and lemmatizes them.
     Returns dictionary that map processed sentences to the originals sentences.
     """
-	pdb.set_trace()
 	original_sentences = split_sentences(text)
 	filtered_sentences = filter_words(original_sentences)
 	return {item[0]: item[1] for item in zip(filtered_sentences, original_sentences) if item[0]}
