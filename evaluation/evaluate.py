@@ -1,34 +1,14 @@
-import os
 import os.path
 import sys
 from pprint import PrettyPrinter
-from pyrouge import Rouge155
+import rouge_calculator
 
 # Imports files from a parent directory.
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir, 'textrank'))
 from textrank import textrank
 
-
-""" Script that runs ROUGE to compare the output of a custom summarization tool
-    comparing it to a 'gold standard' reference summary.
-"""
-
-TEMP_DIRECTORY = 'temp'
-TEMP_FILENAME = 'temp.txt'
-ROUGE_PATH = os.path.join(os.getcwd(), 'ROUGE-RELEASE-1.5.5')
-ROUGE_DATA_PATH = os.path.join(ROUGE_PATH, 'data')
-
-ROUGE_OPTIONS = [
-    '-e', ROUGE_DATA_PATH,  # Specify ROUGE_EVAL_HOME directory where the ROUGE data files can be found.
-    '-c', '95',             # Specify CF\% (0 <= CF <= 100) confidence interval to compute.
-    '-2',                   # Compute skip bigram (ROGUE-S) co-occurrence,
-    '-1',
-    '-U',                   # Compute skip bigram as -2 but include unigram.
-    '-r', '1000',           # Specify the number of sampling point in bootstrap resampling (default is 1000).
-    '-n', '2',              # Compute ROUGE-N up to max-ngram length will be computed.
-    '-a',                   # Evaluate all systems specified in the ROUGE-eval-config-file.
-    '-x'                    # Do not calculate ROUGE-L.
-]
+TEMP_DIRECTORY = rouge_calculator.MODEL_DIRECTORY
+TEMP_FILENAME = rouge_calculator.MODEL_FILENAME
 
 
 def summarize_text(filename):
@@ -44,20 +24,11 @@ def summarize_text(filename):
         fp.write(summary)
 
 
-def evaluate_summary(gold_references_dir, gold_references_pattern):
-    rouge_instance = Rouge155(ROUGE_PATH, ' '.join(ROUGE_OPTIONS))
+text_filename = 'datasets/elhadad/{text_number:02d}/text.txt'.format(text_number=6)
+gold_references_dir = 'datasets/elhadad/{text_number:02d}'.format(text_number=6)
 
-    # Runs ROUGE comparing the gold reference summaries with the recently generated.
-    rouge_instance.system_dir = gold_references_dir
-    rouge_instance.system_filename_pattern = gold_references_pattern
-    rouge_instance.model_dir = TEMP_DIRECTORY
-    rouge_instance.model_filename_pattern = TEMP_FILENAME
+summarize_text(text_filename)
+result = rouge_calculator.evaluate_summary(gold_references_dir, 'summ(\d+).txt')
 
-    output = rouge_instance.convert_and_evaluate()
-
-    pp = PrettyPrinter(indent=4)
-    pp.pprint(rouge_instance.output_to_dict(output))
-
-
-summarize_text('datasets/elhadad/06/text.txt')
-evaluate_summary('datasets/elhadad/06', 'summ(\d+).txt')
+pp = PrettyPrinter(indent=4)
+pp.pprint(result)
