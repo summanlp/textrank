@@ -53,9 +53,15 @@ for i in range(1, 25):
     RESULTS['successes'] += 1
 
     result = rouge_calculator.evaluate_summary(gold_references_dir, 'summ(\d+).txt')
-    RESULTS['reports'] += result
+    RESULTS['reports'].append(result)
 
+successes = float(RESULTS['successes'])
 
-for result in RESULTS['reports']:
-    pp = PrettyPrinter(indent=4)
-    pp.pprint(result)
+avg_rouge1_fscore = sum(result['rouge_1_f_score'] for result in RESULTS['reports']) / successes
+print "Average F-score for ROUGE-1 metric: " + str(avg_rouge1_fscore)
+
+avg_rouge2_fscore = sum(result['rouge_2_f_score'] for result in RESULTS['reports']) / successes
+print "Average F-score for ROUGE-2 metric: " + str(avg_rouge2_fscore)
+
+avg_su_fscore = sum(result['rouge_su*_f_score'] for result in RESULTS['reports']) / successes
+print "Average F-score for ROUGE-SU metric: " + str(avg_su_fscore)
