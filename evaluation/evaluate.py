@@ -37,32 +37,44 @@ def get_rouge_summary_for_text(text_number):
     return rouge_calculator.evaluate_summary(gold_references_dir, 'summ(\d+).txt')
 
 
-for i in range(1, 25):
-    print "Evaluating set #" + str(i)
+def get_rouge_scores(dataset_numbers):
+    for i in dataset_numbers:
+        print "Evaluating set #" + str(i)
 
-    RESULTS['runs'] += 1
-    try:
-        result = get_rouge_summary_for_text(i)
-    except TimeoutError:
-        print "Timeout summarizing text #" + str(i)
-        RESULTS['timeouts'] += 1
-        continue
-    except:
-        print "Error summarizing text #" + str(i)
-        RESULTS['errors'] += 1
-        continue
+        RESULTS['runs'] += 1
+        try:
+            result = get_rouge_summary_for_text(i)
+        except TimeoutError:
+            print "Timeout summarizing text #" + str(i)
+            RESULTS['timeouts'] += 1
+            continue
+        except:
+            print "Error summarizing text #" + str(i)
+            RESULTS['errors'] += 1
+            continue
 
-    print "Text #%d summarized successfully" % i
-    RESULTS['successes'] += 1
-    RESULTS['reports'].append(result)
+        print "Text #%d summarized successfully" % i
+        RESULTS['successes'] += 1
+        RESULTS['reports'].append(result)
 
-successes = float(RESULTS['successes'])
+    successes = float(RESULTS['successes'])
 
-avg_rouge1_fscore = sum(result['rouge_1_f_score'] for result in RESULTS['reports']) / successes
-print "Average F-score for ROUGE-1 metric: " + str(avg_rouge1_fscore)
+    avg_rouge1_fscore = sum(result['rouge_1_f_score'] for result in RESULTS['reports']) / successes
+    print "Average F-score for ROUGE-1 metric: " + str(avg_rouge1_fscore)
 
-avg_rouge2_fscore = sum(result['rouge_2_f_score'] for result in RESULTS['reports']) / successes
-print "Average F-score for ROUGE-2 metric: " + str(avg_rouge2_fscore)
+    avg_rouge2_fscore = sum(result['rouge_2_f_score'] for result in RESULTS['reports']) / successes
+    print "Average F-score for ROUGE-2 metric: " + str(avg_rouge2_fscore)
 
-avg_su_fscore = sum(result['rouge_su*_f_score'] for result in RESULTS['reports']) / successes
-print "Average F-score for ROUGE-SU metric: " + str(avg_su_fscore)
+    avg_su_fscore = sum(result['rouge_su*_f_score'] for result in RESULTS['reports']) / successes
+    print "Average F-score for ROUGE-SU metric: " + str(avg_su_fscore)
+
+
+if __name__ == '__main__':
+    # Calculate all rouge scores if no argument is provided.
+    if len(sys.argv) == 1:
+        get_rouge_scores(xrange(1, 25))
+
+    # Else calculate rouge scores for the specified datasets.
+    else:
+        get_rouge_scores([int(x) for x in sys.argv[1:]])
+
