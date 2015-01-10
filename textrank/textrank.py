@@ -1,25 +1,29 @@
 
 from pygraph.classes.digraph import digraph as pydigraph
 from pagerank_weighted import pagerank_weighted as pagerank
+from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy
 from textcleaner import tokenize_by_sentences
 from math import log10
 
 
-SUMMARY_LENGTH = .2
+SUMMARY_LENGTH = 0.2
 TEST_FILE = "samples/textrank_example.txt"
-DEBUG = False
+DEBUG = True
+PAGERANK_MANUAL = 0
+PAGERANK_SCIPY = 1
 
 
-def textrank(text):
+def textrank(text, method=PAGERANK_MANUAL):
     # Gets a dict of processed_sentence -> original_sentences
     tokens = tokenize_by_sentences(text)
 
-    # Creates the graph and calculates the simmilarity coefficient for every pair of nodes.
+    # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = get_graph(tokens.keys())
     set_graph_edge_weights(graph)
 
     # Ranks the tokens using the PageRank algorithm.
-    scores = pagerank(graph)
+    # scores is a dict of sentence -> score
+    scores = pagerank(graph) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
 
     # Extracts the most important tokens.
     extracted_tokens = extract_tokens(graph.nodes(), scores)
@@ -59,12 +63,12 @@ def extract_tokens(sentences, scores):
     return {sentences[i]: scores[sentences[i]] for i in range(int(length))}
 
 
-def get_graph(text):
+def get_graph(sentences):
     graph = pydigraph()
 
     # Creates the graph.
-    for line in text:
-        graph.add_node(line)
+    for sentence in sentences:
+        graph.add_node(sentence)
 
     return graph
 
@@ -109,11 +113,61 @@ def get_common_word_count(words_sentence_one, words_sentence_two):
 
 
 def main():
-    with open(TEST_FILE) as test_file:
+    import sys, getopt
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "t:m:h", ["text=", "method=", "help"])
+    except getopt.GetoptError as err:
+        print str(err) # will print something like "option -a not recognized"
+        usage()
+        sys.exit(2)
+    path = None
+    method = None
+    for o, a in opts:
+        if o == ("-t", "--text"):
+            path = a
+        elif o in ("-h", "--help"):
+            usage()
+            sys.exit()
+        elif o in ("-m", "--method"):
+            method = int(a)
+        else:
+            assert False, "unhandled option"
+
+    if not path:
+        path = TEST_FILE
+    if not method:
+        method = PAGERANK_MANUAL
+
+    with open(path) as test_file:
         text = test_file.read()
 
-    print textrank(text)
+    print textrank(text, method)
+
+
+def usage():
+    print "Usage: python textrank.py -t path/to/text -m [0,1]"
+    print "-t: text to summarize. Default value: samples/textrank_example.txt"
+    print "-m: method to use: Default value: 0"
+    print "\t0: PageRank Manual. 1: PageRank using scipy.sparse.linalg.eigs"
 
 
 if __name__ == "__main__":
     main()
+
+
+
+
+def test(path):
+    with open(path) as file:
+        text = file.read()
+
+    # Gets a dict of processed_sentence -> original_sentences
+    tokens = tokenize_by_sentences(text)
+
+    # Creates the graph and calculates the similarity coefficient for every pair of nodes.
+    graph = get_graph(tokens.keys())
+    set_graph_edge_weights(graph)
+
+    return graph
+    # Ranks the tokens using the PageRank algorithm.
+    # return pagerank_scipy(graph)

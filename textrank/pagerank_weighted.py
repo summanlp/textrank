@@ -1,11 +1,16 @@
 
-CONVERGENCE_THRESHOLD = 0.0001
+from scipy.sparse import csr_matrix
+from scipy.sparse.linalg import eigsh, eigs
+from math import fabs
 
+CONVERGENCE_THRESHOLD = 0.0001
 
 def pagerank_weighted(graph, damping=0.85):
     scores = dict.fromkeys(graph.nodes(), 1.0 / len(graph.nodes()))
-
+    iteration_quantity = 0
     for iteration_number in xrange(100):
+        iteration_quantity += 1
+        convergence_achieved = 0
         for i in graph.nodes():
             rank = 1 - damping
             for j in graph.incidents(i):
@@ -16,6 +21,56 @@ def pagerank_weighted(graph, damping=0.85):
 
                 rank += damping * scores[j] * graph.edge_weight((j, i)) / neighbors_sum
 
+            if fabs(scores[i] - rank) <= CONVERGENCE_THRESHOLD:
+                convergence_achieved += 1
+
             scores[i] = rank
 
+        if convergence_achieved == len(graph.nodes()):
+            break
+    print "Cantidad de iteraciones:", iteration_quantity
     return scores
+
+
+def pagerank_weighted_scipy(graph):
+    matrix = build_matrix(graph)
+    vals, vecs = eigs(matrix, k=1)
+    return process_results(graph, vecs)
+
+def build_matrix(graph):
+    row = []
+    col = []
+    data = []
+    nodes = graph.nodes()
+    length = len(nodes)
+
+    for i in xrange(length):
+        for j in xrange(length):
+            edge_weight = graph.edge_weight((nodes[i], nodes[j]))
+            if i != j and edge_weight != 0:
+                row.append(i)
+                col.append(j)
+                data.append(edge_weight)
+
+    return csr_matrix((data,(row,col)), shape=(length,length))
+
+def process_results(graph, vecs):
+    scores = {}
+    for i, sentence in enumerate(graph.nodes()):
+        scores[sentence] = fabs(float(vecs[i][0]))
+
+    return scores
+
+
+
+
+
+
+
+
+
+
+
+
+
+
