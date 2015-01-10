@@ -30,16 +30,19 @@ def summarize_text(filename):
         fp.write(summary)
 
 
+def get_rouge_summary_for_text(text_number):
+    text_filename = 'datasets/elhadad/{text_number:02d}/text.txt'.format(text_number=text_number)
+    gold_references_dir = 'datasets/elhadad/{text_number:02d}'.format(text_number=text_number)
+    summarize_text(text_filename)
+    return rouge_calculator.evaluate_summary(gold_references_dir, 'summ(\d+).txt')
+
+
 for i in range(1, 25):
     print "Evaluating set #" + str(i)
 
     RESULTS['runs'] += 1
-
-    text_filename = 'datasets/elhadad/{text_number:02d}/text.txt'.format(text_number=i)
-    gold_references_dir = 'datasets/elhadad/{text_number:02d}'.format(text_number=i)
-
     try:
-        summarize_text(text_filename)
+        result = get_rouge_summary_for_text(i)
     except TimeoutError:
         print "Timeout summarizing text #" + str(i)
         RESULTS['timeouts'] += 1
@@ -51,8 +54,6 @@ for i in range(1, 25):
 
     print "Text #%d summarized successfully" % i
     RESULTS['successes'] += 1
-
-    result = rouge_calculator.evaluate_summary(gold_references_dir, 'summ(\d+).txt')
     RESULTS['reports'].append(result)
 
 successes = float(RESULTS['successes'])
