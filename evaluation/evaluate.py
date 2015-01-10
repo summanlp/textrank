@@ -49,7 +49,7 @@ for i in range(1, 25):
         RESULTS['errors'] += 1
         continue
 
-    print "Text #%d summarized successfully" % str(i)
+    print "Text #%d summarized successfully" % i
     RESULTS['successes'] += 1
 
     result = rouge_calculator.evaluate_summary(gold_references_dir, 'summ(\d+).txt')
