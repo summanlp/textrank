@@ -2,6 +2,7 @@ import os.path
 import sys
 import csv
 import rouge_calculator
+import traceback
 from timeout import TimeoutError, timeout
 
 # Imports files from a parent directory.
@@ -46,15 +47,17 @@ def get_rouge_scores(dataset_numbers):
         try:
             result = get_rouge_summary_for_text(i)
         except TimeoutError:
-            print "Timeout summarizing text #" + str(i)
+            print "Timeout summarizing text #%d\n" % i
             results['timeouts'] += 1
             continue
-        except:
-            print "Error summarizing text #" + str(i)
+        except Exception as e:
+            print "Error summarizing text #%d\n" % i
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print traceback.print_exception(exc_type, exc_value, exc_traceback, limit=2, file=sys.stdout)
             results['errors'] += 1
             continue
 
-        print "Text #%d summarized successfully" % i
+        print "Text #%d summarized successfully\n" % i
         results['successes'] += 1
         results['reports'].append(result)
 
