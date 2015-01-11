@@ -1,5 +1,2 @@
-
-
 He points out that this algorithm can be implemented on an analog computer , but " do not worry: more subtle uses of quantum interference cannot be explained away so easily with classical thinking. " The Church - Turing Thesis says that the meaning of " effective computation " is equivalent to " all computations that can be performed by a Universal Turing Machine " .
-
 Yet in quantum theory , even time is quantized , so a universal theory of continuum computation implement in classical physics might have power superior to a quantum computer . Penrose ( 1994 ) argues that his perception of mathematical truth is beyond any level of computability , even an infinite tower of Oracle Machines . We could then relax the assumption of discrete time and treat the UTM as a dynamical system operating in continuous time , attempting to define a Universal Dynamical System that somehow represents a description of other dynamical systems in its state space , and proceeds in time by following that definition , producing identical behavior to a system implementing the definition directly . 

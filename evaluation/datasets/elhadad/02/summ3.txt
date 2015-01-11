@@ -1,11 +1,6 @@
 When Microsoft Senior Vice President Steve Ballmer first heard his company was planning to make a huge investment in an Internet service offering movie reviews and local entertainment information in major cities across the nation , he went to Chairman Bill Gates with his concerns .
-
 Programmed into computers , these systems can automatically generate optimal predictions or decisions even when key pieces of information are missing .
-
 When Microsoft in 1993 hired Eric Horvitz , David Heckerman and Jack Breese , pioneers in the development of Bayesian systems , colleagues in the field were surprised .
-
 But the neural nets wo not help predict the unforeseen .
-
 Horvitz and his two Microsoft colleagues , who were then classmates at Stanford University , began building Bayesian networks to help diagnose the condition of patients without turning to surgery .
-
 Horvitz , who with two colleagues founded Knowledge Industries to develop tools for developing Bayesian networks , says he and the others left the company to join Microsoft in part because they wanted to see their theoretical work more broadly applied .
