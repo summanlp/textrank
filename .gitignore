@@ -106,3 +106,6 @@ nytprof.out
 /pm_to_blib
 *.o
 *.bs
+
+# Temporary files created for running ROUGE.
+/evaluation/temp
