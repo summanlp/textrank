@@ -1,6 +1,6 @@
 import os.path
 import sys
-from pprint import PrettyPrinter
+import csv
 import rouge_calculator
 from timeout import TimeoutError, timeout
 
@@ -11,7 +11,6 @@ from textrank import textrank
 TEMP_DIRECTORY = rouge_calculator.MODEL_DIRECTORY
 TEMP_FILENAME = rouge_calculator.MODEL_FILENAME
 
-RESULTS = {'runs': 0, 'successes': 0, 'timeouts': 0, 'errors': 0, 'reports': []}
 
 @timeout(10)
 def summarize_text(filename):
@@ -38,43 +37,74 @@ def get_rouge_summary_for_text(text_number):
 
 
 def get_rouge_scores(dataset_numbers):
+    results = {'runs': 0, 'successes': 0, 'timeouts': 0, 'errors': 0, 'reports': []}
+
     for i in dataset_numbers:
         print "Evaluating set #" + str(i)
 
-        RESULTS['runs'] += 1
+        results['runs'] += 1
         try:
             result = get_rouge_summary_for_text(i)
         except TimeoutError:
             print "Timeout summarizing text #" + str(i)
-            RESULTS['timeouts'] += 1
+            results['timeouts'] += 1
             continue
         except:
             print "Error summarizing text #" + str(i)
-            RESULTS['errors'] += 1
+            results['errors'] += 1
             continue
 
         print "Text #%d summarized successfully" % i
-        RESULTS['successes'] += 1
-        RESULTS['reports'].append(result)
+        results['successes'] += 1
+        results['reports'].append(result)
 
-    successes = float(RESULTS['successes'])
+    return results
 
-    avg_rouge1_fscore = sum(result['rouge_1_f_score'] for result in RESULTS['reports']) / successes
+
+def export_results(results):
+    successes = float(results['successes'])
+
+    avg_rouge1_fscore = sum(result['rouge_1_f_score'] for result in results['reports']) / successes
     print "Average F-score for ROUGE-1 metric: " + str(avg_rouge1_fscore)
-
-    avg_rouge2_fscore = sum(result['rouge_2_f_score'] for result in RESULTS['reports']) / successes
+    avg_rouge2_fscore = sum(result['rouge_2_f_score'] for result in results['reports']) / successes
     print "Average F-score for ROUGE-2 metric: " + str(avg_rouge2_fscore)
-
-    avg_su_fscore = sum(result['rouge_su*_f_score'] for result in RESULTS['reports']) / successes
+    avg_su_fscore = sum(result['rouge_su*_f_score'] for result in results['reports']) / successes
     print "Average F-score for ROUGE-SU metric: " + str(avg_su_fscore)
+
+    # Export ROUGE measures on successes.
+    with open(os.path.join(TEMP_DIRECTORY, 'avg_rouge1_fscore.csv'), 'w') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(['AVG ROUGE-1 F-measure', str(avg_rouge1_fscore)])
+
+    with open(os.path.join(TEMP_DIRECTORY, 'avg_rouge2_fscore.csv'), 'w') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(['AVG ROUGE-2 F-measure', str(avg_rouge2_fscore)])
+
+    with open(os.path.join(TEMP_DIRECTORY, 'avg_su_fscore.csv'), 'w') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(['AVG ROUGE-SU F-measure', str(avg_su_fscore)])
+
+    # Exports overall results.
+    with open(os.path.join(TEMP_DIRECTORY, 'textrank_successes.csv'), 'w') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(['Successes', str(results['successes'])])
+
+    with open(os.path.join(TEMP_DIRECTORY, 'textrank_failures.csv'), 'w') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(['Failures', str(results['errors'])])
+
+    with open(os.path.join(TEMP_DIRECTORY, 'textrank_timeouts.csv'), 'w') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(['Timeouts', str(results['timeouts'])])
 
 
 if __name__ == '__main__':
     # Calculate all rouge scores if no argument is provided.
     if len(sys.argv) == 1:
-        get_rouge_scores(xrange(1, 25))
+        results = get_rouge_scores(xrange(1, 25))
 
     # Else calculate rouge scores for the specified datasets.
     else:
-        get_rouge_scores([int(x) for x in sys.argv[1:]])
+        results = get_rouge_scores([int(x) for x in sys.argv[1:]])
 
+    export_results(results)
