@@ -21,15 +21,13 @@ def textrank(text, method=PAGERANK_MANUAL):
     graph = get_graph(tokens.keys())
     set_graph_edge_weights(graph)
 
-    # Ranks the tokens using the PageRank algorithm.
-    # scores is a dict of sentence -> score
+    # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
     scores = pagerank(graph) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
 
     # Extracts the most important tokens.
     extracted_tokens = extract_tokens(graph.nodes(), scores)
 
-    # Sorts the extracted sentences by apparition order in the
-    # original text.
+    # Sorts the extracted sentences by apparition order in the original text.
     summary = sort_by_apparition(extracted_tokens, tokens, text)
     
     return "\n".join(summary)
@@ -112,18 +110,19 @@ def get_common_word_count(words_sentence_one, words_sentence_two):
     return sum(1 for w in words_sentence_one if w in words_set)
 
 
-def main():
+def get_arguments():
     import sys, getopt
+
     try:
         opts, args = getopt.getopt(sys.argv[1:], "t:m:h", ["text=", "method=", "help"])
     except getopt.GetoptError as err:
-        print str(err) # will print something like "option -a not recognized"
+        print str(err)  # will print something like "option -a not recognized"
         usage()
         sys.exit(2)
     path = None
     method = None
     for o, a in opts:
-        if o == ("-t", "--text"):
+        if o in ("-t", "--text"):
             path = a
         elif o in ("-h", "--help"):
             usage()
@@ -132,11 +131,15 @@ def main():
             method = int(a)
         else:
             assert False, "unhandled option"
-
     if not path:
         path = TEST_FILE
     if not method:
         method = PAGERANK_MANUAL
+    return method, path
+
+
+def main():
+    method, path = get_arguments()
 
     with open(path) as test_file:
         text = test_file.read()
@@ -145,7 +148,7 @@ def main():
 
 
 def usage():
-    print "Usage: python textrank.py -t path/to/text -m [0,1]"
+    print "Usage: python -W ignore textrank.py -t path/to/text -m [0,1]"
     print "-t: text to summarize. Default value: samples/textrank_example.txt"
     print "-m: method to use: Default value: 0"
     print "\t0: PageRank Manual. 1: PageRank using scipy.sparse.linalg.eigs"
@@ -157,7 +160,10 @@ if __name__ == "__main__":
 
 
 
-def test(path):
+
+def get_test_graph(path):
+    """Method to run test on the interpreter """
+    # TODO: delete this method when no longer needed
     with open(path) as file:
         text = file.read()
 
