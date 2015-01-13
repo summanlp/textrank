@@ -116,7 +116,7 @@ def get_arguments():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "t:m:h", ["text=", "method=", "help"])
     except getopt.GetoptError as err:
-        print str(err)  # will print something like "option -a not recognized"
+        print str(err)
         usage()
         sys.exit(2)
     path = None

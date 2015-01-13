@@ -1,6 +1,6 @@
 
 from scipy.sparse import csr_matrix
-from scipy.sparse.linalg import eigsh, eigs
+from scipy.linalg import eig
 from math import fabs
 
 CONVERGENCE_THRESHOLD = 0.0001
@@ -34,7 +34,7 @@ def pagerank_weighted(graph, damping=0.85):
 
 def pagerank_weighted_scipy(graph):
     matrix = build_matrix(graph)
-    vals, vecs = eigs(matrix, k=1)
+    vals, vecs = eig(matrix.todense(), left=True, right=False)
     return process_results(graph, vecs)
 
 def build_matrix(graph):
@@ -45,12 +45,14 @@ def build_matrix(graph):
     length = len(nodes)
 
     for i in xrange(length):
+        current_node = nodes[i]
+        neighbors_sum = sum(graph.edge_weight((current_node, neighbor)) for neighbor in graph.neighbors(current_node))
         for j in xrange(length):
-            edge_weight = graph.edge_weight((nodes[i], nodes[j]))
+            edge_weight = float(graph.edge_weight((nodes[i], nodes[j])))
             if i != j and edge_weight != 0:
                 row.append(i)
                 col.append(j)
-                data.append(edge_weight)
+                data.append(edge_weight / neighbors_sum)
 
     return csr_matrix((data,(row,col)), shape=(length,length))
 
