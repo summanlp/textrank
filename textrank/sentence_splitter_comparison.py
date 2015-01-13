@@ -1,7 +1,6 @@
 
 from nltk.tokenize import sent_tokenize
 import nltk.data
-from sentence_splitter import split_into_sentences
 import textcleaner as tc
 import os
 import os.path
@@ -47,7 +46,7 @@ def my_tokenize(filename):
     with open(filename) as text_fp:
         sample_text = text_fp.read()
 
-    return split_into_sentences(sample_text)
+    return [word.strip() + '.' for word in sample_text.split('.')]
 
 
 def tokenize2(filename):

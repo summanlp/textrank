@@ -7,9 +7,9 @@ CONVERGENCE_THRESHOLD = 0.0001
 
 def pagerank_weighted(graph, damping=0.85):
     scores = dict.fromkeys(graph.nodes(), 1.0 / len(graph.nodes()))
-    iteration_quantity = 0
+    #iteration_quantity = 0
     for iteration_number in xrange(100):
-        iteration_quantity += 1
+    #    iteration_quantity += 1
         convergence_achieved = 0
         for i in graph.nodes():
             rank = 1 - damping
@@ -28,7 +28,7 @@ def pagerank_weighted(graph, damping=0.85):
 
         if convergence_achieved == len(graph.nodes()):
             break
-    print "Cantidad de iteraciones:", iteration_quantity
+    # print "Cantidad de iteraciones:", iteration_quantity
     return scores
 
 
@@ -48,7 +48,7 @@ def build_matrix(graph):
         current_node = nodes[i]
         neighbors_sum = sum(graph.edge_weight((current_node, neighbor)) for neighbor in graph.neighbors(current_node))
         for j in xrange(length):
-            edge_weight = float(graph.edge_weight((nodes[i], nodes[j])))
+            edge_weight = float(graph.edge_weight((current_node, nodes[j])))
             if i != j and edge_weight != 0:
                 row.append(i)
                 col.append(j)

@@ -8,7 +8,7 @@ from math import log10
 
 SUMMARY_LENGTH = 0.2
 TEST_FILE = "samples/textrank_example.txt"
-DEBUG = True
+DEBUG = False
 PAGERANK_MANUAL = 0
 PAGERANK_SCIPY = 1
 
@@ -148,10 +148,10 @@ def main():
 
 
 def usage():
-    print "Usage: python -W ignore textrank.py -t path/to/text -m [0,1]"
+    print "Usage: python textrank.py -t path/to/text -m [0,1]"
     print "-t: text to summarize. Default value: samples/textrank_example.txt"
     print "-m: method to use: Default value: 0"
-    print "\t0: PageRank Manual. 1: PageRank using scipy.sparse.linalg.eigs"
+    print "\t0: PageRank Manual. 1: PageRank using scipy.linalg.eig"
 
 
 if __name__ == "__main__":
