@@ -11,6 +11,7 @@ from textrank import textrank
 
 TEMP_DIRECTORY = rouge_calculator.MODEL_DIRECTORY
 TEMP_FILENAME = rouge_calculator.MODEL_FILENAME
+RESULTS_DIRECTORY = 'results'
 
 
 @timeout(10)
@@ -67,6 +68,9 @@ def get_rouge_scores(dataset_numbers):
 def export_results(results):
     successes = float(results['successes'])
 
+    if not os.path.exists(RESULTS_DIRECTORY):
+        os.makedirs(RESULTS_DIRECTORY)
+
     avg_rouge1_fscore = sum(result['rouge_1_f_score'] for result in results['reports']) / successes
     print "Average F-score for ROUGE-1 metric: " + str(avg_rouge1_fscore)
     avg_rouge2_fscore = sum(result['rouge_2_f_score'] for result in results['reports']) / successes
@@ -75,33 +79,33 @@ def export_results(results):
     print "Average F-score for ROUGE-SU metric: " + str(avg_su_fscore)
 
     # Export ROUGE measures on successes.
-    with open(os.path.join(TEMP_DIRECTORY, 'avg_rouge1_fscore.csv'), 'w') as csvfile:
+    with open(os.path.join(RESULTS_DIRECTORY, 'avg_rouge1_fscore.csv'), 'w') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(['AVG ROUGE-1 F-measure'])
         csv_writer.writerow([str(avg_rouge1_fscore)])
 
-    with open(os.path.join(TEMP_DIRECTORY, 'avg_rouge2_fscore.csv'), 'w') as csvfile:
+    with open(os.path.join(RESULTS_DIRECTORY, 'avg_rouge2_fscore.csv'), 'w') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(['AVG ROUGE-2 F-measure'])
         csv_writer.writerow([str(avg_rouge2_fscore)])
 
-    with open(os.path.join(TEMP_DIRECTORY, 'avg_su_fscore.csv'), 'w') as csvfile:
+    with open(os.path.join(RESULTS_DIRECTORY, 'avg_su_fscore.csv'), 'w') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(['AVG ROUGE-SU F-measure'])
         csv_writer.writerow([str(avg_su_fscore)])
 
     # Exports overall results.
-    with open(os.path.join(TEMP_DIRECTORY, 'textrank_successes.csv'), 'w') as csvfile:
+    with open(os.path.join(RESULTS_DIRECTORY, 'textrank_successes.csv'), 'w') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(['Successes'])
         csv_writer.writerow([str(results['successes'])])
 
-    with open(os.path.join(TEMP_DIRECTORY, 'textrank_failures.csv'), 'w') as csvfile:
+    with open(os.path.join(RESULTS_DIRECTORY, 'textrank_failures.csv'), 'w') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(['Failures'])
         csv_writer.writerow([str(results['errors'])])
 
-    with open(os.path.join(TEMP_DIRECTORY, 'textrank_timeouts.csv'), 'w') as csvfile:
+    with open(os.path.join(RESULTS_DIRECTORY, 'textrank_timeouts.csv'), 'w') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(['Timeouts'])
         csv_writer.writerow([str(results['timeouts'])])

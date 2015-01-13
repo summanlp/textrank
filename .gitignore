@@ -109,3 +109,4 @@ nytprof.out
 
 # Temporary files created for running ROUGE.
 /evaluation/temp
+/evaluation/results
