@@ -7,6 +7,7 @@ CONVERGENCE_THRESHOLD = 0.0001
 
 def pagerank_weighted(graph, damping=0.85):
     scores = dict.fromkeys(graph.nodes(), 1.0 / len(graph.nodes()))
+
     #iteration_quantity = 0
     for iteration_number in xrange(100):
     #    iteration_quantity += 1
@@ -15,10 +16,6 @@ def pagerank_weighted(graph, damping=0.85):
             rank = 1 - damping
             for j in graph.incidents(i):
                 neighbors_sum = sum(graph.edge_weight((j, k)) for k in graph.neighbors(j))
-
-                if neighbors_sum == 0:
-                    neighbors_sum = 1
-
                 rank += damping * scores[j] * graph.edge_weight((j, i)) / neighbors_sum
 
             if fabs(scores[i] - rank) <= CONVERGENCE_THRESHOLD:
@@ -28,6 +25,8 @@ def pagerank_weighted(graph, damping=0.85):
 
         if convergence_achieved == len(graph.nodes()):
             break
+
+        # print "pagerank iteration %d ended. achieved %f convergence " % (iteration_number, convergence_achieved / float(len(graph.nodes())))
     # print "Cantidad de iteraciones:", iteration_quantity
     return scores
 

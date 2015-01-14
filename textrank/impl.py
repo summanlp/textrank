@@ -15,6 +15,7 @@ PAGERANK_SCIPY = 1
 SENTENCE = 0
 WORD = 1
 
+
 def textrank(text, summarize_by=SENTENCE, method=PAGERANK_MANUAL, summary_length=0.2):
     if summarize_by == SENTENCE:
         return textrank_by_sentence(text, method, summary_length)
@@ -29,6 +30,9 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = get_graph(tokens.keys())
     set_graph_edge_weights(graph)
+
+    # Remove all nodes with all edges weights equal to zero.
+    remove_unreacheable_nodes(graph)
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
     scores = pagerank(graph) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
@@ -122,6 +126,11 @@ def get_common_word_count(words_sentence_one, words_sentence_two):
 def textrank_by_word(text, method, summary_length):
     pass
 
+
+def remove_unreacheable_nodes(graph):
+    for node in graph.nodes():
+        if sum(graph.edge_weight((node, other)) for other in graph.neighbors(node)) == 0:
+            graph.del_node(node)
 
 
 def get_test_graph(path):
