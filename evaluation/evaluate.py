@@ -68,6 +68,13 @@ def get_rouge_scores(dataset_numbers):
 def export_results(results):
     successes = float(results['successes'])
 
+    print "Successful tests: " + str(results['successes'])
+    print "Failed tests: " + str(results['errors'])
+    print "Timed out tests: " + str(results['timeouts'])
+
+    if successes == 0:
+        return
+
     if not os.path.exists(RESULTS_DIRECTORY):
         os.makedirs(RESULTS_DIRECTORY)
 

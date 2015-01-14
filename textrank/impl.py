@@ -4,6 +4,7 @@ from pagerank_weighted import pagerank_weighted as pagerank
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy
 from textcleaner import tokenize_by_sentences
 from math import log10
+from textrank_runtime_error import TextrankRuntimeError
 
 DEBUG = False
 # Methods for PageRank
@@ -54,7 +55,7 @@ def sort_by_apparition(extracted_tokens, tokens, text):
                 summary.append((original_sentence, index))
 
         except ValueError:
-            print "ERROR: sentence not found: " + original_sentence
+            raise TextrankRuntimeError("ERROR: sentence not found: " + original_sentence)
 
     summary.sort(key=lambda t: t[1])
     if DEBUG:
