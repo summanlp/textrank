@@ -1,0 +1,30 @@
+Meet the Open Source Trio Primed to Topple Oracle.
+By Klint Finley.
+Oracle remains the undisputed king of databases. 
+But what — if anything — is on track to replace it? 
+Data published today by the Austrian IT consulting company Solid IT may offer a few clues.
+Over the past few years, we’ve seen an explosion of new databases. 
+Several companies are offering relational databases that directly challenge traditional offerings from Oracle — databases that designed to store information in neat rows and columns on a single machine. 
+And thanks to research papers detailing software built by Google and Amazon, we also have a slew of open source NoSQL databases — databases designed to store massive amounts of information across tens of hundreds of machines.
+Solid IT aims to determine to what extent these new databases are actually being used. 
+That’s why it created DB-Engines, an index of the most popular databases that draws on several sources of information. 
+For the past year, the company has mined everything from LinkedIn profiles and job listings to question-and-answer sites in an effort to get a handle on what companies are using. 
+Its monthly rankings show which databases have the most overall market share, but its new ranking for all of 2013 takes a different tack. 
+It looks at which databases are growing the quickest.
+The open source NoSQL database MongoDB grew the most, and that’s no surprise. 
+Last month, it was the most popular NoSQL database in DB-Engine’s rankings, and it ranked ahead of a few relational databases, such as Microsoft Access, SQLite, and Sybase. 
+Second place in the growth standing went to PostgreSQL, an open source relational database that’s been making waves in recent years thanks to its versatility and how well it scales across machines. 
+It probably also benefits from the fact that, unlike MySQL, it’s not owned by Oracle.
+Third place went to Cassandra, which was a bit more surprising. 
+Cassandra was part of the first wave of open source NoSQL databases. 
+Facebook originally built it in 2008, drawing on the Dynamo paper from Amazon and the BigTable paper from Google, and in 2010, a company now known as DataStax was founded to commercialize the product. 
+But Cassandra has received less buzz over the past couple years. 
+It now shares the limelight with other similar databases like Hbase, which is in heavy use at Facebook; Riak; and most recently the NSA’s Accumulo.
+But according to DB-Engines, Cassandra it not only the third-fastest growing database overall. 
+It’s now the second most popular NoSQL database.
+While Cassandra may have flown under the radar for the past few years, it does have some big name users. 
+Netflix uses it to help it scale operations and keep rapidly changing data consistent across geographically separated data centers. 
+Cassandra was part of the stack of tools that helped the service stay online during the great Amazon cloud outage of 2011. 
+Other companies that use Cassandra include Adobe, eBay, and WebEx, along with plenty of smaller companies.
+MongoDB, PostgreSQL, and Cassandra still have a long way to go if they want to topple Oracle. 
+But numbers show the market is finally starting to change.
