@@ -1,0 +1,4 @@
+Oracle remains the undisputed king of databases, but there was an explosion of new databases in the last few years.
+Solid IT created an index, DB-Engines, which aims to determine to what extent these databases are actually being used.
+According to the ranking, open source NoSQL database MongoDB grew the most, followed by the relational database PostgreSQL.
+The suprise third spot went to Cassandra, a low buzz NoSQL database developed in 2008 with big name users such as Netflix and eBay.
