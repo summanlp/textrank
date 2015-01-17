@@ -1,0 +1,1 @@
+Java 8 has been released, with a mayor update for IT development, specially in functional programming, with the project Lambda, but it is still missing the key Project Jigsaw component that was originally part of the development plan.
