@@ -1,0 +1,4 @@
+Oracle is still at the top of database sales, but the explosion of new databases is slowly contribuiting to topple them.
+Thanks to papers built by Google and Amazon, open source NoSQL databases are arising, with the main advantage of distributed storage of data across multiples machines.
+Solid IT has collected data which states that MongoDB grew the most, ahead of many SQL choices. 
+Other implementations that are collaborating to topple Oracle are Cassandra and PostgreSQL
