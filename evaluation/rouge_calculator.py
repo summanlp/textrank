@@ -6,10 +6,6 @@ from timeout import TimeoutError, timeout
 from rouge_dataset_results import RougeDatasetResults
 from pyrouge import Rouge155
 
-# Imports files from a parent directory.
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir, 'textrank'))
-from textrank import textrank
-
 """ Class that runs ROUGE to compare the output of a custom summarization tool
     comparing it to a 'gold standard' reference summary.
 """
@@ -38,15 +34,32 @@ ROUGE_OPTIONS = [
 
 class RougeCalculator(object):
 
-    def __init__(self, dataset, text_numbers):
+    def __init__(self, dataset, text_numbers, method):
         self.dataset = dataset
         self.text_numbers = text_numbers
+        self.method = method
 
     def get_rouge_evaluation_for_text(self, text_number):
         text_filename = TEXT_FILENAME_FORMAT.format(dataset=self.dataset, text_number=text_number)
         gold_references_dir = GOLD_REFERENCES_DIR_FORMAT.format(dataset=self.dataset, text_number=text_number)
-        summarize_text(text_filename)
+        self.summarize_text(text_filename)
         return evaluate_summary(gold_references_dir)
+
+    @timeout(10)
+    def summarize_text(self, filename):
+        # pyrouge needs the model summaries to be stored in a directory without subdirectories.
+        if not os.path.exists(MODEL_DIRECTORY):
+            os.makedirs(MODEL_DIRECTORY)
+
+        # Makes a summary of the provided file and stores it in the temp folder.
+        with open(filename) as fp:
+            text = fp.read()
+
+        print "Summarizing " + filename
+        summary = self.method(text)
+
+        with open(os.path.join(MODEL_DIRECTORY, MODEL_FILENAME), 'w') as fp:
+            fp.write(summary)
 
     def get_rouge_scores(self):
         results = RougeDatasetResults()
@@ -90,18 +103,3 @@ def evaluate_summary(gold_references_dir):
     return rouge_instance.output_to_dict(output)
 
 
-@timeout(10)
-def summarize_text(filename):
-    # pyrouge needs the model summaries to be stored in a directory without subdirectories.
-    if not os.path.exists(MODEL_DIRECTORY):
-        os.makedirs(MODEL_DIRECTORY)
-
-    # Makes a summary of the provided file and stores it in the temp folder.
-    with open(filename) as fp:
-        text = fp.read()
-
-    print "Summarizing " + filename
-    summary = textrank(text)
-
-    with open(os.path.join(MODEL_DIRECTORY, MODEL_FILENAME), 'w') as fp:
-        fp.write(summary)
