@@ -18,24 +18,25 @@ parser.add_argument("-d", "--dataset", help="specify which dataset to use.")
 parser.add_argument("-b", "--baseline", action="store_true", help="calculates the baselines scores.")
 args = parser.parse_args()
 
-# Calculate all rouge scores by default.
-if args.text_numbers:
-    text_numbers = [int(x) for x in args.text_numbers]
-else:
-    text_numbers = xrange(1, 25)        # Will stop working soon, FIXME
-
 # Use elhadad dataset by default.
 if args.dataset:
     dataset = args.dataset
 else:
     dataset = 'elhadad'
 
+dataset_path = os.path.join('datasets', dataset)
+
+# Calculate all rouge scores by default.
+if args.text_numbers:
+    text_numbers = [int(n) for n in args.text_numbers]
+else:
+    text_numbers = sorted(int(n) for n in os.listdir(dataset_path) if os.path.isdir(os.path.join(dataset_path, n)))
+
 # Don't calculate baseline method by default.
 if args.baseline:
     method = baseline
 else:
     method = textrank
-
 
 calculator = RougeCalculator(dataset, text_numbers, method)
 results = calculator.get_rouge_scores()
