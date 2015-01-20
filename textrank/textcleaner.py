@@ -97,16 +97,10 @@ def remove_stopwords(sentence):
 
 language = "english"
 stemmer = snowball.SnowballStemmer(language)
-
-
 def stem_sentence(sentence):
 	word_stems = [stemmer.stem(word) for word in sentence.split()]
 	return " ".join(word_stems)
 
-
-# Falta bocha por aca:
-#  - Corregir bug cuando alguna palabra se transforma a ""
-#  - Ver que se debe hacer con las palabras repetidas (releer paper)
 
 def tokenize_by_word(text):
 	# pdb.set_trace()

@@ -123,14 +123,14 @@ def get_common_word_count(words_sentence_one, words_sentence_two):
     return sum(1 for w in words_sentence_one if w in words_set)
 
 
-def textrank_by_word(text, method, summary_length):
-    pass
-
-
 def remove_unreacheable_nodes(graph):
     for node in graph.nodes():
         if sum(graph.edge_weight((node, other)) for other in graph.neighbors(node)) == 0:
             graph.del_node(node)
+
+
+def textrank_by_word(text, method, summary_length):
+    pass
 
 
 def get_test_graph(path):
