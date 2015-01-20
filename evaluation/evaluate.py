@@ -40,4 +40,4 @@ else:
 
 calculator = RougeCalculator(dataset, text_numbers, method)
 results = calculator.get_rouge_scores()
-export_results(dataset, results)
+export_results(dataset, results, 'baseline' if args.baseline else 'textrank')

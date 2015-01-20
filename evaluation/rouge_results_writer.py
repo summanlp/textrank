@@ -5,7 +5,7 @@ import csv
 RESULTS_DIRECTORY_FORMAT = 'results_{dataset}'
 
 
-def export_results(dataset, results):
+def export_results(dataset, results, method):
     successes = float(results.successes)
 
     print "Successful tests: " + str(results.successes)
@@ -20,6 +20,8 @@ def export_results(dataset, results):
     if not os.path.exists(results_directory):
         os.makedirs(results_directory)
 
+    method_name = " ({method})".format(method=method)
+
     avg_rouge1_fscore = sum(result['rouge_1_f_score'] for result in results.reports) / successes
     print "Average F-score for ROUGE-1 metric: " + str(avg_rouge1_fscore)
     avg_rouge2_fscore = sum(result['rouge_2_f_score'] for result in results.reports) / successes
@@ -30,17 +32,17 @@ def export_results(dataset, results):
     # Export ROUGE measures on successes.
     with open(os.path.join(results_directory, 'avg_rouge1_fscore.csv'), 'w') as csvfile:
         csv_writer = csv.writer(csvfile)
-        csv_writer.writerow(['AVG ROUGE-1 F-measure'])
+        csv_writer.writerow(['AVG ROUGE-1 F-measure' + method_name])
         csv_writer.writerow([str(avg_rouge1_fscore)])
 
     with open(os.path.join(results_directory, 'avg_rouge2_fscore.csv'), 'w') as csvfile:
         csv_writer = csv.writer(csvfile)
-        csv_writer.writerow(['AVG ROUGE-2 F-measure'])
+        csv_writer.writerow(['AVG ROUGE-2 F-measure' + method_name])
         csv_writer.writerow([str(avg_rouge2_fscore)])
 
     with open(os.path.join(results_directory, 'avg_su_fscore.csv'), 'w') as csvfile:
         csv_writer = csv.writer(csvfile)
-        csv_writer.writerow(['AVG ROUGE-SU F-measure'])
+        csv_writer.writerow(['AVG ROUGE-SU F-measure' + method_name])
         csv_writer.writerow([str(avg_su_fscore)])
 
     # Exports overall results.
