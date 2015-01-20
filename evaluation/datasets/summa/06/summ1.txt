@@ -1,0 +1,4 @@
+Standarized test are for measuring the level of education students have achieved.
+Given that budgets depends on the result of these tests, teachers teachs students to take test, when they should be teaching them to think.
+Tests only check if the answer is right, but they don't take into account the way students arrive to the answer nor the critical thinking behind that.
+As a consequence of this technique, when college require students to analyze the main facts and draw conclusions, they aren't able to do it, revealing the failure of the aproach.
