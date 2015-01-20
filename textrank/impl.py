@@ -3,6 +3,7 @@ from pygraph.classes.digraph import digraph as pydigraph
 from pagerank_weighted import pagerank_weighted as pagerank
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy
 from textcleaner import tokenize_by_sentences
+from textcleaner import tokenize_by_words
 from math import log10
 from textrank_runtime_error import TextrankRuntimeError
 
@@ -124,7 +125,35 @@ def get_common_word_count(words_sentence_one, words_sentence_two):
 
 
 def textrank_by_word(text, method, summary_length):
-    pass
+    # Extracts the tokens from the text.
+    tokens = tokenize_by_words(text)
+    
+    # Creates the graph.
+    graph = get_graph(tokens)
+	
+    # 
+    p
+        
+    
+    return ""
+        
+    
+def set_graph_tokens_edge_weights(graph, text):
+    for token_1 in graph.nodes():
+        for sentence_2 in graph.nodes():
+            if sentence_1 == sentence_2:
+                continue
+
+            edge_1 = (sentence_1, sentence_2)
+            edge_2 = (sentence_2, sentence_1)
+
+            if graph.has_edge(edge_1) or graph.has_edge(edge_2):
+                continue
+
+            similarity = get_similarity(sentence_1, sentence_2)
+
+            graph.add_edge(edge_1, similarity)
+            graph.add_edge(edge_2, similarity)
 
 
 def remove_unreacheable_nodes(graph):
@@ -149,3 +178,17 @@ def get_test_graph(path):
     return graph
     # Ranks the tokens using the PageRank algorithm.
     # return pagerank_scipy(graph)
+
+
+from itertools import islice
+
+def window(seq, n=2):
+    "Returns a sliding window (of width n) over data from the iterable"
+    "   s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ...                   "
+    it = iter(seq)
+    result = tuple(islice(it, n))
+    if len(result) == n:
+        yield result    
+    for elem in it:
+        result = result[1:] + (elem,)
+        yield result

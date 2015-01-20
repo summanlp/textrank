@@ -108,7 +108,10 @@ def stem_sentence(sentence):
 #  - Corregir bug cuando alguna palabra se transforma a ""
 #  - Ver que se debe hacer con las palabras repetidas (releer paper)
 
-def tokenize_by_word(text):
+def tokenize_by_words(text):
 	# pdb.set_trace()
 	original_words = list(tokenize(text, to_lower=True))
-	return filter_words(original_words)
+	
+	filters = [strip_numeric, strip_punctuation, remove_stopwords, stem_sentence]
+	tokens = { word: apply_filters(word, filters) for word in original_words }	
+	return { key: tokens[key] for key in tokens if tokens[key] != "" }
