@@ -1,0 +1,22 @@
+Watson Analytics merges big data with natural language tools.
+By Liat Clark.
+IBM has announced the launch of Watson Analytics, a cloud-based natural language service that aims to simplify and streamline predictive data analytics for businesses, creating handy visualisations in the process.
+The supercomputer was first introduced to the world as the technology that could beat humans at Jeopardy! and then as the potentially game-changing tool for health analytics when it was claimed Watson was  better at diagnosing cancer than human doctors. 
+Watson's potential for all types of industry is huge, more so because IBM has succeeded in proliferating supercomputing power via the cloud, making Watson mobile. 
+This year, the technology giant has been making the most of that mobility, launching a global competition for app developers and revealing that a financial services group would be using the app to help veterans with everything from career advice to financial planning. 
+With Watson Analytics -- launching internationally in November -- the plan is to pull in this kind of consumer use-case functionality but deliver it via a simple interface that can be applied across any business wanting to mine its data more efficiently.
+Millions might be spent on creating a backend system with a third party. 
+But IBM is suggesting corporations now go straight to Watson to ask things like "Which deals are most likely to close?" or "What are the key drivers of my product sales?" The natural language element makes the system incredibly attractive to a company that wants to harness its data, but lacks either the resources or expertise to build an analytics system itself that will to the job.
+The system being announced today will include a free version, and it can be run on either desktop or mobile devices. 
+Additional features, such as increased storage size, data sources and enterprise capabilities, will be licensed through IBM or its business partners, though there are no details yet as to costs.
+A release on the service says Watson Analytics can automate "data preparation, predictive analysis, and visual storytelling for business professionals across data intensive disciplines like marketing, sales, operations, finance and human resources", all in one place.
+It can help companies source and cleanup data, so that the results seen are always relevant. 
+Part of this is presumably down to the natural language element. 
+Any good big data analytics tool needs a human element to refine and fine tune the process -- and starting with clean and useful data, is paramount. 
+And while IBM promises that most of the time-consuming functions (like data sourcing and warehousing) will be automated, it obviously needs that human guidance to make it worthwhile. 
+Once this has occurred, the system can deliver visualisations to highlight patterns in the data used -- again, for humans to interrogate. 
+(A handful of these are available in the embedded gallery.)
+It's of note that the IBM release on the announcement refers to businesses interacting with analytics results and then fine tuning their questions -- IBM Watson might be equipped with natural language processing abilities, but it could take a few tries to get it on the same page as you. 
+Equally, as with most big data problems, you might not begin with the right questions -- initial analysis might show you how you have been seeking the answers in the wrong places, and push you in the right direction.
+Speaking about the launch, Senior Vice President, Information and Analytics Group, IBM, Bob Picciano said: "Watson Analytics is designed to help all business people -- from sales reps on the road to company CEOs -- see patterns, pursue ideas and improve all types of decisions. 
+We have eliminated the barrier between the answers they seek, the analytics they want and the data in the form they need."
