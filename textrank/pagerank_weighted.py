@@ -2,6 +2,9 @@
 from scipy.sparse import csr_matrix
 from scipy.linalg import eig
 from math import fabs
+# Methods for PageRank
+PAGERANK_MANUAL = 0
+PAGERANK_SCIPY = 1
 
 CONVERGENCE_THRESHOLD = 0.0001
 

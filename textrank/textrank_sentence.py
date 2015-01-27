@@ -1,26 +1,12 @@
 
 from pygraph.classes.digraph import digraph as pydigraph
-from pagerank_weighted import pagerank_weighted as pagerank
-from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy
+from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
+from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import tokenize_by_sentences
 from math import log10
 from textrank_runtime_error import TextrankRuntimeError
 
 DEBUG = False
-# Methods for PageRank
-PAGERANK_MANUAL = 0
-PAGERANK_SCIPY = 1
-
-# Types of summarization
-SENTENCE = 0
-WORD = 1
-
-
-def textrank(text, summarize_by=SENTENCE, method=PAGERANK_MANUAL, summary_length=0.2):
-    if summarize_by == SENTENCE:
-        return textrank_by_sentence(text, method, summary_length)
-    else:
-        return textrank_by_word(text, method, summary_length)
 
 
 def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
@@ -128,9 +114,6 @@ def remove_unreacheable_nodes(graph):
         if sum(graph.edge_weight((node, other)) for other in graph.neighbors(node)) == 0:
             graph.del_node(node)
 
-
-def textrank_by_word(text, method, summary_length):
-    pass
 
 
 def get_test_graph(path):

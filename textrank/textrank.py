@@ -1,7 +1,13 @@
 
 import sys, getopt
-from impl import textrank, PAGERANK_MANUAL, SENTENCE
+from textrank_sentence import textrank_by_sentence, PAGERANK_MANUAL
+from textrank_word import textrank_by_word
+
 TEST_FILE = "samples/textrank_example.txt"
+# Types of summarization
+SENTENCE = 0
+WORD = 1
+
 
 def get_arguments():
     try:
@@ -48,6 +54,13 @@ help_text = """Usage: python textrank.py
 """
 def usage():
     print help_text
+
+
+def textrank(text, summarize_by=SENTENCE, method=PAGERANK_MANUAL, summary_length=0.2):
+    if summarize_by == SENTENCE:
+        return textrank_by_sentence(text, method, summary_length)
+    else:
+        return textrank_by_word(text, method, summary_length)
 
 
 def main():

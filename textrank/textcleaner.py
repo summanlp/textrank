@@ -1,4 +1,5 @@
 # encoding: cp850
+from mercurial.revset import origin
 
 from gensim.utils import tokenize
 from gensim.parsing.preprocessing import strip_numeric, strip_punctuation
@@ -103,6 +104,6 @@ def stem_sentence(sentence):
 
 
 def tokenize_by_word(text):
-	# pdb.set_trace()
 	original_words = list(tokenize(text, to_lower=True))
-	return filter_words(original_words)
+	filtered_words = filter_words(original_words)
+	return {item[0]: item[1] for item in zip(original_words, filtered_words) if item[1]}
