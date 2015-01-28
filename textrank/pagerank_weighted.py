@@ -60,8 +60,8 @@ def build_matrix(graph):
 
 def process_results(graph, vecs):
     scores = {}
-    for i, sentence in enumerate(graph.nodes()):
-        scores[sentence] = fabs(float(vecs[i][0]))
+    for i, node in enumerate(graph.nodes()):
+        scores[node] = fabs(float(vecs[i][0]))
 
     return scores
 

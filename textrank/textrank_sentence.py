@@ -2,7 +2,7 @@
 from pygraph.classes.digraph import digraph as pydigraph
 from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
-from textcleaner import tokenize_by_sentences
+from textcleaner import clean_text_by_sentences
 from math import log10
 from textrank_runtime_error import TextrankRuntimeError
 
@@ -11,7 +11,7 @@ DEBUG = False
 
 def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     # Gets a dict of processed_sentence -> original_sentences
-    tokens = tokenize_by_sentences(text)
+    tokens = clean_text_by_sentences(text)
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = get_graph(tokens.keys())
@@ -123,7 +123,7 @@ def get_test_graph(path):
         text = file.read()
 
     # Gets a dict of processed_sentence -> original_sentences
-    tokens = tokenize_by_sentences(text)
+    tokens = clean_text_by_sentences(text)
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = get_graph(tokens.keys())
