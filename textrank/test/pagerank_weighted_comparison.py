@@ -53,7 +53,7 @@ def get_highest_scoring_sentences(score):
 
     # Keeps the top scoring.
     number_sentences = int(len(sentences) * 0.2)
-    return sentences[:number_sentences]
+    return [sentence[0] for sentence in sentences[:number_sentences]]
 
 
 def compare_scores(score_1, score_2):
@@ -79,8 +79,7 @@ def compare_texts():
         score_1, score_2 = get_scores(graph)
         text_score = compare_scores(score_1, score_2)
         total_score += text_score
-        print "Text score is", str(total_score)
-
+        print "Text score is", str(text_score)
 
     print "Total score is:", str(total_score / number_texts)
 
