@@ -4,6 +4,8 @@ from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_word, tokenize_by_word
 from itertools import combinations
+#TODO sacar en archivo aparte
+from textrank_sentence import remove_unreacheable_nodes
 
 WINDOW_SIZE = 5
 DEBUG = True
@@ -16,6 +18,8 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
     # Creates the graph and adds the edges
     graph = get_graph(tokens.values())
     set_graph_edges(graph, tokens, split_text)
+
+    remove_unreacheable_nodes(graph)
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of lemma -> score
     scores = pagerank(graph) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
