@@ -98,14 +98,14 @@ def export_scores(score_1, score_2, text_number):
     with open(os.path.join(OUTPUT_DIRECTORY, output_filename), 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
         for no_sentence, score in sentences_1:
-            csv_writer.write([no_sentence, score, score_2[no_sentence]])
+            csv_writer.writerow([no_sentence, score, score_2[no_sentence]])
 
 
 def export_summary_scores(scores):
     with open(os.path.join(OUTPUT_DIRECTORY, SUMMARY_COMPARISON_FILENAME), 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
         for no_text in xrange(len(scores)):
-            csv_writer.write([no_text + 1, scores[no_text]])
+            csv_writer.writerow([no_text + 1, scores[no_text]])
 
 
 def compare_textrank_summaries():
