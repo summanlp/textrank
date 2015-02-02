@@ -1,7 +1,6 @@
 import sys
 import os
 from copy import deepcopy
-from pprint import PrettyPrinter
 import csv
 
 # TODO: fix imports.
@@ -16,6 +15,9 @@ from textrank.pagerank_weighted import pagerank_weighted, pagerank_weighted_scip
 # Uses the summa database texts.
 TEXT_FILENAME_FORMAT = '../evaluation/datasets/summa/{text_number:02d}/text.txt'
 TEXT_NUMBERS = xrange(1, 11)
+OUTPUT_DIRECTORY = "test/output"
+SUMMARY_COMPARISON_FILENAME = "summary_comparison.csv"
+TEXTRANK_COMPARISON_FILENAME_FORMAT = "algorithm_comp_{text_number:02d}.csv"
 
 
 def get_graph_for_text(text_filename):
@@ -78,7 +80,7 @@ def compare_scores_for_top_sentences(score_1, score_2):
     return score / len(sentences_1)
 
 
-def export_scores(score_1, score_2):
+def export_scores(score_1, score_2, text_number):
     """Returns the difference between the textrank method and the scipy approach."""
     sentences_1 = get_sorted_sentences_by_score(score_1)
 
@@ -91,18 +93,25 @@ def export_scores(score_1, score_2):
         # Replaces the second set.
         score_2[no_sentence] = score_2.pop(old_score[0])
 
-    sentences_2 = get_sorted_sentences_by_score(score_2)
+    # Exports the results.
+    output_filename = TEXTRANK_COMPARISON_FILENAME_FORMAT.format(text_number=text_number)
+    with open(os.path.join(OUTPUT_DIRECTORY, output_filename), 'w') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        for no_sentence, score in sentences_1:
+            csv_writer.write([no_sentence, score, score_2[no_sentence]])
 
-    pp = PrettyPrinter(indent=4)
-    pp.pprint(sentences_1)
-    pp.pprint(sentences_2)
+
+def export_summary_scores(scores):
+    with open(os.path.join(OUTPUT_DIRECTORY, SUMMARY_COMPARISON_FILENAME), 'w') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        for no_text in xrange(len(scores)):
+            csv_writer.write([no_text + 1, scores[no_text]])
 
 
 def compare_textrank_summaries():
     """Compares the scipy algorithm by assigning a score based on how many
     sentences of the final summary are also present in the iterative implementation."""
-    number_texts = len(TEXT_NUMBERS)
-    total_score = 0.0
+    scores = []
 
     for text_number in TEXT_NUMBERS:
         text_filename = TEXT_FILENAME_FORMAT.format(text_number=text_number)
@@ -110,10 +119,11 @@ def compare_textrank_summaries():
         graph = get_graph_for_text(text_filename)
         score_1, score_2 = get_scores(graph)
         text_score = compare_scores_for_top_sentences(score_1, score_2)
-        total_score += text_score
+        scores.append(text_score)
         print "Text score is", str(text_score)
 
-    print "Total score is:", str(total_score / number_texts)
+    export_summary_scores(scores)
+    print "Total score is:", str(sum(scores) / float(len(scores)))
 
 
 def compare_textrank_results():
@@ -124,8 +134,13 @@ def compare_textrank_results():
         print "Processing file", text_filename
         graph = get_graph_for_text(text_filename)
         score_1, score_2 = get_scores(graph)
-        export_scores(score_1, score_2)
+        export_scores(score_1, score_2, text_number)
 
 
+def create_output_directory():
+    if not os.path.exists(OUTPUT_DIRECTORY):
+        os.makedirs(OUTPUT_DIRECTORY)
+
+create_output_directory()
 compare_textrank_results()
-#compare_textrank_summaries()
+compare_textrank_summaries()
