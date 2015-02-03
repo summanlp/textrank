@@ -2,6 +2,8 @@
 from scipy.sparse import csr_matrix
 from scipy.linalg import eig
 from math import fabs
+import pdb
+
 # Methods for PageRank
 PAGERANK_MANUAL = 0
 PAGERANK_SCIPY = 1

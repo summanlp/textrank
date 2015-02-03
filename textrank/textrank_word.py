@@ -1,5 +1,6 @@
 
 from pygraph.classes.graph import graph as pygraph
+from pygraph.mixins.labeling import labeling
 from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_word, tokenize_by_word
@@ -8,6 +9,7 @@ from Queue import Queue
 #TODO sacar en archivo aparte
 from textrank_sentence import remove_unreacheable_nodes
 
+labeling.DEFAULT_WEIGHT = 0
 WINDOW_SIZE = 5
 DEBUG = True
 
@@ -59,8 +61,10 @@ def set_graph_edge(graph, tokens, word_a, word_b):
     if word_a in tokens and word_b in tokens:
         lemma_a = tokens[word_a]
         lemma_b = tokens[word_b]
-        if not graph.has_edge((lemma_a, lemma_b)):
-            graph.add_edge((lemma_a,lemma_b))
+        edge = (lemma_a, lemma_b)
+
+        if not graph.has_edge(edge):
+            graph.add_edge(edge)
 
 
 def process_text(graph, tokens, split_text):
@@ -123,3 +127,21 @@ def get_keywords(extracted_lemmas, lemma_to_word):
             keyword = "({0:.4f}) : {1}".format(score, keyword)
         keywords.append(keyword)
     return keywords
+
+
+
+
+def get_test_graph(path):
+    """Method to run test on the interpreter """
+    # TODO: delete this method when no longer needed
+    with open(path) as file:
+        text = file.read()
+
+    tokens = clean_text_by_word(text)
+    split_text = list(tokenize_by_word(text))
+
+    # Creates the graph and adds the edges
+    graph = get_graph(tokens.values())
+    set_graph_edges(graph, tokens, split_text)
+
+    return graph
