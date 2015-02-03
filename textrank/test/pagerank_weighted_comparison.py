@@ -101,6 +101,40 @@ def export_scores(score_1, score_2, text_number):
             csv_writer.writerow([no_sentence, score, score_2[no_sentence]])
 
 
+def get_score_rating(score_1, score_2):
+    """Returns the rating of the second score using the first one as reference."""
+
+    # Dictionary to store the relationship between sentences.
+    relations = {sentence: {} for sentence in score_1}
+
+    # Fills the dictionary with the reference values.
+    for key_1 in score_1:
+        for key_2 in score_1:
+            # No relationship for keys that are the same.
+            if key_1 == key_2:
+                continue
+
+            # Fills every key pair with the True value if key_1 > key_2.
+            relations[key_1][key_2] = score_1[key_1] > score_1[key_2]
+
+    # Calculates the rating.
+    hits = 0
+    for key_1 in score_2:
+        for key_2 in score_2:
+            if key_1 == key_2:
+                continue
+
+            relation = score_2[key_1] > score_2[key_2]
+            if relations[key_1][key_2] == relation:
+                hits += 1
+
+    print "hits:", str(hits)
+    print "total:", str(len(score_1))
+
+    total_relations = len(score_1) ** 2
+    return hits / float(total_relations)
+
+
 def export_summary_scores(scores):
     with open(os.path.join(OUTPUT_DIRECTORY, SUMMARY_COMPARISON_FILENAME), 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
@@ -116,10 +150,12 @@ def compare_textrank_summaries():
     for text_number in TEXT_NUMBERS:
         text_filename = TEXT_FILENAME_FORMAT.format(text_number=text_number)
         print "Processing file", text_filename
+
         graph = get_graph_for_text(text_filename)
         score_1, score_2 = get_scores(graph)
         text_score = compare_scores_for_top_sentences(score_1, score_2)
         scores.append(text_score)
+
         print "Text score is", str(text_score)
 
     export_summary_scores(scores)
@@ -129,13 +165,21 @@ def compare_textrank_summaries():
 def compare_textrank_results():
     """Compares both implementation taking into account the final scores assigned
     by the algorithms."""
+
+    ratings = []
+
     for text_number in TEXT_NUMBERS:
         text_filename = TEXT_FILENAME_FORMAT.format(text_number=text_number)
         print "Processing file", text_filename
+
         graph = get_graph_for_text(text_filename)
         score_1, score_2 = get_scores(graph)
         export_scores(score_1, score_2, text_number)
 
+        rating = get_score_rating(score_1, score_2, text_number)
+        ratings.append(rating)
+        print "Textrank rating is", str(rating)
+    
 
 def create_output_directory():
     if not os.path.exists(OUTPUT_DIRECTORY):
