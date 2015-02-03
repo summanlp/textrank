@@ -82,7 +82,10 @@ def compare_scores_for_top_sentences(score_1, score_2):
 
 def export_scores(score_1, score_2, text_number):
     """Returns the difference between the textrank method and the scipy approach."""
+    # sentences_1 is a list: the highest textrank score will be in position number 0 and so on.
     sentences_1 = get_sorted_sentences_by_score(score_1)
+    # sentences_2 is a dictionary so that all sentences can be fetched quickly.
+    sentences_2 = {}
 
     # For better visibility, changes the sentence texts to numbers.
     for no_sentence in xrange(len(sentences_1)):
@@ -91,14 +94,14 @@ def export_scores(score_1, score_2, text_number):
         sentences_1[no_sentence] = (no_sentence, old_score[1])
 
         # Replaces the second set.
-        score_2[no_sentence] = score_2.pop(old_score[0])
+        sentences_2[no_sentence] = score_2[old_score[0]]
 
     # Exports the results.
     output_filename = TEXTRANK_COMPARISON_FILENAME_FORMAT.format(text_number=text_number)
     with open(os.path.join(OUTPUT_DIRECTORY, output_filename), 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
         for no_sentence, score in sentences_1:
-            csv_writer.writerow([no_sentence, score, score_2[no_sentence]])
+            csv_writer.writerow([no_sentence, score, sentences_2[no_sentence]])
 
 
 def get_score_rating(score_1, score_2):
@@ -128,10 +131,9 @@ def get_score_rating(score_1, score_2):
             if relations[key_1][key_2] == relation:
                 hits += 1
 
-    print "hits:", str(hits)
-    print "total:", str(len(score_1))
+    
 
-    total_relations = len(score_1) ** 2
+    total_relations = len(score_1) ** 2 - len(score_1)  # n^2 - n different relationships.
     return hits / float(total_relations)
 
 
@@ -176,10 +178,10 @@ def compare_textrank_results():
         score_1, score_2 = get_scores(graph)
         export_scores(score_1, score_2, text_number)
 
-        rating = get_score_rating(score_1, score_2, text_number)
+        rating = get_score_rating(score_1, score_2)
         ratings.append(rating)
         print "Textrank rating is", str(rating)
-    
+
 
 def create_output_directory():
     if not os.path.exists(OUTPUT_DIRECTORY):
@@ -187,4 +189,4 @@ def create_output_directory():
 
 create_output_directory()
 compare_textrank_results()
-compare_textrank_summaries()
+#compare_textrank_summaries()
