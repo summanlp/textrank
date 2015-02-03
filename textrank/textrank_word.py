@@ -4,6 +4,7 @@ from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_word, tokenize_by_word
 from itertools import combinations
+from Queue import Queue
 #TODO sacar en archivo aparte
 from textrank_sentence import remove_unreacheable_nodes
 
@@ -30,6 +31,7 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
 
     return "\n".join(keywords)
 
+
 def get_graph(lemmas):
     graph = pygraph()
     for lemma in lemmas:
@@ -39,33 +41,61 @@ def get_graph(lemmas):
 
 
 def set_graph_edges(graph, tokens, split_text):
-    #TODO: cambiar la sliding window por una cola, asi cuando la ventana se mueve uno a la derecha, no compara
-    #TODO:     nuevamente los primeros n - 1 elementos de la ventana
-    windows = get_windows(split_text)
-    for window in windows:
-        set_edges_from_window(graph, tokens, window)
+    process_first_window(graph, tokens, split_text)
+    process_text(graph, tokens, split_text)
 
 
-def set_edges_from_window(graph, tokens, window):
-    for word_a, word_b in combinations(window, 2):
-        if word_a in tokens and word_b in tokens:
-            lemma_a = tokens[word_a]
-            lemma_b = tokens[word_b]
-            if not graph.has_edge((lemma_a,lemma_b)):
-                graph.add_edge((lemma_a,lemma_b))
+def process_first_window(graph, tokens, split_text):
+    first_window = get_first_window(split_text)
+    for word_a, word_b in combinations(first_window, 2):
+        set_graph_edge(graph, tokens, word_a, word_b)
 
 
-def get_windows(split_text):
-    """return a sliding window generator"""
-    #TODO: Aca se puede cambiar, para que la ventana se "calcule" respecto de las palabras ya lemmatizadas
-    return sliding_windows(split_text, WINDOW_SIZE)
+def get_first_window(split_text):
+    return split_text[:WINDOW_SIZE]
 
-def sliding_windows(seq, n=2):
-    """Returns a sliding window (of width n) over data from the iterable
-    s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ..."""
-    iterations = len(seq) - n + 1
+
+def set_graph_edge(graph, tokens, word_a, word_b):
+    if word_a in tokens and word_b in tokens:
+        lemma_a = tokens[word_a]
+        lemma_b = tokens[word_b]
+        if not graph.has_edge((lemma_a, lemma_b)):
+            graph.add_edge((lemma_a,lemma_b))
+
+
+def process_text(graph, tokens, split_text):
+    queue = init_queue(split_text)
+    for i in xrange(WINDOW_SIZE, len(split_text)):
+        word = split_text[i]
+        process_word(graph, tokens, queue, word)
+        update_queue(queue, word)
+
+
+def init_queue(split_text):
+    queue = Queue()
+    first_window = get_first_window(split_text)
+    for word in first_window[1:]:
+        queue.put(word)
+    return queue
+
+
+def process_word(graph, tokens, queue, word):
+    for word_to_compare in queue_iterator(queue):
+        set_graph_edge(graph, tokens, word, word_to_compare)
+
+
+def queue_iterator(queue):
+    iterations = queue.qsize()
     for i in xrange(iterations):
-        yield seq[i:i+n]
+        var = queue.get()
+        yield var
+        queue.put(var)
+
+
+def update_queue(queue, word):
+    queue.get()
+    queue.put(word)
+    assert queue.qsize() == (WINDOW_SIZE - 1)
 
 
 def extract_tokens(lemmas, scores, summary_length):
@@ -83,7 +113,6 @@ def lemmas_to_words(tokens):
         else:
             words.append(key)
     return lemma_to_word
-
 
 
 def get_keywords(extracted_lemmas, lemma_to_word):
