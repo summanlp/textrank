@@ -1,6 +1,5 @@
 
 from pygraph.classes.graph import graph as pygraph
-from pygraph.mixins.labeling import labeling
 from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_word, tokenize_by_word
@@ -9,9 +8,12 @@ from Queue import Queue
 #TODO sacar en archivo aparte
 from textrank_sentence import remove_unreacheable_nodes
 
-labeling.DEFAULT_WEIGHT = 0
-WINDOW_SIZE = 5
+import pdb
+
+pygraph.DEFAULT_WEIGHT = 0
+WINDOW_SIZE = 2
 DEBUG = True
+
 
 def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
     # Gets a dict of word -> lemma
@@ -31,7 +33,9 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
 
     keywords = get_keywords(extracted_lemmas, lemmas_to_words(tokens))
 
-    return "\n".join(keywords)
+    combined_keywords = get_combined_keywords(keywords, split_text)
+
+    return "\n".join(combined_keywords)
 
 
 def get_graph(lemmas):
@@ -122,12 +126,56 @@ def lemmas_to_words(tokens):
 def get_keywords(extracted_lemmas, lemma_to_word):
     keywords = []
     for score, lemma in extracted_lemmas:
-        keyword = lemma_to_word[lemma]
+        keyword = lemma_to_word[lemma][0]
         if DEBUG:
-            keyword = "({0:.4f}) : {1}".format(score, keyword)
+            keyword = "({0:.4f}) : {1}".format(score, lemma_to_word[lemma])
         keywords.append(keyword)
     return keywords
 
+
+
+def get_combined_keywords(keywords, split_text):
+    if DEBUG:
+        print "WARN: Can't combine keywords in DEBUG mode"
+        return keywords
+    keywords_indexes = get_keywords_index(keywords, split_text)
+    return combine_keywords(keywords, keywords_indexes)
+
+
+def combine_keywords(keywords, keywords_indexes):
+    INVALID_INDEX = -2
+    result = []
+    for keyword in keywords:
+        keyword_index = keywords_indexes.get(keyword, INVALID_INDEX)
+        if keyword_index == INVALID_INDEX: continue
+
+        word_appended = False
+        for other_keyword in keywords:
+            other_keyword_index = keywords_indexes.get(other_keyword, INVALID_INDEX)
+            if other_keyword_index == INVALID_INDEX: continue
+            if keyword_index - 1 == other_keyword_index or keyword_index + 1 == other_keyword_index:
+                if other_keyword_index == keyword_index + 1:
+                    result.append(keyword + " " + other_keyword)
+                elif other_keyword_index + 1 == keyword_index:
+                    result.append(other_keyword + " " + keyword)
+                keywords_indexes[other_keyword] = INVALID_INDEX
+                word_appended = True
+
+        if not word_appended:
+            result.append(keyword)
+
+    return result
+
+
+def get_keywords_index(keywords, split_text):
+    indexes = {}
+    for keyword in keywords:
+        try:
+            index = split_text.index(keyword)
+            indexes[keyword] = index
+        except ValueError:
+            continue
+    return indexes
 
 
 
