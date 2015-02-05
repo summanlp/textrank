@@ -1,12 +1,12 @@
 
-from pygraph.classes.digraph import digraph as pydigraph
 from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_sentences
+from commons import get_graph, remove_unreacheable_nodes
 from math import log10
 from textrank_runtime_error import TextrankRuntimeError
 
-DEBUG = False
+DEBUG = True
 
 
 def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
@@ -60,32 +60,14 @@ def extract_tokens(sentences, scores, summary_length):
     return {sentences[i]: scores[sentences[i]] for i in range(int(length))}
 
 
-def get_graph(sentences):
-    graph = pydigraph()
-
-    # Creates the graph.
-    for sentence in sentences:
-        graph.add_node(sentence)
-
-    return graph
-
-
 def set_graph_edge_weights(graph):
     for sentence_1 in graph.nodes():
         for sentence_2 in graph.nodes():
-            if sentence_1 == sentence_2:
-                continue
 
-            edge_1 = (sentence_1, sentence_2)
-            edge_2 = (sentence_2, sentence_1)
-
-            if graph.has_edge(edge_1) or graph.has_edge(edge_2):
-                continue
-
-            similarity = get_similarity(sentence_1, sentence_2)
-
-            graph.add_edge(edge_1, similarity)
-            graph.add_edge(edge_2, similarity)
+            edge = (sentence_1, sentence_2)
+            if sentence_1 != sentence_2 and not graph.has_edge(edge):
+                similarity = get_similarity(sentence_1, sentence_2)
+                graph.add_edge(edge, similarity)
 
 
 def get_similarity(s1, s2):
@@ -107,13 +89,6 @@ def get_similarity(s1, s2):
 def get_common_word_count(words_sentence_one, words_sentence_two):
     words_set = set(words_sentence_two)
     return sum(1 for w in words_sentence_one if w in words_set)
-
-
-def remove_unreacheable_nodes(graph):
-    for node in graph.nodes():
-        if sum(graph.edge_weight((node, other)) for other in graph.neighbors(node)) == 0:
-            graph.del_node(node)
-
 
 
 def get_test_graph(path):

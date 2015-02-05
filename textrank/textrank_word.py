@@ -5,12 +5,12 @@ from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERAN
 from textcleaner import clean_text_by_word, tokenize_by_word
 from itertools import combinations
 from Queue import Queue
-#TODO sacar en archivo aparte
-from textrank_sentence import remove_unreacheable_nodes
+from commons import get_graph, remove_unreacheable_nodes
 
 import pdb
 
 pygraph.DEFAULT_WEIGHT = 0
+PAGERANK_INITIAL_VALUE = 1
 WINDOW_SIZE = 2
 DEBUG = True
 
@@ -27,7 +27,7 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
     remove_unreacheable_nodes(graph)
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of lemma -> score
-    scores = pagerank(graph) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
+    scores = pagerank(graph, PAGERANK_INITIAL_VALUE) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
 
     extracted_lemmas = extract_tokens(graph.nodes(), scores, summary_length)
 
@@ -38,12 +38,7 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
     return "\n".join(combined_keywords)
 
 
-def get_graph(lemmas):
-    graph = pygraph()
-    for lemma in lemmas:
-        if not graph.has_node(lemma):
-            graph.add_node(lemma)
-    return graph
+
 
 
 def set_graph_edges(graph, tokens, split_text):

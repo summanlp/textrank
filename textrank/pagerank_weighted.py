@@ -10,16 +10,20 @@ PAGERANK_SCIPY = 1
 
 CONVERGENCE_THRESHOLD = 0.0001
 
-def pagerank_weighted(graph, damping=0.85):
-    scores = dict.fromkeys(graph.nodes(), 1.0 / len(graph.nodes()))
 
-    #iteration_quantity = 0
+
+def pagerank_weighted(graph, initial_value=None, damping=0.85):
+    """Calculates PageRank for an undirected graph"""
+    if initial_value == None: initial_value = 1.0 / len(graph.nodes())
+    scores = dict.fromkeys(graph.nodes(), initial_value)
+
+    iteration_quantity = 0
     for iteration_number in xrange(100):
-    #    iteration_quantity += 1
+        iteration_quantity += 1
         convergence_achieved = 0
         for i in graph.nodes():
             rank = 1 - damping
-            for j in graph.incidents(i):
+            for j in graph.neighbors(i):
                 neighbors_sum = sum(graph.edge_weight((j, k)) for k in graph.neighbors(j))
                 rank += damping * scores[j] * graph.edge_weight((j, i)) / neighbors_sum
 
@@ -31,8 +35,8 @@ def pagerank_weighted(graph, damping=0.85):
         if convergence_achieved == len(graph.nodes()):
             break
 
-        # print "pagerank iteration %d ended. achieved %f convergence " % (iteration_number, convergence_achieved / float(len(graph.nodes())))
-    # print "Cantidad de iteraciones:", iteration_quantity
+        print "pagerank iteration %d ended. achieved %f convergence " % (iteration_number, convergence_achieved / float(len(graph.nodes())))
+    print "Cantidad de iteraciones:", iteration_quantity
     return scores
 
 
