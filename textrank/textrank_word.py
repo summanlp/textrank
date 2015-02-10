@@ -9,10 +9,9 @@ from commons import get_graph, remove_unreacheable_nodes
 
 import pdb
 
-pygraph.DEFAULT_WEIGHT = 0
 PAGERANK_INITIAL_VALUE = 1
 WINDOW_SIZE = 2
-DEBUG = True
+DEBUG = False
 
 
 def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
@@ -31,13 +30,11 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
 
     extracted_lemmas = extract_tokens(graph.nodes(), scores, summary_length)
 
-    keywords = get_keywords(extracted_lemmas, lemmas_to_words(tokens))
+    keywords = get_keywords_with_score(extracted_lemmas, lemmas_to_words(tokens))
 
     combined_keywords = get_combined_keywords(keywords, split_text)
 
-    return "\n".join(combined_keywords)
-
-
+    return format_results(keywords, combined_keywords)
 
 
 
@@ -118,60 +115,53 @@ def lemmas_to_words(tokens):
     return lemma_to_word
 
 
-def get_keywords(extracted_lemmas, lemma_to_word):
-    keywords = []
+def get_keywords_with_score(extracted_lemmas, lemma_to_word):
+    """
+    :param extracted_lemmas:list of tuples
+    :param lemma_to_word: dict of {lemma:list of words}
+    :return: dict of {keyword:score}
+    """
+    keywords = {}
     for score, lemma in extracted_lemmas:
-        keyword = lemma_to_word[lemma][0]
-        if DEBUG:
-            keyword = "({0:.4f}) : {1}".format(score, lemma_to_word[lemma])
-        keywords.append(keyword)
+        keyword_list = lemma_to_word[lemma]
+        for keyword in keyword_list:
+            keywords[keyword] = score
     return keywords
-
+    # return {keyword:score for score, lemma in extracted_lemmas for keyword in lemma_to_word[lemma]}
+    # if you dare
 
 
 def get_combined_keywords(keywords, split_text):
-    if DEBUG:
-        print "WARN: Can't combine keywords in DEBUG mode"
-        return keywords
-    keywords_indexes = get_keywords_index(keywords, split_text)
-    return combine_keywords(keywords, keywords_indexes)
-
-
-def combine_keywords(keywords, keywords_indexes):
-    INVALID_INDEX = -2
+    """
+    :param keywords:dict of keywords:scores
+    :param split_text: list of strings
+    :return: combined_keywords:list
+    """
     result = []
-    for keyword in keywords:
-        keyword_index = keywords_indexes.get(keyword, INVALID_INDEX)
-        if keyword_index == INVALID_INDEX: continue
-
-        word_appended = False
-        for other_keyword in keywords:
-            other_keyword_index = keywords_indexes.get(other_keyword, INVALID_INDEX)
-            if other_keyword_index == INVALID_INDEX: continue
-            if keyword_index - 1 == other_keyword_index or keyword_index + 1 == other_keyword_index:
-                if other_keyword_index == keyword_index + 1:
-                    result.append(keyword + " " + other_keyword)
-                elif other_keyword_index + 1 == keyword_index:
-                    result.append(other_keyword + " " + keyword)
-                keywords_indexes[other_keyword] = INVALID_INDEX
-                word_appended = True
-
-        if not word_appended:
-            result.append(keyword)
-
+    keywords = keywords.copy()
+    len_text = len(split_text)
+    for i in xrange(len_text):
+        word = split_text[i]
+        if word in keywords:
+            combined_word = [word]
+            if i + 1 == len_text: result.append(word) # appends last word if keyword and doesn't iterate
+            for j in xrange(i + 1, len_text):
+                other_word = split_text[j]
+                if other_word in keywords:
+                    combined_word.append(other_word)
+                else:
+                    for keyword in combined_word: keywords.pop(keyword)
+                    result.append(" ".join(combined_word))
+                    break
     return result
 
 
-def get_keywords_index(keywords, split_text):
-    indexes = {}
-    for keyword in keywords:
-        try:
-            index = split_text.index(keyword)
-            indexes[keyword] = index
-        except ValueError:
-            continue
-    return indexes
+def format_results(keywords, combined_keywords):
+    combined_keywords.sort(key=lambda w: keywords[w.split()[0]], reverse=True)
+    if DEBUG:
+        combined_keywords = ["({0:.4f}) : {1}".format(keywords[word.split()[0]], word) for word in combined_keywords]
 
+    return "\n".join(combined_keywords)
 
 
 def get_test_graph(path):

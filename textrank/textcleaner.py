@@ -102,10 +102,10 @@ def stem_sentence(sentence):
 
 
 def clean_text_by_word(text):
-	original_words = list(tokenize(text, to_lower=True))
+	original_words = list(tokenize(text, to_lower=True, deacc=True))
 	filtered_words = filter_words(original_words)
 	return {item[0]: item[1] for item in zip(original_words, filtered_words) if item[1]}
 
 
 def tokenize_by_word(text):
-    return tokenize(text, to_lower=True)
+    return tokenize(text, to_lower=True, deacc=True)
