@@ -6,7 +6,7 @@ from commons import get_graph, remove_unreacheable_nodes
 from math import log10
 from textrank_runtime_error import TextrankRuntimeError
 
-DEBUG = True
+DEBUG = False
 
 
 def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
