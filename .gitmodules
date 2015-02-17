@@ -1,0 +1,3 @@
+[submodule "evaluation/pyrouge"]
+	path = evaluation/pyrouge
+	url = https://github.com/summanlp/pyrouge.git
