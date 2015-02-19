@@ -22,12 +22,12 @@ from textcleaner import get_sentences
 SUMMARY_LENGHT = 0.2
 DATASET = 'summa'
 OPTIMUM_FILENAME_FORMAT = 'results/opt_{text_number:02d}.txt'
-TEMPDIR = mkdtemp()
+TEMPDIR = None
 CONFIG_FILENAME = "rouge_conf.xml"
 SYSTEM_DIR = "system"
 MODEL_DIR = "model"
 
-rouge_instance = pyrouge.Rouge155(ROUGE_PATH, verbose=False, rouge_args=' '.join(ROUGE_OPTIONS))
+rouge_instance = pyrouge.Rouge155(ROUGE_PATH, verbose=True, rouge_args=' '.join(ROUGE_OPTIONS))
 
 
 def get_sentences_from_text(text_number):
@@ -59,7 +59,8 @@ def get_score_for_summary(summary):
     return rouge_instance.output_to_dict(output)
 
 
-def create_temporary_directories():
+def create_temporary_directories(text_number):
+    # Creates the temp directories to hold the rouge files.
     new_system_dir = os.path.join(TEMPDIR, SYSTEM_DIR)
     os.mkdir(new_system_dir)
     new_model_dir = os.path.join(TEMPDIR, MODEL_DIR)
@@ -69,8 +70,9 @@ def create_temporary_directories():
     with open(os.path.join(TEMPDIR, MODEL_DIR, MODEL_FILENAME), 'w') as fp:
         fp.write("")
 
-    with open(os.path.join(TEMPDIR, SYSTEM_DIR, "summ1.txt"), 'w') as fp:
-        fp.write("")
+    if text_number != 8:
+        with open(os.path.join(TEMPDIR, SYSTEM_DIR, "summ1.txt"), 'w') as fp:
+            fp.write("")
 
     with open(os.path.join(TEMPDIR, SYSTEM_DIR, "summ2.txt"), 'w') as fp:
         fp.write("")
@@ -80,7 +82,7 @@ def get_optimum_summary(text_number):
     """ Creates the best possible summary of a set length trying
     all posible combinations.
     """
-    create_temporary_directories()
+    create_temporary_directories(text_number)
     create_system_configuration_files(text_number)
     create_rouge_configuration_file()
 
@@ -91,7 +93,6 @@ def get_optimum_summary(text_number):
     sentences = get_sentences_from_text(text_number)
     summary_lenght = int(len(sentences) * SUMMARY_LENGHT)
 
-    count = 0
     # Creates a summary for each combination of sentences.
     for combination in combinations(sentences, summary_lenght):
         summary = "\n".join(combination)
@@ -103,7 +104,8 @@ def get_optimum_summary(text_number):
         if score > best_score:
             best_score = score
             best_summary = summary
-            print best_score
+
+        break
 
     # The optimum summary is written to hard disk.
     output_filename = OPTIMUM_FILENAME_FORMAT.format(text_number=text_number)
@@ -111,4 +113,6 @@ def get_optimum_summary(text_number):
         fp.write(best_summary)
 
 
-get_optimum_summary(1)
+for text_number in xrange(1, 11):
+    TEMPDIR = mkdtemp()
+    get_optimum_summary(text_number)
