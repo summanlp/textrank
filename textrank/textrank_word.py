@@ -1,5 +1,4 @@
 
-from pygraph.classes.graph import graph as pygraph
 from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_word, tokenize_by_word
@@ -35,7 +34,6 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
     combined_keywords = get_combined_keywords(keywords, split_text)
 
     return format_results(keywords, combined_keywords)
-
 
 
 def set_graph_edges(graph, tokens, split_text):
@@ -144,7 +142,7 @@ def get_combined_keywords(keywords, split_text):
         word = split_text[i]
         if word in keywords:
             combined_word = [word]
-            if i + 1 == len_text: result.append(word) # appends last word if keyword and doesn't iterate
+            if i + 1 == len_text: result.append(word)   # appends last word if keyword and doesn't iterate
             for j in xrange(i + 1, len_text):
                 other_word = split_text[j]
                 if other_word in keywords:

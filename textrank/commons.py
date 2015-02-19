@@ -1,7 +1,5 @@
 
-from pygraph.classes.graph import graph as pygraph
-
-pygraph.DEFAULT_WEIGHT = 0
+from graph import PygraphWrapper as pygraph
 
 def get_graph(sequence):
     graph = pygraph()
