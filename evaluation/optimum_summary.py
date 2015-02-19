@@ -27,7 +27,7 @@ CONFIG_FILENAME = "rouge_conf.xml"
 SYSTEM_DIR = "system"
 MODEL_DIR = "model"
 
-rouge_instance = pyrouge.Rouge155(ROUGE_PATH, verbose=True, rouge_args=' '.join(ROUGE_OPTIONS))
+rouge_instance = pyrouge.Rouge155(ROUGE_PATH, verbose=False, rouge_args=' '.join(ROUGE_OPTIONS))
 
 
 def get_sentences_from_text(text_number):
@@ -98,18 +98,12 @@ def get_optimum_summary(text_number):
         result = get_score_for_summary(summary)
 
         # We consider the average of several scores.
-        score = (result['rouge_1_f_score'] + result['rouge_2_f_score'] + result['rouge_su*_f_score']) / 3
+        score = (result['rouge_1_f_score'] + result['rouge_2_f_score'] + result['rouge_su4_f_score']) / 3
 
         if score > best_score:
             best_score = score
             best_summary = summary
-
-        count += 1
-
-        print "summary with score", score, "best score so far:", best_score
-
-        if count % 100 == 0:
-            return
+            print best_score
 
     # The optimum summary is written to hard disk.
     output_filename = OPTIMUM_FILENAME_FORMAT.format(text_number=text_number)
