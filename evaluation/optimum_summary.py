@@ -51,7 +51,7 @@ def get_score_for_summary(summary):
 
     rouge_instance.write_config_static(os.path.join(TEMPDIR, SYSTEM_DIR), GOLD_REFERENCES_PATTERN,
                                 os.path.join(TEMPDIR, MODEL_DIR), MODEL_FILENAME,
-                                os.path.join(TEMPDIR, CONFIG_FILENAME))
+                                os.path.join(TEMPDIR, CONFIG_FILENAME), 1)
 
     output = rouge_instance.evaluate_static(ROUGE_PATH, os.path.join(TEMPDIR, CONFIG_FILENAME), ROUGE_OPTIONS)
     return rouge_instance.output_to_dict(output)
@@ -83,10 +83,6 @@ def get_optimum_summary(text_number):
         summary = "\n".join(combination)
         result = get_score_for_summary(summary)
 
-        import pprint
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint(result)
-
         # We consider the average of several scores.
         score = (result['rouge_1_f_score'] + result['rouge_2_f_score'] + result['rouge_su*_f_score']) / 3
 
@@ -95,8 +91,6 @@ def get_optimum_summary(text_number):
             best_summary = summary
 
         print "summary with score", score, ". best score so far:", best_score
-
-        return
 
     # The optimum summary is written to hard disk.
     output_filename = OPTIMUM_FILENAME_FORMAT.format(text_number=text_number)
