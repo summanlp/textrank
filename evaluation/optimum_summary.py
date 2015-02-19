@@ -27,7 +27,7 @@ CONFIG_FILENAME = "rouge_conf.xml"
 SYSTEM_DIR = "system"
 MODEL_DIR = "model"
 
-rouge_instance = pyrouge.Rouge155(ROUGE_PATH, ' '.join(ROUGE_OPTIONS))
+rouge_instance = pyrouge.Rouge155(ROUGE_PATH, verbose=True, rouge_args=' '.join(ROUGE_OPTIONS))
 
 
 def get_sentences_from_text(text_number):
@@ -42,16 +42,18 @@ def create_system_configuration_files(text_number):
     rouge_instance.convert_summaries_to_rouge_format(gold_references_dir, os.path.join(TEMPDIR, SYSTEM_DIR))
 
 
+def create_rouge_configuration_file():
+    rouge_instance.write_config_static(os.path.join(TEMPDIR, SYSTEM_DIR), GOLD_REFERENCES_PATTERN,
+                                os.path.join(TEMPDIR, MODEL_DIR), MODEL_FILENAME,
+                                os.path.join(TEMPDIR, CONFIG_FILENAME), 1)
+
+
 def get_score_for_summary(summary):
     with open(os.path.join(MODEL_DIRECTORY, MODEL_FILENAME), 'w') as fp:
         fp.write(summary)
 
-    # Creates the configuration files for the model summaries.
+    # Creates the rouge file for the model summaries.
     rouge_instance.convert_summaries_to_rouge_format(MODEL_DIRECTORY, os.path.join(TEMPDIR, MODEL_DIR))
-
-    rouge_instance.write_config_static(os.path.join(TEMPDIR, SYSTEM_DIR), GOLD_REFERENCES_PATTERN,
-                                os.path.join(TEMPDIR, MODEL_DIR), MODEL_FILENAME,
-                                os.path.join(TEMPDIR, CONFIG_FILENAME), 1)
 
     output = rouge_instance.evaluate_static(ROUGE_PATH, os.path.join(TEMPDIR, CONFIG_FILENAME), ROUGE_OPTIONS)
     return rouge_instance.output_to_dict(output)
@@ -63,6 +65,16 @@ def create_temporary_directories():
     new_model_dir = os.path.join(TEMPDIR, MODEL_DIR)
     os.mkdir(new_model_dir)
 
+    # Creates blank temporary files so that the configuration file can be created.
+    with open(os.path.join(TEMPDIR, MODEL_DIR, MODEL_FILENAME), 'w') as fp:
+        fp.write("")
+
+    with open(os.path.join(TEMPDIR, SYSTEM_DIR, "summ1.txt"), 'w') as fp:
+        fp.write("")
+
+    with open(os.path.join(TEMPDIR, SYSTEM_DIR, "summ2.txt"), 'w') as fp:
+        fp.write("")
+
 
 def get_optimum_summary(text_number):
     """ Creates the best possible summary of a set length trying
@@ -70,6 +82,7 @@ def get_optimum_summary(text_number):
     """
     create_temporary_directories()
     create_system_configuration_files(text_number)
+    create_rouge_configuration_file()
 
     # Temporary stores the best results so far.
     best_summary = None
@@ -78,6 +91,7 @@ def get_optimum_summary(text_number):
     sentences = get_sentences_from_text(text_number)
     summary_lenght = int(len(sentences) * SUMMARY_LENGHT)
 
+    count = 0
     # Creates a summary for each combination of sentences.
     for combination in combinations(sentences, summary_lenght):
         summary = "\n".join(combination)
@@ -90,7 +104,12 @@ def get_optimum_summary(text_number):
             best_score = score
             best_summary = summary
 
-        print "summary with score", score, ". best score so far:", best_score
+        count += 1
+
+        print "summary with score", score, "best score so far:", best_score
+
+        if count % 100 == 0:
+            return
 
     # The optimum summary is written to hard disk.
     output_filename = OPTIMUM_FILENAME_FORMAT.format(text_number=text_number)
