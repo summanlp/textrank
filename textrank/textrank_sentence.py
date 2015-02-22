@@ -5,6 +5,7 @@ from textcleaner import clean_text_by_sentences
 from commons import get_graph, remove_unreacheable_nodes
 from math import log10
 from textrank_runtime_error import TextrankRuntimeError
+from gexf_export import write_gexf
 
 DEBUG = False
 
@@ -29,6 +30,7 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     # Sorts the extracted sentences by apparition order in the original text.
     summary = sort_by_apparition(extracted_tokens, tokens, text)
 
+    write_gexf(graph, scores, path="sentences.gexf")
     return "\n".join(summary)
 
 
@@ -67,7 +69,8 @@ def set_graph_edge_weights(graph):
             edge = (sentence_1, sentence_2)
             if sentence_1 != sentence_2 and not graph.has_edge(edge):
                 similarity = get_similarity(sentence_1, sentence_2)
-                graph.add_edge(edge, similarity)
+                if similarity != 0:
+                    graph.add_edge(edge, similarity)
 
 
 def get_similarity(s1, s2):

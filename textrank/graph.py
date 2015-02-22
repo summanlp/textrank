@@ -20,6 +20,16 @@ class IGraph:
 
 
     @abstractmethod
+    def edges(self):
+        """
+        Return all edges in the graph.
+
+        @rtype:  list
+        @return: List of all edges in the graph.
+        """
+        pass
+
+    @abstractmethod
     def neighbors(self, node):
         """
         Return all nodes that are directly accessible from given node.
@@ -151,6 +161,9 @@ class PygraphWrapper(IGraph):
 
     def nodes(self):
         return self.graph.nodes()
+
+    def edges(self):
+        return self.graph.edges()
 
     def del_node(self, node):
         return self.graph.del_node(node)

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns:ns0="http://www.gexf.net/1.1draft/viz" version="1.1" xmlns="http://www.gexf.net/1.1draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema-instance">
+  <graph defaultedgetype="undirected" mode="static">
+    <nodes>
+      <node id="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" label="nation weather">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.35209090734" />
+        <viz:position x="502.97" y="160.26" z="None" />
+      </node>
+      <node id="debbi reach minim hurrican strength briefli hit mexican coast month" label="debbi reach">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.124822483072" />
+        <viz:position x="429.66" y="218.97" z="None" />
+      </node>
+      <node id="san juan north coast heavi rain gust saturday subsid night" label="san juan">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.247165869707" />
+        <viz:position x="473.73" y="172.36" z="None" />
+      </node>
+      <node id="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" label="tropic storm">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.254217261634" />
+        <viz:position x="522.84" y="180.12" z="None" />
+      </node>
+      <node id="cabral said resid provinc barahona close follow gilbert movement" label="cabral said">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.181104409864" />
+        <viz:position x="473.74" y="85.271" z="None" />
+      </node>
+      <node id="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" label="saturday hurrican">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.244096158977" />
+        <viz:position x="497.31" y="214.54" z="None" />
+      </node>
+      <node id="santo domingo dominican republ ap" label="santo domingo">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.138439699772" />
+        <viz:position x="512.88" y="48.399" z="None" />
+      </node>
+      <node id="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" label="hurricain gilbert">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.385179348697" />
+        <viz:position x="490.06" y="132.56" z="None" />
+      </node>
+      <node id="storm approach southeast sustain wind mph gust mph" label="storm approach">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.207320171256" />
+        <viz:position x="450.87" y="195.7" z="None" />
+      </node>
+      <node id="estim peopl live provinc includ citi barahona mile west santo domingo" label="estim peopl">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.14174381231" />
+        <viz:position x="477.97" y="18.0" z="None" />
+      </node>
+      <node id="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" label="nation hurricain">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.359207385256" />
+        <viz:position x="520.0" y="105.15" z="None" />
+      </node>
+      <node id="report casualti" label="report casualti">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0480949350936" />
+        <viz:position x="601.09" y="68.298" z="None" />
+      </node>
+      <node id="hurricain gilbert head dominican coast" label="hurricain gilbert">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.255479944692" />
+        <viz:position x="453.82" y="120.65" z="None" />
+      </node>
+      <node id="florenc sixth name storm atlant storm season second hurrican" label="florenc sixth">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.126185490836" />
+        <viz:position x="494.44" y="259.13" z="None" />
+      </node>
+      <node id="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" label="strong wind">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.354411708223" />
+        <viz:position x="443.44" y="155.44" z="None" />
+      </node>
+      <node id="resid return home happi littl damag mph wind sheet rain" label="resid return">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.147294459481" />
+        <viz:position x="411.32" y="120.01" z="None" />
+      </node>
+      <node id="need alarm civil defens director eugenio cabral said televis alert short midnight saturday" label="need alarm">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.137626096519" />
+        <viz:position x="558.31" y="139.17" z="None" />
+      </node>
+      <node id="weather servic issu flash flood watch puerto rico virgin island p m sunday" label="weather servic">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.175279374636" />
+        <viz:position x="563.75" y="169.58" z="None" />
+      </node>
+      <node id="associ press writer" label="associ press">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0474089177074" />
+        <viz:position x="353.49" y="164.25" z="None" />
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="san juan north coast heavi rain gust saturday subsid night" />
+      <edge id="1" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="storm approach southeast sustain wind mph gust mph" />
+      <edge id="2" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="cabral said resid provinc barahona close follow gilbert movement" />
+      <edge id="3" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" />
+      <edge id="4" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" />
+      <edge id="5" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" />
+      <edge id="6" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" />
+      <edge id="7" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="weather servic issu flash flood watch puerto rico virgin island p m sunday" />
+      <edge id="8" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="florenc sixth name storm atlant storm season second hurrican" />
+      <edge id="9" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="hurricain gilbert head dominican coast" />
+      <edge id="10" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="resid return home happi littl damag mph wind sheet rain" />
+      <edge id="11" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="need alarm civil defens director eugenio cabral said televis alert short midnight saturday" />
+      <edge id="12" source="nation weather servic san juan puerto rico said gilbert move westard mph broad area cloudi heavi weather rotat center storm" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="13" source="debbi reach minim hurrican strength briefli hit mexican coast month" target="san juan north coast heavi rain gust saturday subsid night" />
+      <edge id="14" source="debbi reach minim hurrican strength briefli hit mexican coast month" target="florenc sixth name storm atlant storm season second hurrican" />
+      <edge id="15" source="debbi reach minim hurrican strength briefli hit mexican coast month" target="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" />
+      <edge id="16" source="debbi reach minim hurrican strength briefli hit mexican coast month" target="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" />
+      <edge id="17" source="debbi reach minim hurrican strength briefli hit mexican coast month" target="hurricain gilbert head dominican coast" />
+      <edge id="18" source="debbi reach minim hurrican strength briefli hit mexican coast month" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="19" source="san juan north coast heavi rain gust saturday subsid night" target="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" />
+      <edge id="20" source="san juan north coast heavi rain gust saturday subsid night" target="resid return home happi littl damag mph wind sheet rain" />
+      <edge id="21" source="san juan north coast heavi rain gust saturday subsid night" target="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" />
+      <edge id="22" source="san juan north coast heavi rain gust saturday subsid night" target="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" />
+      <edge id="23" source="san juan north coast heavi rain gust saturday subsid night" target="storm approach southeast sustain wind mph gust mph" />
+      <edge id="24" source="san juan north coast heavi rain gust saturday subsid night" target="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" />
+      <edge id="25" source="san juan north coast heavi rain gust saturday subsid night" target="hurricain gilbert head dominican coast" />
+      <edge id="26" source="san juan north coast heavi rain gust saturday subsid night" target="need alarm civil defens director eugenio cabral said televis alert short midnight saturday" />
+      <edge id="27" source="san juan north coast heavi rain gust saturday subsid night" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="28" source="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" target="florenc sixth name storm atlant storm season second hurrican" />
+      <edge id="29" source="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" target="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" />
+      <edge id="30" source="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" target="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" />
+      <edge id="31" source="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" target="storm approach southeast sustain wind mph gust mph" />
+      <edge id="32" source="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" target="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" />
+      <edge id="33" source="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" target="cabral said resid provinc barahona close follow gilbert movement" />
+      <edge id="34" source="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" target="hurricain gilbert head dominican coast" />
+      <edge id="35" source="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" target="need alarm civil defens director eugenio cabral said televis alert short midnight saturday" />
+      <edge id="36" source="tropic storm gilbert form eastern carribean strenghten hurricain saturday night" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="37" source="cabral said resid provinc barahona close follow gilbert movement" target="need alarm civil defens director eugenio cabral said televis alert short midnight saturday" />
+      <edge id="38" source="cabral said resid provinc barahona close follow gilbert movement" target="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" />
+      <edge id="39" source="cabral said resid provinc barahona close follow gilbert movement" target="estim peopl live provinc includ citi barahona mile west santo domingo" />
+      <edge id="40" source="cabral said resid provinc barahona close follow gilbert movement" target="hurricain gilbert head dominican coast" />
+      <edge id="41" source="cabral said resid provinc barahona close follow gilbert movement" target="resid return home happi littl damag mph wind sheet rain" />
+      <edge id="42" source="cabral said resid provinc barahona close follow gilbert movement" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="43" source="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" target="florenc sixth name storm atlant storm season second hurrican" />
+      <edge id="44" source="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" target="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" />
+      <edge id="45" source="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" target="storm approach southeast sustain wind mph gust mph" />
+      <edge id="46" source="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" target="hurricain gilbert head dominican coast" />
+      <edge id="47" source="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" target="need alarm civil defens director eugenio cabral said televis alert short midnight saturday" />
+      <edge id="48" source="saturday hurrican florenc downgrad tropic storm remnant push inland u gulf coast" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="49" source="santo domingo dominican republ ap" target="hurricain gilbert head dominican coast" />
+      <edge id="50" source="santo domingo dominican republ ap" target="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" />
+      <edge id="51" source="santo domingo dominican republ ap" target="estim peopl live provinc includ citi barahona mile west santo domingo" />
+      <edge id="52" source="santo domingo dominican republ ap" target="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" />
+      <edge id="53" source="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" target="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" />
+      <edge id="54" source="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" target="storm approach southeast sustain wind mph gust mph" />
+      <edge id="55" source="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" target="weather servic issu flash flood watch puerto rico virgin island p m sunday" />
+      <edge id="56" source="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" target="hurricain gilbert head dominican coast" />
+      <edge id="57" source="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" target="resid return home happi littl damag mph wind sheet rain" />
+      <edge id="58" source="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" target="need alarm civil defens director eugenio cabral said televis alert short midnight saturday" />
+      <edge id="59" source="hurricain gilbert swept towrd dominican republ sunday civil defens alert heavili popul south coast prepar high wind heavi rain high sea" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="60" source="storm approach southeast sustain wind mph gust mph" target="florenc sixth name storm atlant storm season second hurrican" />
+      <edge id="61" source="storm approach southeast sustain wind mph gust mph" target="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" />
+      <edge id="62" source="storm approach southeast sustain wind mph gust mph" target="resid return home happi littl damag mph wind sheet rain" />
+      <edge id="63" source="storm approach southeast sustain wind mph gust mph" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="64" source="estim peopl live provinc includ citi barahona mile west santo domingo" target="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" />
+      <edge id="65" source="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" target="weather servic issu flash flood watch puerto rico virgin island p m sunday" />
+      <edge id="66" source="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" target="report casualti" />
+      <edge id="67" source="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" target="hurricain gilbert head dominican coast" />
+      <edge id="68" source="nation hurricain center miami report posit m sunday latitud north longitud west mile south ponc puerto rico mile southeast santo domingo" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="69" source="hurricain gilbert head dominican coast" target="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" />
+      <edge id="70" source="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" target="weather servic issu flash flood watch puerto rico virgin island p m sunday" />
+      <edge id="71" source="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" target="resid return home happi littl damag mph wind sheet rain" />
+      <edge id="72" source="strong wind associ gilbert brought coastal flood strong southeast wind feet puerto rico south coast" target="associ press writer" />
+    </edges>
+  </graph>
+</gexf>

@@ -5,6 +5,7 @@ from textcleaner import clean_text_by_word, tokenize_by_word
 from itertools import combinations
 from Queue import Queue
 from commons import get_graph, remove_unreacheable_nodes
+from gexf_export import write_gexf
 
 import pdb
 
@@ -33,6 +34,7 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
 
     combined_keywords = get_combined_keywords(keywords, split_text)
 
+    write_gexf(graph, scores, path="words.gexf")
     return format_results(keywords, combined_keywords)
 
 
