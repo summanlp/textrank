@@ -17,8 +17,9 @@ def get_nx_graph(graph):
     nx_graph = nx.Graph()
     nx_graph.add_nodes_from(graph.nodes())
     for edge in graph.edges():
-        if graph.edge_weight(edge) != 0:
-            nx_graph.add_edge(edge[0], edge[1])
+        weight = graph.edge_weight(edge)
+        if weight != 0:
+            nx_graph.add_edge(edge[0], edge[1], {'weight':weight})
     return nx_graph
 
 
