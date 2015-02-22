@@ -1,0 +1,3 @@
+[submodule "submodules/pyrouge"]
+	path = submodules/pyrouge
+	url = https://github.com/summanlp/pyrouge.git

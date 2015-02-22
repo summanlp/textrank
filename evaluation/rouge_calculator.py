@@ -13,14 +13,17 @@ ROUGE_DATA_PATH = os.path.join(ROUGE_PATH, 'data')
 
 ROUGE_OPTIONS = [
     '-e', ROUGE_DATA_PATH,  # Specify ROUGE_EVAL_HOME directory where the ROUGE data files can be found.
+    '-n', '2',              # Compute ROUGE-1 and ROUGE-2.
+    '-x',                   # Do not calculate ROUGE-L.
+    '-m',                   # Apply Porter stemmer on both models and peers.
+    '-2', '4',              # Compute skip bigram (ROGUE-S) co-occurrence with a maximum skip distance of 4,
+    '-u',                   # Include unigram in Skip Bigram (ROUGE-S).
     '-c', '95',             # Specify CF\% (0 <= CF <= 100) confidence interval to compute.
-    '-2',                   # Compute skip bigram (ROGUE-S) co-occurrence,
-    '-1',
-    '-U',                   # Compute skip bigram as -2 but include unigram.
     '-r', '1000',           # Specify the number of sampling point in bootstrap resampling (default is 1000).
-    '-n', '2',              # Compute ROUGE-N up to max-ngram length will be computed.
-    '-a',                   # Evaluate all systems specified in the ROUGE-eval-config-file.
-    '-x'                    # Do not calculate ROUGE-L.
+    '-f', 'A',              # Scores are averaged over multiple models.
+    '-p', '0.5',            # Compute F-measure with alpha = 0.5.
+    '-t', '0',              # Use model unit as the counting unit.
+    '-a'                    # Evaluate all systems.
 ]
 
 
