@@ -1,19 +1,13 @@
 import os
 import os.path
-import sys
-
+from evaluation_constants import GOLD_REFERENCES_DIR_FORMAT
+from evaluation_constants import GOLD_REFERENCES_PATTERN
 from pyrouge import Rouge155
 
 """ Class that runs ROUGE to compare the output of a custom summarization tool
     comparing it to a 'gold standard' reference summary.
 """
 
-GOLD_REFERENCES_DIR_FORMAT = 'datasets/{dataset}/{text_number:02d}'
-TEXT_FILENAME_FORMAT = 'datasets/{dataset}/{text_number:02d}/text.txt'
-GOLD_REFERENCES_PATTERN = 'summ(\d+).txt'
-
-MODEL_DIRECTORY = 'temp'
-MODEL_FILENAME = 'temp.txt'
 ROUGE_PATH = os.path.join(os.getcwd(), 'ROUGE-RELEASE-1.5.5')
 ROUGE_DATA_PATH = os.path.join(ROUGE_PATH, 'data')
 
@@ -30,30 +24,17 @@ ROUGE_OPTIONS = [
 ]
 
 
-class RougeCalculator(object):
-
-    def get_rouge_evaluation_for_text(self, text_number):
-        text_filename = TEXT_FILENAME_FORMAT.format(dataset=self.dataset, text_number=text_number)
-        gold_references_dir = GOLD_REFERENCES_DIR_FORMAT.format(dataset=self.dataset, text_number=text_number)
-        self.summarize_text(text_filename)
-        return evaluate_summary(gold_references_dir)
-
-
-
-
-
-
-def evaluate_summary(gold_references_dir):
+def evaluate_summary(text_number, dataset, model_directory, model_filename):
     rouge_instance = Rouge155(ROUGE_PATH, ' '.join(ROUGE_OPTIONS))
+
+    gold_references_dir = GOLD_REFERENCES_DIR_FORMAT.format(dataset=dataset, text_number=text_number)
 
     # Runs ROUGE comparing the gold reference summaries with the recently generated.
     rouge_instance.system_dir = gold_references_dir
     rouge_instance.system_filename_pattern = GOLD_REFERENCES_PATTERN
-    rouge_instance.model_dir = MODEL_DIRECTORY
-    rouge_instance.model_filename_pattern = MODEL_FILENAME
+    rouge_instance.model_dir = model_directory
+    rouge_instance.model_filename_pattern = model_filename
 
     output = rouge_instance.convert_and_evaluate()
 
     return rouge_instance.output_to_dict(output)
-
-

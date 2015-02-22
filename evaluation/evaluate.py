@@ -1,7 +1,7 @@
 import argparse
 import sys
 import os
-from rouge_calculator import RougeCalculator
+from method_evaluator import MethodEvaluator
 from rouge_results_writer import export_results
 
 from baseline import baseline
@@ -38,6 +38,6 @@ if args.baseline:
 else:
     method = textrank
 
-calculator = RougeCalculator(dataset, text_numbers, method)
-results = calculator.get_rouge_scores()
+evaluator = MethodEvaluator(dataset, text_numbers, method)
+results = evaluator.get_rouge_scores()
 export_results(dataset, results, 'baseline' if args.baseline else 'textrank')

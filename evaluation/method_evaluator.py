@@ -1,5 +1,7 @@
 
 from rouge_dataset_results import RougeDatasetResults
+import rouge_calculator
+from evaluation_constants import TEXT_FILENAME_FORMAT
 from timeout import TimeoutError, timeout
 import os
 import traceback
@@ -9,6 +11,9 @@ import sys
     comparing it to a 'gold standard' reference summary.
     Crated to decouple the single summary calculator.
 """
+
+MODEL_DIRECTORY = 'temp'
+MODEL_FILENAME = 'temp.txt'
 
 
 class MethodEvaluator(object):
@@ -40,8 +45,10 @@ class MethodEvaluator(object):
         for i in self.text_numbers:
             print "Evaluating set #" + str(i)
 
+            # Gets the summary using the method.
             try:
-                result = self.get_rouge_evaluation_for_text(i)
+                text_filename = TEXT_FILENAME_FORMAT.format(dataset=self.dataset, text_number=i)
+                self.summarize_text(text_filename)
 
             except TimeoutError:
                 print "Timeout summarizing text #%d\n" % i
@@ -55,6 +62,8 @@ class MethodEvaluator(object):
 
                 results.add_error()
                 continue
+
+            result = rouge_calculator.evaluate_summary(i, self.dataset, MODEL_DIRECTORY, MODEL_FILENAME)
 
             print "Text #%d summarized successfully\n" % i
             results.add_success(result)
