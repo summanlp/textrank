@@ -3,7 +3,6 @@ import sys
 import os
 from method_evaluator import MethodEvaluator
 from rouge_results_writer import export_results
-
 from baseline import baseline
 
 # Imports files from a parent directory.
@@ -18,11 +17,11 @@ parser.add_argument("-d", "--dataset", help="specify which dataset to use.")
 parser.add_argument("-b", "--baseline", action="store_true", help="calculates the baselines scores.")
 args = parser.parse_args()
 
-# Use elhadad dataset by default.
+# Use the summa dataset by default.
 if args.dataset:
     dataset = args.dataset
 else:
-    dataset = 'elhadad'
+    dataset = 'summa'
 
 # Calculate all rouge scores by default.
 if args.documents:
