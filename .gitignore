@@ -111,6 +111,9 @@ nytprof.out
 /evaluation/temp
 /evaluation/results
 
+# DUC2002 dataset files.
+/evaluation/datasets/duc2002
+
 # Visualizations files
 /textrank/views/sentences.gexf  
 /textrank/views/words.gexf
