@@ -1,8 +1,10 @@
 
 from rouge_dataset_results import RougeDatasetResults
 import rouge_calculator
-from evaluation_constants import TEXT_FILENAME_FORMAT
+from evaluation_constants import DATASET_DIRECTORY_FORMAT
+from evaluation_constants import TEXT_FILENAME
 from timeout import TimeoutError, timeout
+from utils import get_directories_from_path
 import os
 import traceback
 import sys
@@ -18,10 +20,16 @@ MODEL_FILENAME = 'temp.txt'
 
 class MethodEvaluator(object):
 
-    def __init__(self, dataset, text_numbers, method):
+    def __init__(self, dataset, method, documents=None):
         self.dataset = dataset
-        self.text_numbers = text_numbers
+        self.dataset_directory = DATASET_DIRECTORY_FORMAT.format(dataset=dataset)
         self.method = method
+
+        if documents is not None:
+            self.documents = documents
+        else:
+            # Reads all the files in the directory.
+            self.documents = get_directories_from_path(self.dataset_directory)
 
     @timeout(10)
     def summarize_text(self, filename):
@@ -42,30 +50,31 @@ class MethodEvaluator(object):
     def get_rouge_scores(self):
         results = RougeDatasetResults()
 
-        for i in self.text_numbers:
-            print "Evaluating set #" + str(i)
+        for document in self.documents:
+            print "Evaluating set {document}.".format(document=document)
 
             # Gets the summary using the method.
             try:
-                text_filename = TEXT_FILENAME_FORMAT.format(dataset=self.dataset, text_number=i)
+                text_filename = os.path.join(self.dataset_directory, document, TEXT_FILENAME)
                 self.summarize_text(text_filename)
 
             except TimeoutError:
-                print "Timeout summarizing text #%d\n" % i
+                print "Timeout summarizing text {document}.\n".format(document=document)
                 results.add_timeout()
                 continue
 
             except Exception as e:
-                print "Error summarizing text #%d\n" % i
+                print "Error summarizing text {document}.\n".format(document=document)
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 print traceback.print_exception(exc_type, exc_value, exc_traceback, limit=2, file=sys.stdout)
 
                 results.add_error()
                 continue
 
-            result = rouge_calculator.evaluate_summary(i, self.dataset, MODEL_DIRECTORY, MODEL_FILENAME)
+            system_directory = os.path.join(self.dataset_directory, document)
+            result = rouge_calculator.evaluate_summary(system_directory, MODEL_DIRECTORY, MODEL_FILENAME)
 
-            print "Text #%d summarized successfully\n" % i
+            print "Text", document, "summarized successfully.\n"
             results.add_success(result)
 
         return results

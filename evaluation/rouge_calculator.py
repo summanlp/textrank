@@ -1,7 +1,6 @@
 import os
 import os.path
 from tempfile import mkdtemp
-from evaluation_constants import GOLD_REFERENCES_DIR_FORMAT
 from evaluation_constants import GOLD_REFERENCES_PATTERN
 from pyrouge import Rouge155
 
@@ -40,13 +39,13 @@ def create_temporary_directories():
     return tempdir
 
 
-def evaluate_summary(text_number, dataset, model_directory, model_filename):
+def evaluate_summary(system_directory, model_directory, model_filename):
     tempdir = create_temporary_directories()
 
     rouge_instance = Rouge155(ROUGE_PATH, verbose=False, rouge_args=' '.join(ROUGE_OPTIONS))
 
     # Converts the gold references files to rouge format.
-    gold_references_input_dir = GOLD_REFERENCES_DIR_FORMAT.format(dataset=dataset, text_number=text_number)
+    gold_references_input_dir = system_directory
     gold_references_output_dir = os.path.join(tempdir, SYSTEM_DIR)
     rouge_instance.convert_summaries_to_rouge_format(gold_references_input_dir, gold_references_output_dir)
 

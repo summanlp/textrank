@@ -1,4 +1,4 @@
 
-GOLD_REFERENCES_DIR_FORMAT = 'datasets/{dataset}/{text_number:02d}'
-TEXT_FILENAME_FORMAT = 'datasets/{dataset}/{text_number:02d}/text.txt'
+DATASET_DIRECTORY_FORMAT = "datasets/{dataset}"
+TEXT_FILENAME = 'text.txt'
 GOLD_REFERENCES_PATTERN = 'summ(\d+).txt'

@@ -12,7 +12,7 @@ from textrank import textrank
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-n", "--text_numbers", metavar='N', type=int, nargs='+',
+parser.add_argument("-n", "--documents", metavar='N', type=str, nargs='+',
                     help="specify dataset text numbers to summarize.")
 parser.add_argument("-d", "--dataset", help="specify which dataset to use.")
 parser.add_argument("-b", "--baseline", action="store_true", help="calculates the baselines scores.")
@@ -24,13 +24,11 @@ if args.dataset:
 else:
     dataset = 'elhadad'
 
-dataset_path = os.path.join('datasets', dataset)
-
 # Calculate all rouge scores by default.
-if args.text_numbers:
-    text_numbers = [int(n) for n in args.text_numbers]
+if args.documents:
+    documents = [document for document in args.documents]
 else:
-    text_numbers = sorted(int(n) for n in os.listdir(dataset_path) if os.path.isdir(os.path.join(dataset_path, n)))
+    documents = None
 
 # Don't calculate baseline method by default.
 if args.baseline:
@@ -38,6 +36,6 @@ if args.baseline:
 else:
     method = textrank
 
-evaluator = MethodEvaluator(dataset, text_numbers, method)
+evaluator = MethodEvaluator(dataset, method, documents)
 results = evaluator.get_rouge_scores()
 export_results(dataset, results, 'baseline' if args.baseline else 'textrank')
