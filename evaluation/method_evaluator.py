@@ -5,6 +5,8 @@ from evaluation_constants import DATASET_DIRECTORY_FORMAT
 from evaluation_constants import TEXT_FILENAME
 from timeout import TimeoutError, timeout
 from utils import get_directories_from_path
+from tempfile import mkdtemp
+from shutil import rmtree
 import os
 import traceback
 import sys
@@ -14,7 +16,6 @@ import sys
     Crated to decouple the single summary calculator.
 """
 
-MODEL_DIRECTORY = 'temp'
 MODEL_FILENAME = 'temp.txt'
 
 
@@ -32,19 +33,15 @@ class MethodEvaluator(object):
             self.documents = get_directories_from_path(self.dataset_directory)
 
     @timeout(10)
-    def summarize_text(self, filename):
-        # pyrouge needs the model summaries to be stored in a directory without subdirectories.
-        if not os.path.exists(MODEL_DIRECTORY):
-            os.makedirs(MODEL_DIRECTORY)
-
+    def summarize_text(self, text_filename, output_directory):
         # Makes a summary of the provided file and stores it in the temp folder.
-        with open(filename) as fp:
+        with open(text_filename) as fp:
             text = fp.read()
 
-        print "Summarizing " + filename
+        print "Summarizing " + text_filename
         summary = self.method(text)
 
-        with open(os.path.join(MODEL_DIRECTORY, MODEL_FILENAME), 'w') as fp:
+        with open(os.path.join(output_directory, MODEL_FILENAME), 'w') as fp:
             fp.write(summary)
 
     def get_rouge_scores(self):
@@ -55,8 +52,9 @@ class MethodEvaluator(object):
 
             # Gets the summary using the method.
             try:
+                model_directory = mkdtemp()
                 text_filename = os.path.join(self.dataset_directory, document, TEXT_FILENAME)
-                self.summarize_text(text_filename)
+                self.summarize_text(text_filename, model_directory)
 
             except TimeoutError:
                 print "Timeout summarizing text {document}.\n".format(document=document)
@@ -72,9 +70,12 @@ class MethodEvaluator(object):
                 continue
 
             system_directory = os.path.join(self.dataset_directory, document)
-            result = rouge_calculator.evaluate_summary(system_directory, MODEL_DIRECTORY, MODEL_FILENAME)
+            result = rouge_calculator.evaluate_summary(system_directory, model_directory, MODEL_FILENAME)
 
             print "Text", document, "summarized successfully.\n"
             results.add_success(result)
+
+            # Removes the temporal directory and all its files.
+            rmtree(model_directory)
 
         return results

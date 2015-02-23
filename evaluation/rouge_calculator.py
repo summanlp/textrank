@@ -1,6 +1,7 @@
 import os
 import os.path
 from tempfile import mkdtemp
+from shutil import rmtree
 from evaluation_constants import GOLD_REFERENCES_PATTERN
 from pyrouge import Rouge155
 
@@ -61,5 +62,8 @@ def evaluate_summary(system_directory, model_directory, model_filename):
 
     # Runs ROUGE comparing the gold reference summaries with the recently generated.
     output = rouge_instance.evaluate_static(ROUGE_PATH, config_filename, ROUGE_OPTIONS)
+
+    # Removes the temporal directories.
+    rmtree(tempdir)
 
     return rouge_instance.output_to_dict(output)
