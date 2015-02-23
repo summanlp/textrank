@@ -15,16 +15,22 @@ SYSTEM_DIR = "system"
 MODEL_DIR = "model"
 CONFIG_FILENAME = "config.xml"
 
+
+# Rouge options as used in the DUC2007 competition:
+# http://www-nlpir.nist.gov/projects/duc/duc2007/tasks.html#main
 ROUGE_OPTIONS = [
-    '-e', ROUGE_DATA_PATH, # Specify ROUGE_EVAL_HOME directory where the ROUGE data files can be found.
-    '-c', '95', # Specify CF\% (0 <= CF <= 100) confidence interval to compute.
-    '-2', # Compute skip bigram (ROGUE-S) co-occurrence,
-    '-1',
-    '-U', # Compute skip bigram as -2 but include unigram.
-    '-r', '1000', # Specify the number of sampling point in bootstrap resampling (default is 1000).
-    '-n', '2', # Compute ROUGE-N up to max-ngram length will be computed.
-    '-a', # Evaluate all systems specified in the ROUGE-eval-config-file.
-    '-x' # Do not calculate ROUGE-L.
+    '-e', ROUGE_DATA_PATH,  # Specify ROUGE_EVAL_HOME directory where the ROUGE data files can be found.
+    '-n', '2',              # Compute ROUGE-1 and ROUGE-2.
+    '-x',                   # Do not calculate ROUGE-L.
+    '-m',                   # Apply Porter stemmer on both models and peers.
+    '-2', '4',              # Compute skip bigram (ROGUE-S) co-occurrence with a maximum skip distance of 4,
+    '-u',                   # Include unigram in Skip Bigram (ROUGE-S).
+    '-c', '95',             # Specify CF\% (0 <= CF <= 100) confidence interval to compute.
+    '-r', '1000',           # Specify the number of sampling point in bootstrap resampling (default is 1000).
+    '-f', 'A',              # Scores are averaged over multiple models.
+    '-p', '0.5',            # Compute F-measure with alpha = 0.5.
+    '-t', '0',              # Use model unit as the counting unit.
+    '-a'                    # Evaluate all systems.
 ]
 
 
@@ -43,7 +49,7 @@ def create_temporary_directories():
 def evaluate_summary(system_directory, model_directory, model_filename):
     tempdir = create_temporary_directories()
 
-    rouge_instance = Rouge155(ROUGE_PATH, verbose=False, rouge_args=' '.join(ROUGE_OPTIONS))
+    rouge_instance = Rouge155(ROUGE_PATH, verbose=True, rouge_args=' '.join(ROUGE_OPTIONS))
 
     # Converts the gold references files to rouge format.
     gold_references_input_dir = system_directory
