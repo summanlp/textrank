@@ -6,5 +6,5 @@ from os.path import join
 
 def get_directories_from_path(path):
     directories = [directory for directory in listdir(path) if isdir(join(path, directory))]
-    return sorted(directories[:400])
+    return sorted(directories)
 
