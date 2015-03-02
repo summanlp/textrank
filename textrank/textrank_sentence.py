@@ -13,42 +13,24 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     # Gets a list of processed sentences.
     sentences = clean_text_by_sentences(text)
 
-    print("-02")
-
-    import pprint
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(sentences)
-
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = get_graph([sentence.tokens for sentence in sentences])
     set_graph_edge_weights(graph)
 
-    print("-01")
-
     # Remove all nodes with all edges weights equal to zero.
     remove_unreacheable_nodes(graph)
-
-    print("-00")
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
     scores = pagerank(graph) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
 
-    print ("01")
-
     # Adds the textrank scores to the sentence objects.
     add_scores_to_sentences(sentences, scores)
-
-    print ("02")
 
     # Extracts the most important sentences.
     extracted_sentences = extract_most_important_sentences(sentences, summary_length)
 
-    print ("03")
-
     # Sorts the extracted sentences by apparition order in the original text.
     extracted_sentences.sort(key=lambda s: s.index)
-
-    print ("04")
 
     write_gexf(graph, scores, path="sentences.gexf")
 
