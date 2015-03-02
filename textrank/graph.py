@@ -2,6 +2,7 @@
 from pygraph.classes.graph import graph as pygraph
 from abc import ABCMeta, abstractmethod
 
+
 class IGraph:
     """
     Represents the interface or contract that the graph for TextRank should implements
