@@ -48,6 +48,9 @@ def clean_text_by_sentences(text):
     sentences = []
 
     for i in xrange(len(original_sentences)):
+        if filtered_sentences[i] == '':
+            continue
+
         sentence = Sentence()
         sentence.index = i
         sentence.text = original_sentences[i]

@@ -1,8 +1,9 @@
 
-from graph import PygraphWrapper as pygraph
+from graph import PygraphWrapper as pyGraph
+
 
 def get_graph(sequence):
-    graph = pygraph()
+    graph = pyGraph()
     for item in sequence:
         if not graph.has_node(item):
             graph.add_node(item)

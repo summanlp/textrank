@@ -8,4 +8,7 @@ class Sentence(object):
         self.score = -1
 
     def __str__(self):
-        return "Original sentence: " + self.text + "\n" + "Processed sentence: " + self.tokens
+        return "Original sentence: '" + self.text + "' *-*-*-* " + "Processed sentence: '" + self.tokens + "'"
+
+    def __repr__(self):
+        return str(self)

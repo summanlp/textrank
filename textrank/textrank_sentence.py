@@ -4,62 +4,71 @@ from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERAN
 from textcleaner import clean_text_by_sentences
 from commons import get_graph, remove_unreacheable_nodes
 from math import log10
-from textrank_runtime_error import TextrankRuntimeError
 from gexf_export import write_gexf
 
 DEBUG = False
 
 
 def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
-    # Gets a dict of processed_sentence -> original_sentences
-    tokens = clean_text_by_sentences(text)
+    # Gets a list of processed sentences.
+    sentences = clean_text_by_sentences(text)
+
+    print("-02")
+
+    import pprint
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(sentences)
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
-    graph = get_graph(tokens.keys())
+    graph = get_graph([sentence.tokens for sentence in sentences])
     set_graph_edge_weights(graph)
+
+    print("-01")
 
     # Remove all nodes with all edges weights equal to zero.
     remove_unreacheable_nodes(graph)
 
+    print("-00")
+
     # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
     scores = pagerank(graph) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
 
-    # Extracts the most important tokens.
-    extracted_tokens = extract_tokens(graph.nodes(), scores, summary_length)
+    print ("01")
+
+    # Adds the textrank scores to the sentence objects.
+    add_scores_to_sentences(sentences, scores)
+
+    print ("02")
+
+    # Extracts the most important sentences.
+    extracted_sentences = extract_most_important_sentences(sentences, summary_length)
+
+    print ("03")
 
     # Sorts the extracted sentences by apparition order in the original text.
-    summary = sort_by_apparition(extracted_tokens, tokens, text)
+    extracted_sentences.sort(key=lambda s: s.index)
+
+    print ("04")
 
     write_gexf(graph, scores, path="sentences.gexf")
-    return "\n".join(summary)
+
+    return "\n".join([sentence.text for sentence in extracted_sentences])
 
 
-def sort_by_apparition(extracted_tokens, tokens, text):
-    summary = []
-
-    for extracted in extracted_tokens:
-        original_sentence = tokens[extracted]
-        try:
-            index = text.index(original_sentence)
-            if DEBUG:
-                summary.append((original_sentence, index, extracted_tokens[extracted]))
-            else:
-                summary.append((original_sentence, index))
-
-        except ValueError:
-            raise TextrankRuntimeError("ERROR: sentence not found: " + original_sentence)
-
-    summary.sort(key=lambda t: t[1])
-    if DEBUG:
-        debug_info = lambda item: "({0:.4f}) : {1}".format(item[2], item[0])
-        return [debug_info(item) for item in summary]
-    return [item[0] for item in summary]
+def add_scores_to_sentences(sentences, scores):
+    for sentence in sentences:
+        # Adds the score to the object if it has one.
+        if sentence.tokens in scores:
+            sentence.score = scores[sentence.tokens]
+        else:
+            sentence.score = 0
 
 
-def extract_tokens(sentences, scores, summary_length):
-    sentences.sort(key=lambda s: scores[s], reverse=True)
+def extract_most_important_sentences(sentences, summary_length):
+    sentences.sort(key=lambda s: s.score, reverse=True)
     length = len(sentences) * summary_length
-    return {sentences[i]: scores[sentences[i]] for i in range(int(length))}
+
+    return sentences[:int(length)]
 
 
 def set_graph_edge_weights(graph):
@@ -74,7 +83,6 @@ def set_graph_edge_weights(graph):
 
 
 def get_similarity(s1, s2):
-
     words_sentence_one = s1.split()
     words_sentence_two = s2.split()
 
