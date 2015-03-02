@@ -2,8 +2,8 @@
 from gensim.utils import tokenize
 from gensim.parsing.preprocessing import strip_numeric, strip_punctuation
 import snowball
-
 import re  # http://regex101.com/#python para probar regex.
+from sentence import Sentence
 
 SEPARATOR = r"@"
 RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)')  # backup (\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)
@@ -40,11 +40,22 @@ STOPWORDS = frozenset(w for w in STOPWORDS.split() if w)
 
 
 def clean_text_by_sentences(text):
-    """ Given some text, tokenizes into sentences, applies filters and lemmatizes them.
-    Returns dictionary that map processed sentences to the originals sentences. """
+    """ Tokenizes a given text into sentences, applying filters and lemmatizing them.
+    Returns a sentence.Sentence list. """
     original_sentences = split_sentences(text)
     filtered_sentences = filter_words(original_sentences)
-    return {item[0]: item[1] for item in zip(filtered_sentences, original_sentences) if item[0]}
+
+    sentences = []
+
+    for i in xrange(len(original_sentences)):
+        sentence = Sentence()
+        sentence.index = i
+        sentence.text = original_sentences[i]
+        sentence.tokens = filtered_sentences[i]
+
+        sentences.append(sentence)
+
+    return sentences
 
 
 def split_sentences(text):
