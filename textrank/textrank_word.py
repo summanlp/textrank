@@ -20,7 +20,7 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
     split_text = list(tokenize_by_word(text))
 
     # Creates the graph and adds the edges
-    graph = get_graph(tokens.values())
+    graph = get_graph(get_words_for_graph(tokens))
     set_graph_edges(graph, tokens, split_text)
 
     remove_unreacheable_nodes(graph)
@@ -32,10 +32,36 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
 
     keywords = get_keywords_with_score(extracted_lemmas, lemmas_to_words(tokens))
 
-    combined_keywords = get_combined_keywords(keywords, split_text)
+    combined_keywords = get_combined_keywords(keywords, text.split())
+    # TODO uso text.split para que quede el texto original, con las comas, asi no une conceptos separados
+    # semanticamente: ver una forma mejor o mas prolija de hacerlo
 
     write_gexf(graph, scores, path="words.gexf")
     return format_results(keywords, combined_keywords)
+
+
+def get_words_for_graph(tokens):
+    include_filters, exclude_filters = get_pos_filters()
+    if include_filters and exclude_filters:
+        raise ValueError("Can't use both include and exclude filters, should use only one")
+
+    result = []
+    for word, unit in tokens.iteritems():
+        if exclude_filters and unit.tag in exclude_filters:
+            continue
+        if (include_filters and unit.tag in include_filters) or not include_filters:
+            result.append(unit.token)
+    return result
+
+
+def get_pos_filters():
+    """Check tags in http://www.clips.ua.ac.be/pages/mbsp-tags and use only first two letters
+    Example: filter for nouns and adjectives:
+    including = ['NN', 'JJ']
+    """
+    including = ['NN', 'JJ']
+    excluding = []
+    return frozenset(including), frozenset(excluding)
 
 
 def set_graph_edges(graph, tokens, split_text):
@@ -55,11 +81,11 @@ def get_first_window(split_text):
 
 def set_graph_edge(graph, tokens, word_a, word_b):
     if word_a in tokens and word_b in tokens:
-        lemma_a = tokens[word_a]
-        lemma_b = tokens[word_b]
+        lemma_a = tokens[word_a].token
+        lemma_b = tokens[word_b].token
         edge = (lemma_a, lemma_b)
 
-        if not graph.has_edge(edge):
+        if graph.has_node(lemma_a) and graph.has_node(lemma_b) and not graph.has_edge(edge):
             graph.add_edge(edge)
 
 
@@ -106,12 +132,13 @@ def extract_tokens(lemmas, scores, summary_length):
 
 def lemmas_to_words(tokens):
     lemma_to_word = {}
-    for key, value in tokens.iteritems():
-        words = lemma_to_word.get(value, None)
+    for word, unit in tokens.iteritems():
+        lemma = unit.token
+        words = lemma_to_word.get(lemma, None)
         if not words:
-            lemma_to_word[value] = [key]
+            lemma_to_word[lemma] = [word]
         else:
-            words.append(key)
+            words.append(word)
     return lemma_to_word
 
 
@@ -141,19 +168,25 @@ def get_combined_keywords(keywords, split_text):
     keywords = keywords.copy()
     len_text = len(split_text)
     for i in xrange(len_text):
-        word = split_text[i]
+        word = strip_word(split_text[i])
         if word in keywords:
             combined_word = [word]
             if i + 1 == len_text: result.append(word)   # appends last word if keyword and doesn't iterate
             for j in xrange(i + 1, len_text):
-                other_word = split_text[j]
-                if other_word in keywords:
+                other_word = strip_word(split_text[j])
+                # TODO ver warning de conversion a unicode
+                if other_word in keywords and other_word == split_text[j]:
                     combined_word.append(other_word)
                 else:
                     for keyword in combined_word: keywords.pop(keyword)
                     result.append(" ".join(combined_word))
                     break
     return result
+
+
+def strip_word(word):
+    stripped_word_list = list(tokenize_by_word(word))
+    return stripped_word_list[0] if stripped_word_list else ""
 
 
 def format_results(keywords, combined_keywords):

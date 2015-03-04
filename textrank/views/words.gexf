@@ -2,669 +2,2380 @@
 <gexf xmlns:ns0="http://www.gexf.net/1.1draft/viz" version="1.1" xmlns="http://www.gexf.net/1.1draft" xmlns:viz="http://www.gexf.net/1.1draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema-instance">
   <graph defaultedgetype="undirected" mode="static">
     <nodes>
-      <node id="mexican" label="mexican">
+      <node id="month" label="month">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0418059421388" />
-        <viz:position x="274.05" y="656.07" z="None" />
+        <viz:size value="0.0215613873518" />
+        <viz:position x="794.14" y="710.35" z="None" />
       </node>
-      <node id="rotat" label="rotat">
+      <node id="protest" label="protest">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0441850265488" />
-        <viz:position x="461.48" y="125.34" z="None" />
-      </node>
-      <node id="towrd" label="towrd">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0482326538716" />
-        <viz:position x="644.56" y="562.28" z="None" />
-      </node>
-      <node id="move" label="move">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="870.55" y="133.64" z="None" />
-      </node>
-      <node id="midnight" label="midnight">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0415881128918" />
-        <viz:position x="597.15" y="309.02" z="None" />
-      </node>
-      <node id="report" label="report">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="906.85" y="798.64" z="None" />
-      </node>
-      <node id="atlant" label="atlant">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.044623711796" />
-        <viz:position x="484.31" y="624.29" z="None" />
-      </node>
-      <node id="mile" label="mile">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.102108597878" />
-        <viz:position x="192.65" y="436.7" z="None" />
-      </node>
-      <node id="heavili" label="heavili">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0489073979244" />
-        <viz:position x="64.083" y="636.61" z="None" />
+        <viz:size value="0.0221877656019" />
+        <viz:position x="558.22" y="722.02" z="None" />
       </node>
       <node id="follow" label="follow">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0831296491544" />
-        <viz:position x="578.29" y="486.31" z="None" />
+        <viz:size value="0.0360035732714" />
+        <viz:position x="616.18" y="812.48" z="None" />
       </node>
-      <node id="gulf" label="gulf">
+      <node id="settlement" label="settlement">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0418059421388" />
-        <viz:position x="304.92" y="662.42" z="None" />
+        <viz:size value="0.0260121456755" />
+        <viz:position x="994.03" y="511.47" z="None" />
       </node>
-      <node id="writer" label="writer">
+      <node id="privat" label="privat">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0778712102943" />
-        <viz:position x="104.01" y="386.26" z="None" />
+        <viz:size value="0.0260121456755" />
+        <viz:position x="934.69" y="492.45" z="None" />
       </node>
-      <node id="littl" label="littl">
+      <node id="pedro" label="pedro">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="202.0" y="833.64" z="None" />
+        <viz:size value="0.0768840799816" />
+        <viz:position x="961.15" y="1023.9" z="None" />
       </node>
-      <node id="rico" label="rico">
+      <node id="guem" label="guem">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0763904477449" />
-        <viz:position x="570.82" y="602.12" z="None" />
+        <viz:size value="0.0217951618813" />
+        <viz:position x="701.22" y="1194.9" z="None" />
       </node>
-      <node id="puerto" label="puerto">
+      <node id="baltasar" label="baltasar">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.124125983592" />
-        <viz:position x="623.75" y="678.49" z="None" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="1627.0" y="318.21" z="None" />
       </node>
-      <node id="florenc" label="florenc">
+      <node id="rise" label="rise">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0756648217211" />
-        <viz:position x="523.1" y="186.12" z="None" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="897.0" y="404.48" z="None" />
       </node>
-      <node id="return" label="return">
+      <node id="wave" label="wave">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0815229421149" />
-        <viz:position x="407.98" y="681.34" z="None" />
+        <viz:size value="0.0388864329514" />
+        <viz:position x="608.0" y="688.18" z="None" />
       </node>
-      <node id="hurrican" label="hurrican">
+      <node id="candid" label="candid">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.183357141841" />
-        <viz:position x="584.93" y="249.86" z="None" />
+        <viz:size value="0.0227694294443" />
+        <viz:position x="518.8" y="1214.0" z="None" />
       </node>
-      <node id="watch" label="watch">
+      <node id="llama" label="llama">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0443407564163" />
-        <viz:position x="159.07" y="338.38" z="None" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="746.96" y="1652.2" z="None" />
       </node>
-      <node id="mph" label="mph">
+      <node id="govern" label="govern">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0709287879908" />
-        <viz:position x="367.37" y="259.56" z="None" />
+        <viz:size value="0.0677885013515" />
+        <viz:position x="863.5" y="1252.8" z="None" />
       </node>
-      <node id="coast" label="coast">
+      <node id="administr" label="administr">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.204023923466" />
-        <viz:position x="302.6" y="583.08" z="None" />
+        <viz:size value="0.0405938613827" />
+        <viz:position x="852.37" y="664.1" z="None" />
       </node>
-      <node id="press" label="press">
+      <node id="level" label="level">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0771055912673" />
-        <viz:position x="117.13" y="274.72" z="None" />
+        <viz:size value="0.0479296652009" />
+        <viz:position x="1431.2" y="858.68" z="None" />
       </node>
-      <node id="ruddi" label="ruddi">
+      <node id="eva" label="eva">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0494824922273" />
-        <viz:position x="79.947" y="89.813" z="None" />
+        <viz:size value="0.0334974380966" />
+        <viz:position x="570.01" y="879.13" z="None" />
       </node>
-      <node id="resid" label="resid">
+      <node id="sedentari" label="sedentari">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.104772058617" />
-        <viz:position x="405.64" y="583.09" z="None" />
+        <viz:size value="0.0419310491121" />
+        <viz:position x="1367.1" y="1414.5" z="None" />
       </node>
-      <node id="name" label="name">
+      <node id="signific" label="signific">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0870307347629" />
-        <viz:position x="507.19" y="649.91" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1661.0" y="1188.6" z="None" />
       </node>
-      <node id="miami" label="miami">
+      <node id="amend" label="amend">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="978.06" y="788.0" z="None" />
+        <viz:size value="0.0232268644855" />
+        <viz:position x="639.79" y="1206.4" z="None" />
       </node>
-      <node id="gust" label="gust">
+      <node id="diaguita" label="diaguita">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0717328477879" />
-        <viz:position x="467.77" y="282.0" z="None" />
+        <viz:size value="0.0425433212037" />
+        <viz:position x="1429.5" y="1468.1" z="None" />
       </node>
-      <node id="p" label="p">
+      <node id="small" label="small">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0484362530093" />
-        <viz:position x="27.0" y="346.28" z="None" />
+        <viz:size value="0.0455745520127" />
+        <viz:position x="938.71" y="591.32" z="None" />
       </node>
-      <node id="republ" label="republ">
+      <node id="upper" label="upper">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.100341683619" />
-        <viz:position x="313.03" y="424.57" z="None" />
+        <viz:size value="0.0496658175001" />
+        <viz:position x="1571.9" y="467.38" z="None" />
       </node>
-      <node id="night" label="night">
+      <node id="fold" label="fold">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0415881128918" />
-        <viz:position x="615.99" y="338.84" z="None" />
-      </node>
-      <node id="swept" label="swept">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0831296491544" />
-        <viz:position x="563.75" y="522.32" z="None" />
-      </node>
-      <node id="inland" label="inland">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0662563531458" />
-        <viz:position x="767.5" y="773.48" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="259.0" y="231.64" z="None" />
       </node>
       <node id="second" label="second">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0440732670941" />
-        <viz:position x="640.65" y="213.87" z="None" />
+        <viz:size value="0.0447512173023" />
+        <viz:position x="880.47" y="566.83" z="None" />
       </node>
-      <node id="sea" label="sea">
+      <node id="pressur" label="pressur">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0471084810105" />
-        <viz:position x="216.68" y="77.597" z="None" />
+        <viz:size value="0.0390904376483" />
+        <viz:position x="989.9" y="1391.4" z="None" />
       </node>
-      <node id="close" label="close">
+      <node id="carlo" label="carlo">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0482326538716" />
-        <viz:position x="663.54" y="510.18" z="None" />
+        <viz:size value="0.0529515646006" />
+        <viz:position x="722.18" y="1085.3" z="None" />
       </node>
-      <node id="saturday" label="saturday">
+      <node id="neo" label="neo">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.202486305253" />
-        <viz:position x="543.35" y="335.21" z="None" />
+        <viz:size value="0.051584303904" />
+        <viz:position x="958.84" y="1209.5" z="None" />
       </node>
-      <node id="gonzalez" label="gonzalez">
+      <node id="atlant" label="atlant">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860704452854" />
-        <viz:position x="133.61" y="148.99" z="None" />
+        <viz:size value="0.0206098088934" />
+        <viz:position x="1040.7" y="1166.5" z="None" />
       </node>
-      <node id="said" label="said">
+      <node id="navig" label="navig">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.133265252138" />
-        <viz:position x="508.42" y="528.53" z="None" />
+        <viz:size value="0.037586718627" />
+        <viz:position x="796.74" y="891.64" z="None" />
       </node>
-      <node id="televis" label="televis">
+      <node id="decre" label="decre">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.051319244951" />
-        <viz:position x="998.42" y="498.43" z="None" />
+        <viz:size value="0.029837260595" />
+        <viz:position x="1412.9" y="424.0" z="None" />
       </node>
-      <node id="broad" label="broad">
+      <node id="royalist" label="royalist">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="520.55" y="868.64" z="None" />
+        <viz:size value="0.0373086497314" />
+        <viz:position x="808.4" y="1154.0" z="None" />
       </node>
-      <node id="estim" label="estim">
+      <node id="suspect" label="suspect">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0662563531458" />
-        <viz:position x="800.55" y="353.48" z="None" />
+        <viz:size value="0.0254428775963" />
+        <viz:position x="41.419" y="778.51" z="None" />
       </node>
-      <node id="sustain" label="sustain">
+      <node id="consecut" label="consecut">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.040442327681" />
-        <viz:position x="270.19" y="170.42" z="None" />
+        <viz:size value="0.0228009979134" />
+        <viz:position x="729.88" y="1298.5" z="None" />
       </node>
-      <node id="defens" label="defens">
+      <node id="new" label="new">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.125093136008" />
-        <viz:position x="851.53" y="451.64" z="None" />
+        <viz:size value="0.139086958438" />
+        <viz:position x="909.8" y="1301.2" z="None" />
       </node>
-      <node id="sixth" label="sixth">
+      <node id="public" label="public">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0498906152553" />
-        <viz:position x="515.46" y="739.14" z="None" />
+        <viz:size value="0.0412958718987" />
+        <viz:position x="936.27" y="1380.9" z="None" />
       </node>
-      <node id="southeast" label="southeast">
+      <node id="movement" label="movement">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0967490694724" />
-        <viz:position x="224.9" y="325.47" z="None" />
+        <viz:size value="0.0248917540079" />
+        <viz:position x="1079.9" y="1542.4" z="None" />
       </node>
-      <node id="santo" label="santo">
+      <node id="prosecut" label="prosecut">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0757618377052" />
-        <viz:position x="163.0" y="478.96" z="None" />
+        <viz:size value="0.022918641889" />
+        <viz:position x="466.08" y="989.49" z="None" />
       </node>
-      <node id="strong" label="strong">
+      <node id="ezeiza" label="ezeiza">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.128828105377" />
-        <viz:position x="260.67" y="295.29" z="None" />
+        <viz:size value="0.0248835407996" />
+        <viz:position x="428.16" y="1114.4" z="None" />
       </node>
-      <node id="popul" label="popul">
+      <node id="richest" label="richest">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0847172822197" />
-        <viz:position x="137.6" y="592.75" z="None" />
+        <viz:size value="0.0249520217266" />
+        <viz:position x="1399.2" y="809.85" z="None" />
       </node>
-      <node id="island" label="island">
+      <node id="french" label="french">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="976.85" y="238.64" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1512.1" y="173.64" z="None" />
       </node>
-      <node id="hurricain" label="hurricain">
+      <node id="minuan" label="minuan">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.166145788576" />
-        <viz:position x="485.08" y="384.09" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1690.7" y="463.64" z="None" />
       </node>
-      <node id="debbi" label="debbi">
+      <node id="paleolith" label="paleolith">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0524231339364" />
-        <viz:position x="723.86" y="41.552" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1694.6" y="1275.6" z="None" />
       </node>
-      <node id="carribean" label="carribean">
+      <node id="jorg" label="jorg">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="988.55" y="658.64" z="None" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="1332.0" y="346.48" z="None" />
       </node>
-      <node id="south" label="south">
+      <node id="great" label="great">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.106741556481" />
-        <viz:position x="220.03" y="533.21" z="None" />
+        <viz:size value="0.0437870976164" />
+        <viz:position x="1178.5" y="783.85" z="None" />
       </node>
-      <node id="flash" label="flash">
+      <node id="militari" label="militari">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0443407564163" />
-        <viz:position x="178.86" y="275.52" z="None" />
+        <viz:size value="0.0667709700761" />
+        <viz:position x="945.34" y="1288.3" z="None" />
       </node>
-      <node id="civil" label="civil">
+      <node id="peronist" label="peronist">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.092857578422" />
-        <viz:position x="915.71" y="394.03" z="None" />
+        <viz:size value="0.0569248888321" />
+        <viz:position x="624.82" y="1169.8" z="None" />
       </node>
-      <node id="brought" label="brought">
+      <node id="deregul" label="deregul">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0744185688365" />
-        <viz:position x="424.04" y="445.24" z="None" />
+        <viz:size value="0.0455745520127" />
+        <viz:position x="896.75" y="577.96" z="None" />
       </node>
-      <node id="remnant" label="remnant">
+      <node id="social" label="social">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0662563531458" />
-        <viz:position x="835.62" y="648.0" z="None" />
+        <viz:size value="0.10045299916" />
+        <viz:position x="306.57" y="721.02" z="None" />
       </node>
-      <node id="weather" label="weather">
+      <node id="real" label="real">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.147211640319" />
-        <viz:position x="419.69" y="205.85" z="None" />
+        <viz:size value="0.0264051367147" />
+        <viz:position x="1524.7" y="978.05" z="None" />
       </node>
-      <node id="coastal" label="coastal">
+      <node id="extrem" label="extrem">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0759686481719" />
-        <viz:position x="348.02" y="390.78" z="None" />
+        <viz:size value="0.0268526604101" />
+        <viz:position x="1520.0" y="1680.4" z="None" />
       </node>
-      <node id="damag" label="damag">
+      <node id="rafael" label="rafael">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="273.21" y="823.0" z="None" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="1376.0" y="289.15" z="None" />
       </node>
-      <node id="area" label="area">
+      <node id="agustin" label="agustin">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="591.76" y="858.0" z="None" />
+        <viz:size value="0.0389792920297" />
+        <viz:position x="937.68" y="1102.9" z="None" />
       </node>
-      <node id="west" label="west">
+      <node id="controversi" label="controversi">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0742361589268" />
-        <viz:position x="110.74" y="486.8" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1616.0" y="1623.6" z="None" />
       </node>
-      <node id="happi" label="happi">
+      <node id="julio" label="julio">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0518375255068" />
-        <viz:position x="387.75" y="853.7" z="None" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="549.0" y="1709.5" z="None" />
       </node>
-      <node id="virgin" label="virgin">
+      <node id="elect" label="elect">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="1048.1" y="228.0" z="None" />
+        <viz:size value="0.0903990232795" />
+        <viz:position x="576.6" y="906.22" z="None" />
       </node>
-      <node id="live" label="live">
+      <node id="campaign" label="campaign">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0662563531458" />
-        <viz:position x="868.67" y="228.0" z="None" />
+        <viz:size value="0.0220080165532" />
+        <viz:position x="485.0" y="900.04" z="None" />
       </node>
-      <node id="includ" label="includ">
+      <node id="vii" label="vii">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="977.5" y="903.64" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="926.0" y="173.64" z="None" />
       </node>
-      <node id="storm" label="storm">
+      <node id="uriburu" label="uriburu">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.186595051853" />
-        <viz:position x="456.12" y="558.83" z="None" />
+        <viz:size value="0.0679037733474" />
+        <viz:position x="622.76" y="277.47" z="None" />
       </node>
-      <node id="gilbert" label="gilbert">
+      <node id="austria" label="austria">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.275099674188" />
-        <viz:position x="491.97" y="473.29" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1136.4" y="1623.6" z="None" />
       </node>
-      <node id="cabral" label="cabral">
+      <node id="blockad" label="blockad">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.102289418381" />
-        <viz:position x="575.27" y="429.01" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1583.4" y="163.0" z="None" />
       </node>
-      <node id="head" label="head">
+      <node id="famili" label="famili">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0421318933635" />
-        <viz:position x="541.78" y="462.38" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1134.5" y="144.64" z="None" />
       </node>
-      <node id="north" label="north">
+      <node id="unit" label="unit">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.112196639367" />
-        <viz:position x="224.73" y="632.07" z="None" />
+        <viz:size value="0.0371309062147" />
+        <viz:position x="946.48" y="897.46" z="None" />
       </node>
-      <node id="form" label="form">
+      <node id="wealth" label="wealth">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0421318933635" />
-        <viz:position x="473.16" y="507.34" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1716.4" y="144.64" z="None" />
       </node>
-      <node id="eastern" label="eastern">
+      <node id="liber" label="liber">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="1059.8" y="648.0" z="None" />
+        <viz:size value="0.065446577327" />
+        <viz:position x="1053.4" y="1202.9" z="None" />
       </node>
-      <node id="provinc" label="provinc">
+      <node id="subvers" label="subvers">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="1048.7" y="893.0" z="None" />
+        <viz:size value="0.0381988321291" />
+        <viz:position x="638.07" y="1238.2" z="None" />
       </node>
-      <node id="peopl" label="peopl">
+      <node id="doubt" label="doubt">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.125538353329" />
-        <viz:position x="844.57" y="296.15" z="None" />
+        <viz:size value="0.0256184159369" />
+        <viz:position x="459.11" y="1518.4" z="None" />
       </node>
-      <node id="tropic" label="tropic">
+      <node id="peru" label="peru">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0743877321451" />
-        <viz:position x="363.38" y="555.91" z="None" />
+        <viz:size value="0.048874770373" />
+        <viz:position x="1596.3" y="535.4" z="None" />
       </node>
-      <node id="heavi" label="heavi">
+      <node id="armi" label="armi">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.103316355876" />
-        <viz:position x="349.42" y="195.75" z="None" />
+        <viz:size value="0.0362452365799" />
+        <viz:position x="789.62" y="1012.2" z="None" />
       </node>
-      <node id="westard" label="westard">
+      <node id="capit" label="capit">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0860170198735" />
-        <viz:position x="941.76" y="123.0" z="None" />
+        <viz:size value="0.0737639220035" />
+        <viz:position x="668.44" y="880.65" z="None" />
       </node>
-      <node id="dominican" label="dominican">
+      <node id="riot" label="riot">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.10000010618" />
-        <viz:position x="299.45" y="507.99" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="230.0" y="463.64" z="None" />
       </node>
-      <node id="servic" label="servic">
+      <node id="effort" label="effort">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0863439476832" />
-        <viz:position x="408.5" y="103.55" z="None" />
+        <viz:size value="0.0226492015671" />
+        <viz:position x="774.89" y="596.26" z="None" />
       </node>
-      <node id="latitud" label="latitud">
+      <node id="women" label="women">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0446916008017" />
-        <viz:position x="191.44" y="716.16" z="None" />
+        <viz:size value="0.029837260595" />
+        <viz:position x="1168.0" y="568.55" z="None" />
       </node>
-      <node id="san" label="san">
+      <node id="account" label="account">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0966988163116" />
-        <viz:position x="678.78" y="837.77" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1720.3" y="231.64" z="None" />
       </node>
-      <node id="casualti" label="casualti">
+      <node id="erp" label="erp">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0539995499135" />
-        <viz:position x="717.82" y="904.27" z="None" />
+        <viz:size value="0.0495080406142" />
+        <viz:position x="697.54" y="1024.7" z="None" />
+      </node>
+      <node id="work" label="work">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1333.6" y="144.64" z="None" />
+      </node>
+      <node id="uniqu" label="uniqu">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="639.55" y="1506.5" z="None" />
+      </node>
+      <node id="reynaldo" label="reynaldo">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0441583624015" />
+        <viz:position x="980.38" y="725.26" z="None" />
+      </node>
+      <node id="del" label="del">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="1311.3" y="1594.2" z="None" />
+      </node>
+      <node id="era" label="era">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0749348200533" />
+        <viz:position x="722.81" y="501.79" z="None" />
+      </node>
+      <node id="male" label="male">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0530450097743" />
+        <viz:position x="1302.5" y="516.7" z="None" />
+      </node>
+      <node id="viceroy" label="viceroy">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="1670.9" y="375.63" z="None" />
+      </node>
+      <node id="process" label="process">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0246726029435" />
+        <viz:position x="1320.4" y="922.4" z="None" />
       </node>
       <node id="high" label="high">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0804845365399" />
-        <viz:position x="241.43" y="159.05" z="None" />
+        <viz:size value="0.0220678852864" />
+        <viz:position x="436.13" y="768.13" z="None" />
       </node>
-      <node id="ap" label="ap">
+      <node id="condemn" label="condemn">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0695774807311" />
-        <viz:position x="404.8" y="392.31" z="None" />
+        <viz:size value="0.0254428775963" />
+        <viz:position x="78.787" y="650.37" z="None" />
       </node>
-      <node id="home" label="home">
+      <node id="huge" label="huge">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0916117000607" />
-        <viz:position x="400.58" y="771.78" z="None" />
+        <viz:size value="0.0233281787653" />
+        <viz:position x="614.54" y="539.14" z="None" />
       </node>
-      <node id="ponc" label="ponc">
+      <node id="end" label="end">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0480715816656" />
-        <viz:position x="701.04" y="700.8" z="None" />
+        <viz:size value="0.0291254739045" />
+        <viz:position x="1100.0" y="336.74" z="None" />
       </node>
-      <node id="strength" label="strength">
+      <node id="goal" label="goal">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.086168981805" />
-        <viz:position x="676.68" y="241.78" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1709.0" y="550.64" z="None" />
       </node>
-      <node id="minim" label="minim">
+      <node id="economi" label="economi">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0835938480495" />
-        <viz:position x="621.8" y="168.87" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="330.21" y="221.0" z="None" />
       </node>
-      <node id="juan" label="juan">
+      <node id="ferdinand" label="ferdinand">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.089168578598" />
-        <viz:position x="643.0" y="764.53" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="997.21" y="163.0" z="None" />
       </node>
-      <node id="flood" label="flood">
+      <node id="montonero" label="montonero">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.147944486754" />
-        <viz:position x="265.58" y="342.3" z="None" />
+        <viz:size value="0.024500766389" />
+        <viz:position x="161.25" y="705.39" z="None" />
       </node>
-      <node id="sunday" label="sunday">
+      <node id="polit" label="polit">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.104242369094" />
-        <viz:position x="230.46" y="374.97" z="None" />
+        <viz:size value="0.150290579602" />
+        <viz:position x="1011.5" y="1491.3" z="None" />
       </node>
-      <node id="eugenio" label="eugenio">
+      <node id="compulsori" label="compulsori">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0761939750829" />
-        <viz:position x="673.72" y="436.71" z="None" />
+        <viz:size value="0.0467395672512" />
+        <viz:position x="936.86" y="1477.4" z="None" />
       </node>
-      <node id="reach" label="reach">
+      <node id="embrac" label="embrac">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.092989602248" />
-        <viz:position x="674.0" y="102.45" z="None" />
+        <viz:size value="0.0363595723204" />
+        <viz:position x="850.23" y="1183.3" z="None" />
       </node>
-      <node id="rain" label="rain">
+      <node id="fe" label="fe">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0743330697106" />
-        <viz:position x="430.51" y="156.46" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="143.0" y="1188.6" z="None" />
       </node>
-      <node id="alert" label="alert">
+      <node id="court" label="court">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.1355883246" />
-        <viz:position x="917.28" y="508.08" z="None" />
+        <viz:size value="0.0502650310698" />
+        <viz:position x="827.58" y="93.807" z="None" />
       </node>
-      <node id="director" label="director">
+      <node id="law" label="law">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0807280475934" />
-        <viz:position x="764.38" y="444.83" z="None" />
+        <viz:size value="0.0462396234906" />
+        <viz:position x="682.48" y="257.98" z="None" />
       </node>
-      <node id="briefli" label="briefli">
+      <node id="demonstr" label="demonstr">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0495243702481" />
-        <viz:position x="746.93" y="195.39" z="None" />
+        <viz:size value="0.0220678852864" />
+        <viz:position x="461.11" y="729.26" z="None" />
       </node>
-      <node id="nation" label="nation">
+      <node id="stronghold" label="stronghold">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0724298106067" />
-        <viz:position x="454.61" y="298.97" z="None" />
-      </node>
-      <node id="associ" label="associ">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.109792143216" />
-        <viz:position x="191.13" y="215.23" z="None" />
-      </node>
-      <node id="longitud" label="longitud">
-        <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0762419683456" />
-        <viz:position x="147.06" y="576.63" z="None" />
+        <viz:size value="0.0225089427947" />
+        <viz:position x="836.46" y="781.39" z="None" />
       </node>
       <node id="short" label="short">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.051319244951" />
-        <viz:position x="967.4" y="574.61" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="144.6" y="956.64" z="None" />
       </node>
-      <node id="domingo" label="domingo">
+      <node id="counter" label="counter">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.105049483585" />
-        <viz:position x="259.03" y="531.51" z="None" />
+        <viz:size value="0.0364769953063" />
+        <viz:position x="911.05" y="1149.7" z="None" />
+      </node>
+      <node id="confeder" label="confeder">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0373234703477" />
+        <viz:position x="1103.9" y="1058.9" z="None" />
+      </node>
+      <node id="chief" label="chief">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0244177644709" />
+        <viz:position x="315.77" y="891.08" z="None" />
+      </node>
+      <node id="cattl" label="cattl">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="790.85" y="1709.6" z="None" />
+      </node>
+      <node id="wing" label="wing">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.096425221784" />
+        <viz:position x="564.77" y="1311.7" z="None" />
+      </node>
+      <node id="oper" label="oper">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1709.0" y="1362.6" z="None" />
+      </node>
+      <node id="kirchner" label="kirchner">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0793424205489" />
+        <viz:position x="1176.0" y="353.37" z="None" />
+      </node>
+      <node id="trade" label="trade">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.121384449648" />
+        <viz:position x="1302.1" y="1356.0" z="None" />
+      </node>
+      <node id="estero" label="estero">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="1355.1" y="1651.6" z="None" />
+      </node>
+      <node id="caudillo" label="caudillo">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0291254739045" />
+        <viz:position x="329.0" y="305.75" z="None" />
+      </node>
+      <node id="group" label="group">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0723600545554" />
+        <viz:position x="1737.7" y="1538.6" z="None" />
+      </node>
+      <node id="galtieri" label="galtieri">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0245238901206" />
+        <viz:position x="1107.3" y="921.13" z="None" />
+      </node>
+      <node id="la" label="la">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0523168604338" />
+        <viz:position x="1619.9" y="677.9" z="None" />
+      </node>
+      <node id="polici" label="polici">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0523632516875" />
+        <viz:position x="1142.4" y="1232.1" z="None" />
+      </node>
+      <node id="guerrilla" label="guerrilla">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.132708081478" />
+        <viz:position x="114.44" y="742.88" z="None" />
+      </node>
+      <node id="labor" label="labor">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0234876441756" />
+        <viz:position x="757.98" y="767.05" z="None" />
+      </node>
+      <node id="argentino" label="argentino">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="593.02" y="1652.2" z="None" />
+      </node>
+      <node id="farmer" label="farmer">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1205.7" y="134.0" z="None" />
+      </node>
+      <node id="argentina" label="argentina">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.140437785159" />
+        <viz:position x="835.26" y="739.93" z="None" />
+      </node>
+      <node id="main" label="main">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0271457631472" />
+        <viz:position x="1777.7" y="1609.1" z="None" />
+      </node>
+      <node id="senat" label="senat">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0627385049843" />
+        <viz:position x="403.48" y="854.91" z="None" />
+      </node>
+      <node id="good" label="good">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0274868464281" />
+        <viz:position x="994.49" y="405.36" z="None" />
+      </node>
+      <node id="return" label="return">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0384904623891" />
+        <viz:position x="579.33" y="976.39" z="None" />
+      </node>
+      <node id="food" label="food">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="201.0" y="1594.6" z="None" />
+      </node>
+      <node id="overal" label="overal">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0277684367448" />
+        <viz:position x="1505.4" y="1062.0" z="None" />
+      </node>
+      <node id="hunter" label="hunter">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.044260952414" />
+        <viz:position x="1580.9" y="1506.8" z="None" />
+      </node>
+      <node id="strateg" label="strateg">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0383097904977" />
+        <viz:position x="1129.6" y="873.71" z="None" />
+      </node>
+      <node id="nation" label="nation">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.121872564847" />
+        <viz:position x="1176.3" y="949.02" z="None" />
+      </node>
+      <node id="videla" label="videla">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="1400.1" y="221.0" z="None" />
+      </node>
+      <node id="absolutist" label="absolutist">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1436.2" y="695.64" z="None" />
+      </node>
+      <node id="day" label="day">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0189274681523" />
+        <viz:position x="603.66" y="935.62" z="None" />
+      </node>
+      <node id="bank" label="bank">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1791.6" y="221.0" z="None" />
+      </node>
+      <node id="successor" label="successor">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0212154228755" />
+        <viz:position x="949.19" y="978.4" z="None" />
+      </node>
+      <node id="term" label="term">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0490420283759" />
+        <viz:position x="934.26" y="477.42" z="None" />
+      </node>
+      <node id="semisedentari" label="semisedentari">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1567.8" y="1449.6" z="None" />
+      </node>
+      <node id="achiev" label="achiev">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="683.57" y="1449.2" z="None" />
+      </node>
+      <node id="higher" label="higher">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0270137638056" />
+        <viz:position x="1502.9" y="807.91" z="None" />
+      </node>
+      <node id="roca" label="roca">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="617.12" y="1584.0" z="None" />
+      </node>
+      <node id="societi" label="societi">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0209057584513" />
+        <viz:position x="1060.5" y="1089.8" z="None" />
+      </node>
+      <node id="bueno" label="bueno">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0555034867338" />
+        <viz:position x="662.2" y="1015.2" z="None" />
+      </node>
+      <node id="suffrag" label="suffrag">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0545685771032" />
+        <viz:position x="1237.4" y="548.2" z="None" />
+      </node>
+      <node id="vespucci" label="vespucci">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="215.6" y="144.64" z="None" />
+      </node>
+      <node id="resum" label="resum">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0447437885307" />
+        <viz:position x="456.09" y="1033.3" z="None" />
+      </node>
+      <node id="keynesian" label="keynesian">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0366197231447" />
+        <viz:position x="1031.2" y="1272.9" z="None" />
+      </node>
+      <node id="democrat" label="democrat">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0238733557598" />
+        <viz:position x="737.97" y="270.4" z="None" />
+      </node>
+      <node id="alejandro" label="alejandro">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0376222730139" />
+        <viz:position x="902.0" y="1185.6" z="None" />
+      </node>
+      <node id="year" label="year">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0493618064796" />
+        <viz:position x="676.74" y="856.8" z="None" />
+      </node>
+      <node id="orient" label="orient">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0523168604338" />
+        <viz:position x="1546.6" y="399.76" z="None" />
+      </node>
+      <node id="canada" label="canada">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1746.1" y="318.64" z="None" />
+      </node>
+      <node id="depress" label="depress">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0466463570079" />
+        <viz:position x="1251.0" y="716.87" z="None" />
+      </node>
+      <node id="leopoldo" label="leopoldo">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0420752041281" />
+        <viz:position x="1023.5" y="952.66" z="None" />
+      </node>
+      <node id="saenz" label="saenz">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0264676247436" />
+        <viz:position x="829.14" y="1571.9" z="None" />
+      </node>
+      <node id="suprem" label="suprem">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0465865997509" />
+        <viz:position x="811.31" y="171.82" z="None" />
+      </node>
+      <node id="roqu" label="roqu">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0466455238014" />
+        <viz:position x="849.92" y="1483.7" z="None" />
+      </node>
+      <node id="barrier" label="barrier">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1078.4" y="231.64" z="None" />
+      </node>
+      <node id="advanc" label="advanc">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0637700937894" />
+        <viz:position x="1495.7" y="1515.8" z="None" />
+      </node>
+      <node id="seventh" label="seventh">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.025722775609" />
+        <viz:position x="1373.1" y="773.32" z="None" />
+      </node>
+      <node id="free" label="free">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0265076209633" />
+        <viz:position x="904.85" y="1573.6" z="None" />
+      </node>
+      <node id="invas" label="invas">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0267647235873" />
+        <viz:position x="390.15" y="550.97" z="None" />
+      </node>
+      <node id="amerigo" label="amerigo">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="286.81" y="134.0" z="None" />
+      </node>
+      <node id="earliest" label="earliest">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="413.4" y="144.64" z="None" />
+      </node>
+      <node id="welfar" label="welfar">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.021707287248" />
+        <viz:position x="733.36" y="931.71" z="None" />
+      </node>
+      <node id="british" label="british">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0473440948274" />
+        <viz:position x="429.97" y="626.14" z="None" />
+      </node>
+      <node id="revolutionari" label="revolutionari">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0366303448717" />
+        <viz:position x="881.06" y="993.33" z="None" />
+      </node>
+      <node id="american" label="american">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0424248738476" />
+        <viz:position x="1251.1" y="991.67" z="None" />
+      </node>
+      <node id="place" label="place">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.03555694407" />
+        <viz:position x="746.93" y="790.15" z="None" />
+      </node>
+      <node id="threat" label="threat">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0254428775963" />
+        <viz:position x="54.417" y="814.44" z="None" />
+      </node>
+      <node id="presid" label="presid">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0823094783565" />
+        <viz:position x="873.37" y="1389.5" z="None" />
+      </node>
+      <node id="south" label="south">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0475508614233" />
+        <viz:position x="1498.9" y="1602.5" z="None" />
+      </node>
+      <node id="origin" label="origin">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1780.2" y="540.0" z="None" />
+      </node>
+      <node id="protectionist" label="protectionist">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1149.7" y="221.0" z="None" />
+      </node>
+      <node id="exchang" label="exchang">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0486282311004" />
+        <viz:position x="1039.9" y="523.31" z="None" />
+      </node>
+      <node id="independ" label="independ">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0545643698954" />
+        <viz:position x="998.79" y="899.07" z="None" />
+      </node>
+      <node id="number" label="number">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1749.3" y="637.64" z="None" />
+      </node>
+      <node id="restrict" label="restrict">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.038684139207" />
+        <viz:position x="1235.1" y="1293.5" z="None" />
+      </node>
+      <node id="spanish" label="spanish">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0746748828476" />
+        <viz:position x="865.51" y="827.16" z="None" />
+      </node>
+      <node id="massiv" label="massiv">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.073164509543" />
+        <viz:position x="586.3" y="779.58" z="None" />
+      </node>
+      <node id="differ" label="differ">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0237183792775" />
+        <viz:position x="259.59" y="709.02" z="None" />
+      </node>
+      <node id="ton" label="ton">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="215.81" y="946.0" z="None" />
+      </node>
+      <node id="rosario" label="rosario">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1780.2" y="1352.0" z="None" />
+      </node>
+      <node id="underdevelop" label="underdevelop">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0258822733998" />
+        <viz:position x="607.49" y="194.61" z="None" />
+      </node>
+      <node id="provinc" label="provinc">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0611651163102" />
+        <viz:position x="438.38" y="943.05" z="None" />
+      </node>
+      <node id="urquiza" label="urquiza">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0386031049609" />
+        <viz:position x="1185.7" y="1045.9" z="None" />
+      </node>
+      <node id="wide" label="wide">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1820.6" y="627.0" z="None" />
+      </node>
+      <node id="aaa" label="aaa">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0263051399571" />
+        <viz:position x="1285.8" y="1111.9" z="None" />
+      </node>
+      <node id="rate" label="rate">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0441302241838" />
+        <viz:position x="975.56" y="600.62" z="None" />
+      </node>
+      <node id="youth" label="youth">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0230331816634" />
+        <viz:position x="511.77" y="1342.9" z="None" />
+      </node>
+      <node id="steep" label="steep">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0427902374931" />
+        <viz:position x="1357.8" y="953.3" z="None" />
+      </node>
+      <node id="duhald" label="duhald">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0544685831551" />
+        <viz:position x="1230.4" y="299.17" z="None" />
+      </node>
+      <node id="pre" label="pre">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0254226563887" />
+        <viz:position x="797.87" y="362.5" z="None" />
+      </node>
+      <node id="modern" label="modern">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0357148459569" />
+        <viz:position x="1118.4" y="1011.2" z="None" />
+      </node>
+      <node id="mine" label="mine">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="144.6" y="376.64" z="None" />
+      </node>
+      <node id="immigr" label="immigr">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0785274357929" />
+        <viz:position x="641.85" y="612.62" z="None" />
+      </node>
+      <node id="self" label="self">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0456557553236" />
+        <viz:position x="1106.2" y="715.74" z="None" />
+      </node>
+      <node id="violat" label="violat">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0233916094888" />
+        <viz:position x="570.14" y="1447.8" z="None" />
+      </node>
+      <node id="mid" label="mid">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1738.0" y="724.64" z="None" />
+      </node>
+      <node id="interior" label="interior">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0239716614613" />
+        <viz:position x="359.41" y="946.1" z="None" />
+      </node>
+      <node id="divers" label="divers">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0262711599007" />
+        <viz:position x="1472.0" y="1316.2" z="None" />
+      </node>
+      <node id="santiago" label="santiago">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="1287.3" y="1526.0" z="None" />
+      </node>
+      <node id="energet" label="energet">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="707.67" y="1381.0" z="None" />
+      </node>
+      <node id="germani" label="germani">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1207.7" y="1613.0" z="None" />
+      </node>
+      <node id="trace" label="trace">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="484.61" y="134.0" z="None" />
+      </node>
+      <node id="cordoba" label="cordoba">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1750.0" y="811.64" z="None" />
+      </node>
+      <node id="plan" label="plan">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.021994021564" />
+        <viz:position x="1140.0" y="1331.8" z="None" />
+      </node>
+      <node id="maria" label="maria">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1742.2" y="1014.6" z="None" />
+      </node>
+      <node id="zealand" label="zealand">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0423922273436" />
+        <viz:position x="860.77" y="1353.3" z="None" />
+      </node>
+      <node id="gather" label="gather">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="272.21" y="1584.0" z="None" />
+      </node>
+      <node id="capita" label="capita">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1742.8" y="1101.6" z="None" />
+      </node>
+      <node id="declar" label="declar">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0375912158575" />
+        <viz:position x="895.11" y="763.35" z="None" />
+      </node>
+      <node id="obedi" label="obedi">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.026294997325" />
+        <viz:position x="682.15" y="173.91" z="None" />
+      </node>
+      <node id="axi" label="axi">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0291254739045" />
+        <viz:position x="456.63" y="279.0" z="None" />
+      </node>
+      <node id="steadi" label="steadi">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.021994021564" />
+        <viz:position x="1166.6" y="1314.0" z="None" />
+      </node>
+      <node id="treati" label="treati">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1687.3" y="1613.0" z="None" />
+      </node>
+      <node id="sector" label="sector">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="1652.1" y="898.21" z="None" />
+      </node>
+      <node id="columbian" label="columbian">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0441884808625" />
+        <viz:position x="753.59" y="435.55" z="None" />
+      </node>
+      <node id="surplus" label="surplus">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0238375825025" />
+        <viz:position x="1287.9" y="1450.9" z="None" />
+      </node>
+      <node id="gold" label="gold">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="215.81" y="366.0" z="None" />
+      </node>
+      <node id="empir" label="empir">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0396999821873" />
+        <viz:position x="858.97" y="706.13" z="None" />
+      </node>
+      <node id="radic" label="radic">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0265351442683" />
+        <viz:position x="380.11" y="1508.8" z="None" />
+      </node>
+      <node id="contemporari" label="contemporari">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0398080621505" />
+        <viz:position x="699.3" y="414.58" z="None" />
+      </node>
+      <node id="crime" label="crime">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1742.2" y="1449.6" z="None" />
+      </node>
+      <node id="manufactur" label="manufactur">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="1696.0" y="955.63" z="None" />
+      </node>
+      <node id="busi" label="busi">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0790950245637" />
+        <viz:position x="896.39" y="658.91" z="None" />
+      </node>
+      <node id="local" label="local">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0403588357521" />
+        <viz:position x="897.61" y="824.81" z="None" />
+      </node>
+      <node id="plata" label="plata">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0496658175001" />
+        <viz:position x="1610.9" y="606.2" z="None" />
+      </node>
+      <node id="secular" label="secular">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="963.75" y="1681.6" z="None" />
+      </node>
+      <node id="stop" label="stop">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.07131824464" />
+        <viz:position x="708.58" y="1134.2" z="None" />
+      </node>
+      <node id="argentin" label="argentin">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.134271442024" />
+        <viz:position x="1033.5" y="1050.2" z="None" />
+      </node>
+      <node id="increas" label="increas">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.074556201107" />
+        <viz:position x="1552.8" y="1125.3" z="None" />
+      </node>
+      <node id="antagonist" label="antagonist">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0271457631472" />
+        <viz:position x="1816.2" y="1515.0" z="None" />
+      </node>
+      <node id="organ" label="organ">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.105052082756" />
+        <viz:position x="208.4" y="744.57" z="None" />
+      </node>
+      <node id="denmark" label="denmark">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1817.3" y="308.0" z="None" />
+      </node>
+      <node id="cepeda" label="cepeda">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="941.02" y="347.15" z="None" />
+      </node>
+      <node id="commot" label="commot">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0248917540079" />
+        <viz:position x="1049.6" y="1561.5" z="None" />
+      </node>
+      <node id="switzerland" label="switzerland">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.021417762351" />
+        <viz:position x="968.55" y="1342.1" z="None" />
+      </node>
+      <node id="septemb" label="septemb">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0220080165532" />
+        <viz:position x="514.26" y="855.41" z="None" />
+      </node>
+      <node id="overwhelm" label="overwhelm">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0227956023725" />
+        <viz:position x="581.2" y="1146.9" z="None" />
+      </node>
+      <node id="isabel" label="isabel">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0508395881422" />
+        <viz:position x="534.72" y="912.27" z="None" />
+      </node>
+      <node id="concern" label="concern">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0407225899718" />
+        <viz:position x="1094.6" y="852.2" z="None" />
+      </node>
+      <node id="reform" label="reform">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.021994021564" />
+        <viz:position x="1118.0" y="1349.5" z="None" />
+      </node>
+      <node id="pavon" label="pavon">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="293.5" y="1709.5" z="None" />
+      </node>
+      <node id="state" label="state">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.120035919808" />
+        <viz:position x="974.19" y="973.02" z="None" />
+      </node>
+      <node id="nestor" label="nestor">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0291254739045" />
+        <viz:position x="1191.6" y="429.57" z="None" />
+      </node>
+      <node id="latin" label="latin">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0246726029435" />
+        <viz:position x="1332.6" y="1021.8" z="None" />
+      </node>
+      <node id="extend" label="extend">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0261917291176" />
+        <viz:position x="264.21" y="541.98" z="None" />
+      </node>
+      <node id="infam" label="infam">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0503048501747" />
+        <viz:position x="1320.1" y="655.67" z="None" />
+      </node>
+      <node id="unpreced" label="unpreced">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0459968080803" />
+        <viz:position x="275.85" y="648.72" z="None" />
+      </node>
+      <node id="monarchi" label="monarchi">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1507.4" y="685.0" z="None" />
+      </node>
+      <node id="popul" label="popul">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0209057584513" />
+        <viz:position x="1070.3" y="1062.6" z="None" />
+      </node>
+      <node id="federalist" label="federalist">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0256588260263" />
+        <viz:position x="363.83" y="1061.5" z="None" />
+      </node>
+      <node id="unemploy" label="unemploy">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0277684367448" />
+        <viz:position x="1622.4" y="1087.9" z="None" />
+      </node>
+      <node id="countri" label="countri">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0646228103963" />
+        <viz:position x="1345.1" y="875.02" z="None" />
+      </node>
+      <node id="railway" label="railway">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="588.05" y="115.64" z="None" />
+      </node>
+      <node id="fix" label="fix">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0273108604689" />
+        <viz:position x="1087.1" y="446.87" z="None" />
+      </node>
+      <node id="ucr" label="ucr">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0229993169767" />
+        <viz:position x="488.35" y="1018.3" z="None" />
+      </node>
+      <node id="period" label="period">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1765.8" y="1265.0" z="None" />
+      </node>
+      <node id="peron" label="peron">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.173497738676" />
+        <viz:position x="628.49" y="950.7" z="None" />
+      </node>
+      <node id="colon" label="colon">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.056500849594" />
+        <viz:position x="771.8" y="663.36" z="None" />
+      </node>
+      <node id="coloni" label="coloni">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.039755257199" />
+        <viz:position x="792.86" y="514.37" z="None" />
+      </node>
+      <node id="debt" label="debt">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="349.05" y="1217.2" z="None" />
+      </node>
+      <node id="beef" label="beef">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0516352108278" />
+        <viz:position x="1573.5" y="1269.4" z="None" />
+      </node>
+      <node id="union" label="union">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0827859841002" />
+        <viz:position x="453.52" y="1344.3" z="None" />
+      </node>
+      <node id="territori" label="territori">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0357148459569" />
+        <viz:position x="1108.2" y="999.06" z="None" />
+      </node>
+      <node id="proscript" label="proscript">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0189274681523" />
+        <viz:position x="633.07" y="905.34" z="None" />
+      </node>
+      <node id="secret" label="secret">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0545685771032" />
+        <viz:position x="1361.6" y="474.95" z="None" />
+      </node>
+      <node id="basic" label="basic">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0459697299169" />
+        <viz:position x="1660.6" y="1518.3" z="None" />
+      </node>
+      <node id="immedi" label="immedi">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1787.7" y="134.0" z="None" />
+      </node>
+      <node id="life" label="life">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0256184159369" />
+        <viz:position x="519.3" y="1543.2" z="None" />
+      </node>
+      <node id="flight" label="flight">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.022315229197" />
+        <viz:position x="647.31" y="830.95" z="None" />
+      </node>
+      <node id="eduardo" label="eduardo">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0297947336575" />
+        <viz:position x="1284.6" y="250.0" z="None" />
+      </node>
+      <node id="worker" label="worker">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0242337486576" />
+        <viz:position x="392.03" y="1377.1" z="None" />
+      </node>
+      <node id="fund" label="fund">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0390103341184" />
+        <viz:position x="567.6" y="1073.0" z="None" />
+      </node>
+      <node id="chile" label="chile">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="955.95" y="86.639" z="None" />
+      </node>
+      <node id="educ" label="educ">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1035.0" y="1671.0" z="None" />
+      </node>
+      <node id="decad" label="decad">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.028023918368" />
+        <viz:position x="1387.2" y="602.28" z="None" />
+      </node>
+      <node id="frozen" label="frozen">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0285897142526" />
+        <viz:position x="1604.0" y="1337.0" z="None" />
+      </node>
+      <node id="wealthiest" label="wealthiest">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0448941537258" />
+        <viz:position x="1306.7" y="836.98" z="None" />
+      </node>
+      <node id="guido" label="guido">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1813.4" y="1004.0" z="None" />
+      </node>
+      <node id="kingdom" label="kingdom">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0561333160544" />
+        <viz:position x="906.8" y="801.23" z="None" />
+      </node>
+      <node id="ii" label="ii">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0226593399214" />
+        <viz:position x="1028.9" y="806.67" z="None" />
+      </node>
+      <node id="centuri" label="centuri">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1809.2" y="714.0" z="None" />
+      </node>
+      <node id="incom" label="incom">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1814.1" y="1091.0" z="None" />
+      </node>
+      <node id="garay" label="garay">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1821.2" y="801.0" z="None" />
+      </node>
+      <node id="menem" label="menem">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0532725119097" />
+        <viz:position x="762.43" y="1133.2" z="None" />
+      </node>
+      <node id="terrorist" label="terrorist">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0254428775963" />
+        <viz:position x="55.534" y="685.61" z="None" />
+      </node>
+      <node id="develop" label="develop">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0770528523263" />
+        <viz:position x="1270.0" y="912.54" z="None" />
+      </node>
+      <node id="parti" label="parti">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0248917540079" />
+        <viz:position x="1097.7" y="1515.3" z="None" />
+      </node>
+      <node id="juan" label="juan">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0709050039014" />
+        <viz:position x="738.25" y="979.08" z="None" />
+      </node>
+      <node id="econom" label="econom">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.144506811101" />
+        <viz:position x="1110.3" y="1261.0" z="None" />
+      </node>
+      <node id="member" label="member">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0254428775963" />
+        <viz:position x="40.296" y="731.84" z="None" />
+      </node>
+      <node id="inca" label="inca">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0404214364492" />
+        <viz:position x="836.66" y="596.22" z="None" />
+      </node>
+      <node id="cabot" label="cabot">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1508.9" y="86.639" z="None" />
+      </node>
+      <node id="eugenio" label="eugenio">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0229787231673" />
+        <viz:position x="1002.6" y="1054.9" z="None" />
+      </node>
+      <node id="underground" label="underground">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.024500766389" />
+        <viz:position x="154.72" y="803.29" z="None" />
+      </node>
+      <node id="european" label="european">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0552825753074" />
+        <viz:position x="715.26" y="592.31" z="None" />
+      </node>
+      <node id="assist" label="assist">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0459968080803" />
+        <viz:position x="302.29" y="625.56" z="None" />
+      </node>
+      <node id="director" label="director">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0436864089771" />
+        <viz:position x="779.38" y="251.65" z="None" />
+      </node>
+      <node id="rais" label="rais">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="723.0" y="1584.0" z="None" />
+      </node>
+      <node id="bignon" label="bignon">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0254098471544" />
+        <viz:position x="1064.0" y="660.03" z="None" />
+      </node>
+      <node id="extern" label="extern">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="392.95" y="1274.6" z="None" />
+      </node>
+      <node id="insurg" label="insurg">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="177.5" y="1362.6" z="None" />
+      </node>
+      <node id="tucuman" label="tucuman">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0463936477585" />
+        <viz:position x="350.96" y="993.13" z="None" />
       </node>
       <node id="center" label="center">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0411473370389" />
-        <viz:position x="528.86" y="358.8" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="177.5" y="1275.6" z="None" />
       </node>
-      <node id="alarm" label="alarm">
+      <node id="faustino" label="faustino">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0523670238104" />
-        <viz:position x="989.95" y="359.56" z="None" />
+        <viz:size value="0.0214421886595" />
+        <viz:position x="599.76" y="1004.4" z="None" />
       </node>
-      <node id="m" label="m">
+      <node id="influx" label="influx">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0836087059489" />
-        <viz:position x="119.8" y="359.78" z="None" />
+        <viz:size value="0.0233281787653" />
+        <viz:position x="586.69" y="553.94" z="None" />
       </node>
-      <node id="season" label="season">
+      <node id="charrua" label="charrua">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.044623711796" />
-        <viz:position x="435.75" y="637.21" z="None" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1761.9" y="453.0" z="None" />
       </node>
-      <node id="issu" label="issu">
+      <node id="legisl" label="legisl">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.0495987307464" />
-        <viz:position x="419.5" y="18.0" z="None" />
+        <viz:size value="0.0297947336575" />
+        <viz:position x="429.33" y="481.22" z="None" />
       </node>
-      <node id="push" label="push">
+      <node id="left" label="left">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.125538353329" />
-        <viz:position x="811.52" y="716.15" z="None" />
+        <viz:size value="0.0230331816634" />
+        <viz:position x="594.91" y="1388.3" z="None" />
       </node>
-      <node id="wind" label="wind">
+      <node id="gdp" label="gdp">
         <viz:color b="10" g="10" r="239" />
-        <viz:size value="0.226798144588" />
-        <viz:position x="279.64" y="239.9" z="None" />
+        <viz:size value="0.069747892755" />
+        <viz:position x="1447.4" y="953.97" z="None" />
+      </node>
+      <node id="coup" label="coup">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0673093858464" />
+        <viz:position x="977.17" y="1235.6" z="None" />
+      </node>
+      <node id="violenc" label="violenc">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0248917540079" />
+        <viz:position x="1015.4" y="1574.6" z="None" />
+      </node>
+      <node id="human" label="human">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.066973157918" />
+        <viz:position x="520.34" y="1457.3" z="None" />
+      </node>
+      <node id="peninsular" label="peninsular">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0226593399214" />
+        <viz:position x="1033.7" y="778.51" z="None" />
+      </node>
+      <node id="vulner" label="vulner">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="1628.1" y="830.0" z="None" />
+      </node>
+      <node id="east" label="east">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="248.71" y="1265.0" z="None" />
+      </node>
+      <node id="earli" label="earli">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0227956023725" />
+        <viz:position x="644.54" y="1186.5" z="None" />
+      </node>
+      <node id="australia" label="australia">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0246587185449" />
+        <viz:position x="838.96" y="1447.4" z="None" />
+      </node>
+      <node id="march" label="march">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0220080165532" />
+        <viz:position x="486.72" y="944.9" z="None" />
+      </node>
+      <node id="mileag" label="mileag">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="659.26" y="105.0" z="None" />
+      </node>
+      <node id="anticommunist" label="anticommunist">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0405813869928" />
+        <viz:position x="1108.1" y="1087.8" z="None" />
+      </node>
+      <node id="vacuum" label="vacuum">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0544685831551" />
+        <viz:position x="417.63" y="408.95" z="None" />
+      </node>
+      <node id="belgium" label="belgium">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0215613873518" />
+        <viz:position x="821.92" y="695.29" z="None" />
+      </node>
+      <node id="world" label="world">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0226593399214" />
+        <viz:position x="977.85" y="772.48" z="None" />
+      </node>
+      <node id="banda" label="banda">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.028879616499" />
+        <viz:position x="1510.8" y="337.0" z="None" />
+      </node>
+      <node id="formal" label="formal">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0263605030935" />
+        <viz:position x="265.15" y="1020.0" z="None" />
+      </node>
+      <node id="hipolito" label="hipolito">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0276212525999" />
+        <viz:position x="239.48" y="1479.5" z="None" />
+      </node>
+      <node id="d" label="d">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0416478859625" />
+        <viz:position x="1035.2" y="1284.5" z="None" />
+      </node>
+      <node id="puelch" label="puelch">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1774.4" y="898.64" z="None" />
+      </node>
+      <node id="martin" label="martin">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1774.4" y="1710.6" z="None" />
+      </node>
+      <node id="popular" label="popular">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.108901137513" />
+        <viz:position x="492.82" y="776.32" z="None" />
+      </node>
+      <node id="sebastian" label="sebastian">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1580.1" y="76.0" z="None" />
+      </node>
+      <node id="crisi" label="crisi">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.021994021564" />
+        <viz:position x="1199.5" y="1238.8" z="None" />
+      </node>
+      <node id="right" label="right">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0985321577342" />
+        <viz:position x="546.37" y="1368.2" z="None" />
+      </node>
+      <node id="martial" label="martial">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0280069834973" />
+        <viz:position x="837.02" y="18.0" z="None" />
+      </node>
+      <node id="intern" label="intern">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0561300670851" />
+        <viz:position x="548.48" y="1214.7" z="None" />
+      </node>
+      <node id="growth" label="growth">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0264051367147" />
+        <viz:position x="1522.7" y="906.39" z="None" />
+      </node>
+      <node id="export" label="export">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0729642802561" />
+        <viz:position x="1530.3" y="1203.5" z="None" />
+      </node>
+      <node id="constitut" label="constitut">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0780509935455" />
+        <viz:position x="709.79" y="1125.6" z="None" />
+      </node>
+      <node id="cristina" label="cristina">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0244177644709" />
+        <viz:position x="325.06" y="843.29" z="None" />
+      </node>
+      <node id="feder" label="feder">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0570362296452" />
+        <viz:position x="777.21" y="1217.0" z="None" />
+      </node>
+      <node id="querandi" label="querandi">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1845.7" y="888.0" z="None" />
+      </node>
+      <node id="legal" label="legal">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0574511555586" />
+        <viz:position x="549.7" y="985.62" z="None" />
+      </node>
+      <node id="deficit" label="deficit">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0238375825025" />
+        <viz:position x="1313.4" y="1427.5" z="None" />
+      </node>
+      <node id="condit" label="condit">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1404.8" y="134.0" z="None" />
+      </node>
+      <node id="leader" label="leader">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0452254898418" />
+        <viz:position x="358.17" y="1357.8" z="None" />
+      </node>
+      <node id="encourag" label="encourag">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1173.9" y="1710.6" z="None" />
+      </node>
+      <node id="wheat" label="wheat">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0273170793057" />
+        <viz:position x="1452.8" y="1224.3" z="None" />
+      </node>
+      <node id="power" label="power">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0793424205489" />
+        <viz:position x="401.53" y="333.85" z="None" />
+      </node>
+      <node id="rua" label="rua">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.028879616499" />
+        <viz:position x="1618.5" y="750.16" z="None" />
+      </node>
+      <node id="mitr" label="mitr">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="361.62" y="1584.0" z="None" />
+      </node>
+      <node id="discount" label="discount">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0261917291176" />
+        <viz:position x="229.27" y="570.01" z="None" />
+      </node>
+      <node id="santa" label="santa">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="214.21" y="1178.0" z="None" />
+      </node>
+      <node id="monetari" label="monetari">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0391349780413" />
+        <viz:position x="503.8" y="1146.2" z="None" />
+      </node>
+      <node id="central" label="central">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0248917540079" />
+        <viz:position x="980.79" y="1576.4" z="None" />
+      </node>
+      <node id="justo" label="justo">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0229787231673" />
+        <viz:position x="1045.4" y="1000.1" z="None" />
+      </node>
+      <node id="revolut" label="revolut">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0821799795129" />
+        <viz:position x="997.83" y="1147.8" z="None" />
+      </node>
+      <node id="act" label="act">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0241324208755" />
+        <viz:position x="809.75" y="1448.4" z="None" />
+      </node>
+      <node id="industri" label="industri">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0595040633574" />
+        <viz:position x="1042.3" y="810.3" z="None" />
+      </node>
+      <node id="allianc" label="allianc">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0462634719474" />
+        <viz:position x="1196.9" y="1101.2" z="None" />
+      </node>
+      <node id="discont" label="discont">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0391567531482" />
+        <viz:position x="391.03" y="752.8" z="None" />
+      </node>
+      <node id="civic" label="civic">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0468042830313" />
+        <viz:position x="424.86" y="1434.3" z="None" />
+      </node>
+      <node id="civil" label="civil">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0226593399214" />
+        <viz:position x="1000.4" y="749.81" z="None" />
+      </node>
+      <node id="chronic" label="chronic">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0238375825025" />
+        <viz:position x="1365.5" y="1352.3" z="None" />
+      </node>
+      <node id="overpow" label="overpow">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0378563108176" />
+        <viz:position x="1222.9" y="984.32" z="None" />
+      </node>
+      <node id="hidalgo" label="hidalgo">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="1603.0" y="250.0" z="None" />
+      </node>
+      <node id="suffici" label="suffici">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0260466810468" />
+        <viz:position x="1166.6" y="634.93" z="None" />
+      </node>
+      <node id="clandestin" label="clandestin">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.024500766389" />
+        <viz:position x="176.72" y="658.43" z="None" />
+      </node>
+      <node id="support" label="support">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.042203097458" />
+        <viz:position x="472.08" y="697.44" z="None" />
+      </node>
+      <node id="fought" label="fought">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="965.12" y="279.0" z="None" />
+      </node>
+      <node id="war" label="war">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.169609821574" />
+        <viz:position x="953.56" y="824.74" z="None" />
+      </node>
+      <node id="head" label="head">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.021417762351" />
+        <viz:position x="911.07" y="1348.3" z="None" />
+      </node>
+      <node id="reorgan" label="reorgan">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0424248738476" />
+        <viz:position x="1228.6" y="915.6" z="None" />
+      </node>
+      <node id="dirti" label="dirti">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0226593399214" />
+        <viz:position x="1033.2" y="753.08" z="None" />
+      </node>
+      <node id="centralist" label="centralist">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0232268644855" />
+        <viz:position x="666.11" y="1186.2" z="None" />
+      </node>
+      <node id="default" label="default">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.034174096965" />
+        <viz:position x="325.1" y="1149.0" z="None" />
+      </node>
+      <node id="vice" label="vice">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0241324208755" />
+        <viz:position x="902.58" y="1465.8" z="None" />
+      </node>
+      <node id="record" label="record">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0233916094888" />
+        <viz:position x="479.49" y="1408.0" z="None" />
+      </node>
+      <node id="felix" label="felix">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0258822733998" />
+        <viz:position x="556.29" y="225.82" z="None" />
+      </node>
+      <node id="general" label="general">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1845.7" y="1700.0" z="None" />
+      </node>
+      <node id="yrigoyen" label="yrigoyen">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0493580587454" />
+        <viz:position x="292.78" y="1417.5" z="None" />
+      </node>
+      <node id="exist" label="exist">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1639.0" y="1439.0" z="None" />
+      </node>
+      <node id="cultur" label="cultur">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0461835743531" />
+        <viz:position x="1388.4" y="1316.0" z="None" />
+      </node>
+      <node id="campora" label="campora">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0533475884931" />
+        <viz:position x="620.43" y="1028.4" z="None" />
+      </node>
+      <node id="bartolom" label="bartolom">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0647658171723" />
+        <viz:position x="337.52" y="1652.2" z="None" />
+      </node>
+      <node id="junta" label="junta">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1813.4" y="1439.0" z="None" />
+      </node>
+      <node id="role" label="role">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0248917540079" />
+        <viz:position x="949.8" y="1570.0" z="None" />
+      </node>
+      <node id="falkland" label="falkland">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0226593399214" />
+        <viz:position x="1002.5" y="821.63" z="None" />
+      </node>
+      <node id="etat" label="etat">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.024342153793" />
+        <viz:position x="1083.9" y="1357.9" z="None" />
+      </node>
+      <node id="francisco" label="francisco">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1027.2" y="76.0" z="None" />
+      </node>
+      <node id="congress" label="congress">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0227956023725" />
+        <viz:position x="597.2" y="1178.3" z="None" />
+      </node>
+      <node id="faction" label="faction">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0393061716475" />
+        <viz:position x="500.88" y="1288.6" z="None" />
+      </node>
+      <node id="resign" label="resign">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0950286662896" />
+        <viz:position x="661.32" y="1105.0" z="None" />
+      </node>
+      <node id="intens" label="intens">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0594580053986" />
+        <viz:position x="771.23" y="845.32" z="None" />
+      </node>
+      <node id="fiscal" label="fiscal">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1732.3" y="1178.0" z="None" />
+      </node>
+      <node id="domingo" label="domingo">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0522437600934" />
+        <viz:position x="669.76" y="956.95" z="None" />
+      </node>
+      <node id="massacr" label="massacr">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0429208538142" />
+        <viz:position x="525.43" y="1071.5" z="None" />
+      </node>
+      <node id="wife" label="wife">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0685169873352" />
+        <viz:position x="490.91" y="842.57" z="None" />
+      </node>
+      <node id="invest" label="invest">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="1245.1" y="1700.0" z="None" />
+      </node>
+      <node id="rule" label="rule">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.101363992947" />
+        <viz:position x="702.72" y="324.6" z="None" />
+      </node>
+      <node id="potenti" label="potenti">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.021994021564" />
+        <viz:position x="1184.5" y="1276.8" z="None" />
+      </node>
+      <node id="rural" label="rural">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="248.71" y="1352.0" z="None" />
+      </node>
+      <node id="decemb" label="decemb">
+        <viz:color b="10" g="10" r="239" />
+        <viz:size value="0.0443713370341" />
+        <viz:position x="301.21" y="453.0" z="None" />
       </node>
     </nodes>
     <edges>
-      <edge id="0" source="mexican" target="coast" />
-      <edge id="1" source="rotat" target="weather" />
-      <edge id="2" source="towrd" target="swept" />
-      <edge id="3" source="move" target="westard" />
-      <edge id="4" source="midnight" target="saturday" />
-      <edge id="5" source="report" target="miami" />
-      <edge id="6" source="atlant" target="storm" />
-      <edge id="7" source="mile" target="southeast" />
-      <edge id="8" source="mile" target="south" />
-      <edge id="9" source="mile" target="west" />
-      <edge id="10" source="heavili" target="popul" />
-      <edge id="11" source="follow" target="close" />
-      <edge id="12" source="follow" target="gilbert" />
-      <edge id="13" source="gulf" target="coast" />
-      <edge id="14" source="writer" target="santo" />
-      <edge id="15" source="writer" target="press" />
-      <edge id="16" source="littl" target="damag" />
-      <edge id="17" source="rico" target="puerto" />
-      <edge id="18" source="rico" target="said" />
-      <edge id="19" source="puerto" target="juan" />
-      <edge id="20" source="puerto" target="ponc" />
-      <edge id="21" source="florenc" target="hurrican" />
-      <edge id="22" source="florenc" target="rain" />
-      <edge id="23" source="return" target="home" />
-      <edge id="24" source="return" target="resid" />
-      <edge id="25" source="hurrican" target="second" />
-      <edge id="26" source="hurrican" target="strength" />
-      <edge id="27" source="hurrican" target="saturday" />
-      <edge id="28" source="hurrican" target="minim" />
-      <edge id="29" source="watch" target="flood" />
-      <edge id="30" source="mph" target="gust" />
-      <edge id="31" source="mph" target="wind" />
-      <edge id="32" source="coast" target="resid" />
-      <edge id="33" source="coast" target="dominican" />
-      <edge id="34" source="coast" target="north" />
-      <edge id="35" source="coast" target="south" />
-      <edge id="36" source="press" target="associ" />
-      <edge id="37" source="ruddi" target="gonzalez" />
-      <edge id="38" source="resid" target="said" />
-      <edge id="39" source="name" target="sixth" />
-      <edge id="40" source="name" target="storm" />
-      <edge id="41" source="gust" target="saturday" />
-      <edge id="42" source="p" target="m" />
-      <edge id="43" source="republ" target="ap" />
-      <edge id="44" source="republ" target="sunday" />
-      <edge id="45" source="republ" target="dominican" />
-      <edge id="46" source="night" target="saturday" />
-      <edge id="47" source="swept" target="gilbert" />
-      <edge id="48" source="inland" target="push" />
-      <edge id="49" source="sea" target="high" />
-      <edge id="50" source="saturday" target="hurricain" />
-      <edge id="51" source="saturday" target="cabral" />
-      <edge id="52" source="gonzalez" target="associ" />
-      <edge id="53" source="said" target="gilbert" />
-      <edge id="54" source="said" target="cabral" />
-      <edge id="55" source="televis" target="alert" />
-      <edge id="56" source="broad" target="area" />
-      <edge id="57" source="estim" target="peopl" />
-      <edge id="58" source="sustain" target="wind" />
-      <edge id="59" source="defens" target="director" />
-      <edge id="60" source="defens" target="civil" />
-      <edge id="61" source="defens" target="alert" />
-      <edge id="62" source="southeast" target="strong" />
-      <edge id="63" source="southeast" target="wind" />
-      <edge id="64" source="santo" target="domingo" />
-      <edge id="65" source="strong" target="flood" />
-      <edge id="66" source="strong" target="sunday" />
-      <edge id="67" source="strong" target="wind" />
-      <edge id="68" source="popul" target="south" />
-      <edge id="69" source="island" target="virgin" />
-      <edge id="70" source="hurricain" target="ap" />
-      <edge id="71" source="hurricain" target="gilbert" />
-      <edge id="72" source="hurricain" target="center" />
-      <edge id="73" source="hurricain" target="nation" />
-      <edge id="74" source="debbi" target="reach" />
-      <edge id="75" source="carribean" target="eastern" />
-      <edge id="76" source="flash" target="flood" />
-      <edge id="77" source="civil" target="alarm" />
-      <edge id="78" source="brought" target="gilbert" />
-      <edge id="79" source="brought" target="coastal" />
-      <edge id="80" source="remnant" target="push" />
-      <edge id="81" source="weather" target="heavi" />
-      <edge id="82" source="weather" target="servic" />
-      <edge id="83" source="weather" target="nation" />
-      <edge id="84" source="coastal" target="flood" />
-      <edge id="85" source="west" target="longitud" />
-      <edge id="86" source="happi" target="home" />
-      <edge id="87" source="live" target="peopl" />
-      <edge id="88" source="includ" target="provinc" />
-      <edge id="89" source="storm" target="season" />
-      <edge id="90" source="storm" target="gilbert" />
-      <edge id="91" source="storm" target="tropic" />
-      <edge id="92" source="gilbert" target="head" />
-      <edge id="93" source="gilbert" target="form" />
-      <edge id="94" source="cabral" target="eugenio" />
-      <edge id="95" source="north" target="latitud" />
-      <edge id="96" source="north" target="longitud" />
-      <edge id="97" source="tropic" target="domingo" />
-      <edge id="98" source="heavi" target="wind" />
-      <edge id="99" source="heavi" target="rain" />
-      <edge id="100" source="dominican" target="domingo" />
-      <edge id="101" source="servic" target="issu" />
-      <edge id="102" source="san" target="juan" />
-      <edge id="103" source="san" target="casualti" />
-      <edge id="104" source="high" target="wind" />
-      <edge id="105" source="strength" target="briefli" />
-      <edge id="106" source="minim" target="reach" />
-      <edge id="107" source="sunday" target="m" />
-      <edge id="108" source="eugenio" target="director" />
-      <edge id="109" source="alert" target="short" />
-      <edge id="110" source="associ" target="wind" />
+      <edge id="0" source="month" target="argentina" weight="1" />
+      <edge id="1" source="protest" target="massiv" weight="1" />
+      <edge id="2" source="follow" target="elect" weight="1" />
+      <edge id="3" source="follow" target="year" weight="1" />
+      <edge id="4" source="settlement" target="small" weight="1" />
+      <edge id="5" source="privat" target="deregul" weight="1" />
+      <edge id="6" source="pedro" target="state" weight="1" />
+      <edge id="7" source="pedro" target="justo" weight="1" />
+      <edge id="8" source="pedro" target="agustin" weight="1" />
+      <edge id="9" source="pedro" target="eugenio" weight="1" />
+      <edge id="10" source="guem" target="stop" weight="1" />
+      <edge id="11" source="baltasar" target="viceroy" weight="1" />
+      <edge id="12" source="baltasar" target="hidalgo" weight="1" />
+      <edge id="13" source="rise" target="cepeda" weight="1" />
+      <edge id="14" source="wave" target="massiv" weight="1" />
+      <edge id="15" source="wave" target="immigr" weight="1" />
+      <edge id="16" source="candid" target="peronist" weight="1" />
+      <edge id="17" source="llama" target="cattl" weight="1" />
+      <edge id="18" source="llama" target="rais" weight="1" />
+      <edge id="19" source="govern" target="alejandro" weight="1" />
+      <edge id="20" source="govern" target="militari" weight="1" />
+      <edge id="21" source="govern" target="feder" weight="1" />
+      <edge id="22" source="govern" target="new" weight="1" />
+      <edge id="23" source="administr" target="second" weight="1" />
+      <edge id="24" source="administr" target="argentina" weight="1" />
+      <edge id="25" source="level" target="countri" weight="1" />
+      <edge id="26" source="level" target="higher" weight="1" />
+      <edge id="27" source="eva" target="peron" weight="1" />
+      <edge id="28" source="eva" target="wife" weight="1" />
+      <edge id="29" source="sedentari" target="diaguita" weight="1" />
+      <edge id="30" source="sedentari" target="trade" weight="1" />
+      <edge id="31" source="signific" target="fiscal" weight="1" />
+      <edge id="32" source="amend" target="constitut" weight="1" />
+      <edge id="33" source="diaguita" target="advanc" weight="1" />
+      <edge id="34" source="small" target="busi" weight="1" />
+      <edge id="35" source="upper" target="orient" weight="1" />
+      <edge id="36" source="upper" target="peru" weight="1" />
+      <edge id="37" source="fold" target="economi" weight="1" />
+      <edge id="38" source="second" target="term" weight="1" />
+      <edge id="39" source="pressur" target="militari" weight="1" />
+      <edge id="40" source="pressur" target="polit" weight="1" />
+      <edge id="41" source="carlo" target="juan" weight="1" />
+      <edge id="42" source="carlo" target="peronist" weight="1" />
+      <edge id="43" source="carlo" target="menem" weight="1" />
+      <edge id="44" source="neo" target="liber" weight="1" />
+      <edge id="45" source="neo" target="keynesian" weight="1" />
+      <edge id="46" source="neo" target="embrac" weight="1" />
+      <edge id="47" source="atlant" target="revolut" weight="1" />
+      <edge id="48" source="navig" target="juan" weight="1" />
+      <edge id="49" source="navig" target="spanish" weight="1" />
+      <edge id="50" source="decre" target="secret" weight="1" />
+      <edge id="51" source="royalist" target="counter" weight="1" />
+      <edge id="52" source="royalist" target="stop" weight="1" />
+      <edge id="53" source="suspect" target="guerrilla" weight="1" />
+      <edge id="54" source="consecut" target="feder" weight="1" />
+      <edge id="55" source="new" target="zealand" weight="1" />
+      <edge id="56" source="new" target="coup" weight="1" />
+      <edge id="57" source="new" target="head" weight="1" />
+      <edge id="58" source="new" target="militari" weight="1" />
+      <edge id="59" source="new" target="presid" weight="1" />
+      <edge id="60" source="new" target="switzerland" weight="1" />
+      <edge id="61" source="new" target="public" weight="1" />
+      <edge id="62" source="public" target="compulsori" weight="1" />
+      <edge id="63" source="movement" target="polit" weight="1" />
+      <edge id="64" source="prosecut" target="legal" weight="1" />
+      <edge id="65" source="ezeiza" target="massacr" weight="1" />
+      <edge id="66" source="richest" target="countri" weight="1" />
+      <edge id="67" source="french" target="blockad" weight="1" />
+      <edge id="68" source="minuan" target="charrua" weight="1" />
+      <edge id="69" source="paleolith" target="period" weight="1" />
+      <edge id="70" source="jorg" target="rafael" weight="1" />
+      <edge id="71" source="great" target="depress" weight="1" />
+      <edge id="72" source="great" target="concern" weight="1" />
+      <edge id="73" source="militari" target="coup" weight="1" />
+      <edge id="74" source="peronist" target="intern" weight="1" />
+      <edge id="75" source="deregul" target="busi" weight="1" />
+      <edge id="76" source="social" target="differ" weight="1" />
+      <edge id="77" source="social" target="discont" weight="1" />
+      <edge id="78" source="social" target="unpreced" weight="1" />
+      <edge id="79" source="social" target="organ" weight="1" />
+      <edge id="80" source="social" target="assist" weight="1" />
+      <edge id="81" source="real" target="gdp" weight="1" />
+      <edge id="82" source="extrem" target="south" weight="1" />
+      <edge id="83" source="rafael" target="videla" weight="1" />
+      <edge id="84" source="agustin" target="alejandro" weight="1" />
+      <edge id="85" source="controversi" target="treati" weight="1" />
+      <edge id="86" source="julio" target="argentino" weight="1" />
+      <edge id="87" source="elect" target="peron" weight="1" />
+      <edge id="88" source="elect" target="septemb" weight="1" />
+      <edge id="89" source="elect" target="march" weight="1" />
+      <edge id="90" source="elect" target="campaign" weight="1" />
+      <edge id="91" source="vii" target="ferdinand" weight="1" />
+      <edge id="92" source="uriburu" target="felix" weight="1" />
+      <edge id="93" source="uriburu" target="underdevelop" weight="1" />
+      <edge id="94" source="uriburu" target="rule" weight="1" />
+      <edge id="95" source="austria" target="germani" weight="1" />
+      <edge id="96" source="famili" target="farmer" weight="1" />
+      <edge id="97" source="unit" target="kingdom" weight="1" />
+      <edge id="98" source="unit" target="state" weight="1" />
+      <edge id="99" source="wealth" target="immedi" weight="1" />
+      <edge id="100" source="liber" target="polici" weight="1" />
+      <edge id="101" source="liber" target="revolut" weight="1" />
+      <edge id="102" source="liber" target="econom" weight="1" />
+      <edge id="103" source="subvers" target="stop" weight="1" />
+      <edge id="104" source="subvers" target="wing" weight="1" />
+      <edge id="105" source="doubt" target="human" weight="1" />
+      <edge id="106" source="peru" target="plata" weight="1" />
+      <edge id="107" source="armi" target="revolutionari" weight="1" />
+      <edge id="108" source="armi" target="erp" weight="1" />
+      <edge id="109" source="capit" target="flight" weight="1" />
+      <edge id="110" source="capit" target="massiv" weight="1" />
+      <edge id="111" source="capit" target="bueno" weight="1" />
+      <edge id="112" source="capit" target="intens" weight="1" />
+      <edge id="113" source="riot" target="decemb" weight="1" />
+      <edge id="114" source="effort" target="colon" weight="1" />
+      <edge id="115" source="women" target="suffrag" weight="1" />
+      <edge id="116" source="account" target="bank" weight="1" />
+      <edge id="117" source="erp" target="peron" weight="1" />
+      <edge id="118" source="erp" target="stop" weight="1" />
+      <edge id="119" source="work" target="condit" weight="1" />
+      <edge id="120" source="uniqu" target="achiev" weight="1" />
+      <edge id="121" source="reynaldo" target="kingdom" weight="1" />
+      <edge id="122" source="reynaldo" target="bignon" weight="1" />
+      <edge id="123" source="del" target="santiago" weight="1" />
+      <edge id="124" source="del" target="estero" weight="1" />
+      <edge id="125" source="era" target="columbian" weight="1" />
+      <edge id="126" source="era" target="coloni" weight="1" />
+      <edge id="127" source="era" target="contemporari" weight="1" />
+      <edge id="128" source="era" target="european" weight="1" />
+      <edge id="129" source="male" target="secret" weight="1" />
+      <edge id="130" source="male" target="suffrag" weight="1" />
+      <edge id="131" source="process" target="reorgan" weight="1" />
+      <edge id="132" source="high" target="popular" weight="1" />
+      <edge id="133" source="condemn" target="guerrilla" weight="1" />
+      <edge id="134" source="huge" target="immigr" weight="1" />
+      <edge id="135" source="end" target="kirchner" weight="1" />
+      <edge id="136" source="goal" target="origin" weight="1" />
+      <edge id="137" source="montonero" target="organ" weight="1" />
+      <edge id="138" source="polit" target="central" weight="1" />
+      <edge id="139" source="polit" target="violenc" weight="1" />
+      <edge id="140" source="polit" target="parti" weight="1" />
+      <edge id="141" source="polit" target="commot" weight="1" />
+      <edge id="142" source="polit" target="role" weight="1" />
+      <edge id="143" source="compulsori" target="free" weight="1" />
+      <edge id="144" source="embrac" target="menem" weight="1" />
+      <edge id="145" source="fe" target="santa" weight="1" />
+      <edge id="146" source="court" target="martial" weight="1" />
+      <edge id="147" source="court" target="suprem" weight="1" />
+      <edge id="148" source="law" target="obedi" weight="1" />
+      <edge id="149" source="law" target="rule" weight="1" />
+      <edge id="150" source="demonstr" target="popular" weight="1" />
+      <edge id="151" source="stronghold" target="spanish" weight="1" />
+      <edge id="152" source="short" target="ton" weight="1" />
+      <edge id="153" source="counter" target="revolut" weight="1" />
+      <edge id="154" source="confeder" target="urquiza" weight="1" />
+      <edge id="155" source="confeder" target="argentin" weight="1" />
+      <edge id="156" source="chief" target="senat" weight="1" />
+      <edge id="157" source="wing" target="youth" weight="1" />
+      <edge id="158" source="wing" target="union" weight="1" />
+      <edge id="159" source="wing" target="right" weight="1" />
+      <edge id="160" source="wing" target="left" weight="1" />
+      <edge id="161" source="oper" target="rosario" weight="1" />
+      <edge id="162" source="kirchner" target="nestor" weight="1" />
+      <edge id="163" source="kirchner" target="duhald" weight="1" />
+      <edge id="164" source="trade" target="surplus" weight="1" />
+      <edge id="165" source="trade" target="restrict" weight="1" />
+      <edge id="166" source="trade" target="chronic" weight="1" />
+      <edge id="167" source="trade" target="deficit" weight="1" />
+      <edge id="168" source="trade" target="cultur" weight="1" />
+      <edge id="169" source="caudillo" target="power" weight="1" />
+      <edge id="170" source="group" target="main" weight="1" />
+      <edge id="171" source="group" target="antagonist" weight="1" />
+      <edge id="172" source="group" target="basic" weight="1" />
+      <edge id="173" source="galtieri" target="leopoldo" weight="1" />
+      <edge id="174" source="la" target="rua" weight="1" />
+      <edge id="175" source="la" target="plata" weight="1" />
+      <edge id="176" source="polici" target="restrict" weight="1" />
+      <edge id="177" source="polici" target="econom" weight="1" />
+      <edge id="178" source="guerrilla" target="terrorist" weight="1" />
+      <edge id="179" source="guerrilla" target="organ" weight="1" />
+      <edge id="180" source="guerrilla" target="member" weight="1" />
+      <edge id="181" source="guerrilla" target="threat" weight="1" />
+      <edge id="182" source="labor" target="intens" weight="1" />
+      <edge id="183" source="argentino" target="roca" weight="1" />
+      <edge id="184" source="argentina" target="kingdom" weight="1" />
+      <edge id="185" source="argentina" target="busi" weight="1" />
+      <edge id="186" source="argentina" target="declar" weight="1" />
+      <edge id="187" source="argentina" target="place" weight="1" />
+      <edge id="188" source="argentina" target="belgium" weight="1" />
+      <edge id="189" source="argentina" target="colon" weight="1" />
+      <edge id="190" source="senat" target="cristina" weight="1" />
+      <edge id="191" source="senat" target="wife" weight="1" />
+      <edge id="192" source="good" target="term" weight="1" />
+      <edge id="193" source="return" target="peron" weight="1" />
+      <edge id="194" source="return" target="ucr" weight="1" />
+      <edge id="195" source="food" target="gather" weight="1" />
+      <edge id="196" source="overal" target="increas" weight="1" />
+      <edge id="197" source="hunter" target="advanc" weight="1" />
+      <edge id="198" source="hunter" target="basic" weight="1" />
+      <edge id="199" source="strateg" target="industri" weight="1" />
+      <edge id="200" source="strateg" target="nation" weight="1" />
+      <edge id="201" source="nation" target="territori" weight="1" />
+      <edge id="202" source="nation" target="develop" weight="1" />
+      <edge id="203" source="nation" target="reorgan" weight="1" />
+      <edge id="204" source="nation" target="modern" weight="1" />
+      <edge id="205" source="nation" target="american" weight="1" />
+      <edge id="206" source="nation" target="overpow" weight="1" />
+      <edge id="207" source="absolutist" target="monarchi" weight="1" />
+      <edge id="208" source="day" target="peron" weight="1" />
+      <edge id="209" source="successor" target="state" weight="1" />
+      <edge id="210" source="semisedentari" target="exist" weight="1" />
+      <edge id="211" source="achiev" target="energet" weight="1" />
+      <edge id="212" source="societi" target="argentin" weight="1" />
+      <edge id="213" source="bueno" target="fund" weight="1" />
+      <edge id="214" source="bueno" target="constitut" weight="1" />
+      <edge id="215" source="vespucci" target="amerigo" weight="1" />
+      <edge id="216" source="resum" target="federalist" weight="1" />
+      <edge id="217" source="resum" target="legal" weight="1" />
+      <edge id="218" source="keynesian" target="econom" weight="1" />
+      <edge id="219" source="democrat" target="rule" weight="1" />
+      <edge id="220" source="year" target="peron" weight="1" />
+      <edge id="221" source="year" target="place" weight="1" />
+      <edge id="222" source="orient" target="banda" weight="1" />
+      <edge id="223" source="canada" target="denmark" weight="1" />
+      <edge id="224" source="depress" target="infam" weight="1" />
+      <edge id="225" source="leopoldo" target="state" weight="1" />
+      <edge id="226" source="saenz" target="roqu" weight="1" />
+      <edge id="227" source="suprem" target="director" weight="1" />
+      <edge id="228" source="roqu" target="presid" weight="1" />
+      <edge id="229" source="barrier" target="protectionist" weight="1" />
+      <edge id="230" source="advanc" target="south" weight="1" />
+      <edge id="231" source="seventh" target="wealthiest" weight="1" />
+      <edge id="232" source="invas" target="british" weight="1" />
+      <edge id="233" source="earliest" target="trace" weight="1" />
+      <edge id="234" source="welfar" target="juan" weight="1" />
+      <edge id="235" source="british" target="support" weight="1" />
+      <edge id="236" source="revolutionari" target="state" weight="1" />
+      <edge id="237" source="american" target="latin" weight="1" />
+      <edge id="238" source="presid" target="act" weight="1" />
+      <edge id="239" source="presid" target="vice" weight="1" />
+      <edge id="240" source="exchang" target="fix" weight="1" />
+      <edge id="241" source="exchang" target="rate" weight="1" />
+      <edge id="242" source="independ" target="state" weight="1" />
+      <edge id="243" source="independ" target="war" weight="1" />
+      <edge id="244" source="independ" target="concern" weight="1" />
+      <edge id="245" source="number" target="wide" weight="1" />
+      <edge id="246" source="spanish" target="empir" weight="1" />
+      <edge id="247" source="spanish" target="war" weight="1" />
+      <edge id="248" source="massiv" target="popular" weight="1" />
+      <edge id="249" source="provinc" target="interior" weight="1" />
+      <edge id="250" source="provinc" target="isabel" weight="1" />
+      <edge id="251" source="provinc" target="tucuman" weight="1" />
+      <edge id="252" source="urquiza" target="overpow" weight="1" />
+      <edge id="253" source="aaa" target="allianc" weight="1" />
+      <edge id="254" source="rate" target="busi" weight="1" />
+      <edge id="255" source="steep" target="gdp" weight="1" />
+      <edge id="256" source="steep" target="develop" weight="1" />
+      <edge id="257" source="duhald" target="eduardo" weight="1" />
+      <edge id="258" source="pre" target="columbian" weight="1" />
+      <edge id="259" source="modern" target="argentin" weight="1" />
+      <edge id="260" source="mine" target="gold" weight="1" />
+      <edge id="261" source="immigr" target="european" weight="1" />
+      <edge id="262" source="immigr" target="influx" weight="1" />
+      <edge id="263" source="self" target="industri" weight="1" />
+      <edge id="264" source="self" target="suffici" weight="1" />
+      <edge id="265" source="violat" target="right" weight="1" />
+      <edge id="266" source="mid" target="centuri" weight="1" />
+      <edge id="267" source="divers" target="cultur" weight="1" />
+      <edge id="268" source="cordoba" target="garay" weight="1" />
+      <edge id="269" source="plan" target="econom" weight="1" />
+      <edge id="270" source="maria" target="guido" weight="1" />
+      <edge id="271" source="zealand" target="australia" weight="1" />
+      <edge id="272" source="capita" target="incom" weight="1" />
+      <edge id="273" source="declar" target="war" weight="1" />
+      <edge id="274" source="axi" target="power" weight="1" />
+      <edge id="275" source="steadi" target="econom" weight="1" />
+      <edge id="276" source="sector" target="manufactur" weight="1" />
+      <edge id="277" source="sector" target="vulner" weight="1" />
+      <edge id="278" source="empir" target="inca" weight="1" />
+      <edge id="279" source="radic" target="civic" weight="1" />
+      <edge id="280" source="contemporari" target="rule" weight="1" />
+      <edge id="281" source="crime" target="junta" weight="1" />
+      <edge id="282" source="local" target="industri" weight="1" />
+      <edge id="283" source="local" target="intens" weight="1" />
+      <edge id="284" source="secular" target="educ" weight="1" />
+      <edge id="285" source="argentin" target="territori" weight="1" />
+      <edge id="286" source="argentin" target="state" weight="1" />
+      <edge id="287" source="argentin" target="anticommunist" weight="1" />
+      <edge id="288" source="argentin" target="revolut" weight="1" />
+      <edge id="289" source="argentin" target="popul" weight="1" />
+      <edge id="290" source="increas" target="unemploy" weight="1" />
+      <edge id="291" source="increas" target="export" weight="1" />
+      <edge id="292" source="organ" target="underground" weight="1" />
+      <edge id="293" source="organ" target="clandestin" weight="1" />
+      <edge id="294" source="cepeda" target="fought" weight="1" />
+      <edge id="295" source="overwhelm" target="resign" weight="1" />
+      <edge id="296" source="isabel" target="peron" weight="1" />
+      <edge id="297" source="isabel" target="wife" weight="1" />
+      <edge id="298" source="reform" target="econom" weight="1" />
+      <edge id="299" source="pavon" target="bartolom" weight="1" />
+      <edge id="300" source="extend" target="assist" weight="1" />
+      <edge id="301" source="infam" target="decad" weight="1" />
+      <edge id="302" source="unpreced" target="discount" weight="1" />
+      <edge id="303" source="countri" target="develop" weight="1" />
+      <edge id="304" source="railway" target="mileag" weight="1" />
+      <edge id="305" source="peron" target="proscript" weight="1" />
+      <edge id="306" source="peron" target="legal" weight="1" />
+      <edge id="307" source="peron" target="peron" weight="1" />
+      <edge id="308" source="peron" target="campora" weight="1" />
+      <edge id="309" source="peron" target="domingo" weight="1" />
+      <edge id="310" source="colon" target="european" weight="1" />
+      <edge id="311" source="coloni" target="inca" weight="1" />
+      <edge id="312" source="debt" target="extern" weight="1" />
+      <edge id="313" source="debt" target="default" weight="1" />
+      <edge id="314" source="beef" target="frozen" weight="1" />
+      <edge id="315" source="beef" target="export" weight="1" />
+      <edge id="316" source="union" target="civic" weight="1" />
+      <edge id="317" source="union" target="worker" weight="1" />
+      <edge id="318" source="union" target="leader" weight="1" />
+      <edge id="319" source="life" target="human" weight="1" />
+      <edge id="320" source="fund" target="monetari" weight="1" />
+      <edge id="321" source="chile" target="francisco" weight="1" />
+      <edge id="322" source="wealthiest" target="develop" weight="1" />
+      <edge id="323" source="ii" target="war" weight="1" />
+      <edge id="324" source="menem" target="resign" weight="1" />
+      <edge id="325" source="juan" target="domingo" weight="1" />
+      <edge id="326" source="econom" target="potenti" weight="1" />
+      <edge id="327" source="econom" target="crisi" weight="1" />
+      <edge id="328" source="cabot" target="sebastian" weight="1" />
+      <edge id="329" source="director" target="rule" weight="1" />
+      <edge id="330" source="insurg" target="rural" weight="1" />
+      <edge id="331" source="tucuman" target="formal" weight="1" />
+      <edge id="332" source="center" target="east" weight="1" />
+      <edge id="333" source="faustino" target="domingo" weight="1" />
+      <edge id="334" source="legisl" target="vacuum" weight="1" />
+      <edge id="335" source="gdp" target="growth" weight="1" />
+      <edge id="336" source="coup" target="revolut" weight="1" />
+      <edge id="337" source="coup" target="d" weight="1" />
+      <edge id="338" source="human" target="right" weight="1" />
+      <edge id="339" source="peninsular" target="war" weight="1" />
+      <edge id="340" source="earli" target="resign" weight="1" />
+      <edge id="341" source="anticommunist" target="allianc" weight="1" />
+      <edge id="342" source="vacuum" target="power" weight="1" />
+      <edge id="343" source="world" target="war" weight="1" />
+      <edge id="344" source="hipolito" target="yrigoyen" weight="1" />
+      <edge id="345" source="d" target="etat" weight="1" />
+      <edge id="346" source="puelch" target="querandi" weight="1" />
+      <edge id="347" source="martin" target="general" weight="1" />
+      <edge id="348" source="popular" target="discont" weight="1" />
+      <edge id="349" source="popular" target="wife" weight="1" />
+      <edge id="350" source="popular" target="support" weight="1" />
+      <edge id="351" source="right" target="record" weight="1" />
+      <edge id="352" source="right" target="faction" weight="1" />
+      <edge id="353" source="intern" target="monetari" weight="1" />
+      <edge id="354" source="intern" target="faction" weight="1" />
+      <edge id="355" source="export" target="wheat" weight="1" />
+      <edge id="356" source="constitut" target="feder" weight="1" />
+      <edge id="357" source="constitut" target="centralist" weight="1" />
+      <edge id="358" source="leader" target="yrigoyen" weight="1" />
+      <edge id="359" source="encourag" target="invest" weight="1" />
+      <edge id="360" source="mitr" target="bartolom" weight="1" />
+      <edge id="361" source="civil" target="war" weight="1" />
+      <edge id="362" source="war" target="dirti" weight="1" />
+      <edge id="363" source="war" target="falkland" weight="1" />
+      <edge id="364" source="campora" target="massacr" weight="1" />
+      <edge id="365" source="campora" target="resign" weight="1" />
+      <edge id="366" source="congress" target="resign" weight="1" />
     </edges>
   </graph>
 </gexf>

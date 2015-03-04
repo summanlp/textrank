@@ -1,14 +1,16 @@
 # encoding: cp850
 from gensim.utils import tokenize
 from gensim.parsing.preprocessing import strip_numeric, strip_punctuation
+from pattern.en import tag
 import snowball
 import re  # http://regex101.com/#python para probar regex.
-from sentence import Sentence
+from syntactic_unit import SyntacticUnit
 
 SEPARATOR = r"@"
 RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)')  # backup (\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)
 AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)\s(\w)")
 AB_ACRONYM = re.compile("(\.[a-zA-Z]\.)\s(\w)")
+AB_ACRONYM_LETTERS = re.compile("([a-zA-Z])\.([a-zA-Z])\.")
 UNDO_AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)" + SEPARATOR + "(\w)")
 UNDO_AB_ACRONYM = re.compile("(\.[a-zA-Z]\.)" + SEPARATOR + "(\w)")
 
@@ -41,24 +43,28 @@ STOPWORDS = frozenset(w for w in STOPWORDS.split() if w)
 
 def clean_text_by_sentences(text):
     """ Tokenizes a given text into sentences, applying filters and lemmatizing them.
-    Returns a sentence.Sentence list. """
+    Returns a SyntacticUnit list. """
     original_sentences = split_sentences(text)
     filtered_sentences = filter_words(original_sentences)
 
-    sentences = []
+    return merge_syntactic_units(original_sentences, filtered_sentences)
 
-    for i in xrange(len(original_sentences)):
-        if filtered_sentences[i] == '':
+
+def merge_syntactic_units(original_units, filtered_units, tags=None):
+    units = []
+    for i in xrange(len(original_units)):
+        if filtered_units[i] == '':
             continue
 
-        sentence = Sentence()
+        text = original_units[i]
+        token = filtered_units[i]
+        tag = tags[i][1] if tags else None
+        sentence = SyntacticUnit(text, token, tag)
         sentence.index = i
-        sentence.text = original_sentences[i]
-        sentence.tokens = filtered_sentences[i]
 
-        sentences.append(sentence)
+        units.append(sentence)
 
-    return sentences
+    return units
 
 
 def split_sentences(text):
@@ -87,13 +93,13 @@ def get_sentences(text):
         yield match.group()
 
 
-def filter_words(tokens):
+def filter_words(sentences):
     filters = [lambda x: x.lower(), strip_numeric, strip_punctuation, remove_stopwords,
                stem_sentence]
     # filters = []
 
     apply_filters_to_token = lambda token: apply_filters(token, filters)
-    return map(apply_filters_to_token, tokens)
+    return map(apply_filters_to_token, sentences)
 
 
 def apply_filters(sentence, filters):
@@ -114,10 +120,16 @@ def stem_sentence(sentence):
 
 
 def clean_text_by_word(text):
-    original_words = list(tokenize(text, to_lower=True, deacc=True))
+    """ Tokenizes a given text into words, applying filters and lemmatizing them.
+    Returns a dict of word -> syntacticUnit. """
+    text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
+    original_words = list(tokenize(text_without_acronyms, to_lower=True, deacc=True))
     filtered_words = filter_words(original_words)
-    return {item[0]: item[1] for item in zip(original_words, filtered_words) if item[1]}
+    tags = tag(" ".join(original_words))
+    units = merge_syntactic_units(original_words, filtered_words, tags)
+    return { unit.text : unit for unit in units }
 
 
 def tokenize_by_word(text):
-    return tokenize(text, to_lower=True, deacc=True)
+    text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
+    return tokenize(text_without_acronyms, to_lower=True, deacc=True)
