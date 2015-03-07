@@ -25,9 +25,26 @@ def get_nx_graph(graph):
 
 def set_layout(nx_graph, scores):
     positions = nx.graphviz_layout(nx_graph, prog="neato") # prog options: neato, dot, fdp, sfdp, twopi, circo
+    centered_positions = center_positions(positions)
     for node in nx_graph.nodes():
-        nx_graph.node[node]['viz'] = get_viz_data(node, positions, scores)
+        nx_graph.node[node]['viz'] = get_viz_data(node, centered_positions, scores)
         nx_graph.node[node]['label'] = " ".join(node.split()[0:2])
+
+
+def center_positions(positions):
+    min_x = positions[min(positions, key=lambda k:positions[k][0])][0]
+    min_y = positions[min(positions, key=lambda k:positions[k][1])][1]
+    max_x = positions[max(positions, key=lambda k:positions[k][0])][0]
+    max_y = positions[max(positions, key=lambda k:positions[k][1])][1]
+    delta_x = (min_x + max_x) / 2
+    delta_y = (min_y + max_y) / 2
+
+    centered_positions = {}
+    for key, position in positions.iteritems():
+        new_position = (round(position[0] - delta_x, 2), round(position[1] - delta_y, 2))
+        centered_positions[key] = new_position
+    return centered_positions
+
 
 
 def get_viz_data(node, positions, scores):

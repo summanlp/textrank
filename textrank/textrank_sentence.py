@@ -14,7 +14,7 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     sentences = clean_text_by_sentences(text)
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
-    graph = get_graph([sentence.tokens for sentence in sentences])
+    graph = get_graph([sentence.token for sentence in sentences])
     set_graph_edge_weights(graph)
 
     # Remove all nodes with all edges weights equal to zero.
@@ -40,8 +40,8 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
 def add_scores_to_sentences(sentences, scores):
     for sentence in sentences:
         # Adds the score to the object if it has one.
-        if sentence.tokens in scores:
-            sentence.score = scores[sentence.tokens]
+        if sentence.token in scores:
+            sentence.score = scores[sentence.token]
         else:
             sentence.score = 0
 
