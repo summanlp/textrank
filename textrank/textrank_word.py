@@ -31,12 +31,13 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
 
     extracted_lemmas = extract_tokens(graph.nodes(), scores, summary_length)
 
-    keywords = get_keywords_with_score(extracted_lemmas, lemmas_to_words(tokens))
+    lemmas_to_word = lemmas_to_words(tokens)
+    keywords = get_keywords_with_score(extracted_lemmas, lemmas_to_word)
 
     # text.split() to keep numbers and punctuation marks, so separeted concepts are not combined
     combined_keywords = get_combined_keywords(keywords, text.split())
 
-    write_gexf(graph, scores, path="words.gexf")
+    write_gexf(graph, scores, "words.gexf", lemmas_to_word)
     return format_results(keywords, combined_keywords)
 
 
@@ -134,11 +135,10 @@ def lemmas_to_words(tokens):
     lemma_to_word = {}
     for word, unit in tokens.iteritems():
         lemma = unit.token
-        words = lemma_to_word.get(lemma, None)
-        if not words:
-            lemma_to_word[lemma] = [word]
+        if lemma in lemma_to_word:
+            lemma_to_word[lemma].append(word)
         else:
-            words.append(word)
+            lemma_to_word[lemma] = [word]
     return lemma_to_word
 
 

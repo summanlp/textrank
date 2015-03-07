@@ -4,9 +4,9 @@ from os import system as shell
 
 NODE_COLOR = {'r': 239, 'g': 10, 'b': 10}
 
-def write_gexf(graph, scores, path="test.gexf"):
+def write_gexf(graph, scores, path="test.gexf", labels=None):
     nx_graph = get_nx_graph(graph)
-    set_layout(nx_graph, scores)
+    set_layout(nx_graph, scores, labels)
     nx.write_gexf(nx_graph, path)
     shell("sed -i 's/<ns0/<viz/g' {0}".format(path))
     shell('echo \'<?xml version="1.0" encoding="UTF-8"?>\' | cat - {0} > out.tmp && mv out.tmp {0}'.format(path))
@@ -23,12 +23,17 @@ def get_nx_graph(graph):
     return nx_graph
 
 
-def set_layout(nx_graph, scores):
+def set_layout(nx_graph, scores, labels=None):
     positions = nx.graphviz_layout(nx_graph, prog="neato") # prog options: neato, dot, fdp, sfdp, twopi, circo
     centered_positions = center_positions(positions)
     for node in nx_graph.nodes():
         nx_graph.node[node]['viz'] = get_viz_data(node, centered_positions, scores)
-        nx_graph.node[node]['label'] = " ".join(node.split()[0:2])
+        label = ""
+        if labels and node in labels:
+             label = " ".join(labels[node])
+        else:
+            label = " ".join(node.split()[0:2])
+        nx_graph.node[node]['label'] = label
 
 
 def center_positions(positions):
