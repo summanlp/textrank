@@ -115,5 +115,5 @@ nytprof.out
 /evaluation/datasets/duc2002
 
 # Visualizations files
-/textrank/views/sentences.gexf  
-/textrank/views/words.gexf
+textrank/views/sentences.gexf  
+textrank/views/words.gexf
