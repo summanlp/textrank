@@ -22,6 +22,7 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
     # Creates the graph and adds the edges
     graph = get_graph(get_words_for_graph(tokens))
     set_graph_edges(graph, tokens, split_text)
+    del split_text # It's no longer used
 
     remove_unreacheable_nodes(graph)
 
@@ -32,9 +33,8 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
 
     keywords = get_keywords_with_score(extracted_lemmas, lemmas_to_words(tokens))
 
+    # text.split() to keep numbers and punctuation marks, so separeted concepts are not combined
     combined_keywords = get_combined_keywords(keywords, text.split())
-    # TODO uso text.split para que quede el texto original, con las comas, asi no une conceptos separados
-    # semanticamente: ver una forma mejor o mas prolija de hacerlo
 
     write_gexf(graph, scores, path="words.gexf")
     return format_results(keywords, combined_keywords)
@@ -59,7 +59,7 @@ def get_pos_filters():
     Example: filter for nouns and adjectives:
     including = ['NN', 'JJ']
     """
-    including = ['NN', 'JJ']
+    including = []
     excluding = []
     return frozenset(including), frozenset(excluding)
 
@@ -174,8 +174,7 @@ def get_combined_keywords(keywords, split_text):
             if i + 1 == len_text: result.append(word)   # appends last word if keyword and doesn't iterate
             for j in xrange(i + 1, len_text):
                 other_word = strip_word(split_text[j])
-                # TODO ver warning de conversion a unicode
-                if other_word in keywords and other_word == split_text[j]:
+                if other_word in keywords and other_word == split_text[j].decode("utf-8"):
                     combined_word.append(other_word)
                 else:
                     for keyword in combined_word: keywords.pop(keyword)

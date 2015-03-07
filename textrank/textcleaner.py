@@ -125,7 +125,7 @@ def clean_text_by_word(text):
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
     original_words = list(tokenize(text_without_acronyms, to_lower=True, deacc=True))
     filtered_words = filter_words(original_words)
-    tags = tag(" ".join(original_words))
+    tags = tag(" ".join(original_words)) # tag needs the context of the words in the text
     units = merge_syntactic_units(original_words, filtered_words, tags)
     return { unit.text : unit for unit in units }
 
