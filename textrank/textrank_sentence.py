@@ -1,4 +1,3 @@
-
 from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_sentences
@@ -65,23 +64,25 @@ def set_graph_edge_weights(graph):
 
 
 def get_similarity(s1, s2):
-    words_sentence_one = s1.split()
-    words_sentence_two = s2.split()
+    ld = levenshteinDistance(s1, s2)
+    return max(len(s1), len(s2)) - ld
 
-    common_word_count = get_common_word_count(words_sentence_one, words_sentence_two)
-
-    log_s1 = log10(len(words_sentence_one))
-    log_s2 = log10(len(words_sentence_two))
-
-    if log_s1 + log_s2 == 0:
-        return 0
-
-    return common_word_count / (log_s1 + log_s2)
-
-
-def get_common_word_count(words_sentence_one, words_sentence_two):
-    words_set = set(words_sentence_two)
-    return sum(1 for w in words_sentence_one if w in words_set)
+def levenshteinDistance(s1, s2):
+    """From: http://rosettacode.org/wiki/Levenshtein_distance#Python """
+    if len(s1) > len(s2):
+        s1, s2 = s2, s1
+    distances = range(len(s1) + 1)
+    for index2, char2 in enumerate(s2):
+        newDistances = [index2 + 1]
+        for index1, char1 in enumerate(s1):
+            if char1 == char2:
+                newDistances.append(distances[index1])
+            else:
+                newDistances.append(1 + min((distances[index1],
+                                             distances[index1 + 1],
+                                             newDistances[-1])))
+        distances = newDistances
+    return distances[-1]
 
 
 def get_test_graph(path):
@@ -90,11 +91,11 @@ def get_test_graph(path):
     with open(path) as file:
         text = file.read()
 
-    # Gets a dict of processed_sentence -> original_sentences
-    tokens = clean_text_by_sentences(text)
+    # Gets a list of processed sentences.
+    sentences = clean_text_by_sentences(text)
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
-    graph = get_graph(tokens.keys())
+    graph = get_graph([sentence.token for sentence in sentences])
     set_graph_edge_weights(graph)
 
     return graph
