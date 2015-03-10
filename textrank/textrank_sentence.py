@@ -68,7 +68,7 @@ def get_similarity(s1, s2):
     words_sentence_one = s1.split()
     words_sentence_two = s2.split()
 
-    common_word_count = get_common_word_count(words_sentence_one, words_sentence_two)
+    common_word_count = count_common_words(words_sentence_one, words_sentence_two)
 
     log_s1 = log10(len(words_sentence_one))
     log_s2 = log10(len(words_sentence_two))
@@ -79,7 +79,7 @@ def get_similarity(s1, s2):
     return common_word_count / (log_s1 + log_s2)
 
 
-def get_common_word_count(words_sentence_one, words_sentence_two):
+def count_common_words(words_sentence_one, words_sentence_two):
     words_set = set(words_sentence_two)
     return sum(1 for w in words_sentence_one if w in words_set)
 
@@ -94,9 +94,7 @@ def get_test_graph(path):
     tokens = clean_text_by_sentences(text)
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
-    graph = get_graph(tokens.keys())
-    set_graph_edge_weights(graph)
+    sentences = clean_text_by_sentences(text)
 
-    return graph
-    # Ranks the tokens using the PageRank algorithm.
-    # return pagerank_scipy(graph)
+    # Creates the graph and calculates the similarity coefficient for every pair of nodes.
+    return get_graph([sentence.token for sentence in sentences])
