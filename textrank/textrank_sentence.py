@@ -2,7 +2,7 @@ from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_sentences
 from commons import get_graph, remove_unreacheable_nodes
-from math import log10
+from math import fabs
 from gexf_export import write_gexf
 
 DEBUG = False
@@ -64,8 +64,12 @@ def set_graph_edge_weights(graph):
 
 
 def get_similarity(s1, s2):
+    maxLen = max(len(s1), len(s2))
+    if maxLen == 0: return 0
+
+    diffLen = fabs(len(s1) - len(s2))
     ld = levenshteinDistance(s1, s2)
-    return max(len(s1), len(s2)) - ld
+    return (maxLen - ld) / (maxLen - diffLen)
 
 def levenshteinDistance(s1, s2):
     """From: http://rosettacode.org/wiki/Levenshtein_distance#Python """
