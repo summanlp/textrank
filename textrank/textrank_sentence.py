@@ -64,29 +64,32 @@ def set_graph_edge_weights(graph):
 
 
 def get_similarity(s1, s2):
-    maxLen = max(len(s1), len(s2))
-    if maxLen == 0: return 0
+    return len(lcs(s1, s2))
 
-    diffLen = fabs(len(s1) - len(s2))
-    ld = levenshteinDistance(s1, s2)
-    return (maxLen - ld) / (maxLen - diffLen)
-
-def levenshteinDistance(s1, s2):
-    """From: http://rosettacode.org/wiki/Levenshtein_distance#Python """
-    if len(s1) > len(s2):
-        s1, s2 = s2, s1
-    distances = range(len(s1) + 1)
-    for index2, char2 in enumerate(s2):
-        newDistances = [index2 + 1]
-        for index1, char1 in enumerate(s1):
-            if char1 == char2:
-                newDistances.append(distances[index1])
+def lcs(a, b):
+    lengths = [[0 for j in range(len(b)+1)] for i in range(len(a)+1)]
+    # row 0 and column 0 are initialized to 0 already
+    for i, x in enumerate(a):
+        for j, y in enumerate(b):
+            if x == y:
+                lengths[i+1][j+1] = lengths[i][j] + 1
             else:
-                newDistances.append(1 + min((distances[index1],
-                                             distances[index1 + 1],
-                                             newDistances[-1])))
-        distances = newDistances
-    return distances[-1]
+                lengths[i+1][j+1] = \
+                    max(lengths[i+1][j], lengths[i][j+1])
+    # read the substring out from the matrix
+    result = ""
+    x, y = len(a), len(b)
+    while x != 0 and y != 0:
+        if lengths[x][y] == lengths[x-1][y]:
+            x -= 1
+        elif lengths[x][y] == lengths[x][y-1]:
+            y -= 1
+        else:
+            assert a[x-1] == b[y-1]
+            result = a[x-1] + result
+            x -= 1
+            y -= 1
+    return result
 
 
 def get_test_graph(path):
