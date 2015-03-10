@@ -10,7 +10,7 @@ from gexf_export import write_gexf
 import pdb
 
 PAGERANK_INITIAL_VALUE = 1
-WINDOW_SIZE = 2
+WINDOW_SIZE = 10
 DEBUG = False
 
 
@@ -32,13 +32,14 @@ def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
     extracted_lemmas = extract_tokens(graph.nodes(), scores, summary_length)
 
     lemmas_to_word = lemmas_to_words(tokens)
-    keywords = get_keywords_with_score(extracted_lemmas, lemmas_to_word)
+    return get_keywords_with_score(extracted_lemmas, lemmas_to_word)
+
 
     # text.split() to keep numbers and punctuation marks, so separeted concepts are not combined
-    combined_keywords = get_combined_keywords(keywords, text.split())
+    #combined_keywords = get_combined_keywords(keywords, text.split())
 
-    write_gexf(graph, scores, "words.gexf", lemmas_to_word)
-    return format_results(keywords, combined_keywords)
+    #write_gexf(graph, scores, "words.gexf", lemmas_to_word)
+    #return format_results(keywords, combined_keywords)
 
 
 def get_words_for_graph(tokens):

@@ -5,6 +5,7 @@ from textcleaner import clean_text_by_sentences
 from commons import get_graph, remove_unreacheable_nodes
 from math import log10
 from gexf_export import write_gexf
+from textrank_word import textrank_by_word
 
 DEBUG = False
 
@@ -15,7 +16,8 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = get_graph([sentence.token for sentence in sentences])
-    set_graph_edge_weights(graph)
+    keywords = textrank_by_word(text)
+    set_graph_edge_weights(graph, frozenset(keywords))
 
     # Remove all nodes with all edges weights equal to zero.
     remove_unreacheable_nodes(graph)
@@ -53,22 +55,23 @@ def extract_most_important_sentences(sentences, summary_length):
     return sentences[:int(length)]
 
 
-def set_graph_edge_weights(graph):
+def set_graph_edge_weights(graph, keywords):
     for sentence_1 in graph.nodes():
         for sentence_2 in graph.nodes():
 
             edge = (sentence_1, sentence_2)
             if sentence_1 != sentence_2 and not graph.has_edge(edge):
-                similarity = get_similarity(sentence_1, sentence_2)
+                similarity = get_similarity(sentence_1, sentence_2, keywords)
                 if similarity != 0:
                     graph.add_edge(edge, similarity)
 
 
-def get_similarity(s1, s2):
+def get_similarity(s1, s2, keywords):
     words_sentence_one = s1.split()
     words_sentence_two = s2.split()
 
-    common_word_count = get_common_word_count(words_sentence_one, words_sentence_two)
+    common_word_count = count_common_words(words_sentence_one, words_sentence_two)
+    extra_points_for_keywords = count_common_keywords(words_sentence_one, words_sentence_two, keywords)
 
     log_s1 = log10(len(words_sentence_one))
     log_s2 = log10(len(words_sentence_two))
@@ -76,10 +79,15 @@ def get_similarity(s1, s2):
     if log_s1 + log_s2 == 0:
         return 0
 
-    return common_word_count / (log_s1 + log_s2)
+    return (common_word_count + extra_points_for_keywords) / (log_s1 + log_s2)
 
 
-def get_common_word_count(words_sentence_one, words_sentence_two):
+def count_common_keywords(words_sentence_one, words_sentence_two, keywords):
+    words_set = set(words_sentence_two)
+    return sum(2 for w in words_sentence_one if w in words_set and w in keywords)
+
+
+def count_common_words(words_sentence_one, words_sentence_two):
     words_set = set(words_sentence_two)
     return sum(1 for w in words_sentence_one if w in words_set)
 
@@ -90,13 +98,8 @@ def get_test_graph(path):
     with open(path) as file:
         text = file.read()
 
-    # Gets a dict of processed_sentence -> original_sentences
-    tokens = clean_text_by_sentences(text)
+    # Gets a list of processed sentences.
+    sentences = clean_text_by_sentences(text)
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
-    graph = get_graph(tokens.keys())
-    set_graph_edge_weights(graph)
-
-    return graph
-    # Ranks the tokens using the PageRank algorithm.
-    # return pagerank_scipy(graph)
+    return get_graph([sentence.token for sentence in sentences])
