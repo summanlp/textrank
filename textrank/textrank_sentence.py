@@ -80,7 +80,7 @@ def get_similarity(s1, s2, lenText):
 
 def calculate_temporal_distance_factor(index1, index2, lenText):
     diff = fabs(index1 - index2)
-    return 1.5 - diff / lenText
+    return 0.5 + diff / lenText
 
 
 def count_common_words(words_sentence_one, words_sentence_two):
@@ -93,7 +93,7 @@ def get_test_graph(path):
     # TODO: delete this method when no longer needed
     with open(path) as file:
         text = file.read()
-
+    file.close()
     # Gets a dict of processed_sentence -> original_sentences
     tokens = clean_text_by_sentences(text)
 
