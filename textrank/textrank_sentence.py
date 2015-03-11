@@ -3,7 +3,7 @@ from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_sentences
 from commons import get_graph, remove_unreacheable_nodes
-from math import log10
+from math import log10, fabs
 from gexf_export import write_gexf
 
 DEBUG = False
@@ -15,7 +15,7 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = get_graph([sentence.token for sentence in sentences])
-    set_graph_edge_weights(graph)
+    set_graph_edge_weights(graph, sentences)
 
     # Remove all nodes with all edges weights equal to zero.
     remove_unreacheable_nodes(graph)
@@ -53,22 +53,22 @@ def extract_most_important_sentences(sentences, summary_length):
     return sentences[:int(length)]
 
 
-def set_graph_edge_weights(graph):
-    for sentence_1 in graph.nodes():
-        for sentence_2 in graph.nodes():
-
-            edge = (sentence_1, sentence_2)
-            if sentence_1 != sentence_2 and not graph.has_edge(edge):
-                similarity = get_similarity(sentence_1, sentence_2)
+def set_graph_edge_weights(graph, sentences):
+    lenText = len(sentences)
+    for sentence_1 in sentences:
+        for sentence_2 in sentences:
+            edge = (sentence_1.token, sentence_2.token)
+            if sentence_1.token != sentence_2.token and not graph.has_edge(edge):
+                similarity = get_similarity(sentence_1, sentence_2, lenText)
                 if similarity != 0:
                     graph.add_edge(edge, similarity)
 
-
-def get_similarity(s1, s2):
-    words_sentence_one = s1.split()
-    words_sentence_two = s2.split()
+def get_similarity(s1, s2, lenText):
+    words_sentence_one = s1.token.split()
+    words_sentence_two = s2.token.split()
 
     common_word_count = count_common_words(words_sentence_one, words_sentence_two)
+    factor = calculate_temporal_distance_factor(s1.index, s2.index, lenText)
 
     log_s1 = log10(len(words_sentence_one))
     log_s2 = log10(len(words_sentence_two))
@@ -76,7 +76,11 @@ def get_similarity(s1, s2):
     if log_s1 + log_s2 == 0:
         return 0
 
-    return common_word_count / (log_s1 + log_s2)
+    return common_word_count * factor / (log_s1 + log_s2)
+
+def calculate_temporal_distance_factor(index1, index2, lenText):
+    diff = fabs(index1 - index2)
+    return 1.5 - diff / lenText
 
 
 def count_common_words(words_sentence_one, words_sentence_two):
