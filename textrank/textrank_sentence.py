@@ -68,7 +68,7 @@ def get_similarity(s1, s2):
     words_sentence_two = s2.split()
 
     common_word_count = count_common_words(words_sentence_one, words_sentence_two)
-    common_word_group_count = count_common_word_group(s1, s2)
+    common_word_group_count = count_common_word_group(words_sentence_one, words_sentence_two)
 
     log_s1 = log10(len(words_sentence_one))
     log_s2 = log10(len(words_sentence_two))
@@ -84,27 +84,40 @@ def count_common_words(words_sentence_one, words_sentence_two):
     return sum(1 for w in words_sentence_one if w in words_set)
 
 
-def count_common_word_group(s1, s2):
-    substring = longest_common_substring(s1, s2)
-    common_words = len(substring.split())
-    factor = 5
-    return common_words * factor
+def count_common_word_group(s1_split, s2_split):
+    common_concepts = count_common_concepts(s1_split, s2_split)
+    factor = 12
+    return common_concepts * factor
+
+def count_common_concepts(s1_split, s2_split):
+    s2_index = get_index_dict(s2_split)
+    concepts = 0
+    for i in xrange(len(s1_split) - 1):
+        word = s1_split[i]
+        if word in s2_index:
+            next_word = s1_split[i+1]
+            if next_word in s2_index and distance_is_one(s2_index[word], s2_index[next_word]):
+                concepts += 1
+    return concepts
 
 
-def longest_common_substring(s1, s2):
-    m = [[0] * (1 + len(s2)) for i in xrange(1 + len(s1))]
-    longest, x_longest = 0, 0
-    for x in xrange(1, 1 + len(s1)):
-        for y in xrange(1, 1 + len(s2)):
-            if s1[x - 1] == s2[y - 1]:
-                m[x][y] = m[x - 1][y - 1] + 1
-                if m[x][y] > longest:
-                    longest = m[x][y]
-                    x_longest = x
-            else:
-                m[x][y] = 0
-    return s1[x_longest - longest: x_longest]
+def distance_is_one(index_word, index_next_word):
+    for index in index_word:
+        for index_next in index_next_word:
+            if index_next - index == 1:
+                return True
+    return False
 
+
+def get_index_dict(s2_split):
+    index = {}
+    for i in xrange(len(s2_split)):
+        word = s2_split[i]
+        if word in index:
+            index[word].append(i)
+        else:
+            index[word] = [i]
+    return index
 
 def get_test_graph(path):
     """Method to run test on the interpreter """
