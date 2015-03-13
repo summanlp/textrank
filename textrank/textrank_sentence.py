@@ -2,7 +2,7 @@ from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
 from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
 from textcleaner import clean_text_by_sentences
 from commons import get_graph, remove_unreacheable_nodes
-from math import fabs
+from math import fabs, log10
 from gexf_export import write_gexf
 
 DEBUG = False
@@ -64,7 +64,32 @@ def set_graph_edge_weights(graph):
 
 
 def get_similarity(s1, s2):
-    return len(longest_common_substring(s1, s2))
+    words_sentence_one = s1.split()
+    words_sentence_two = s2.split()
+
+    common_word_count = count_common_words(words_sentence_one, words_sentence_two)
+    common_word_group_count = count_common_word_group(s1, s2)
+
+    log_s1 = log10(len(words_sentence_one))
+    log_s2 = log10(len(words_sentence_two))
+
+    if log_s1 + log_s2 == 0:
+        return 0
+
+    return (common_word_count + common_word_group_count) / (log_s1 + log_s2)
+
+
+def count_common_words(words_sentence_one, words_sentence_two):
+    words_set = set(words_sentence_two)
+    return sum(1 for w in words_sentence_one if w in words_set)
+
+
+def count_common_word_group(s1, s2):
+    substring = longest_common_substring(s1, s2)
+    common_words = len(substring.split())
+    factor = 5
+    return common_words * factor
+
 
 def longest_common_substring(s1, s2):
     m = [[0] * (1 + len(s2)) for i in xrange(1 + len(s1))]
