@@ -86,7 +86,7 @@ def count_common_words(words_sentence_one, words_sentence_two):
 
 def count_common_word_group(s1_split, s2_split):
     common_concepts = count_common_concepts(s1_split, s2_split)
-    factor = 12
+    factor = 10
     return common_concepts * factor
 
 def count_common_concepts(s1_split, s2_split):
