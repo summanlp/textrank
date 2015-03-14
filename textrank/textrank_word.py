@@ -10,7 +10,7 @@ from gexf_export import write_gexf
 import pdb
 
 PAGERANK_INITIAL_VALUE = 1
-WINDOW_SIZE = 10
+WINDOW_SIZE = 2
 DEBUG = False
 
 

@@ -34,7 +34,7 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     # Sorts the extracted sentences by apparition order in the original text.
     extracted_sentences.sort(key=lambda s: s.index)
 
-    write_gexf(graph, scores, path="sentences.gexf")
+    #write_gexf(graph, scores, path="sentences.gexf")
 
     return "\n".join([sentence.text for sentence in extracted_sentences])
 
@@ -84,7 +84,8 @@ def get_similarity(s1, s2, keywords):
 
 def count_common_keywords(words_sentence_one, words_sentence_two, keywords):
     words_set = set(words_sentence_two)
-    return sum(2 for w in words_sentence_one if w in words_set and w in keywords)
+    factor = 2
+    return sum(factor for w in words_sentence_one if w in words_set and w in keywords)
 
 
 def count_common_words(words_sentence_one, words_sentence_two):
