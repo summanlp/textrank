@@ -1,9 +1,12 @@
 
-from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
-from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
+from pagerank_weighted import PAGERANK_MANUAL
+from pagerank_weighted import build_adjacency_matrix
+from pagerank_weighted import build_probability_matrix
 from textcleaner import clean_text_by_sentences
 from commons import get_graph, remove_unreacheable_nodes
 from math import log10
+from scipy.linalg import svd
+from math import fabs
 from gexf_export import write_gexf
 
 DEBUG = False
@@ -20,8 +23,8 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     # Remove all nodes with all edges weights equal to zero.
     remove_unreacheable_nodes(graph)
 
-    # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
-    scores = pagerank(graph) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
+    # Ranks the tokens using the HITS algorithm. Returns dict of sentence -> score
+    scores = hits(graph)
 
     # Adds the textrank scores to the sentence objects.
     add_scores_to_sentences(sentences, scores)
@@ -33,6 +36,8 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     extracted_sentences.sort(key=lambda s: s.index)
 
     write_gexf(graph, scores, path="sentences.gexf")
+
+    #print "\n".join([sentence.text for sentence in extracted_sentences])
 
     return "\n".join([sentence.text for sentence in extracted_sentences])
 
@@ -82,6 +87,20 @@ def get_similarity(s1, s2):
 def count_common_words(words_sentence_one, words_sentence_two):
     words_set = set(words_sentence_two)
     return sum(1 for w in words_sentence_one if w in words_set)
+
+
+def hits(graph):
+    adjacency_matrix = build_adjacency_matrix(graph)
+    probability_matrix = build_probability_matrix(graph)
+
+    pagerank_matrix = adjacency_matrix.todense() #+ probability_matrix
+    u, s, vh = svd(pagerank_matrix, full_matrices=True, compute_uv=True)
+
+    scores = {}
+    for i, node in enumerate(graph.nodes()):
+        scores[node] = fabs(float(u[0][i]))
+
+    return scores
 
 
 def get_test_graph(path):
