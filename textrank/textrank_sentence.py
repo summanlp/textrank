@@ -1,11 +1,10 @@
 
 from pagerank_weighted import PAGERANK_MANUAL
 from pagerank_weighted import build_adjacency_matrix
-from pagerank_weighted import build_probability_matrix
 from textcleaner import clean_text_by_sentences
 from commons import get_graph, remove_unreacheable_nodes
 from math import log10
-from scipy.linalg import svd
+import scipy.linalg.interpolative as sli
 from math import fabs
 from gexf_export import write_gexf
 
@@ -24,7 +23,7 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     remove_unreacheable_nodes(graph)
 
     # Ranks the tokens using the HITS algorithm. Returns dict of sentence -> score
-    scores = hits(graph)
+    scores = hits_approx(graph, summary_length)
 
     # Adds the textrank scores to the sentence objects.
     add_scores_to_sentences(sentences, scores)
@@ -37,7 +36,7 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
 
     write_gexf(graph, scores, path="sentences.gexf")
 
-    print "\n".join([sentence.text for sentence in extracted_sentences])
+    # print "\n".join([sentence.text for sentence in extracted_sentences])
 
     return "\n".join([sentence.text for sentence in extracted_sentences])
 
@@ -89,13 +88,17 @@ def count_common_words(words_sentence_one, words_sentence_two):
     return sum(1 for w in words_sentence_one if w in words_set)
 
 
-def hits(graph):
+def hits_approx(graph, summary_length):
     adjacency_matrix = build_adjacency_matrix(graph)
-    u, s, vh = svd(adjacency_matrix.todense(), full_matrices=True, compute_uv=True)
+
+    # The rank of the approximation matrix is arbitrarily defined as the summary lenght.
+    rank = len(graph.nodes()) * float(summary_length)
+
+    u, s, v = sli.svd(adjacency_matrix.todense(), rank)
 
     scores = {}
     for i, node in enumerate(graph.nodes()):
-        scores[node] = fabs(float(u[i][0]))
+        scores[node] = fabs(float(v[i][0]))
 
     return scores
 

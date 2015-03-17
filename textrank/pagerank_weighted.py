@@ -61,10 +61,12 @@ def build_adjacency_matrix(graph):
         current_node = nodes[i]
         for j in xrange(length):
             edge_weight = float(graph.edge_weight((current_node, nodes[j])))
-            if i != j and edge_weight != 0:
-                row.append(i)
-                col.append(j)
+            row.append(i)
+            col.append(j)
+            if i != j:
                 data.append(edge_weight)
+            else:
+                data.append(float(0))
 
     return csr_matrix((data, (row, col)), shape=(length, length))
 
