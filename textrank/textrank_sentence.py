@@ -37,7 +37,7 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
 
     write_gexf(graph, scores, path="sentences.gexf")
 
-    #print "\n".join([sentence.text for sentence in extracted_sentences])
+    print "\n".join([sentence.text for sentence in extracted_sentences])
 
     return "\n".join([sentence.text for sentence in extracted_sentences])
 
@@ -91,14 +91,11 @@ def count_common_words(words_sentence_one, words_sentence_two):
 
 def hits(graph):
     adjacency_matrix = build_adjacency_matrix(graph)
-    probability_matrix = build_probability_matrix(graph)
-
-    pagerank_matrix = adjacency_matrix.todense() #+ probability_matrix
-    u, s, vh = svd(pagerank_matrix, full_matrices=True, compute_uv=True)
+    u, s, vh = svd(adjacency_matrix.todense(), full_matrices=True, compute_uv=True)
 
     scores = {}
     for i, node in enumerate(graph.nodes()):
-        scores[node] = fabs(float(u[0][i]))
+        scores[node] = fabs(float(u[i][0]))
 
     return scores
 

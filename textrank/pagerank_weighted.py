@@ -59,15 +59,14 @@ def build_adjacency_matrix(graph):
 
     for i in xrange(length):
         current_node = nodes[i]
-        neighbors_sum = sum(graph.edge_weight((current_node, neighbor)) for neighbor in graph.neighbors(current_node))
         for j in xrange(length):
             edge_weight = float(graph.edge_weight((current_node, nodes[j])))
             if i != j and edge_weight != 0:
                 row.append(i)
                 col.append(j)
-                data.append(edge_weight / neighbors_sum)
+                data.append(edge_weight)
 
-    return csr_matrix((data,(row,col)), shape=(length,length))
+    return csr_matrix((data, (row, col)), shape=(length, length))
 
 
 def build_probability_matrix(graph):
