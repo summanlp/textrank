@@ -96,10 +96,11 @@ class MethodEvaluator(object):
                 results.add_error()
                 continue
 
-        result = rouge_calculator.evaluate_summary(model_directory, system_directory)
+            print "Text", document, "summarized successfully.\n"
+            results.add_success()
 
-        print "Text", document, "summarized successfully.\n"
-        results.add_success(result)
+        output = rouge_calculator.evaluate_summary(model_directory, system_directory)
+        results.output = output
 
         # Removes the temporal directory and all its files.
         rmtree(system_directory)
