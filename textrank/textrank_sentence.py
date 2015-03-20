@@ -32,7 +32,7 @@ def textrank_by_sentence(text, method=PAGERANK_MANUAL, summary_length=0.2):
     # Sorts the extracted sentences by apparition order in the original text.
     extracted_sentences.sort(key=lambda s: s.index)
 
-    write_gexf(graph, scores, path="sentences.gexf")
+    #write_gexf(graph, scores, path="sentences.gexf")
 
     return "\n".join([sentence.text for sentence in extracted_sentences])
 
