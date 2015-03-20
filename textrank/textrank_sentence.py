@@ -92,6 +92,7 @@ def lcs(a, b):
     return result
 
 
+
 def get_test_graph(path):
     """Method to run test on the interpreter """
     # TODO: delete this method when no longer needed
@@ -105,6 +106,5 @@ def get_test_graph(path):
     graph = get_graph([sentence.token for sentence in sentences])
     set_graph_edge_weights(graph)
 
-    return graph
-    # Ranks the tokens using the PageRank algorithm.
-    # return pagerank_scipy(graph)
+    # Creates the graph and calculates the similarity coefficient for every pair of nodes.
+    return get_graph([sentence.token for sentence in sentences])
