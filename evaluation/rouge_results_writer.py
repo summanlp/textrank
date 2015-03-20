@@ -22,11 +22,11 @@ def export_results(dataset, results, method):
 
     method_name = " ({method})".format(method=method)
 
-    avg_rouge1_fscore = sum(result['rouge_1_f_score'] for result in results.reports) / successes
+    avg_rouge1_fscore = results.output['rouge_1_f_score']
     print "Average F-score for ROUGE-1 metric: " + str(avg_rouge1_fscore)
-    avg_rouge2_fscore = sum(result['rouge_2_f_score'] for result in results.reports) / successes
+    avg_rouge2_fscore = results.output['rouge_2_f_score']
     print "Average F-score for ROUGE-2 metric: " + str(avg_rouge2_fscore)
-    avg_su4_fscore = sum(result['rouge_su4_f_score'] for result in results.reports) / successes
+    avg_su4_fscore = results.output['rouge_su4_f_score']
     print "Average F-score for ROUGE-SU4 metric: " + str(avg_su4_fscore)
 
     # Export ROUGE measures on successes.
