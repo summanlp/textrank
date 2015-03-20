@@ -70,11 +70,11 @@ class MethodEvaluator(object):
     def get_rouge_scores(self):
         results = RougeDatasetResults()
 
+        system_directory = mkdtemp()
+        model_directory = mkdtemp()
+
         for document in self.documents:
             print "Evaluating set {document}.".format(document=document)
-
-            system_directory = mkdtemp()
-            model_directory = mkdtemp()
 
             try:
                 # Gets the summary using the method.
@@ -96,13 +96,13 @@ class MethodEvaluator(object):
                 results.add_error()
                 continue
 
-            result = rouge_calculator.evaluate_summary(model_directory, system_directory)
+        result = rouge_calculator.evaluate_summary(model_directory, system_directory)
 
-            print "Text", document, "summarized successfully.\n"
-            results.add_success(result)
+        print "Text", document, "summarized successfully.\n"
+        results.add_success(result)
 
-            # Removes the temporal directory and all its files.
-            rmtree(system_directory)
-            rmtree(model_directory)
+        # Removes the temporal directory and all its files.
+        rmtree(system_directory)
+        rmtree(model_directory)
 
         return results

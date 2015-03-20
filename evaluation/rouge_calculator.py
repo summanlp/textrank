@@ -31,6 +31,7 @@ ROUGE_OPTIONS = [
     '-p', '0.5',            # Compute F-measure with alpha = 0.5.
     '-t', '0',              # Use model unit as the counting unit.
     '-a'                    # Evaluate all systems.
+    '-l', '100'             # Only use the first 100 words.
 ]
 
 
@@ -49,7 +50,7 @@ def create_temporary_directories():
 def evaluate_summary(model_directory, system_directory):
     tempdir = create_temporary_directories()
 
-    rouge_instance = Rouge155(ROUGE_PATH, verbose=False, rouge_args=' '.join(ROUGE_OPTIONS))
+    rouge_instance = Rouge155(ROUGE_PATH, verbose=True, rouge_args=' '.join(ROUGE_OPTIONS))
 
     # Converts the gold references files to rouge format.
     model_input_dir = model_directory
@@ -71,5 +72,7 @@ def evaluate_summary(model_directory, system_directory):
 
     # Removes the temporal directories.
     rmtree(tempdir)
+
+    print "ROUGE output:", output
 
     return rouge_instance.output_to_dict(output)
