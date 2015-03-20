@@ -2,7 +2,7 @@ import os
 import os.path
 from tempfile import mkdtemp
 from shutil import rmtree
-from evaluation_constants import GOLD_REFERENCES_PATTERN
+from evaluation_constants import MODEL_SUMMARIES_PATTERN, SYSTEM_SUMMARIES_PATTERN
 from pyrouge import Rouge155
 
 """ Class that runs ROUGE to compare the output of a custom summarization tool
@@ -46,24 +46,24 @@ def create_temporary_directories():
     return tempdir
 
 
-def evaluate_summary(system_directory, model_directory, model_filename):
+def evaluate_summary(model_directory, system_directory):
     tempdir = create_temporary_directories()
 
-    rouge_instance = Rouge155(ROUGE_PATH, verbose=True, rouge_args=' '.join(ROUGE_OPTIONS))
+    rouge_instance = Rouge155(ROUGE_PATH, verbose=False, rouge_args=' '.join(ROUGE_OPTIONS))
 
     # Converts the gold references files to rouge format.
-    gold_references_input_dir = system_directory
-    gold_references_output_dir = os.path.join(tempdir, SYSTEM_DIR)
-    rouge_instance.convert_summaries_to_rouge_format(gold_references_input_dir, gold_references_output_dir)
+    model_input_dir = model_directory
+    model_output_dir = os.path.join(tempdir, MODEL_DIR)
+    rouge_instance.convert_summaries_to_rouge_format(model_input_dir, model_output_dir)
 
     # Converts the summary file to rouge format.
-    model_directory_output_dir = os.path.join(tempdir, MODEL_DIR)
-    rouge_instance.convert_summaries_to_rouge_format(model_directory, model_directory_output_dir)
+    system_output_dir = os.path.join(tempdir, SYSTEM_DIR)
+    rouge_instance.convert_summaries_to_rouge_format(system_directory, system_output_dir)
 
     # Writes the configuration file.
     config_filename = os.path.join(tempdir, CONFIG_FILENAME)
-    rouge_instance.write_config_static(gold_references_output_dir, GOLD_REFERENCES_PATTERN,
-                                       model_directory_output_dir, model_filename,
+    rouge_instance.write_config_static(system_output_dir, SYSTEM_SUMMARIES_PATTERN,
+                                       model_output_dir, MODEL_SUMMARIES_PATTERN,
                                        config_filename, 1)
 
     # Runs ROUGE comparing the gold reference summaries with the recently generated.
