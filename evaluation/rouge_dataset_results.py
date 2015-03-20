@@ -9,12 +9,11 @@ class RougeDatasetResults(object):
         self.successes = 0
         self.timeouts = 0
         self.errors = 0
-        self.reports = []
+        self.output = None
 
-    def add_success(self, report):
+    def add_success(self):
         self.runs += 1
         self.successes += 1
-        self.reports.append(report)
 
     def add_error(self):
         self.runs += 1
