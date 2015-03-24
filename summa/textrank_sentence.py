@@ -8,7 +8,7 @@ from math import log10 as _log10
 DEBUG = False
 
 
-def textrank_by_sentence(text, summary_length=0.2, language="EN"):
+def summarize(text, summary_length=0.2, language="EN"):
     # Gets a list of processed sentences.
     sentences = _clean_text_by_sentences(text, language)
 
