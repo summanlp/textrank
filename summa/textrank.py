@@ -1,7 +1,7 @@
 
 import sys, getopt
-from textrank_sentence import summarize
-from textrank_word import textrank_by_word
+from summarizer import summarize
+from keywords import keywords
 
 TEST_FILE = "samples/textrank_example.txt"
 # Types of summarization
@@ -54,7 +54,7 @@ def textrank(text, summarize_by=SENTENCE, summary_length=0.2):
     if summarize_by == SENTENCE:
         return summarize(text, summary_length)
     else:
-        return textrank_by_word(text, summary_length)
+        return keywords(text, summary_length)
 
 
 def main():

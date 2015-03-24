@@ -2,7 +2,6 @@
 from scipy.sparse import csr_matrix
 from scipy.linalg import eig
 from numpy import empty as empty_matrix
-from math import fabs
 import pdb
 
 CONVERGENCE_THRESHOLD = 0.0001
@@ -24,7 +23,7 @@ def pagerank_weighted(graph, initial_value=None, damping=0.85):
                 neighbors_sum = sum(graph.edge_weight((j, k)) for k in graph.neighbors(j))
                 rank += damping * scores[j] * graph.edge_weight((j, i)) / neighbors_sum
 
-            if fabs(scores[i] - rank) <= CONVERGENCE_THRESHOLD:
+            if abs(scores[i] - rank) <= CONVERGENCE_THRESHOLD:
                 convergence_achieved += 1
 
             scores[i] = rank
@@ -79,20 +78,6 @@ def build_probability_matrix(graph):
 def process_results(graph, vecs):
     scores = {}
     for i, node in enumerate(graph.nodes()):
-        scores[node] = fabs(float(vecs[i][0]))
+        scores[node] = abs(vecs[i][0])
 
     return scores
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -5,7 +5,7 @@ from abc import ABCMeta, abstractmethod
 
 class IGraph:
     """
-    Represents the interface or contract that the graph for TextRank should implements
+    Represents the interface or contract that the graph for TextRank should implement
     """
     __metaclass__ = ABCMeta
 

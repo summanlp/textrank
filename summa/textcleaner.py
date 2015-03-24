@@ -1,7 +1,19 @@
 # encoding: cp850
 from gensim.utils import tokenize
 from gensim.parsing.preprocessing import strip_numeric, strip_punctuation
-from pattern.en import tag
+
+import logging
+logger = logging.getLogger('summa.preprocessing.cleaner')
+
+try:
+    raise ImportError
+    from pattern.en import tag
+    logger.info("'pattern' package found; tag filters are available for English")
+    HAS_PATTERN = True
+except ImportError:
+    logger.info("'pattern' package not found; tag filters are not available for English")
+    HAS_PATTERN = False
+
 import snowball
 import re  # http://regex101.com/#python para probar regex.
 from syntactic_unit import SyntacticUnit
@@ -136,7 +148,10 @@ def clean_text_by_word(text, language="EN"):
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
     original_words = list(tokenize(text_without_acronyms, to_lower=True, deacc=True))
     filtered_words = filter_words(original_words)
-    tags = tag(" ".join(original_words)) # tag needs the context of the words in the text
+    if HAS_PATTERN:
+        tags = tag(" ".join(original_words)) # tag needs the context of the words in the text
+    else:
+        tags = None
     units = merge_syntactic_units(original_words, filtered_words, tags)
     return { unit.text : unit for unit in units }
 

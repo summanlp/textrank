@@ -13,7 +13,7 @@ WINDOW_SIZE = 2
 DEBUG = False
 
 
-def textrank_by_word(text, summary_length=0.2, language="EN"):
+def keywords(text, summary_length=0.2, language="EN"):
     # Gets a dict of word -> lemma
     tokens = _clean_text_by_word(text, language)
     split_text = list(_tokenize_by_word(text))
@@ -48,7 +48,7 @@ def _get_words_for_graph(tokens):
     for word, unit in tokens.iteritems():
         if exclude_filters and unit.tag in exclude_filters:
             continue
-        if (include_filters and unit.tag in include_filters) or not include_filters:
+        if (include_filters and unit.tag in include_filters) or not include_filters or not unit.tag:
             result.append(unit.token)
     return result
 
@@ -58,7 +58,7 @@ def _get_pos_filters():
     Example: filter for nouns and adjectives:
     including = ['NN', 'JJ']
     """
-    including = []
+    including = ['NN', 'JJ']
     excluding = []
     return frozenset(including), frozenset(excluding)
 

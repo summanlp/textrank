@@ -1,8 +1,8 @@
 
 import networkx as nx
 from os import system as shell
-from textrank_sentence import get_graph as get_sentence_graph
-from textrank_word import get_graph as get_word_graph
+from summarizer import get_graph as get_sentence_graph
+from keywords import get_graph as get_word_graph
 from pagerank_weighted import pagerank_weighted_scipy
 
 
