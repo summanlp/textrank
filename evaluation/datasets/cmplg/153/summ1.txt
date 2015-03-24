@@ -1,6 +1,0 @@
-
-A common feature of recent unification-based grammar formalisms is
-that they give the user the ability to define his own structures.
-However, this possibility is mostly limited and does not include nonmonotonic
-operations. In this paper we show how nonmonotonic operations can also be
- user-defined by applying default logic  and generalizing  previous results on nonmonotonic sorts . 

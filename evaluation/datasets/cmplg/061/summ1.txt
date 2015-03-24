@@ -1,8 +1,0 @@
-
-We show that in modeling social interaction, particularly dialogue,
-the attitude of obligation can be a useful adjunct to the
-popularly considered attitudes of belief, goal, and intention and
-their mutual and shared counterparts. In particular, we show how discourse obligations can be used to account in a natural manner for
-the connection between a question and its answer in dialogue and how
-obligations can be used along with other parts of the discourse
-context to extend the coverage of a dialogue system.

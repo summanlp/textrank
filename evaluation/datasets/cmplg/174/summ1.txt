@@ -1,8 +1,0 @@
-
-We predict discourse segment boundaries from linguistic
-features of utterances, using a corpus of spoken narratives as data.
-We present two methods for developing segmentation algorithms from
-training data: hand tuning and machine learning.  When multiple types
-of features are used, results approach human
-performance on an independent test set (both
-methods), and using cross-validation (machine learning).

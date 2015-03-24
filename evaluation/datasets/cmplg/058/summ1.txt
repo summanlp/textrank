@@ -1,9 +1,0 @@
-
-A simple method for categorizing texts into pre-determined text genre
-categories using the statistical standard technique of discriminant
-analysis is demonstrated with application to the Brown corpus. Discriminant
-analysis makes it possible use a large number of parameters that
-may be specific for a certain corpus or information stream, and combine
-them into a small number of functions, with the parameters weighted
-on basis of how useful they are for discriminating text genres. An
-application to information retrieval is discussed. 

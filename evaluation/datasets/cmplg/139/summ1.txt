@@ -1,9 +1,0 @@
-
-Off-line compilation of logic grammars using Magic allows an
-  incorporation of filtering into the logic underlying the grammar.
-  The explicit definite clause characterization of filtering resulting
-  from Magic compilation allows processor independent and logically
-  clean optimizations of dynamic bottom-up processing with
-  respect to goal-directedness.  Two filter optimizations based
-  on the program transformation technique of Unfolding are
-  discussed which are of practical and theoretical interest.

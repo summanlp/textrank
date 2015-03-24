@@ -1,8 +1,0 @@
-
-This paper presents a heuristic method that uses information in the
-  Japanese text along with knowledge of English countability and
-  number stored in transfer dictionaries to determine the countability
-  and number of English noun phrases.  Incorporating this method into
-  the machine translation system ALT-J/E, helped to raise the
-  percentage of noun phrases generated with correct use of articles
-  and number from 65% to 73%.

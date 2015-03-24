@@ -1,8 +1,0 @@
-
-This paper addresses an important problem in Example-Based Machine Translation
-(EBMT), namely how to measure similarity between a sentence fragment and a set
-of stored examples. A new method is proposed that measures similarity according
-to both surface structure and content. A second contribution is the use of
-clustering to make retrieval of the best matching example from the database
-more efficient. Results on a large number of test cases from the CELEX database
-are presented.

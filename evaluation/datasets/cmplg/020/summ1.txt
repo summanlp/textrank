@@ -1,9 +1,0 @@
-
-One of the problems in part-of-speech tagging of real-word texts is
-   that of unknown to the lexicon words. In , a   technique for fully unsupervised statistical acquisition of rules which
-  guess possible parts-of-speech for unknown words was proposed.  One of
-  the over-simplification assumed by this learning technique was the
-  acquisition of morphological rules which obey only simple concatenative
-  regularities of the main word with an affix. In this paper we extend
-  this technique to the non-concatenative cases of suffixation and assess
-  the gain in the performance.

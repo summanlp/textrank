@@ -1,7 +1,0 @@
-
-An experiment designed to explore the relationship between tagging accuracy
-and the nature of the tagset is described, using corpora in English, French
-and Swedish. In particular, the question of internal versus external criteria
-for tagset design is considered, with the general conclusion that external
-(linguistic) criteria should be followed. Some problems associated with
-tagging unknown words in inflected languages are briefly considered.

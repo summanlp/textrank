@@ -1,8 +1,0 @@
-
-This paper presents a pruning technique which can be used to reduce
-the number of paths searched in rule-based bag generators of the type
- proposed by  and .  Pruning the search space in these generators is important given the computational
-cost of bag generation. The technique relies on a connectivity
-constraint between the semantic indices associated with each lexical
-sign in a bag. Testing the algorithm on a range of sentences shows
-reductions in the generation time and the number of edges constructed.
