@@ -40,15 +40,28 @@ so five the first having once
 """
 STOPWORDS = frozenset(w for w in STOPWORDS.split() if w)
 
+LANGUAGES = {"EN": "english"}
+STEMMER = None
 
-def clean_text_by_sentences(text):
+
+def clean_text_by_sentences(text, language="EN"):
     """ Tokenizes a given text into sentences, applying filters and lemmatizing them.
     Returns a SyntacticUnit list. """
+    set_stemmer_language(language)
     original_sentences = split_sentences(text)
     filtered_sentences = filter_words(original_sentences)
 
     return merge_syntactic_units(original_sentences, filtered_sentences)
 
+
+def set_stemmer_language(language):
+    global STEMMER
+    if not language in LANGUAGES:
+        raise ValueError("Valid languages are danish, dutch, english, finnish," +
+                 " french, german, hungarian, italian, norwegian, porter, portuguese," +
+                 "romanian, russian, spanish, swedish")
+    stemmer_language = LANGUAGES[language]
+    STEMMER = snowball.SnowballStemmer(stemmer_language)
 
 def merge_syntactic_units(original_units, filtered_units, tags=None):
     units = []
@@ -111,17 +124,15 @@ def apply_filters(sentence, filters):
 def remove_stopwords(sentence):
     return " ".join(w for w in sentence.split() if w not in STOPWORDS)
 
-
-language = "english"
-stemmer = snowball.SnowballStemmer(language)
 def stem_sentence(sentence):
-    word_stems = [stemmer.stem(word) for word in sentence.split()]
+    word_stems = [STEMMER.stem(word) for word in sentence.split()]
     return " ".join(word_stems)
 
 
-def clean_text_by_word(text):
+def clean_text_by_word(text, language="EN"):
     """ Tokenizes a given text into words, applying filters and lemmatizing them.
     Returns a dict of word -> syntacticUnit. """
+    set_stemmer_language(language)
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
     original_words = list(tokenize(text_without_acronyms, to_lower=True, deacc=True))
     filtered_words = filter_words(original_words)

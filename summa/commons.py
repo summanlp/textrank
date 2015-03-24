@@ -2,7 +2,7 @@
 from graph import PygraphWrapper as pyGraph
 
 
-def get_graph(sequence):
+def build_graph(sequence):
     graph = pyGraph()
     for item in sequence:
         if not graph.has_node(item):

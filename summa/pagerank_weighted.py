@@ -5,10 +5,6 @@ from numpy import empty as empty_matrix
 from math import fabs
 import pdb
 
-# Methods for PageRank
-PAGERANK_MANUAL = 0
-PAGERANK_SCIPY = 1
-
 CONVERGENCE_THRESHOLD = 0.0001
 
 

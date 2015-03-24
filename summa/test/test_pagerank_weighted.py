@@ -1,7 +1,7 @@
 
 import unittest
 from pygraph.classes.digraph import digraph as pydigraph
-from textrank.pagerank_weighted import pagerank_weighted as pagerank
+from summa.pagerank_weighted import pagerank_weighted as pagerank
 
 
 class TestPagerankWeighted(unittest.TestCase):
