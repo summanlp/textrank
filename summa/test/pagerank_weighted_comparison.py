@@ -5,9 +5,9 @@ import csv
 
 # TODO: fix imports.
 sys.path.append(os.pardir)
-from textrank.textcleaner import get_sentences
-from textrank.impl import get_graph, set_graph_edge_weights, remove_unreacheable_nodes
-from textrank.pagerank_weighted import pagerank_weighted, pagerank_weighted_scipy
+from summa.textcleaner import get_sentences
+from summa.impl import get_graph, set_graph_edge_weights, remove_unreacheable_nodes
+from summa.pagerank_weighted import pagerank_weighted, pagerank_weighted_scipy
 
 """Performs a comparison between the iterative version and the
    scipy design."""
@@ -81,8 +81,8 @@ def compare_scores_for_top_sentences(score_1, score_2):
 
 
 def export_scores(score_1, score_2, text_number):
-    """Returns the difference between the textrank method and the scipy approach."""
-    # sentences_1 is a list: the highest textrank score will be in position number 0 and so on.
+    """Returns the difference between the summa method and the scipy approach."""
+    # sentences_1 is a list: the highest summa score will be in position number 0 and so on.
     sentences_1 = get_sorted_sentences_by_score(score_1)
     # sentences_2 is a dictionary so that all sentences can be fetched quickly.
     sentences_2 = {}

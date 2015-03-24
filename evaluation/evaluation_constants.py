@@ -8,6 +8,6 @@ SUMMARIES_FILE_PATTERN = "summ[123].txt"
 MODEL_SUMMARIES_PATTERN = "summ.[A-Z].#ID#.txt"
 SYSTEM_SUMMARIES_PATTERN = 'summ.(\d+).txt'
 
-# Used by textrank.
+# Used by summa.
 MODEL_SUMMARIES_FORMAT = "summ.{text_id}.{model_id}.txt"
 SYSTEM_SUMMARIES_FORMAT = "summ.{text_id}.txt"

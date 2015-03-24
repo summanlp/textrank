@@ -7,8 +7,8 @@ setup(
   description = 'A text summarization and keyword extraction lib',
   author = 'Federico Barrios, Federico Lopez',
   author_email = 'fbarrios@live.com, fedelopez77@gmail.com',
-  url = 'https://github.com/summanlp/textrank-module',
-  download_url = 'https://github.com/summanlp/textrank-module/tarball/0.1', 
-  keywords = ['textrank', 'nlp', 'summarization', "NLP", "natural language processing", "automatic summarization"]
+  url = 'https://github.com/summanlp/summa-module',
+  download_url = 'https://github.com/summanlp/summa-module/tarball/0.1',
+  keywords = ['summa', 'nlp', 'summarization', "NLP", "natural language processing", "automatic summarization"]
 #  classifiers = []
 )

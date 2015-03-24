@@ -7,8 +7,8 @@ import timing
 from baseline import baseline
 
 # Imports files from a parent directory.
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir, 'textrank'))
-from textrank import textrank
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir, 'summa'))
+from summa import textrank
 
 
 parser = argparse.ArgumentParser()
@@ -38,4 +38,4 @@ else:
 
 evaluator = MethodEvaluator(dataset, method, documents)
 results = evaluator.get_rouge_scores()
-export_results(dataset, results, 'baseline' if args.baseline else 'textrank')
+export_results(dataset, results, 'baseline' if args.baseline else 'summa')

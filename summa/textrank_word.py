@@ -1,48 +1,46 @@
 
-from pagerank_weighted import pagerank_weighted as pagerank, PAGERANK_MANUAL
-from pagerank_weighted import pagerank_weighted_scipy as pagerank_scipy, PAGERANK_SCIPY
-from textcleaner import clean_text_by_word, tokenize_by_word
-from itertools import combinations
-from Queue import Queue
-from commons import get_graph, remove_unreacheable_nodes
-from gexf_export import write_gexf
+from pagerank_weighted import pagerank_weighted_scipy as _pagerank
+from textcleaner import clean_text_by_word as _clean_text_by_word
+from textcleaner import tokenize_by_word as _tokenize_by_word
+from itertools import combinations as _combinations
+from Queue import Queue as _Queue
+from commons import build_graph as _build_graph
+from commons import remove_unreacheable_nodes as _remove_unreacheable_nodes
 
 import pdb
 
-PAGERANK_INITIAL_VALUE = 1
 WINDOW_SIZE = 2
 DEBUG = False
 
 
-def textrank_by_word(text, method=PAGERANK_SCIPY, summary_length=0.2):
+def textrank_by_word(text, summary_length=0.2, language="EN"):
     # Gets a dict of word -> lemma
-    tokens = clean_text_by_word(text)
-    split_text = list(tokenize_by_word(text))
+    tokens = _clean_text_by_word(text, language)
+    split_text = list(_tokenize_by_word(text))
 
     # Creates the graph and adds the edges
-    graph = get_graph(get_words_for_graph(tokens))
-    set_graph_edges(graph, tokens, split_text)
+    graph = _build_graph(_get_words_for_graph(tokens))
+    _set_graph_edges(graph, tokens, split_text)
     del split_text # It's no longer used
 
-    remove_unreacheable_nodes(graph)
+    _remove_unreacheable_nodes(graph)
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of lemma -> score
-    scores = pagerank(graph, PAGERANK_INITIAL_VALUE) if method == PAGERANK_MANUAL else pagerank_scipy(graph)
+    scores = _pagerank(graph)
 
-    extracted_lemmas = extract_tokens(graph.nodes(), scores, summary_length)
+    extracted_lemmas = _extract_tokens(graph.nodes(), scores, summary_length)
 
-    lemmas_to_word = lemmas_to_words(tokens)
-    keywords = get_keywords_with_score(extracted_lemmas, lemmas_to_word)
+    lemmas_to_word = _lemmas_to_words(tokens)
+    keywords = _get_keywords_with_score(extracted_lemmas, lemmas_to_word)
 
     # text.split() to keep numbers and punctuation marks, so separeted concepts are not combined
-    combined_keywords = get_combined_keywords(keywords, text.split())
+    combined_keywords = _get_combined_keywords(keywords, text.split())
 
-    write_gexf(graph, scores, "words.gexf", lemmas_to_word)
-    return format_results(keywords, combined_keywords)
+    return _format_results(keywords, combined_keywords)
 
 
-def get_words_for_graph(tokens):
-    include_filters, exclude_filters = get_pos_filters()
+def _get_words_for_graph(tokens):
+    include_filters, exclude_filters = _get_pos_filters()
     if include_filters and exclude_filters:
         raise ValueError("Can't use both include and exclude filters, should use only one")
 
@@ -55,7 +53,7 @@ def get_words_for_graph(tokens):
     return result
 
 
-def get_pos_filters():
+def _get_pos_filters():
     """Check tags in http://www.clips.ua.ac.be/pages/mbsp-tags and use only first two letters
     Example: filter for nouns and adjectives:
     including = ['NN', 'JJ']
@@ -65,22 +63,22 @@ def get_pos_filters():
     return frozenset(including), frozenset(excluding)
 
 
-def set_graph_edges(graph, tokens, split_text):
-    process_first_window(graph, tokens, split_text)
-    process_text(graph, tokens, split_text)
+def _set_graph_edges(graph, tokens, split_text):
+    _process_first_window(graph, tokens, split_text)
+    _process_text(graph, tokens, split_text)
 
 
-def process_first_window(graph, tokens, split_text):
-    first_window = get_first_window(split_text)
-    for word_a, word_b in combinations(first_window, 2):
-        set_graph_edge(graph, tokens, word_a, word_b)
+def _process_first_window(graph, tokens, split_text):
+    first_window = _get_first_window(split_text)
+    for word_a, word_b in _combinations(first_window, 2):
+        _set_graph_edge(graph, tokens, word_a, word_b)
 
 
-def get_first_window(split_text):
+def _get_first_window(split_text):
     return split_text[:WINDOW_SIZE]
 
 
-def set_graph_edge(graph, tokens, word_a, word_b):
+def _set_graph_edge(graph, tokens, word_a, word_b):
     if word_a in tokens and word_b in tokens:
         lemma_a = tokens[word_a].token
         lemma_b = tokens[word_b].token
@@ -90,28 +88,28 @@ def set_graph_edge(graph, tokens, word_a, word_b):
             graph.add_edge(edge)
 
 
-def process_text(graph, tokens, split_text):
-    queue = init_queue(split_text)
+def _process_text(graph, tokens, split_text):
+    queue = _init_queue(split_text)
     for i in xrange(WINDOW_SIZE, len(split_text)):
         word = split_text[i]
-        process_word(graph, tokens, queue, word)
-        update_queue(queue, word)
+        _process_word(graph, tokens, queue, word)
+        _update_queue(queue, word)
 
 
-def init_queue(split_text):
-    queue = Queue()
-    first_window = get_first_window(split_text)
+def _init_queue(split_text):
+    queue = _Queue()
+    first_window = _get_first_window(split_text)
     for word in first_window[1:]:
         queue.put(word)
     return queue
 
 
-def process_word(graph, tokens, queue, word):
-    for word_to_compare in queue_iterator(queue):
-        set_graph_edge(graph, tokens, word, word_to_compare)
+def _process_word(graph, tokens, queue, word):
+    for word_to_compare in _queue_iterator(queue):
+        _set_graph_edge(graph, tokens, word, word_to_compare)
 
 
-def queue_iterator(queue):
+def _queue_iterator(queue):
     iterations = queue.qsize()
     for i in xrange(iterations):
         var = queue.get()
@@ -119,19 +117,19 @@ def queue_iterator(queue):
         queue.put(var)
 
 
-def update_queue(queue, word):
+def _update_queue(queue, word):
     queue.get()
     queue.put(word)
     assert queue.qsize() == (WINDOW_SIZE - 1)
 
 
-def extract_tokens(lemmas, scores, summary_length):
+def _extract_tokens(lemmas, scores, summary_length):
     lemmas.sort(key=lambda s: scores[s], reverse=True)
     length = len(lemmas) * summary_length
     return [(scores[lemmas[i]], lemmas[i],) for i in range(int(length))]
 
 
-def lemmas_to_words(tokens):
+def _lemmas_to_words(tokens):
     lemma_to_word = {}
     for word, unit in tokens.iteritems():
         lemma = unit.token
@@ -142,7 +140,7 @@ def lemmas_to_words(tokens):
     return lemma_to_word
 
 
-def get_keywords_with_score(extracted_lemmas, lemma_to_word):
+def _get_keywords_with_score(extracted_lemmas, lemma_to_word):
     """
     :param extracted_lemmas:list of tuples
     :param lemma_to_word: dict of {lemma:list of words}
@@ -158,7 +156,7 @@ def get_keywords_with_score(extracted_lemmas, lemma_to_word):
     # if you dare
 
 
-def get_combined_keywords(keywords, split_text):
+def _get_combined_keywords(keywords, split_text):
     """
     :param keywords:dict of keywords:scores
     :param split_text: list of strings
@@ -168,12 +166,12 @@ def get_combined_keywords(keywords, split_text):
     keywords = keywords.copy()
     len_text = len(split_text)
     for i in xrange(len_text):
-        word = strip_word(split_text[i])
+        word = _strip_word(split_text[i])
         if word in keywords:
             combined_word = [word]
             if i + 1 == len_text: result.append(word)   # appends last word if keyword and doesn't iterate
             for j in xrange(i + 1, len_text):
-                other_word = strip_word(split_text[j])
+                other_word = _strip_word(split_text[j])
                 if other_word in keywords and other_word == split_text[j].decode("utf-8"):
                     combined_word.append(other_word)
                 else:
@@ -183,12 +181,12 @@ def get_combined_keywords(keywords, split_text):
     return result
 
 
-def strip_word(word):
-    stripped_word_list = list(tokenize_by_word(word))
+def _strip_word(word):
+    stripped_word_list = list(_tokenize_by_word(word))
     return stripped_word_list[0] if stripped_word_list else ""
 
 
-def format_results(keywords, combined_keywords):
+def _format_results(keywords, combined_keywords):
     combined_keywords.sort(key=lambda w: keywords[w.split()[0]], reverse=True)
     if DEBUG:
         combined_keywords = ["({0:.4f}) : {1}".format(keywords[word.split()[0]], word) for word in combined_keywords]
@@ -196,17 +194,11 @@ def format_results(keywords, combined_keywords):
     return "\n".join(combined_keywords)
 
 
-def get_test_graph(path):
-    """Method to run test on the interpreter """
-    # TODO: delete this method when no longer needed
-    with open(path) as file:
-        text = file.read()
+def get_graph(text, language="EN"):
+    tokens = _clean_text_by_word(text, language)
+    split_text = list(_tokenize_by_word(text))
 
-    tokens = clean_text_by_word(text)
-    split_text = list(tokenize_by_word(text))
-
-    # Creates the graph and adds the edges
-    graph = get_graph(tokens.values())
-    set_graph_edges(graph, tokens, split_text)
+    graph = _build_graph(tokens.values())
+    _set_graph_edges(graph, tokens, split_text)
 
     return graph

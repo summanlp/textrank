@@ -15,7 +15,7 @@ from rouge_calculator import ROUGE_PATH
 from rouge_calculator import ROUGE_OPTIONS
 
 # Imports files from a parent directory.
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir, 'textrank'))
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir, 'summa'))
 from textcleaner import get_sentences
 
 
