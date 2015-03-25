@@ -15,7 +15,7 @@ except ImportError:
 
 from snowball import SnowballStemmer
 import re  # http://regex101.com/#python para probar regex.
-from syntactic_unit import SyntacticUnit
+from summa.syntactic_unit import SyntacticUnit
 
 SEPARATOR = r"@"
 RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)')  # backup (\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)
