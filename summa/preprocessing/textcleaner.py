@@ -1,7 +1,7 @@
 # encoding: cp850
-from gensim.utils import tokenize
-from gensim.parsing.preprocessing import strip_numeric, strip_punctuation
 
+import string
+import unicodedata
 import logging
 logger = logging.getLogger('summa.preprocessing.cleaner')
 
@@ -14,7 +14,7 @@ except ImportError:
     HAS_PATTERN = False
 
 from snowball import SnowballStemmer
-import re  # http://regex101.com/#python para probar regex.
+import re  # http://regex101.com/#python to test regex
 from summa.syntactic_unit import SyntacticUnit
 
 SEPARATOR = r"@"
@@ -55,16 +55,6 @@ LANGUAGES = {"EN": "english"}
 STEMMER = None
 
 
-def clean_text_by_sentences(text, language="EN"):
-    """ Tokenizes a given text into sentences, applying filters and lemmatizing them.
-    Returns a SyntacticUnit list. """
-    set_stemmer_language(language)
-    original_sentences = split_sentences(text)
-    filtered_sentences = filter_words(original_sentences)
-
-    return merge_syntactic_units(original_sentences, filtered_sentences)
-
-
 def set_stemmer_language(language):
     global STEMMER
     if not language in LANGUAGES:
@@ -73,22 +63,6 @@ def set_stemmer_language(language):
                  "romanian, russian, spanish, swedish")
     stemmer_language = LANGUAGES[language]
     STEMMER = SnowballStemmer(stemmer_language)
-
-def merge_syntactic_units(original_units, filtered_units, tags=None):
-    units = []
-    for i in xrange(len(original_units)):
-        if filtered_units[i] == '':
-            continue
-
-        text = original_units[i]
-        token = filtered_units[i]
-        tag = tags[i][1] if tags else None
-        sentence = SyntacticUnit(text, token, tag)
-        sentence.index = i
-
-        units.append(sentence)
-
-    return units
 
 
 def split_sentences(text):
@@ -117,6 +91,43 @@ def get_sentences(text):
         yield match.group()
 
 
+# Taken from gensim
+def to_unicode(text, encoding='utf8', errors='strict'):
+    """Convert a string (bytestring in `encoding` or unicode), to unicode."""
+    if isinstance(text, unicode):
+        return text
+    return unicode(text, encoding, errors=errors)
+
+
+# Taken from gensim
+RE_PUNCT = re.compile('([%s])+' % re.escape(string.punctuation), re.UNICODE)
+def strip_punctuation(s):
+    s = to_unicode(s)
+    return RE_PUNCT.sub(" ", s)
+
+
+# Taken from gensim
+RE_NUMERIC = re.compile(r"[0-9]+", re.UNICODE)
+def strip_numeric(s):
+    s = to_unicode(s)
+    return RE_NUMERIC.sub("", s)
+
+
+def remove_stopwords(sentence):
+    return " ".join(w for w in sentence.split() if w not in STOPWORDS)
+
+
+def stem_sentence(sentence):
+    word_stems = [STEMMER.stem(word) for word in sentence.split()]
+    return " ".join(word_stems)
+
+
+def apply_filters(sentence, filters):
+    for f in filters:
+        sentence = f(sentence)
+    return sentence
+
+
 def filter_words(sentences):
     filters = [lambda x: x.lower(), strip_numeric, strip_punctuation, remove_stopwords,
                stem_sentence]
@@ -126,18 +137,67 @@ def filter_words(sentences):
     return map(apply_filters_to_token, sentences)
 
 
-def apply_filters(sentence, filters):
-    for f in filters:
-        sentence = f(sentence)
-    return sentence
+# Taken from six
+def u(s):
+    return unicode(s.replace(r'\\', r'\\\\'), "unicode_escape")
 
 
-def remove_stopwords(sentence):
-    return " ".join(w for w in sentence.split() if w not in STOPWORDS)
+# Taken from gensim
+def deaccent(text):
+    """
+    Remove accentuation from the given string. Input text is either a unicode string or utf8
+    encoded bytestring.
+    """
+    if not isinstance(text, unicode):
+        # assume utf8 for byte strings, use default (strict) error handling
+        text = text.decode('utf8')
+    norm = unicodedata.normalize("NFD", text)
+    result = u('').join(ch for ch in norm if unicodedata.category(ch) != 'Mn')
+    return unicodedata.normalize("NFC", result)
 
-def stem_sentence(sentence):
-    word_stems = [STEMMER.stem(word) for word in sentence.split()]
-    return " ".join(word_stems)
+
+# Taken from gensim
+PAT_ALPHABETIC = re.compile('(((?![\d])\w)+)', re.UNICODE)
+def tokenize(text, lowercase=False, deacc=False, errors="strict", to_lower=False, lower=False):
+    """
+    Iteratively yield tokens as unicode strings, optionally also lowercasing them
+    and removing accent marks.
+    """
+    lowercase = lowercase or to_lower or lower
+    text = to_unicode(text, errors=errors)
+    if lowercase:
+        text = text.lower()
+    if deacc:
+        text = deaccent(text)
+    for match in PAT_ALPHABETIC.finditer(text):
+        yield match.group()
+
+
+def merge_syntactic_units(original_units, filtered_units, tags=None):
+    units = []
+    for i in xrange(len(original_units)):
+        if filtered_units[i] == '':
+            continue
+
+        text = original_units[i]
+        token = filtered_units[i]
+        tag = tags[i][1] if tags else None
+        sentence = SyntacticUnit(text, token, tag)
+        sentence.index = i
+
+        units.append(sentence)
+
+    return units
+
+
+def clean_text_by_sentences(text, language="EN"):
+    """ Tokenizes a given text into sentences, applying filters and lemmatizing them.
+    Returns a SyntacticUnit list. """
+    set_stemmer_language(language)
+    original_sentences = split_sentences(text)
+    filtered_sentences = filter_words(original_sentences)
+
+    return merge_syntactic_units(original_sentences, filtered_sentences)
 
 
 def clean_text_by_word(text, language="EN"):
