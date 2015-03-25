@@ -6,7 +6,6 @@ import logging
 logger = logging.getLogger('summa.preprocessing.cleaner')
 
 try:
-    raise ImportError
     from pattern.en import tag
     logger.info("'pattern' package found; tag filters are available for English")
     HAS_PATTERN = True
@@ -14,7 +13,7 @@ except ImportError:
     logger.info("'pattern' package not found; tag filters are not available for English")
     HAS_PATTERN = False
 
-import snowball
+from snowball import SnowballStemmer
 import re  # http://regex101.com/#python para probar regex.
 from syntactic_unit import SyntacticUnit
 
@@ -73,7 +72,7 @@ def set_stemmer_language(language):
                  " french, german, hungarian, italian, norwegian, porter, portuguese," +
                  "romanian, russian, spanish, swedish")
     stemmer_language = LANGUAGES[language]
-    STEMMER = snowball.SnowballStemmer(stemmer_language)
+    STEMMER = SnowballStemmer(stemmer_language)
 
 def merge_syntactic_units(original_units, filtered_units, tags=None):
     units = []

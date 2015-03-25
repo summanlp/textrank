@@ -20,7 +20,8 @@ There is also a demo function: `snowball.demo()`.
 """
 from __future__ import unicode_literals, print_function
 
-import porter
+from porter import PorterStemmer
+
 
 class SnowballStemmer():
 
@@ -105,7 +106,7 @@ class _LanguageSpecificStemmer():
         return "<%s>" % type(self).__name__
 
 
-class PorterStemmer(_LanguageSpecificStemmer, porter.PorterStemmer):
+class PorterStemmer(_LanguageSpecificStemmer, PorterStemmer):
     """
     A word stemmer based on the original Porter stemming algorithm.
 
@@ -119,7 +120,7 @@ class PorterStemmer(_LanguageSpecificStemmer, porter.PorterStemmer):
     """
     def __init__(self):
         _LanguageSpecificStemmer.__init__(self)
-        porter.PorterStemmer.__init__(self)
+        PorterStemmer.__init__(self)
 
 
 class _ScandinavianStemmer(_LanguageSpecificStemmer):

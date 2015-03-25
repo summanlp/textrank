@@ -1,9 +1,10 @@
 
+from math import log10 as _log10
 from pagerank_weighted import pagerank_weighted_scipy as _pagerank
-from textcleaner import clean_text_by_sentences as _clean_text_by_sentences
+from preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
 from commons import build_graph as _build_graph
 from commons import remove_unreacheable_nodes as _remove_unreacheable_nodes
-from math import log10 as _log10
+
 
 DEBUG = False
 
