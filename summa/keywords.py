@@ -94,10 +94,12 @@ def _set_graph_edges(graph, tokens, split_text):
     _process_text(graph, tokens, split_text)
 
 
-
-def _extract_tokens(lemmas, scores, summary_length):
+def _extract_tokens(lemmas, scores, ratio, words):
     lemmas.sort(key=lambda s: scores[s], reverse=True)
-    length = len(lemmas) * summary_length
+
+    # If no "words" option is selected, the number of sentences is
+    # reduced by the provided ratio, else, the ratio is ignored.
+    length = len(lemmas) * ratio if words is None else words
     return [(scores[lemmas[i]], lemmas[i],) for i in range(int(length))]
 
 
@@ -181,7 +183,7 @@ def _format_results(_keywords, combined_keywords, split, scores):
     return "\n".join(combined_keywords)
 
 
-def keywords(text, summary_length=0.2, language="EN", split=False, scores=False):
+def keywords(text, ratio=0.2, words=None, language="EN", split=False, scores=False):
     # Gets a dict of word -> lemma
     tokens = _clean_text_by_word(text, language)
     split_text = list(_tokenize_by_word(text))
@@ -194,17 +196,17 @@ def keywords(text, summary_length=0.2, language="EN", split=False, scores=False)
     _remove_unreachable_nodes(graph)
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of lemma -> score
-    _scores = _pagerank(graph)
+    pagerank_scores = _pagerank(graph)
 
-    extracted_lemmas = _extract_tokens(graph.nodes(), _scores, summary_length)
+    extracted_lemmas = _extract_tokens(graph.nodes(), pagerank_scores, ratio, words)
 
     lemmas_to_word = _lemmas_to_words(tokens)
-    _keywords = _get_keywords_with_score(extracted_lemmas, lemmas_to_word)
+    keywords = _get_keywords_with_score(extracted_lemmas, lemmas_to_word)
 
     # text.split() to keep numbers and punctuation marks, so separeted concepts are not combined
-    combined_keywords = _get_combined_keywords(_keywords, text.split())
+    combined_keywords = _get_combined_keywords(keywords, text.split())
 
-    return _format_results(_keywords, combined_keywords, split, scores)
+    return _format_results(keywords, combined_keywords, split, scores)
 
 
 def get_graph(text, language="EN"):

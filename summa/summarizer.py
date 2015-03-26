@@ -54,14 +54,42 @@ def _add_scores_to_sentences(sentences, scores):
             sentence.score = 0
 
 
-def _extract_most_important_sentences(sentences, summary_length):
+def _get_sentences_with_word_count(sentences, words):
+    """ Given a list of sentences, returns a list of sentences with a
+    total word count similar to the word count provided.
+    """
+    word_count = 0
+    selected_sentences = []
+    # Loops until the word count is reached.
+    for sentence in sentences:
+        words_in_sentence = len(sentence.token.split())
+
+        # Checks if the inclusion of the sentence gives a better approximation
+        # to the word parameter.
+        if abs(words - word_count - words_in_sentence) > abs(words - word_count):
+            return selected_sentences
+
+        selected_sentences.append(sentence)
+        word_count += words_in_sentence
+
+    return selected_sentences
+
+
+def _extract_most_important_sentences(sentences, ratio, words):
     sentences.sort(key=lambda s: s.score, reverse=True)
-    length = len(sentences) * summary_length
 
-    return sentences[:int(length)]
+    # If no "words" option is selected, the number of sentences is
+    # reduced by the provided ratio.
+    if words is None:
+        length = len(sentences) * ratio
+        return sentences[:int(length)]
+
+    # Else, the ratio is ignored.
+    else:
+        return _get_sentences_with_word_count(sentences, words)
 
 
-def summarize(text, summary_length=0.2, language="EN", split=False, scores=False):
+def summarize(text, ratio=0.2, words=None, language="EN", split=False, scores=False):
     # Gets a list of processed sentences.
     sentences = _clean_text_by_sentences(text, language)
 
@@ -73,13 +101,13 @@ def summarize(text, summary_length=0.2, language="EN", split=False, scores=False
     _remove_unreachable_nodes(graph)
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
-    _scores = _pagerank(graph)
+    pagerank_scores = _pagerank(graph)
 
     # Adds the summa scores to the sentence objects.
-    _add_scores_to_sentences(sentences, _scores)
+    _add_scores_to_sentences(sentences, pagerank_scores)
 
-    # Extracts the most important sentences.
-    extracted_sentences = _extract_most_important_sentences(sentences, summary_length)
+    # Extracts the most important sentences with the selected criterion.
+    extracted_sentences = _extract_most_important_sentences(sentences, ratio, words)
 
     # Sorts the extracted sentences by apparition order in the original text.
     extracted_sentences.sort(key=lambda s: s.index)
