@@ -62,7 +62,7 @@ def _get_sentences_with_word_count(sentences, words):
     selected_sentences = []
     # Loops until the word count is reached.
     for sentence in sentences:
-        words_in_sentence = len(sentence.token.split())
+        words_in_sentence = len(sentence.text.split())
 
         # Checks if the inclusion of the sentence gives a better approximation
         # to the word parameter.
