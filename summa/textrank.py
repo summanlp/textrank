@@ -40,7 +40,7 @@ def get_arguments():
 
 help_text = """Usage: python summa.py
 -s UNIT, --summary=UNIT:
-\tType of unit to summarize: sentence or word. Default value: 0
+\tType of unit to summarize: sentence (0) or word (1). Default value: 0
 \t0: Sentence. 1: Word
 -t PATH, --text=PATH:
 \tPATH to text to summarize. Default value: samples/textrank_example.txt
