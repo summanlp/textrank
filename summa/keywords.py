@@ -5,7 +5,7 @@ from pagerank_weighted import pagerank_weighted_scipy as _pagerank
 from preprocessing.textcleaner import clean_text_by_word as _clean_text_by_word
 from preprocessing.textcleaner import tokenize_by_word as _tokenize_by_word
 from commons import build_graph as _build_graph
-from commons import remove_unreacheable_nodes as _remove_unreacheable_nodes
+from commons import remove_unreachable_nodes as _remove_unreachable_nodes
 
 WINDOW_SIZE = 2
 
@@ -191,7 +191,7 @@ def keywords(text, summary_length=0.2, language="EN", split=False, scores=False)
     _set_graph_edges(graph, tokens, split_text)
     del split_text # It's no longer used
 
-    _remove_unreacheable_nodes(graph)
+    _remove_unreachable_nodes(graph)
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of lemma -> score
     _scores = _pagerank(graph)

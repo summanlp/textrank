@@ -3,7 +3,7 @@ from math import log10 as _log10
 from pagerank_weighted import pagerank_weighted_scipy as _pagerank
 from preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
 from commons import build_graph as _build_graph
-from commons import remove_unreacheable_nodes as _remove_unreacheable_nodes
+from commons import remove_unreachable_nodes as _remove_unreachable_nodes
 
 
 def _set_graph_edge_weights(graph):
@@ -70,7 +70,7 @@ def summarize(text, summary_length=0.2, language="EN", split=False, scores=False
     _set_graph_edge_weights(graph)
 
     # Remove all nodes with all edges weights equal to zero.
-    _remove_unreacheable_nodes(graph)
+    _remove_unreachable_nodes(graph)
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
     _scores = _pagerank(graph)
