@@ -6,51 +6,6 @@ from commons import build_graph as _build_graph
 from commons import remove_unreacheable_nodes as _remove_unreacheable_nodes
 
 
-DEBUG = False
-
-
-def summarize(text, summary_length=0.2, language="EN"):
-    # Gets a list of processed sentences.
-    sentences = _clean_text_by_sentences(text, language)
-
-    # Creates the graph and calculates the similarity coefficient for every pair of nodes.
-    graph = _build_graph([sentence.token for sentence in sentences])
-    _set_graph_edge_weights(graph)
-
-    # Remove all nodes with all edges weights equal to zero.
-    _remove_unreacheable_nodes(graph)
-
-    # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
-    scores = _pagerank(graph)
-
-    # Adds the summa scores to the sentence objects.
-    _add_scores_to_sentences(sentences, scores)
-
-    # Extracts the most important sentences.
-    extracted_sentences = _extract_most_important_sentences(sentences, summary_length)
-
-    # Sorts the extracted sentences by apparition order in the original text.
-    extracted_sentences.sort(key=lambda s: s.index)
-
-    return "\n".join([sentence.text for sentence in extracted_sentences])
-
-
-def _add_scores_to_sentences(sentences, scores):
-    for sentence in sentences:
-        # Adds the score to the object if it has one.
-        if sentence.token in scores:
-            sentence.score = scores[sentence.token]
-        else:
-            sentence.score = 0
-
-
-def _extract_most_important_sentences(sentences, summary_length):
-    sentences.sort(key=lambda s: s.score, reverse=True)
-    length = len(sentences) * summary_length
-
-    return sentences[:int(length)]
-
-
 def _set_graph_edge_weights(graph):
     for sentence_1 in graph.nodes():
         for sentence_2 in graph.nodes():
@@ -80,6 +35,56 @@ def _get_similarity(s1, s2):
 def _count_common_words(words_sentence_one, words_sentence_two):
     words_set = set(words_sentence_two)
     return sum(1 for w in words_sentence_one if w in words_set)
+
+
+def _format_results(extracted_sentences, split, score):
+    if score:
+        return [(sentence.text, sentence.score) for sentence in extracted_sentences]
+    if split:
+        return [sentence.text for sentence in extracted_sentences]
+    return "\n".join([sentence.text for sentence in extracted_sentences])
+
+
+def _add_scores_to_sentences(sentences, scores):
+    for sentence in sentences:
+        # Adds the score to the object if it has one.
+        if sentence.token in scores:
+            sentence.score = scores[sentence.token]
+        else:
+            sentence.score = 0
+
+
+def _extract_most_important_sentences(sentences, summary_length):
+    sentences.sort(key=lambda s: s.score, reverse=True)
+    length = len(sentences) * summary_length
+
+    return sentences[:int(length)]
+
+
+def summarize(text, summary_length=0.2, language="EN", split=False, scores=False):
+    # Gets a list of processed sentences.
+    sentences = _clean_text_by_sentences(text, language)
+
+    # Creates the graph and calculates the similarity coefficient for every pair of nodes.
+    graph = _build_graph([sentence.token for sentence in sentences])
+    _set_graph_edge_weights(graph)
+
+    # Remove all nodes with all edges weights equal to zero.
+    _remove_unreacheable_nodes(graph)
+
+    # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
+    _scores = _pagerank(graph)
+
+    # Adds the summa scores to the sentence objects.
+    _add_scores_to_sentences(sentences, _scores)
+
+    # Extracts the most important sentences.
+    extracted_sentences = _extract_most_important_sentences(sentences, summary_length)
+
+    # Sorts the extracted sentences by apparition order in the original text.
+    extracted_sentences.sort(key=lambda s: s.index)
+
+    return _format_results(extracted_sentences, split, scores)
 
 
 def get_graph(text, language="EN"):
