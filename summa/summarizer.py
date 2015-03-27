@@ -2,6 +2,7 @@
 from math import log10 as _log10
 from pagerank_weighted import pagerank_weighted_scipy as _pagerank
 from preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
+from preprocessing.textcleaner import strip_punctuation as _strip_punctuation
 from commons import build_graph as _build_graph
 from commons import remove_unreachable_nodes as _remove_unreachable_nodes
 
@@ -17,11 +18,40 @@ def _set_graph_edge_weights(graph):
                     graph.add_edge(edge, similarity)
 
 
-def _get_similarity(s1, s2):
-    words_sentence_one = s1.split()
-    words_sentence_two = s2.split()
+def _lcws(a, b):
+    lengths = [[0 for j in range(len(b)+1)] for i in range(len(a)+1)]
+    # row 0 and column 0 are initialized to 0 already
 
-    common_word_count = _count_common_words(words_sentence_one, words_sentence_two)
+    for i, x in enumerate(a):
+        for j, y in enumerate(b):
+            if x == y:
+                lengths[i+1][j+1] = lengths[i][j] + 1
+            else:
+                lengths[i+1][j+1] = \
+                    max(lengths[i+1][j], lengths[i][j+1])
+
+    # read the substring out from the matrix
+    result = []
+    x, y = len(a), len(b)
+    while x != 0 and y != 0:
+        if lengths[x][y] == lengths[x-1][y]:
+            x -= 1
+        elif lengths[x][y] == lengths[x][y-1]:
+            y -= 1
+        else:
+            assert a[x-1] == b[y-1]
+            result = [a[x-1]] + result
+            x -= 1
+            y -= 1
+
+    return result
+
+
+def _get_similarity(s1, s2):
+    words_sentence_one = _strip_punctuation(s1.lower()).split()
+    words_sentence_two = _strip_punctuation(s2.lower()).split()
+
+    lcws = _lcws(words_sentence_one, words_sentence_two)
 
     log_s1 = _log10(len(words_sentence_one))
     log_s2 = _log10(len(words_sentence_two))
@@ -29,12 +59,7 @@ def _get_similarity(s1, s2):
     if log_s1 + log_s2 == 0:
         return 0
 
-    return common_word_count / (log_s1 + log_s2)
-
-
-def _count_common_words(words_sentence_one, words_sentence_two):
-    words_set = set(words_sentence_two)
-    return sum(1 for w in words_sentence_one if w in words_set)
+    return len(lcws) / (log_s1 + log_s2)
 
 
 def _format_results(extracted_sentences, split, score):
