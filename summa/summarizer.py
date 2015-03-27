@@ -24,7 +24,8 @@ def _get_similarity(s1, s2):
     words_sentence_one = _strip_punctuation(s1.lower()).split()
     words_sentence_two = _strip_punctuation(s2.lower()).split()
 
-    common_word_count = _count_common_skip_bigrams(words_sentence_one, words_sentence_two)
+    common_word_count = _count_common_skip_bigrams(words_sentence_one, words_sentence_two) + \
+                        _count_common_words(words_sentence_one, words_sentence_two)
 
     log_s1 = _log10(len(words_sentence_one))
     log_s2 = _log10(len(words_sentence_two))
@@ -46,6 +47,11 @@ def _get_skip_bigrams(words):
             skip_bigrams.append((words[i], words[i + j]))
 
     return skip_bigrams
+
+
+def _count_common_words(words_sentence_one, words_sentence_two):
+    words_set = set(words_sentence_two)
+    return sum(1 for w in words_sentence_one if w in words_set)
 
 
 def _count_common_skip_bigrams(words_sentence_one, words_sentence_two):
