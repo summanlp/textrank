@@ -1,7 +1,8 @@
 
 from math import log10 as _log10
-from pagerank_weighted import pagerank_weighted_scipy as _pagerank
+from pagerank_weighted import pagerank_weighted as _pagerank
 from preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
+from preprocessing.textcleaner import strip_punctuation as _strip_punctuation
 from commons import build_graph as _build_graph
 from commons import remove_unreachable_nodes as _remove_unreachable_nodes
 
@@ -18,10 +19,10 @@ def _set_graph_edge_weights(graph):
 
 
 def _get_similarity(s1, s2):
-    words_sentence_one = s1.split()
-    words_sentence_two = s2.split()
+    words_sentence_one = _strip_punctuation(s1.lower()).split()
+    words_sentence_two = _strip_punctuation(s2.lower()).split()
 
-    common_word_count = _count_common_words(words_sentence_one, words_sentence_two)
+    common_bigram_count = _count_common_bigrams(words_sentence_one, words_sentence_two)
 
     log_s1 = _log10(len(words_sentence_one))
     log_s2 = _log10(len(words_sentence_two))
@@ -29,12 +30,19 @@ def _get_similarity(s1, s2):
     if log_s1 + log_s2 == 0:
         return 0
 
-    return common_word_count / (log_s1 + log_s2)
+    return common_bigram_count / (log_s1 + log_s2)
 
 
-def _count_common_words(words_sentence_one, words_sentence_two):
-    words_set = set(words_sentence_two)
-    return sum(1 for w in words_sentence_one if w in words_set)
+def _count_common_bigrams(words_sentence_one, words_sentence_two):
+    if len(words_sentence_one) == 0 or len(words_sentence_two) == 0:
+        return 0
+
+    bigrams_sentence_one = zip(words_sentence_one, words_sentence_one[1:]) + \
+                                [(None, words_sentence_one[0]), (words_sentence_one[-1], None)]
+    bigrams_sentence_two = zip(words_sentence_two, words_sentence_two[1:]) + \
+                                [(None, words_sentence_two[0]), (words_sentence_two[-1], None)]
+
+    return sum(1 for bigram in bigrams_sentence_one if bigram in bigrams_sentence_two)
 
 
 def _format_results(extracted_sentences, split, score):
