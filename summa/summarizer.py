@@ -18,7 +18,7 @@ def _set_graph_edge_weights(graph):
                     graph.add_edge(edge, similarity)
 
 
-def _lcws(a, b):
+def _lcws_lenght(a, b):
     lengths = [[0 for j in range(len(b)+1)] for i in range(len(a)+1)]
     # row 0 and column 0 are initialized to 0 already
 
@@ -30,28 +30,14 @@ def _lcws(a, b):
                 lengths[i+1][j+1] = \
                     max(lengths[i+1][j], lengths[i][j+1])
 
-    # read the substring out from the matrix
-    result = []
-    x, y = len(a), len(b)
-    while x != 0 and y != 0:
-        if lengths[x][y] == lengths[x-1][y]:
-            x -= 1
-        elif lengths[x][y] == lengths[x][y-1]:
-            y -= 1
-        else:
-            assert a[x-1] == b[y-1]
-            result = [a[x-1]] + result
-            x -= 1
-            y -= 1
-
-    return result
+    return lengths[len(a)][len(b)]
 
 
 def _get_similarity(s1, s2):
     words_sentence_one = _strip_punctuation(s1.lower()).split()
     words_sentence_two = _strip_punctuation(s2.lower()).split()
 
-    lcws = _lcws(words_sentence_one, words_sentence_two)
+    lcws_lenght = _lcws_lenght(words_sentence_one, words_sentence_two)
 
     log_s1 = _log10(len(words_sentence_one))
     log_s2 = _log10(len(words_sentence_two))
@@ -59,7 +45,7 @@ def _get_similarity(s1, s2):
     if log_s1 + log_s2 == 0:
         return 0
 
-    return len(lcws) / (log_s1 + log_s2)
+    return lcws_lenght / (log_s1 + log_s2)
 
 
 def _format_results(extracted_sentences, split, score):
