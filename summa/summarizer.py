@@ -19,7 +19,7 @@ def _set_graph_edge_weights(graph):
 
 
 def weighting_function(k):
-    return k*k
+    return 3 * k - 2
 
 
 def _wlcws(a, b, f):
