@@ -17,6 +17,7 @@ class BM25(object):
         self.idf = {}
         self.k1 = 1.5
         self.b = 0.75
+        self.delta = 1.0
         self.init()
 
     def init(self):
@@ -40,9 +41,9 @@ class BM25(object):
             if word not in self.f[index]:
                 continue
 
-            score += (self.idf[word]*self.f[index][word]*(self.k1+1)
-                      / (self.f[index][word]+self.k1*(1-self.b+self.b*self.D
-                                                      / self.avgdl)))
+            numerator = self.f[index][word] * (self.k1 + 1)
+            denominator = self.f[index][word] + self.k1 * (1 - self.b + self.b * self.D / self.avgdl)
+            score += self.idf[word] * ( numerator / denominator + self.delta)
         return score
 
     def simall(self, doc):
