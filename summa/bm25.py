@@ -40,13 +40,10 @@ class BM25(object):
         for word in doc:
             if word not in self.f[index]:
                 continue
-            idf = self.idf[word]
-            if idf >= 0:
-                score += (self.idf[word]*self.f[index][word]*(self.k1+1)
-                          / (self.f[index][word]+self.k1*(1-self.b+self.b*self.D
-                                                      / self.avgdl)))
-            else:
-                score += EPSILON
+            idf = self.idf[word] if self.idf[word] >= 0 else EPSILON
+            score += (idf*self.f[index][word]*(self.k1+1)
+                      / (self.f[index][word]+self.k1*(1-self.b+self.b*self.D
+                                                  / self.avgdl)))
         return score
 
     def simall(self, doc, average_idf):
