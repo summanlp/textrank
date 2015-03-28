@@ -1,9 +1,9 @@
 
-from graph import Graph
-
+from pygraph.classes.digraph import digraph as pygraph
 
 def build_graph(sequence):
-    graph = Graph()
+    graph = pygraph()
+    graph.DEFAULT_WEIGHT = 0
     for item in sequence:
         if not graph.has_node(item):
             graph.add_node(item)

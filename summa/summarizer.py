@@ -4,37 +4,24 @@ from pagerank_weighted import pagerank_weighted_scipy as _pagerank
 from preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
 from commons import build_graph as _build_graph
 from commons import remove_unreachable_nodes as _remove_unreachable_nodes
-
+from bm25 import bm25_weights as _bm25_weights
 
 def _set_graph_edge_weights(graph):
-    for sentence_1 in graph.nodes():
-        for sentence_2 in graph.nodes():
+    sentences = graph.nodes()
+    weights = _bm25_weights([sentence.split() for sentence in sentences])
 
-            edge = (sentence_1, sentence_2)
-            if sentence_1 != sentence_2 and not graph.has_edge(edge):
-                similarity = _get_similarity(sentence_1, sentence_2)
-                if similarity != 0:
-                    graph.add_edge(edge, similarity)
+    for i in xrange(len(sentences)):
+        for j in xrange(len(sentences)):
+            if i == j: continue
 
+            sentence_1 = sentences[i]
+            sentence_2 = sentences[j]
 
-def _get_similarity(s1, s2):
-    words_sentence_one = s1.split()
-    words_sentence_two = s2.split()
+            edge_1 = (sentence_1, sentence_2)
+            edge_2 = (sentence_2, sentence_1)
 
-    common_word_count = _count_common_words(words_sentence_one, words_sentence_two)
-
-    log_s1 = _log10(len(words_sentence_one))
-    log_s2 = _log10(len(words_sentence_two))
-
-    if log_s1 + log_s2 == 0:
-        return 0
-
-    return common_word_count / (log_s1 + log_s2)
-
-
-def _count_common_words(words_sentence_one, words_sentence_two):
-    words_set = set(words_sentence_two)
-    return sum(1 for w in words_sentence_one if w in words_set)
+            if not graph.has_edge(edge_1): graph.add_edge(edge_1, weights[i][j])
+            if not graph.has_edge(edge_2): graph.add_edge(edge_2, weights[j][i])
 
 
 def _format_results(extracted_sentences, split, score):
