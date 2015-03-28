@@ -34,7 +34,8 @@ class BM25(object):
         for k, v in self.df.items():
             self.idf[k] = math.log(self.D-v+0.5)-math.log(v+0.5)
 
-    def sim(self, doc, index):
+    def sim(self, doc, index, average_idf):
+        EPSILON = 0.05 * average_idf
         score = 0
         for word in doc:
             if word not in self.f[index]:
@@ -45,20 +46,21 @@ class BM25(object):
                           / (self.f[index][word]+self.k1*(1-self.b+self.b*self.D
                                                       / self.avgdl)))
             else:
-                score += 0
+                score += EPSILON
         return score
 
-    def simall(self, doc):
+    def simall(self, doc, average_idf):
         scores = []
         for index in xrange(self.D):
-            score = self.sim(doc, index)
+            score = self.sim(doc, index, average_idf)
             scores.append(score)
         return scores
 
 def bm25_weights(docs):
     bm25 = BM25(docs)
+    average_idf = sum(map(lambda k: bm25.idf[k] + 0.00 ,bm25.idf.keys())) / len(bm25.idf.keys())
     weights = []
     for doc in docs:
-        scores = bm25.simall(doc)
+        scores = bm25.simall(doc, average_idf)
         weights.append(scores)
     return weights
