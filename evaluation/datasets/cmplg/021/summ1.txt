@@ -1,7 +1,0 @@
-
-This paper presents a new measure of semantic similarity in an  IS-A
-taxonomy, based on the notion of information content.  Experimental evaluation
-suggests that the measure performs encouragingly well (a correlation of r =
-0.79 with a benchmark set of human similarity judgments, with an upper bound
-of r = 0.90 for human subjects performing the same task), and significantly
-better than the traditional edge counting approach (r = 0.66).

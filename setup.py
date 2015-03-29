@@ -1,14 +1,38 @@
 from distutils.core import setup
 # Instructions from http://peterdowns.com/posts/first-time-with-pypi.html
+# and https://github.com/pypa/sampleproject/blob/master/setup.py
 setup(
-  name = 'summanlp',
-  packages = ['summanlp'],
-  version = '0.1',
-  description = 'A text summarization and keyword extraction lib',
-  author = 'Federico Barrios, Federico Lopez',
-  author_email = 'fbarrios@live.com, fedelopez77@gmail.com',
-  url = 'https://github.com/summanlp/textrank-module',
-  download_url = 'https://github.com/summanlp/textrank-module/tarball/0.1', 
-  keywords = ['textrank', 'nlp', 'summarization', "NLP", "natural language processing", "automatic summarization"]
-#  classifiers = []
+    name = 'summa',
+    packages = ['summa', 'summa.preprocessing'],
+    package_data = {
+        'summa': ['views/*', 'views/img/*', 'views/js/*', 'views/styles/*']
+    },
+    version = '0.0.8',
+    description = 'A text summarization and keyword extraction package',
+    author = 'Federico Barrios, Federico Lopez',
+    author_email = 'summanlp@gmail.com',
+    url = 'https://github.com/summanlp/textrank',
+    download_url = 'https://github.com/summanlp/textrank/tarball/v0.0.2',
+    keywords = ['summa', 'nlp', 'summarization', "NLP", "natural language processing", "automatic summarization",
+        "keywords", "summary", "textrank", "pagerank"],
+    classifiers = [
+        # How mature is this project? Common values are
+        #   3 - Alpha
+        #   4 - Beta
+        #   5 - Production/Stable
+        'Development Status :: 4 - Beta',
+
+        'License :: OSI Approved :: MIT License',
+
+        'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+
+        'Topic :: Scientific/Engineering :: Information Analysis',
+        'Topic :: Text Processing :: Linguistic',
+
+        # Specify the Python versions you support here. In particular, ensure
+        # that you indicate whether you support Python 2, Python 3 or both.
+        'Programming Language :: Python :: 2.7'
+    ],
+    long_description = open('README.rst').read()
 )

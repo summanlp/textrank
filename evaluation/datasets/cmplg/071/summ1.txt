@@ -1,7 +1,0 @@
-
-This paper describes a method to automatically acquire the syntactic
-and semantic classifications of unknown words. Our method reduces the
-search space of the lexical acquisition  problem by
-utilizing both the left and the right context of the unknown
-word. Link Grammar provides a convenient framework in which to
-implement our method.

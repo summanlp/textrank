@@ -1,6 +1,0 @@
-
-This paper presents a generalised two-level implementation
-which can handle linear and non-linear morphological operations. An
-algorithm for the interpretation of multi-tape two-level rules is
-described. In addition, a number of issues which arise when developing
-non-linear grammars are discussed with examples from Syriac.

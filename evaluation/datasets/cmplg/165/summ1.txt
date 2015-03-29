@@ -1,8 +1,0 @@
-
-Natural language generation must work with insufficient input.
-Underspecifications can be caused by shortcomings of the component  providing the
-input or by the preliminary state of incrementally given input. The paper aims
-to escape from such dead-end situations by making assumptions. We discuss global
-aspects of default handling. Two problem classes for defaults in the
-incremental syntactic generator VM-GEN are presented to substantiate
-our discussion. 

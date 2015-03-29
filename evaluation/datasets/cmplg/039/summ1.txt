@@ -1,7 +1,0 @@
-
-The paper describes a substitutional approach to ellipsis resolution giving
- comparable results to , but without the need for order-sensitive interleaving of quantifier scoping and
-ellipsis resolution. It is argued that the order-independence results
-from viewing semantic interpretation as building  a description of a semantic
-composition, instead of the more common view of interpretation as actually
-performing the composition.

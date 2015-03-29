@@ -1,8 +1,0 @@
-
-This paper shows how DATR, a widely used formal language for lexical
-knowledge representation, can be used to define an LTAG lexicon as
-an inheritance hierarchy with internal lexical rules.  A bottom-up
-featural encoding is used for LTAG trees and this allows lexical
-rules to be implemented as covariation constraints within feature
-structures.  Such an approach eliminates the considerable redundancy
-otherwise associated with an LTAG lexicon.

@@ -1,3 +1,0 @@
-Dataset taken from:
-
-http://www.cs.bgu.ac.il/~elhadad/summary-test.html

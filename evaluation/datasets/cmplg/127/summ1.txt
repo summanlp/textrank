@@ -1,8 +1,0 @@
-
-Expectations about the correlation of cue phrases, the duration of
-unfilled pauses and the structuring of spoken discourse are framed in
-light of Grosz and Sidner's theory of discourse and are tested for a
-directions-giving dialogue.  The results suggest that cue phrase and
-discourse structuring tasks may align, and show a correlation for
-pause length and some of the modifications that speakers can make to
-discourse structure.

@@ -1,9 +1,0 @@
-
-We conducted an empirical analysis into the relation between
-          control and discourse structure. We applied control criteria to
-          four dialogues and identified 3 levels of discourse structure. We
-          investigated the mechanism for changing control between these
-          structures and found that utterance type and not cue words
-          predicted shifts of control. Participants used certain types of
-          signals when discourse goals were proceeding successfully but
-          resorted to interruptions when they were not.

@@ -1,5 +1,0 @@
-
-We introduce the bilingual dual-coding theory as a model for bilingual
-mental representation. Based on this model, lexical selection neural
-networks are implemented for a connectionist transfer project in machine
-translation.

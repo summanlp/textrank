@@ -1,9 +1,0 @@
-
-We propose a paradigm for concurrent natural language generation. In
-order to represent grammar rules distributively, we adopt categorial
-unification grammar (CUG) where each category owns its functional
-type. We augment typed lambda calculus with several new combinators,
-to make the order of 
-lambda-conversions free for partial / local
-processing. The concurrent calculus is modeled with Chemical Abstract Machine.  We show an example of a Japanese causative auxiliary verb that requires a drastic rearrangement of
-case domination.

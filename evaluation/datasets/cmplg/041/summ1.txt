@@ -1,6 +1,0 @@
-
-Experiments were carried out comparing the Swedish Teleman and the
-English Susanne corpora using an HMM-based and a novel reductionistic
-statistical part-of-speech tagger. They indicate that tagging the
-Teleman corpus is the more difficult task, and that the performance of
-the two different taggers is comparable.

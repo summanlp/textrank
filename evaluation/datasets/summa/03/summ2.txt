@@ -1,5 +1,0 @@
-Java 8, the new version of the programming languaje Java was oficially released today.
-This update has been in the works since 2010, and it's the first major update since the release of Java 7 in July 2011.
-Java 8 includes some features such as Lambda expressions, which extend the programming model to the modern era of cloud deployments.
-According to MuleSoft's James Donelan, this new version could represent a real benefit for the users because of its improvements.
-Nevertheless, Donelan regretted that the key Project Jigsaw was dropped for the release.

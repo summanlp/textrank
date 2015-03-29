@@ -1,3 +1,0 @@
-IBM will release Watson Analytics, a predictive data analysis tool based in natural language.
-The system usability will attract companies lack the resources to build an analytics system but want to perform data mining.
-Watson will provide a simple interface, and will be able to deliver visualisations to highlight patterns for humans to interrogate.

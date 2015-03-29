@@ -1,7 +1,0 @@
-
-We describe how substantial domain-independent language-processing
-systems for French and Spanish were quickly developed by manually
-adapting an existing English-language system, the SRI Core Language
-Engine. We explain the adaptation process in detail, and argue that it
-provides a fairly general recipe for converting a grammar-based system
-for English into a corresponding one for a Romance language.

@@ -1,9 +1,0 @@
-
-This paper presents PROVERB a text planner for
-argumentative texts. PROVERBs main feature is that it combines global
-hierarchical planning and unplanned organization of text with respect
-to local derivation relations in a complementary way.  The former
-splits the task of presenting a particular proof into subtasks of
-presenting subproofs.  The latter simulates how the next intermediate
-conclusion to be presented is chosen under the guidance of the local
-focus.

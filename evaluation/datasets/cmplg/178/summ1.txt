@@ -1,7 +1,0 @@
-
-Aggregating different pieces of similar information is
-necessary to generate concise and easy to understand reports in
-technical domains.  This paper presents a general algorithm that
-combines similar messages in order to generate one or more coherent
-sentences for them.  The process is not as trivial as might be
-expected.  Problems encountered are briefly described.

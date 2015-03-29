@@ -1,8 +1,0 @@
-
- In  we studied a new type of DCGs, Datalog grammars, which are inspired on database theory. Their efficiency
-was shown to be better than that of their DCG counterparts under
-(terminating) OLDT-resolution.  In this article we motivate a variant of
- Datalog grammars
-which allows us a meta-grammatical treatment of coordination. This treatment
-improves in some respects over previous work on coordination in logic
-grammars, although more research is needed for testing it in other respects.

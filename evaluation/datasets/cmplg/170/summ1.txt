@@ -1,9 +1,0 @@
-
-Both anaphora resolution and prepositional phrase (PP) attachment are
-the most frequent ambiguities in natural language processing.  Several
-methods have been proposed to deal with each phenomenon separately,
-however none of proposed systems has considered the way of dealing
-both phenomena. We tackle this issue here, proposing an algorithm to
-co-ordinate the treatment of these two problems efficiently, i.e., the
-aim is also to exploit at each step all the results that each
-component can provide.
