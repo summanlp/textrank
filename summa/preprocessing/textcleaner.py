@@ -51,7 +51,9 @@ so five the first having once
 """
 STOPWORDS = frozenset(w for w in STOPWORDS.split() if w)
 
-LANGUAGES = {"EN": "english"}
+LANGUAGES = {"danish", "dutch", "english", "finnish", "french", "german", \
+             "hungarian", "italian", "norwegian", "porter", "portuguese", \
+             "romanian", "russian", "spanish", "swedish"}
 STEMMER = None
 
 
@@ -61,8 +63,7 @@ def set_stemmer_language(language):
         raise ValueError("Valid languages are danish, dutch, english, finnish," +
                  " french, german, hungarian, italian, norwegian, porter, portuguese," +
                  "romanian, russian, spanish, swedish")
-    stemmer_language = LANGUAGES[language]
-    STEMMER = SnowballStemmer(stemmer_language)
+    STEMMER = SnowballStemmer(language)
 
 
 def split_sentences(text):
@@ -190,7 +191,7 @@ def merge_syntactic_units(original_units, filtered_units, tags=None):
     return units
 
 
-def clean_text_by_sentences(text, language="EN"):
+def clean_text_by_sentences(text, language="english"):
     """ Tokenizes a given text into sentences, applying filters and lemmatizing them.
     Returns a SyntacticUnit list. """
     set_stemmer_language(language)
@@ -200,7 +201,7 @@ def clean_text_by_sentences(text, language="EN"):
     return merge_syntactic_units(original_sentences, filtered_sentences)
 
 
-def clean_text_by_word(text, language="EN"):
+def clean_text_by_word(text, language="english"):
     """ Tokenizes a given text into words, applying filters and lemmatizing them.
     Returns a dict of word -> syntacticUnit. """
     set_stemmer_language(language)

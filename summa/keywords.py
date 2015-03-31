@@ -183,7 +183,7 @@ def _format_results(_keywords, combined_keywords, split, scores):
     return "\n".join(combined_keywords)
 
 
-def keywords(text, ratio=0.2, words=None, language="EN", split=False, scores=False):
+def keywords(text, ratio=0.2, words=None, language="english", split=False, scores=False):
     # Gets a dict of word -> lemma
     tokens = _clean_text_by_word(text, language)
     split_text = list(_tokenize_by_word(text))
@@ -209,7 +209,7 @@ def keywords(text, ratio=0.2, words=None, language="EN", split=False, scores=Fal
     return _format_results(keywords, combined_keywords, split, scores)
 
 
-def get_graph(text, language="EN"):
+def get_graph(text, language="english"):
     tokens = _clean_text_by_word(text, language)
     split_text = list(_tokenize_by_word(text))
 

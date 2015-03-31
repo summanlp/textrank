@@ -7,7 +7,7 @@ setup(
     package_data = {
         'summa': ['views/*', 'views/img/*', 'views/js/*', 'views/styles/*']
     },
-    version = '0.0.8',
+    version = '0.0.1',
     description = 'A text summarization and keyword extraction package',
     author = 'Federico Barrios, Federico Lopez',
     author_email = 'summanlp@gmail.com',

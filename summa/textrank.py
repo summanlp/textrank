@@ -3,7 +3,6 @@ import sys, getopt
 from summarizer import summarize
 from keywords import keywords
 
-TEST_FILE = "samples/textrank_example.txt"
 # Types of summarization
 SENTENCE = 0
 WORD = 1
@@ -16,7 +15,7 @@ def get_arguments():
         print str(err)
         usage()
         sys.exit(2)
-    path = TEST_FILE
+    path = None
     summarize_by = SENTENCE
     ratio = 0.2
     words = None
@@ -38,12 +37,12 @@ def get_arguments():
     return path, summarize_by, ratio, words
 
 
-help_text = """Usage: python summa.py
+help_text = """Usage: python textrank.py -t FILE
 -s UNIT, --summary=UNIT:
 \tType of unit to summarize: sentence (0) or word (1). Default value: 0
 \t0: Sentence. 1: Word
--t PATH, --text=PATH:
-\tPATH to text to summarize. Default value: samples/textrank_example.txt
+-t FILE, --text=FILE:
+\tPATH to text to summarize
 -r RATIO, --ratio=RATIO:
 \tFloat number (0,1] that defines the length of the summary. It's a proportion of the original text. Default value: 0.2.
 -w WORDS, --words=WORDS:
@@ -65,8 +64,8 @@ def textrank(text, summarize_by=SENTENCE, ratio=0.2, words=None):
 def main():
     path, summarize_by, ratio, words = get_arguments()
 
-    with open(path) as test_file:
-        text = test_file.read()
+    with open(path) as file:
+        text = file.read()
 
     print textrank(text, summarize_by, ratio, words)
 

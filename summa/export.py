@@ -8,7 +8,7 @@ from pagerank_weighted import pagerank_weighted_scipy
 
 NODE_COLOR = {'r': 239, 'g': 10, 'b': 10}
 
-def gexf_export(text, language="EN", path="test.gexf", labels=None, by_sentence=True, by_word=False):
+def gexf_export(text, language="english", path="test.gexf", labels=None, by_sentence=True, by_word=False):
     if (by_sentence and by_word) or (not by_sentence and not by_word):
         raise TypeError("Must select one and only one of by_sentence or by_word")
     graph = get_sentence_graph(text, language) if by_sentence else get_word_graph(text, language)
