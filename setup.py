@@ -5,14 +5,14 @@ setup(
     name = 'summa',
     packages = ['summa', 'summa.preprocessing'],
     package_data = {
-        'summa': ['views/*', 'views/img/*', 'views/js/*', 'views/styles/*']
+        'summa': ['README', 'LICENSE']
     },
-    version = '0.0.1',
+    version = '0.0.4',
     description = 'A text summarization and keyword extraction package',
     author = 'Federico Barrios, Federico Lopez',
     author_email = 'summanlp@gmail.com',
     url = 'https://github.com/summanlp/textrank',
-    download_url = 'https://github.com/summanlp/textrank/tarball/v0.0.2',
+    download_url = 'https://github.com/summanlp/textrank/tarball/v0.0.3',
     keywords = ['summa', 'nlp', 'summarization', "NLP", "natural language processing", "automatic summarization",
         "keywords", "summary", "textrank", "pagerank"],
     classifiers = [
@@ -34,5 +34,5 @@ setup(
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 2.7'
     ],
-    long_description = open('README.rst').read()
+    long_description = open('README').read()
 )

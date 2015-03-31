@@ -1,3 +1,4 @@
+#!/usr/bin/env python -W ignore::DeprecationWarning
 
 import sys, getopt
 from summarizer import summarize

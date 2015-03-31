@@ -27,7 +27,7 @@ def _write_gexf(graph, scores, path="test.gexf", labels=None):
     nx.write_gexf(nx_graph, path)
     shell("sed -i 's/<ns0/<viz/g' {0}".format(path))
     shell('echo \'<?xml version="1.0" encoding="UTF-8"?>\' | cat - {0} > out.tmp && mv out.tmp {0}'.format(path))
-    shell("mv {0} views/{0}".format(path))
+    #shell("mv {0} views/{0}".format(path))
 
 
 def _get_nx_graph(graph):

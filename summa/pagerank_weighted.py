@@ -2,7 +2,10 @@
 from scipy.sparse import csr_matrix
 from scipy.linalg import eig
 from numpy import empty as empty_matrix
-import pdb
+
+from numpy import VisibleDeprecationWarning
+import warnings
+warnings.filterwarnings("ignore", category=VisibleDeprecationWarning)
 
 CONVERGENCE_THRESHOLD = 0.0001
 

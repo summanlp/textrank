@@ -1,0 +1,79 @@
+==============================================
+summa - textrank
+==============================================
+
+TextRank_ implementation for text summarization and keyword extraction in Python
+
+.. _TextRank: http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf
+
+Features
+---------
+
+* Text summarization
+* Keyword extraction
+* Text modeling with graph and gexf exportation
+
+Examples
+--------
+
+Text summarization::
+
+    >>> text = "Automatic summarization is the process of reducing a text document with a
+    computer program in order to create a summary that retains the most important points
+    of the original document. As the problem of information overload has grown, and as
+    the quantity of data has increased, so has interest in automatic summarization.
+    Technologies that can make a coherent summary take into account variables such as
+    length, writing style and syntax. An example of the use of summarization technology
+    is search engines such as Google. Document summarization is another."
+
+    >>> from summa import summarizer
+    >>> print summarizer.summarize(text)
+    'Automatic summarization is the process of reducing a text document with a computer
+    program in order to create a summary that retains the most important points of the
+    original document.'
+
+
+Keyword extraction::
+
+    >>> from summa import keywords
+    >>> print keywords.keywords(text)
+    document
+    automatic summarization
+    technologies
+    technology
+
+
+Installation
+--------------
+
+This software depends on `NumPy and Scipy <http://www.scipy.org/Download>`_, two Python packages for scientific computing.
+You must have them installed prior to installing `summa`::
+
+    pip install summa
+
+
+If you are going to use the export function, you also need `NetworkX <https://networkx.github.io/download.html>`_.
+For a better performance of keyword extraction, install `Pattern <http://www.clips.ua.ac.be/pattern>`_
+
+This version has been tested under Python 2.7
+
+
+More examples
+-------------
+
+Command-line usage::
+
+    cd path/to/folder/summa/
+    python textrank.py -t FILE
+
+
+Export::
+
+    >>> from summa import export
+    >>> export.gexf_export(text, path="graph.gexf")
+
+
+-------------
+
+Summa is open source software released under the `The MIT License (MIT) <http://opensource.org/licenses/MIT>`_.
+Copyright (c) 2014 - now Summa NLP
