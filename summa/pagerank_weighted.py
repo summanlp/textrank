@@ -3,9 +3,12 @@ from scipy.sparse import csr_matrix
 from scipy.linalg import eig
 from numpy import empty as empty_matrix
 
-from numpy import VisibleDeprecationWarning
-import warnings
-warnings.filterwarnings("ignore", category=VisibleDeprecationWarning)
+try:
+    from numpy import VisibleDeprecationWarning
+    import warnings
+    warnings.filterwarnings("ignore", category=VisibleDeprecationWarning)
+except ImportError:
+    pass
 
 CONVERGENCE_THRESHOLD = 0.0001
 
@@ -34,8 +37,6 @@ def pagerank_weighted(graph, initial_value=None, damping=0.85):
         if convergence_achieved == len(graph.nodes()):
             break
 
-        #print "pagerank iteration %d ended. Achieved %f convergence " % (iteration_number, convergence_achieved / float(len(graph.nodes())))
-    #print "Cantidad de iteraciones:", iteration_quantity
     return scores
 
 
