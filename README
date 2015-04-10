@@ -1,13 +1,13 @@
-==============================================
+================
 summa - textrank
-==============================================
+================
 
 TextRank_ implementation for text summarization and keyword extraction in Python
 
 .. _TextRank: http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf
 
 Features
----------
+--------
 
 * Text summarization
 * Keyword extraction
@@ -44,7 +44,7 @@ Keyword extraction::
 
 
 Installation
---------------
+------------
 
 This software depends on `NumPy and Scipy <http://www.scipy.org/Download>`_, two Python packages for scientific computing.
 You must have them installed prior to installing `summa`::
@@ -69,8 +69,8 @@ Command-line usage::
 
 Export::
 
-    >>> from summa import export
-    >>> export.gexf_export(text, path="graph.gexf")
+    >>> from summa.export import gexf_export
+    >>> gexf_export(text, path="graph.gexf")
 
 
 -------------
