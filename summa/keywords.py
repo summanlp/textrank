@@ -9,15 +9,15 @@ from commons import remove_unreachable_nodes as _remove_unreachable_nodes
 
 WINDOW_SIZE = 2
 
+"""Check tags in http://www.clips.ua.ac.be/pages/mbsp-tags and use only first two letters
+Example: filter for nouns and adjectives:
+INCLUDING_FILTER = ['NN', 'JJ']"""
+INCLUDING_FILTER = ['NN', 'JJ']
+EXCLUDING_FILTER = []
+
 
 def _get_pos_filters():
-    """Check tags in http://www.clips.ua.ac.be/pages/mbsp-tags and use only first two letters
-    Example: filter for nouns and adjectives:
-    including = ['NN', 'JJ']
-    """
-    including = ['NN', 'JJ']
-    excluding = []
-    return frozenset(including), frozenset(excluding)
+    return frozenset(INCLUDING_FILTER), frozenset(EXCLUDING_FILTER)
 
 
 def _get_words_for_graph(tokens):
@@ -213,7 +213,7 @@ def get_graph(text, language="english"):
     tokens = _clean_text_by_word(text, language)
     split_text = list(_tokenize_by_word(text))
 
-    graph = _build_graph(tokens.values())
+    graph = _build_graph(_get_words_for_graph(tokens))
     _set_graph_edges(graph, tokens, split_text)
 
     return graph
