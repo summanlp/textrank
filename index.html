@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Textrank : TextRank implementation in Python">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Textrank</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/summanlp/textrank">View on GitHub</a>
+
+          <h1 id="project_title">Textrank</h1>
+          <h2 id="project_tagline">TextRank implementation in Python</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/summanlp/textrank/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/summanlp/textrank/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1></h1>
+
+<h1>
+<a id="summa---textrank" class="anchor" href="#summa---textrank" aria-hidden="true"><span class="octicon octicon-link"></span></a>summa - textrank</h1>
+
+<p>TextRank_ implementation for text summarization and keyword extraction in Python</p>
+
+<p>.. _TextRank: <a href="http://web.eecs.umich.edu/%7Emihalcea/papers/mihalcea.emnlp04.pdf">http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf</a></p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Text summarization</li>
+<li>Keyword extraction</li>
+<li>Text modeling with graph and gexf exportation</li>
+</ul>
+
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>Text summarization::</p>
+
+<pre><code>&gt;&gt;&gt; text = "Automatic summarization is the process of reducing a text document with a
+computer program in order to create a summary that retains the most important points
+of the original document. As the problem of information overload has grown, and as
+the quantity of data has increased, so has interest in automatic summarization.
+Technologies that can make a coherent summary take into account variables such as
+length, writing style and syntax. An example of the use of summarization technology
+is search engines such as Google. Document summarization is another."
+
+&gt;&gt;&gt; from summa import summarizer
+&gt;&gt;&gt; print summarizer.summarize(text)
+'Automatic summarization is the process of reducing a text document with a computer
+program in order to create a summary that retains the most important points of the
+original document.'
+</code></pre>
+
+<p>Keyword extraction::</p>
+
+<pre><code>&gt;&gt;&gt; from summa import keywords
+&gt;&gt;&gt; print keywords.keywords(text)
+document
+automatic summarization
+technologies
+technology
+</code></pre>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>This software depends on <code>NumPy and Scipy &lt;http://www.scipy.org/Download&gt;</code>_, two Python packages for scientific computing.
+You must have them installed prior to installing <code>summa</code>::</p>
+
+<pre><code>pip install summa
+</code></pre>
+
+<p>If you are going to use the export function, you also need <code>NetworkX &lt;https://networkx.github.io/download.html&gt;</code><em>.
+For a better performance of keyword extraction, install <code>Pattern &lt;http://www.clips.ua.ac.be/pattern&gt;</code></em></p>
+
+<p>This version has been tested under Python 2.7</p>
+
+<h2>
+<a id="more-examples" class="anchor" href="#more-examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>More examples</h2>
+
+<p>Command-line usage::</p>
+
+<pre><code>cd path/to/folder/summa/
+python textrank.py -t FILE
+</code></pre>
+
+<p>Export::</p>
+
+<pre><code>&gt;&gt;&gt; from summa import export
+&gt;&gt;&gt; export.gexf_export(text, path="graph.gexf")
+</code></pre>
+
+<hr>
+
+<p>Summa is open source software released under the <code>The MIT License (MIT) &lt;http://opensource.org/licenses/MIT&gt;</code>_.
+Copyright (c) 2014 - now Summa NLP</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Textrank maintained by <a href="https://github.com/summanlp">summanlp</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
