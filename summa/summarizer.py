@@ -33,8 +33,7 @@ def _get_similarity(s1, s2):
 
 
 def _count_common_words(words_sentence_one, words_sentence_two):
-    words_set = set(words_sentence_two)
-    return sum(1 for w in words_sentence_one if w in words_set)
+    return len(set(words_sentence_one) & set(words_sentence_two))
 
 
 def _format_results(extracted_sentences, split, score):
