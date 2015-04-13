@@ -91,7 +91,9 @@ The available languages are "danish", "dutch", "english", "finnish", "french", "
 - Get results as a list::
 
     >>> summarize(text, split=True)
-    ['Automatic summarization is the process of reducing a text document with a computer program in order to create a summary that retains the most important points of the original document.']
+    ['Automatic summarization is the process of reducing a text document with a 
+    computer program in order to create a summary that retains the most important 
+    points of the original document.']
 
 
 -------------
