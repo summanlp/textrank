@@ -88,7 +88,7 @@ More examples
 The available languages are "danish", "dutch", "english", "finnish", "french", "german", "hungarian", "italian", "norwegian", "porter", "portuguese", "romanian", "russian", "spanish", "swedish"
 
 
-- Get results as a list::
+- Get results as a list (also available in :code:`keywords`)::
 
     >>> summarize(text, split=True)
     ['Automatic summarization is the process of reducing a text document with a 
