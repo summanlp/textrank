@@ -18,13 +18,13 @@ Examples
 
 Text summarization::
 
-    >>> text = "Automatic summarization is the process of reducing a text document with a
+    >>> text = """Automatic summarization is the process of reducing a text document with a
     computer program in order to create a summary that retains the most important points
     of the original document. As the problem of information overload has grown, and as
     the quantity of data has increased, so has interest in automatic summarization.
     Technologies that can make a coherent summary take into account variables such as
     length, writing style and syntax. An example of the use of summarization technology
-    is search engines such as Google. Document summarization is another."
+    is search engines such as Google. Document summarization is another."""
 
     >>> from summa import summarizer
     >>> print summarizer.summarize(text)
@@ -61,16 +61,37 @@ This version has been tested under Python 2.7
 More examples
 -------------
 
-Command-line usage::
+- Command-line usage::
 
     cd path/to/folder/summa/
     python textrank.py -t FILE
 
 
-Export::
+- Export::
 
     >>> from summa.export import gexf_export
     >>> gexf_export(text, path="graph.gexf")
+
+- Define length of the summary as a proportion of the text (also available in :code:`keywords`)::
+
+    >>> from summa.summarizer import summarize
+    >>> summarize(text, ratio=0.2)
+
+- Define length of the summary by aproximate number of words (also available in :code:`keywords`)::
+
+    >>> summarize(text, words=50)
+
+- Define input text language (also available in :code:`keywords`)::
+
+    >>> summarize(text, language='spanish')
+
+The available languages are "danish", "dutch", "english", "finnish", "french", "german", "hungarian", "italian", "norwegian", "porter", "portuguese", "romanian", "russian", "spanish", "swedish"
+
+
+- Get results as a list::
+
+    >>> summarize(text, split=True)
+    ['Automatic summarization is the process of reducing a text document with a computer program in order to create a summary that retains the most important points of the original document.']
 
 
 -------------
