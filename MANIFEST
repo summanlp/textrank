@@ -15,4 +15,5 @@ summa/textrank_runtime_error.py
 summa/preprocessing/__init__.py
 summa/preprocessing/porter.py
 summa/preprocessing/snowball.py
+summa/preprocessing/stopwords.py
 summa/preprocessing/textcleaner.py

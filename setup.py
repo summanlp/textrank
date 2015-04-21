@@ -7,11 +7,11 @@ setup(
     package_data = {
         'summa': ['README', 'LICENSE']
     },
-    version = '0.0.6',
+    version = '0.0.7',
     description = 'A text summarization and keyword extraction package',
     author = 'Federico Barrios, Federico Lopez',
     author_email = 'summanlp@gmail.com',
-    url = 'https://github.com/summanlp/textrank',
+    url = 'http://summa.fbarrios.com.ar/',
     download_url = 'https://github.com/summanlp/textrank/tarball/v0.0.2',
     keywords = ['summa', 'nlp', 'summarization', "NLP", "natural language processing", "automatic summarization",
         "keywords", "summary", "textrank", "pagerank"],
