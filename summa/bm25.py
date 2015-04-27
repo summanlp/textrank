@@ -35,7 +35,7 @@ class BM25(object):
             self.idf[k] = math.log(self.D-v+0.5)-math.log(v+0.5)
 
     def sim(self, doc, index, average_idf):
-        EPSILON = 0.05 * average_idf
+        EPSILON = 0.25 * average_idf
         score = 0
         for word in doc:
             if word not in self.f[index]:

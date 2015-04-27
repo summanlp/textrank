@@ -129,7 +129,7 @@ def apply_filters(sentence, filters):
 
 
 def filter_words(sentences):
-    filters = [lambda x: x.lower(), strip_numeric, strip_punctuation, remove_stopwords,
+    filters = [lambda x: x.lower(), strip_numeric, strip_punctuation, #remove_stopwords,
                stem_sentence]
     # filters = []
 
