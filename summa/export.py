@@ -7,7 +7,7 @@ from pagerank_weighted import pagerank_weighted_scipy as _pagerank_weighted_scip
 from preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
 from preprocessing.textcleaner import clean_text_by_word as _clean_text_by_word
 
-NODE_COLOR = {'r': 239, 'g': 10, 'b': 10}
+NODE_COLOR = {'r': 238, 'g': 10, 'b': 10}
 
 
 def _get_labels(text, language, by_sentence):
