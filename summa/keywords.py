@@ -195,6 +195,10 @@ def keywords(text, ratio=0.2, words=None, language="english", split=False, score
 
     _remove_unreachable_nodes(graph)
 
+    # PageRank cannot be run in an empty graph.
+    if len(graph.nodes()) == 0:
+        return [] if split else ""
+
     # Ranks the tokens using the PageRank algorithm. Returns dict of lemma -> score
     pagerank_scores = _pagerank(graph)
 
