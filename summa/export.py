@@ -1,5 +1,6 @@
 
 import networkx as _nx
+from networkx.drawing.nx_agraph import graphviz_layout
 from os import system as _shell
 from summarizer import get_graph as _get_sentence_graph
 from keywords import get_graph as _get_word_graph
@@ -36,7 +37,7 @@ def _get_nx_graph(graph):
 
 
 def _set_layout(nx_graph, scores, labels):
-    positions = _nx.graphviz_layout(nx_graph, prog="neato") # prog options: neato, dot, fdp, sfdp, twopi, circo
+    positions = graphviz_layout(nx_graph, prog="neato") # prog options: neato, dot, fdp, sfdp, twopi, circo
     centered_positions = _center_positions(positions)
     for node in nx_graph.nodes():
         nx_graph.node[node]['viz'] = _get_viz_data(node, centered_positions, scores)
