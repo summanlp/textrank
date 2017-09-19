@@ -17,6 +17,13 @@ class TestSummarizer(unittest.TestCase):
 
         self.assertEqual(generated_summary, summary)
 
+    def test_few_distinct_words_summarization_is_empty_string(self):
+        text = get_text_from_test_data("few_distinct_words.txt")
+        self.assertEquals(summarize(text), "")
+
+    def test_few_distinct_words_summarization_with_split_is_empty_list(self):
+        text = get_text_from_test_data("few_distinct_words.txt")
+        self.assertEquals(summarize(text, split=True), [])
 
 if __name__ == '__main__':
     unittest.main()
