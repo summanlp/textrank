@@ -2,7 +2,7 @@
 summa - textrank
 ================
 
-TextRank_ implementation for text summarization and keyword extraction in Python
+TextRank_ implementation for text summarization and keyword extraction in Python. An online version can be tested [here](http://104.131.76.203).
 
 .. _TextRank: http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf
 
