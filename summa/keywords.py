@@ -154,7 +154,7 @@ def _get_combined_keywords(_keywords, split_text):
                 if other_word in _keywords and other_word == split_text[j].decode("utf-8"):
                     combined_word.append(other_word)
                 else:
-                    for keyword in combined_word: _keywords.pop(keyword)
+                    for keyword in set(combined_word): _keywords.pop(keyword)
                     result.append(" ".join(combined_word))
                     break
     return result
