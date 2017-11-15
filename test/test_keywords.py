@@ -41,6 +41,16 @@ class TestKeywords(unittest.TestCase):
 
         self.assertAlmostEqual(float(len(selected_docs_40)) / len(selected_docs_20), 0.4 / 0.2, places=1)
 
+    def test_keywords_consecutive_keywords(self):
+        text = "Rabbit populations known to be plentiful, large, and diverse \
+                in the area. \
+                Adjacent to the site, a number number well over a thousand. \
+                The number of these rabbit populations has diminished in recent \
+                years, and perhaps we have become number to a number of their \
+                numbers numbering fewer."
+
+        # Should not raise an exception.
+        self.assertIsNotNone(keywords(text, words=10))
 
 if __name__ == '__main__':
     unittest.main()
