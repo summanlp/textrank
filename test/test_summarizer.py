@@ -85,6 +85,19 @@ class TestSummarizer(unittest.TestCase):
     def test_empty_text_summarization_with_split_is_empty_list(self):
         self.assertEquals(summarize("", split=True), [])
 
+    def test_corpus_summarization_ratio(self):
+        text = get_text_from_test_data("mihalcea_tarau.txt")
+
+        sentences = text.split('\n')
+
+        # Makes summaries of the text using different ratio parameters.
+        for x in range(1, 10):
+            ratio = x / float(10)
+            selected_sentences = summarize(text, ratio=ratio, split=True)
+            expected_summary_length = int(len(sentences) * ratio)
+
+            self.assertEqual(len(selected_sentences), expected_summary_length)
+
 
 if __name__ == '__main__':
     unittest.main()
