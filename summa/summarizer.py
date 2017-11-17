@@ -16,6 +16,27 @@ def _set_graph_edge_weights(graph):
                 if similarity != 0:
                     graph.add_edge(edge, similarity)
 
+    # Handles the case in which all similarities are zero.
+    # The resultant summary will consist of random sentences.
+    if all(graph.edge_weight(edge) == 0 for edge in graph.edges()):
+        _create_valid_graph(graph)
+
+
+def _create_valid_graph(graph):
+    nodes = graph.nodes()
+
+    for i in xrange(len(nodes)):
+        for j in xrange(len(nodes)):
+            if i == j:
+                continue
+
+            edge = (nodes[i], nodes[j])
+
+            if graph.has_edge(edge):
+                graph.del_edge(edge)
+
+            graph.add_edge(edge, 1)
+
 
 def _get_similarity(s1, s2):
     words_sentence_one = s1.split()
