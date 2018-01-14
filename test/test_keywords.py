@@ -6,6 +6,17 @@ from utils import get_text_from_test_data
 
 class TestKeywords(unittest.TestCase):
 
+    def test_text_keywords(self):
+        text = get_text_from_test_data("mihalcea_tarau.txt")
+
+        # Calculate keywords
+        generated_keywords = keywords(text, split=True)
+
+        # To be compared to the reference.
+        reference_keywords = get_text_from_test_data("mihalcea_tarau.kw.txt").split("\n")
+
+        self.assertEqual({str(x) for x in generated_keywords}, {str(x) for x in reference_keywords})
+
     def test_keywords_few_distinct_words_is_empty_string(self):
         text = get_text_from_test_data("few_distinct_words.txt")
         self.assertEquals(keywords(text), "")
