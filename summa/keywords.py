@@ -1,5 +1,5 @@
 from itertools import combinations as _combinations
-from Queue import Queue as _Queue
+from queue import Queue
 
 from .pagerank_weighted import pagerank_weighted_scipy as _pagerank
 from .preprocessing.textcleaner import clean_text_by_word as _clean_text_by_word
@@ -55,7 +55,7 @@ def _process_first_window(graph, tokens, split_text):
 
 
 def _init_queue(split_text):
-    queue = _Queue()
+    queue = Queue()
     first_window = _get_first_window(split_text)
     for word in first_window[1:]:
         queue.put(word)
@@ -152,7 +152,7 @@ def _get_combined_keywords(_keywords, split_text):
                 result.append(word)   # appends last word if keyword and doesn't iterate
             for j in range(i + 1, len_text):
                 other_word = _strip_word(split_text[j])
-                if other_word in _keywords and other_word == split_text[j].decode("utf-8") \
+                if other_word in _keywords and other_word == split_text[j] \
                         and other_word not in combined_word:
                     combined_word.append(other_word)
                 else:

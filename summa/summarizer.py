@@ -1,4 +1,4 @@
-from math import log10 as _log10
+from math import log10
 from .pagerank_weighted import pagerank_weighted_scipy as _pagerank
 from .preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
 from .commons import build_graph as _build_graph
@@ -43,8 +43,8 @@ def _get_similarity(s1, s2):
 
     common_word_count = _count_common_words(words_sentence_one, words_sentence_two)
 
-    log_s1 = _log10(len(words_sentence_one))
-    log_s2 = _log10(len(words_sentence_two))
+    log_s1 = log10(len(words_sentence_one))
+    log_s2 = log10(len(words_sentence_two))
 
     if log_s1 + log_s2 == 0:
         return 0

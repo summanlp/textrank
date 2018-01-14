@@ -12,9 +12,10 @@ except ImportError:
     logger.info("'pattern' package not found; tag filters are not available for English")
     HAS_PATTERN = False
 
+import re
+
 from .snowball import SnowballStemmer
 from .stopwords import get_stopwords_by_language
-import re  # http://regex101.com/#python to test regex
 from summa.syntactic_unit import SyntacticUnit
 
 SEPARATOR = r"@"
@@ -125,11 +126,6 @@ def filter_words(sentences):
     return list(map(apply_filters_to_token, sentences))
 
 
-# Taken from six
-def u(s):
-    return str(s.replace(r'\\', r'\\\\'), "unicode_escape")
-
-
 # Taken from gensim
 def deaccent(text):
     """
@@ -140,7 +136,7 @@ def deaccent(text):
         # assume utf8 for byte strings, use default (strict) error handling
         text = text.decode('utf8')
     norm = unicodedata.normalize("NFD", text)
-    result = u('').join(ch for ch in norm if unicodedata.category(ch) != 'Mn')
+    result = "".join(ch for ch in norm if unicodedata.category(ch) != 'Mn')
     return unicodedata.normalize("NFC", result)
 
 

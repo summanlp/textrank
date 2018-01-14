@@ -1,4 +1,3 @@
-
 from abc import ABCMeta, abstractmethod
 
 class IGraph(metaclass=ABCMeta):
