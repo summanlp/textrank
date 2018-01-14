@@ -1,7 +1,7 @@
 import unittest
 
 from summa.summarizer import summarize
-from utils import get_text_from_test_data
+from .utils import get_text_from_test_data
 
 
 class TestSummarizer(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestSummarizer(unittest.TestCase):
         # To be compared to the method reference.
         summary = get_text_from_test_data("mihalcea_tarau.summ.txt")
 
-        self.assertEquals(generated_summary, summary)
+        self.assertEqual(generated_summary, summary)
 
     def test_reference_text_summarization_with_split(self):
         text = get_text_from_test_data("mihalcea_tarau.txt")
@@ -31,21 +31,21 @@ class TestSummarizer(unittest.TestCase):
 
     def test_few_distinct_words_summarization_is_empty_string(self):
         text = get_text_from_test_data("few_distinct_words.txt")
-        self.assertEquals(summarize(text), "")
+        self.assertEqual(summarize(text), "")
 
     def test_few_distinct_words_summarization_with_split_is_empty_list(self):
         text = get_text_from_test_data("few_distinct_words.txt")
-        self.assertEquals(summarize(text, split=True), [])
+        self.assertEqual(summarize(text, split=True), [])
 
     def test_summary_from_unrelated_sentences_is_not_empty_string(self):
         # Tests that the summarization of a text with unrelated sentences is not empty string.
         text = get_text_from_test_data("unrelated.txt")
-        self.assertNotEquals(summarize(text), u"")
+        self.assertNotEqual(summarize(text), "")
 
     def test_summary_from_unrelated_sentences_and_split_is_not_empty_list(self):
         # Tests that the summarization of a text with unrelated sentences is not empty string.
         text = get_text_from_test_data("unrelated.txt")
-        self.assertNotEquals(summarize(text, split=True), [])
+        self.assertNotEqual(summarize(text, split=True), [])
 
     def test_text_summarization_on_short_input_text_is_not_empty_string(self):
         text = get_text_from_test_data("unrelated.txt")
@@ -53,7 +53,7 @@ class TestSummarizer(unittest.TestCase):
         # Keeps the first 8 sentences to make the text shorter.
         text = "\n".join(text.split('\n')[:8])
 
-        self.assertNotEquals(summarize(text), u"")
+        self.assertNotEqual(summarize(text), "")
 
     def test_text_summarization_on_short_input_text_with_split_is_not_empty_list(self):
         text = get_text_from_test_data("unrelated.txt")
@@ -61,7 +61,7 @@ class TestSummarizer(unittest.TestCase):
         # Keeps the first 8 sentences to make the text shorter.
         text = "\n".join(text.split('\n')[:8])
 
-        self.assertNotEquals(summarize(text, split=True), [])
+        self.assertNotEqual(summarize(text, split=True), [])
 
     def test_text_summarization_on_single_input_sentence_is_empty_string(self):
         text = get_text_from_test_data("unrelated.txt")
@@ -69,7 +69,7 @@ class TestSummarizer(unittest.TestCase):
         # Keeps the first sentence only.
         text = text.split('\n')[0]
 
-        self.assertEquals(summarize(text), "")
+        self.assertEqual(summarize(text), "")
 
     def test_text_summarization_on_single_input_sentence_with_split_is_empty_list(self):
         text = get_text_from_test_data("unrelated.txt")
@@ -77,13 +77,13 @@ class TestSummarizer(unittest.TestCase):
         # Keeps the first sentence only.
         text = text.split('\n')[0]
 
-        self.assertEquals(summarize(text, split=True), [])
+        self.assertEqual(summarize(text, split=True), [])
 
     def test_empty_text_summarization_is_empty_string(self):
-        self.assertEquals(summarize(""), u"")
+        self.assertEqual(summarize(""), "")
 
     def test_empty_text_summarization_with_split_is_empty_list(self):
-        self.assertEquals(summarize("", split=True), [])
+        self.assertEqual(summarize("", split=True), [])
 
     def test_corpus_summarization_ratio(self):
         text = get_text_from_test_data("mihalcea_tarau.txt")

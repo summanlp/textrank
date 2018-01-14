@@ -1,11 +1,10 @@
 
 from abc import ABCMeta, abstractmethod
 
-class IGraph:
+class IGraph(metaclass=ABCMeta):
     """
     Represents the interface or contract that the graph for TextRank should implement
     """
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def nodes(self):
@@ -191,7 +190,7 @@ class Graph(IGraph):
         return list(self.node_neighbors.keys())
 
     def edges(self):
-        return [ a for a in self.edge_properties.keys() ]
+        return [ a for a in list(self.edge_properties.keys()) ]
 
     def del_node(self, node):
         for each in list(self.neighbors(node)):

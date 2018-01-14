@@ -1,11 +1,11 @@
 from itertools import combinations as _combinations
 from Queue import Queue as _Queue
 
-from pagerank_weighted import pagerank_weighted_scipy as _pagerank
-from preprocessing.textcleaner import clean_text_by_word as _clean_text_by_word
-from preprocessing.textcleaner import tokenize_by_word as _tokenize_by_word
-from commons import build_graph as _build_graph
-from commons import remove_unreachable_nodes as _remove_unreachable_nodes
+from .pagerank_weighted import pagerank_weighted_scipy as _pagerank
+from .preprocessing.textcleaner import clean_text_by_word as _clean_text_by_word
+from .preprocessing.textcleaner import tokenize_by_word as _tokenize_by_word
+from .commons import build_graph as _build_graph
+from .commons import remove_unreachable_nodes as _remove_unreachable_nodes
 
 WINDOW_SIZE = 2
 
@@ -26,7 +26,7 @@ def _get_words_for_graph(tokens):
         raise ValueError("Can't use both include and exclude filters, should use only one")
 
     result = []
-    for word, unit in tokens.iteritems():
+    for word, unit in tokens.items():
         if exclude_filters and unit.tag in exclude_filters:
             continue
         if (include_filters and unit.tag in include_filters) or not include_filters or not unit.tag:
@@ -75,7 +75,7 @@ def _update_queue(queue, word):
 
 def _process_text(graph, tokens, split_text):
     queue = _init_queue(split_text)
-    for i in xrange(WINDOW_SIZE, len(split_text)):
+    for i in range(WINDOW_SIZE, len(split_text)):
         word = split_text[i]
         _process_word(graph, tokens, queue, word)
         _update_queue(queue, word)
@@ -83,7 +83,7 @@ def _process_text(graph, tokens, split_text):
 
 def _queue_iterator(queue):
     iterations = queue.qsize()
-    for i in xrange(iterations):
+    for i in range(iterations):
         var = queue.get()
         yield var
         queue.put(var)
@@ -105,7 +105,7 @@ def _extract_tokens(lemmas, scores, ratio, words):
 
 def _lemmas_to_words(tokens):
     lemma_to_word = {}
-    for word, unit in tokens.iteritems():
+    for word, unit in tokens.items():
         lemma = unit.token
         if lemma in lemma_to_word:
             lemma_to_word[lemma].append(word)
@@ -144,13 +144,13 @@ def _get_combined_keywords(_keywords, split_text):
     result = []
     _keywords = _keywords.copy()
     len_text = len(split_text)
-    for i in xrange(len_text):
+    for i in range(len_text):
         word = _strip_word(split_text[i])
         if word in _keywords:
             combined_word = [word]
             if i + 1 == len_text:
                 result.append(word)   # appends last word if keyword and doesn't iterate
-            for j in xrange(i + 1, len_text):
+            for j in range(i + 1, len_text):
                 other_word = _strip_word(split_text[j])
                 if other_word in _keywords and other_word == split_text[j].decode("utf-8") \
                         and other_word not in combined_word:
