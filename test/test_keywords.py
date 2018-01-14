@@ -52,5 +52,11 @@ class TestKeywords(unittest.TestCase):
         # Should not raise an exception.
         self.assertIsNotNone(keywords(text, words=10))
 
+    def test_repeated_keywords(self):
+        text = get_text_from_test_data("repeated_keywords.txt")
+
+        kwds = keywords(text)
+        self.assertTrue(len(kwds.splitlines()))
+
 if __name__ == '__main__':
     unittest.main()

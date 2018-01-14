@@ -148,13 +148,16 @@ def _get_combined_keywords(_keywords, split_text):
         word = _strip_word(split_text[i])
         if word in _keywords:
             combined_word = [word]
-            if i + 1 == len_text: result.append(word)   # appends last word if keyword and doesn't iterate
+            if i + 1 == len_text:
+                result.append(word)   # appends last word if keyword and doesn't iterate
             for j in xrange(i + 1, len_text):
                 other_word = _strip_word(split_text[j])
-                if other_word in _keywords and other_word == split_text[j].decode("utf-8"):
+                if other_word in _keywords and other_word == split_text[j].decode("utf-8") \
+                        and other_word not in combined_word:
                     combined_word.append(other_word)
                 else:
-                    for keyword in set(combined_word): _keywords.pop(keyword)
+                    for keyword in combined_word:
+                        _keywords.pop(keyword)
                     result.append(" ".join(combined_word))
                     break
     return result
