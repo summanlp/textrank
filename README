@@ -11,7 +11,6 @@ Features
 
 * Text summarization
 * Keyword extraction
-* Text modeling with graph and gexf exportation
 
 Examples
 --------
@@ -65,12 +64,6 @@ More examples
 
     cd path/to/folder/summa/
     python textrank.py -t FILE
-
-
-- Export::
-
-    >>> from summa.export import gexf_export
-    >>> gexf_export(text, path="graph.gexf")
 
 - Define length of the summary as a proportion of the text (also available in :code:`keywords`)::
 
