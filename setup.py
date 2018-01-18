@@ -1,25 +1,26 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name = 'summa',
-    packages = ['summa', 'summa.preprocessing'],
+    packages = find_packages(exclude=['test']),
     package_data = {
         'summa': ['README', 'LICENSE']
     },
     version = '0.1.0',
-    description = 'A text summarization and keyword extraction package',
+    description = 'A text summarization and keyword extraction package based on textrank',
+    long_description=open('README').read(),
     author = 'Federico Barrios, Federico Lopez',
     author_email = 'summanlp@gmail.com',
     url = 'https://github.com/summanlp/textrank',
     download_url = 'https://github.com/summanlp/textrank/tarball/v0.1.0',
     keywords = ['summa', 'nlp', 'summarization', "NLP", "natural language processing", "automatic summarization",
         "keywords", "summary", "textrank", "pagerank"],
+    install_requires = [
+        'scipy >= 0.19'
+    ],
+    python_requires = '>=2.7, <3.0',
     classifiers = [
-        # How mature is this project? Common values are
-        #   3 - Alpha
-        #   4 - Beta
-        #   5 - Production/Stable
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
 
         'License :: OSI Approved :: MIT License',
 
@@ -29,9 +30,13 @@ setup(
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
 
-        # Specify the Python versions you support here. In particular, ensure
-        # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 2.7'
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 2 :: Only'
     ],
-    long_description = open('README').read()
+    test_suite="test",
+    entry_points={
+       'console_scripts': [
+           'textrank = summa.textrank:main',
+       ],
+    }
 )

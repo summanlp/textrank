@@ -2,7 +2,7 @@
 summa - textrank
 ================
 
-TextRank_ implementation for text summarization and keyword extraction in Python. An online version can be tested `here <http://104.131.76.203>`_.
+TextRank_ implementation for text summarization and keyword extraction in Python.
 
 .. _TextRank: http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf
 
@@ -46,15 +46,11 @@ Installation
 ------------
 
 This software depends on `NumPy and Scipy <http://www.scipy.org/Download>`_, two Python packages for scientific computing.
-You must have them installed prior to installing `summa`::
+Pip will automatically install them along with `summa`::
 
     pip install summa
 
-
-If you are going to use the export function, you also need `NetworkX <https://networkx.github.io/download.html>`_.
 For a better performance of keyword extraction, install `Pattern <http://www.clips.ua.ac.be/pattern>`_
-
-This version has been tested under Python 2.7
 
 
 More examples
@@ -62,8 +58,7 @@ More examples
 
 - Command-line usage::
 
-    cd path/to/folder/summa/
-    python textrank.py -t FILE
+    textrank -t FILE
 
 - Define length of the summary as a proportion of the text (also available in :code:`keywords`)::
 
