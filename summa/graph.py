@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
+
 class IGraph(metaclass=ABCMeta):
     """
     Represents the interface or contract that the graph for TextRank should implement
