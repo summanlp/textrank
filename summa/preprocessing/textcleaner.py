@@ -1,8 +1,7 @@
-# encoding: cp850
-
 import string
 import unicodedata
 import logging
+
 logger = logging.getLogger('summa.preprocessing.cleaner')
 
 try:
@@ -13,9 +12,10 @@ except ImportError:
     logger.info("'pattern' package not found; tag filters are not available for English")
     HAS_PATTERN = False
 
-from snowball import SnowballStemmer
-from stopwords import get_stopwords_by_language
-import re  # http://regex101.com/#python to test regex
+import re
+
+from .snowball import SnowballStemmer
+from .stopwords import get_stopwords_by_language
 from summa.syntactic_unit import SyntacticUnit
 
 SEPARATOR = r"@"
@@ -83,9 +83,9 @@ def get_sentences(text):
 # Taken from gensim
 def to_unicode(text, encoding='utf8', errors='strict'):
     """Convert a string (bytestring in `encoding` or unicode), to unicode."""
-    if isinstance(text, unicode):
+    if isinstance(text, str):
         return text
-    return unicode(text, encoding, errors=errors)
+    return str(text, encoding, errors=errors)
 
 
 # Taken from gensim
@@ -123,12 +123,7 @@ def filter_words(sentences):
     # filters = []
 
     apply_filters_to_token = lambda token: apply_filters(token, filters)
-    return map(apply_filters_to_token, sentences)
-
-
-# Taken from six
-def u(s):
-    return unicode(s.replace(r'\\', r'\\\\'), "unicode_escape")
+    return list(map(apply_filters_to_token, sentences))
 
 
 # Taken from gensim
@@ -137,11 +132,11 @@ def deaccent(text):
     Remove accentuation from the given string. Input text is either a unicode string or utf8
     encoded bytestring.
     """
-    if not isinstance(text, unicode):
+    if not isinstance(text, str):
         # assume utf8 for byte strings, use default (strict) error handling
         text = text.decode('utf8')
     norm = unicodedata.normalize("NFD", text)
-    result = u('').join(ch for ch in norm if unicodedata.category(ch) != 'Mn')
+    result = "".join(ch for ch in norm if unicodedata.category(ch) != 'Mn')
     return unicodedata.normalize("NFC", result)
 
 
@@ -164,7 +159,7 @@ def tokenize(text, lowercase=False, deacc=False, errors="strict", to_lower=False
 
 def merge_syntactic_units(original_units, filtered_units, tags=None):
     units = []
-    for i in xrange(len(original_units)):
+    for i in range(len(original_units)):
         if filtered_units[i] == '':
             continue
 

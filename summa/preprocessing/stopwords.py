@@ -104,6 +104,7 @@ tivéssemos tivessem tiver tivermos tiverem terei terá teremos terão teria ter
 
 LANGUAGES = {"english": english, "german": german, "spanish": spanish, "portuguese": portuguese}
 
+
 def get_stopwords_by_language(language):
     if language in LANGUAGES:
         return LANGUAGES[language]

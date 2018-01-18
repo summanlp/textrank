@@ -1,3 +1,2 @@
-
 class TextrankRuntimeError(RuntimeError):
     pass

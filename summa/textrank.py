@@ -1,8 +1,7 @@
-#!/usr/bin/env python -W ignore::DeprecationWarning
-
 import sys, getopt
-from summarizer import summarize
-from keywords import keywords
+
+from .summarizer import summarize
+from .keywords import keywords
 
 # Types of summarization
 SENTENCE = 0
@@ -10,7 +9,7 @@ WORD = 1
 
 
 def exit_with_error(err):
-    print "Error: " + str(err)
+    print("Error: " + str(err))
     usage()
     sys.exit(2)
 
@@ -59,7 +58,7 @@ help_text = """Usage: textrank -t FILE
 \tprints this help
 """
 def usage():
-    print help_text
+    print(help_text)
 
 
 def textrank(text, summarize_by=SENTENCE, ratio=0.2, words=None):
@@ -75,7 +74,7 @@ def main():
     with open(path) as file:
         text = file.read()
 
-    print textrank(text, summarize_by, ratio, words)
+    print(textrank(text, summarize_by, ratio, words))
 
 
 if __name__ == "__main__":

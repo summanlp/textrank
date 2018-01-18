@@ -1,7 +1,7 @@
 import unittest
 
 from summa.keywords import keywords
-from utils import get_text_from_test_data
+from .utils import get_text_from_test_data
 
 
 class TestKeywords(unittest.TestCase):
@@ -19,11 +19,11 @@ class TestKeywords(unittest.TestCase):
 
     def test_keywords_few_distinct_words_is_empty_string(self):
         text = get_text_from_test_data("few_distinct_words.txt")
-        self.assertEquals(keywords(text), "")
+        self.assertEqual(keywords(text), "")
 
     def test_keywords_few_distinct_words_split_is_empty_list(self):
         text = get_text_from_test_data("few_distinct_words.txt")
-        self.assertEquals(keywords(text, split=True), [])
+        self.assertEqual(keywords(text, split=True), [])
 
     def test_text_summarization_on_short_input_text_and_split_is_not_empty_list(self):
         text = get_text_from_test_data("unrelated.txt")
@@ -31,7 +31,7 @@ class TestKeywords(unittest.TestCase):
         # Keeps the first 8 sentences to make the text shorter.
         text = "\n".join(text.split('\n')[:8])
 
-        self.assertNotEquals(keywords(text, split=True), [])
+        self.assertNotEqual(keywords(text, split=True), [])
 
     def test_text_summarization_on_short_input_text_is_not_empty_string(self):
         text = get_text_from_test_data("unrelated.txt")
@@ -39,7 +39,7 @@ class TestKeywords(unittest.TestCase):
         # Keeps the first 8 sentences to make the text shorter.
         text = "\n".join(text.split('\n')[:8])
 
-        self.assertNotEquals(keywords(text, split=True), "")
+        self.assertNotEqual(keywords(text, split=True), "")
 
     def test_keywords_ratio(self):
         text = get_text_from_test_data("mihalcea_tarau.txt")

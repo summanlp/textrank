@@ -1,9 +1,9 @@
+from math import log10
 
-from math import log10 as _log10
-from pagerank_weighted import pagerank_weighted_scipy as _pagerank
-from preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
-from commons import build_graph as _build_graph
-from commons import remove_unreachable_nodes as _remove_unreachable_nodes
+from .pagerank_weighted import pagerank_weighted_scipy as _pagerank
+from .preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
+from .commons import build_graph as _build_graph
+from .commons import remove_unreachable_nodes as _remove_unreachable_nodes
 
 
 def _set_graph_edge_weights(graph):
@@ -25,8 +25,8 @@ def _set_graph_edge_weights(graph):
 def _create_valid_graph(graph):
     nodes = graph.nodes()
 
-    for i in xrange(len(nodes)):
-        for j in xrange(len(nodes)):
+    for i in range(len(nodes)):
+        for j in range(len(nodes)):
             if i == j:
                 continue
 
@@ -44,8 +44,8 @@ def _get_similarity(s1, s2):
 
     common_word_count = _count_common_words(words_sentence_one, words_sentence_two)
 
-    log_s1 = _log10(len(words_sentence_one))
-    log_s2 = _log10(len(words_sentence_two))
+    log_s1 = log10(len(words_sentence_one))
+    log_s2 = log10(len(words_sentence_two))
 
     if log_s1 + log_s2 == 0:
         return 0

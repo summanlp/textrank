@@ -85,7 +85,7 @@ nltk.  All such modifications are marked with \"--NLTK--\".  The nltk
 version of this module is maintained by the NLTK developers, and is
 available from <http://nltk.sourceforge.net>
 """
-from __future__ import print_function, unicode_literals
+
 
 ## --NLTK--
 ## Declare this module's documentation format.
