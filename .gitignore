@@ -47,6 +47,8 @@ docs/_build/
 # PyBuilder
 target/
 
+venv
+venv3
 
 # JetBrains IDE gitignore template taken from: 
 # https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore
