@@ -37,9 +37,9 @@ Keyword extraction::
     >>> from summa import keywords
     >>> print(keywords.keywords(text))
     document
-    automatic summarization
-    technologies
-    technology
+    summarization
+    writing
+    account
 
 
 Installation
