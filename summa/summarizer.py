@@ -1,4 +1,5 @@
 from math import log10
+
 from .pagerank_weighted import pagerank_weighted_scipy as _pagerank
 from .preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
 from .commons import build_graph as _build_graph

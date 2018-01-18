@@ -18,7 +18,7 @@ setup(
     install_requires = [
         'scipy >= 0.19'
     ],
-    python_requires = '>=2.7, <3.0',
+    python_requires = '>=3.4',
     classifiers = [
         'Development Status :: 5 - Production/Stable',
 
@@ -30,8 +30,7 @@ setup(
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
 
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 2 :: Only'
+        'Programming Language :: Python :: 3 :: Only'
     ],
     test_suite="test",
     entry_points={
