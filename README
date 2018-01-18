@@ -26,7 +26,7 @@ Text summarization::
     is search engines such as Google. Document summarization is another."""
 
     >>> from summa import summarizer
-    >>> print summarizer.summarize(text)
+    >>> print(summarizer.summarize(text))
     'Automatic summarization is the process of reducing a text document with a computer
     program in order to create a summary that retains the most important points of the
     original document.'
@@ -35,7 +35,7 @@ Text summarization::
 Keyword extraction::
 
     >>> from summa import keywords
-    >>> print keywords.keywords(text)
+    >>> print(keywords.keywords(text))
     document
     automatic summarization
     technologies
