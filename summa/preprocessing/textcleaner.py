@@ -32,8 +32,6 @@ LANGUAGES = {"danish", "dutch", "english", "finnish", "french", "german", \
              "romanian", "russian", "spanish", "swedish"}
 STEMMER = None
 STOPWORDS = None
-DEACCENT = True
-LANGUAGES_WITH_UMLAUT = {"danish", "finnish", "german", "norwegian", "swedish"}
 
 
 def set_stemmer_language(language):
@@ -45,11 +43,6 @@ def set_stemmer_language(language):
     STEMMER = SnowballStemmer(language)
 
 
-def set_deaccent_by_language(language):
-    global DEACCENT
-    DEACCENT = language not in LANGUAGES_WITH_UMLAUT
-
-
 def set_stopwords_by_language(language):
     global STOPWORDS
     words = get_stopwords_by_language(language)
@@ -59,7 +52,6 @@ def set_stopwords_by_language(language):
 def init_textcleanner(language):
     set_stemmer_language(language)
     set_stopwords_by_language(language)
-    set_deaccent_by_language(language)
 
 
 def split_sentences(text):
@@ -197,7 +189,7 @@ def clean_text_by_word(text, language="english"):
     Returns a dict of word -> syntacticUnit. """
     init_textcleanner(language)
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
-    original_words = list(tokenize(text_without_acronyms, to_lower=True, deacc=DEACCENT))
+    original_words = list(tokenize(text_without_acronyms, to_lower=True, deacc=True))
     filtered_words = filter_words(original_words)
     if HAS_PATTERN:
         tags = tag(" ".join(original_words)) # tag needs the context of the words in the text
@@ -207,6 +199,6 @@ def clean_text_by_word(text, language="english"):
     return { unit.text : unit for unit in units }
 
 
-def tokenize_by_word(text, language="english"):
+def tokenize_by_word(text):
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
-    return tokenize(text_without_acronyms, to_lower=True, deacc=DEACCENT)
+    return tokenize(text_without_acronyms, to_lower=True, deacc=True)
