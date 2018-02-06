@@ -186,9 +186,9 @@ def _format_results(_keywords, combined_keywords, split, scores):
     return "\n".join(combined_keywords)
 
 
-def keywords(text, ratio=0.2, words=None, language="english", split=False, scores=False):
+def keywords(text, ratio=0.2, words=None, language="english", split=False, scores=False, deaccent=False):
     # Gets a dict of word -> lemma
-    tokens = _clean_text_by_word(text, language)
+    tokens = _clean_text_by_word(text, language, deacc=deaccent)
     split_text = list(_tokenize_by_word(text))
 
     # Creates the graph and adds the edges
@@ -216,9 +216,9 @@ def keywords(text, ratio=0.2, words=None, language="english", split=False, score
     return _format_results(keywords, combined_keywords, split, scores)
 
 
-def get_graph(text, language="english"):
-    tokens = _clean_text_by_word(text, language)
-    split_text = list(_tokenize_by_word(text))
+def get_graph(text, language="english", deaccent=False):
+    tokens = _clean_text_by_word(text, language, deacc=deaccent)
+    split_text = list(_tokenize_by_word(text, deacc=deaccent))
 
     graph = _build_graph(_get_words_for_graph(tokens))
     _set_graph_edges(graph, tokens, split_text)
