@@ -184,12 +184,12 @@ def clean_text_by_sentences(text, language="english"):
     return merge_syntactic_units(original_sentences, filtered_sentences)
 
 
-def clean_text_by_word(text, language="english"):
+def clean_text_by_word(text, language="english", deacc=False):
     """ Tokenizes a given text into words, applying filters and lemmatizing them.
     Returns a dict of word -> syntacticUnit. """
     init_textcleanner(language)
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
-    original_words = list(tokenize(text_without_acronyms, to_lower=True, deacc=True))
+    original_words = list(tokenize(text_without_acronyms, to_lower=True, deacc=deacc))
     filtered_words = filter_words(original_words)
     if HAS_PATTERN:
         tags = tag(" ".join(original_words)) # tag needs the context of the words in the text
@@ -199,6 +199,6 @@ def clean_text_by_word(text, language="english"):
     return { unit.text : unit for unit in units }
 
 
-def tokenize_by_word(text):
+def tokenize_by_word(text, deacc=False):
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
-    return tokenize(text_without_acronyms, to_lower=True, deacc=True)
+    return tokenize(text_without_acronyms, to_lower=True, deacc=deacc)
