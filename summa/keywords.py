@@ -217,7 +217,7 @@ def keywords(text, ratio=0.2, words=None, language="english", split=False, score
 
 
 def get_graph(text, language="english", deaccent=False):
-    tokens = _clean_text_by_word(text, language)
+    tokens = _clean_text_by_word(text, language, deacc=deaccent)
     split_text = list(_tokenize_by_word(text, deacc=deaccent))
 
     graph = _build_graph(_get_words_for_graph(tokens))
