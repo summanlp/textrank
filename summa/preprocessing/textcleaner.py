@@ -81,24 +81,14 @@ def get_sentences(text):
 
 
 # Taken from gensim
-def to_unicode(text, encoding='utf8', errors='strict'):
-    """Convert a string (bytestring in `encoding` or unicode), to unicode."""
-    if isinstance(text, str):
-        return text
-    return str(text, encoding, errors=errors)
-
-
-# Taken from gensim
 RE_PUNCT = re.compile('([%s])+' % re.escape(string.punctuation), re.UNICODE)
 def strip_punctuation(s):
-    s = to_unicode(s)
     return RE_PUNCT.sub(" ", s)
 
 
 # Taken from gensim
 RE_NUMERIC = re.compile(r"[0-9]+", re.UNICODE)
 def strip_numeric(s):
-    s = to_unicode(s)
     return RE_NUMERIC.sub("", s)
 
 
@@ -129,12 +119,8 @@ def filter_words(sentences):
 # Taken from gensim
 def deaccent(text):
     """
-    Remove accentuation from the given string. Input text is either a unicode string or utf8
-    encoded bytestring.
+    Remove accentuation from the given string.
     """
-    if not isinstance(text, str):
-        # assume utf8 for byte strings, use default (strict) error handling
-        text = text.decode('utf8')
     norm = unicodedata.normalize("NFD", text)
     result = "".join(ch for ch in norm if unicodedata.category(ch) != 'Mn')
     return unicodedata.normalize("NFC", result)
@@ -142,13 +128,12 @@ def deaccent(text):
 
 # Taken from gensim
 PAT_ALPHABETIC = re.compile('(((?![\d])\w)+)', re.UNICODE)
-def tokenize(text, lowercase=False, deacc=False, errors="strict", to_lower=False, lower=False):
+def tokenize(text, lowercase=False, deacc=False, to_lower=False, lower=False):
     """
     Iteratively yield tokens as unicode strings, optionally also lowercasing them
     and removing accent marks.
     """
     lowercase = lowercase or to_lower or lower
-    text = to_unicode(text, errors=errors)
     if lowercase:
         text = text.lower()
     if deacc:

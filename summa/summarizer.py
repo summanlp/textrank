@@ -110,6 +110,9 @@ def _extract_most_important_sentences(sentences, ratio, words):
 
 
 def summarize(text, ratio=0.2, words=None, language="english", split=False, scores=False):
+    if not isinstance(text, str):
+        raise ValueError("Text parameter must be a Unicode object (str)!")
+
     # Gets a list of processed sentences.
     sentences = _clean_text_by_sentences(text, language)
 

@@ -84,5 +84,14 @@ class TestKeywords(unittest.TestCase):
         # Verifies that there are some keywords are retrieved with accents.
         self.assertTrue(any(deaccent(keyword) != keyword for keyword in kwds))
 
+    def test_text_as_bytes_raises_exception(self):
+        # Test the keyword extraction for a text that is not a unicode object
+        # (Python 3 str).
+        text = get_text_from_test_data("spanish.txt")
+        bytes = text.encode(encoding="utf-8")
+        with self.assertRaises(ValueError):
+            keywords(bytes, language="spanish")
+
+
 if __name__ == '__main__':
     unittest.main()
