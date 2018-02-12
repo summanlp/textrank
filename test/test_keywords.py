@@ -1,6 +1,7 @@
 import unittest
 
 from summa.keywords import keywords
+from summa.preprocessing.textcleaner import deaccent
 from .utils import get_text_from_test_data
 
 
@@ -68,6 +69,20 @@ class TestKeywords(unittest.TestCase):
 
         kwds = keywords(text)
         self.assertTrue(len(kwds.splitlines()))
+
+    def test_spanish_without_accents(self):
+        # Test the keyword extraction with accented characters.
+        text = get_text_from_test_data("spanish.txt")
+        kwds = keywords(text, language="spanish", deaccent=True, split=True)
+        # Verifies that all words are retrieved without accents.
+        self.assertTrue(all(deaccent(keyword) == keyword for keyword in kwds))
+
+    def test_spanish_with_accents(self):
+        # Test the keyword extraction with accented characters.
+        text = get_text_from_test_data("spanish.txt")
+        kwds = keywords(text, language="spanish", deaccent=False, split=True)
+        # Verifies that there are some keywords are retrieved with accents.
+        self.assertTrue(any(deaccent(keyword) != keyword for keyword in kwds))
 
 if __name__ == '__main__':
     unittest.main()

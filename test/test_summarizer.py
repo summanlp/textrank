@@ -98,6 +98,10 @@ class TestSummarizer(unittest.TestCase):
 
             self.assertEqual(len(selected_sentences), expected_summary_length)
 
+    def test_spanish(self):
+        # Test the summarization module with accented characters.
+        text = get_text_from_test_data("spanish.txt")
+        self.assertIsNotNone(summarize(text, language="spanish"))
 
 if __name__ == '__main__':
     unittest.main()
