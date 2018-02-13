@@ -111,5 +111,6 @@ class TestSummarizer(unittest.TestCase):
         with self.assertRaises(ValueError):
             summarize(bytes, language="spanish")
 
+
 if __name__ == '__main__':
     unittest.main()
