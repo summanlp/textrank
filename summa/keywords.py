@@ -187,6 +187,9 @@ def _format_results(_keywords, combined_keywords, split, scores):
 
 
 def keywords(text, ratio=0.2, words=None, language="english", split=False, scores=False, deaccent=False):
+    if not isinstance(text, str):
+        raise ValueError("Text parameter must be a Unicode object (str)!")
+
     # Gets a dict of word -> lemma
     tokens = _clean_text_by_word(text, language, deacc=deaccent)
     split_text = list(_tokenize_by_word(text))
