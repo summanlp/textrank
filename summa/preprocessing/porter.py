@@ -1,3 +1,6 @@
+# Adapted from the NLTK package v3.0.1:
+# https://github.com/nltk/nltk/blob/3.0.1/nltk/stem/porter.py
+
 # Copyright (c) 2002 Vivake Gupta (vivakeATomniscia.org).  All rights reserved.
 #
 # This program is free software; you can redistribute it and/or
@@ -89,7 +92,6 @@ available from <http://nltk.sourceforge.net>
 
 ## --NLTK--
 ## Declare this module's documentation format.
-import re
 
 class PorterStemmer():
 

@@ -126,8 +126,6 @@ def _get_keywords_with_score(extracted_lemmas, lemma_to_word):
         for keyword in keyword_list:
             keywords[keyword] = score
     return keywords
-    # return {keyword:score for score, lemma in extracted_lemmas for keyword in lemma_to_word[lemma]}
-    # if you dare
 
 
 def _strip_word(word):

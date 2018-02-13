@@ -18,8 +18,14 @@ from .snowball import SnowballStemmer
 from .stopwords import get_stopwords_by_language
 from summa.syntactic_unit import SyntacticUnit
 
+
+# Utility functions adapted from Gensim v0.10.0:
+# https://github.com/RaRe-Technologies/gensim/blob/0.10.0/gensim/utils.py
+# https://github.com/RaRe-Technologies/gensim/blob/0.10.0/gensim/parsing/preprocessing.py
+
+
 SEPARATOR = r"@"
-RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)')  # backup (\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)
+RE_SENTENCE = re.compile('(\S.+?[.!?])(?=\s+|$)|(\S.+?)(?=[\n]|$)')
 AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)\s(\w)")
 AB_ACRONYM = re.compile("(\.[a-zA-Z]\.)\s(\w)")
 AB_ACRONYM_LETTERS = re.compile("([a-zA-Z])\.([a-zA-Z])\.")
@@ -80,13 +86,13 @@ def get_sentences(text):
         yield match.group()
 
 
-# Taken from gensim
+# Taken from Gensim
 RE_PUNCT = re.compile('([%s])+' % re.escape(string.punctuation), re.UNICODE)
 def strip_punctuation(s):
     return RE_PUNCT.sub(" ", s)
 
 
-# Taken from gensim
+# Taken from Gensim
 RE_NUMERIC = re.compile(r"[0-9]+", re.UNICODE)
 def strip_numeric(s):
     return RE_NUMERIC.sub("", s)
@@ -110,13 +116,11 @@ def apply_filters(sentence, filters):
 def filter_words(sentences):
     filters = [lambda x: x.lower(), strip_numeric, strip_punctuation, remove_stopwords,
                stem_sentence]
-    # filters = []
-
     apply_filters_to_token = lambda token: apply_filters(token, filters)
     return list(map(apply_filters_to_token, sentences))
 
 
-# Taken from gensim
+# Taken from Gensim
 def deaccent(text):
     """
     Remove accentuation from the given string.
@@ -126,14 +130,13 @@ def deaccent(text):
     return unicodedata.normalize("NFC", result)
 
 
-# Taken from gensim
+# Taken from Gensim
 PAT_ALPHABETIC = re.compile('(((?![\d])\w)+)', re.UNICODE)
-def tokenize(text, lowercase=False, deacc=False, to_lower=False, lower=False):
+def tokenize(text, lowercase=False, deacc=False):
     """
     Iteratively yield tokens as unicode strings, optionally also lowercasing them
     and removing accent marks.
     """
-    lowercase = lowercase or to_lower or lower
     if lowercase:
         text = text.lower()
     if deacc:
@@ -174,10 +177,10 @@ def clean_text_by_word(text, language="english", deacc=False):
     Returns a dict of word -> syntacticUnit. """
     init_textcleanner(language)
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
-    original_words = list(tokenize(text_without_acronyms, to_lower=True, deacc=deacc))
+    original_words = list(tokenize(text_without_acronyms, lowercase=True, deacc=deacc))
     filtered_words = filter_words(original_words)
     if HAS_PATTERN:
-        tags = tag(" ".join(original_words)) # tag needs the context of the words in the text
+        tags = tag(" ".join(original_words))  # tag needs the context of the words in the text
     else:
         tags = None
     units = merge_syntactic_units(original_words, filtered_words, tags)
@@ -186,4 +189,4 @@ def clean_text_by_word(text, language="english", deacc=False):
 
 def tokenize_by_word(text, deacc=False):
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
-    return tokenize(text_without_acronyms, to_lower=True, deacc=deacc)
+    return tokenize(text_without_acronyms, lowercase=True, deacc=deacc)

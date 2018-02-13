@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 english = """
 all six eleven just less being indeed over both anyway detail four front already through yourselves fify
 mill still its before move whose one system also somewhere herself thick show had enough should to only
@@ -128,10 +126,16 @@ viktigt vilka vilkas vilken vilket vill väl vänster vänstra värre vår våra
 åtta åttio åttionde åttonde över övermorgon överst övre
 """
 
-LANGUAGES = {"english": english, "german": german, "spanish": spanish, "portuguese": portuguese, "swedish": swedish}
+LANGUAGES = {
+    "english": english,
+    "german": german,
+    "spanish": spanish,
+    "portuguese": portuguese,
+    "swedish": swedish,
+}
 
 
 def get_stopwords_by_language(language):
     if language in LANGUAGES:
         return LANGUAGES[language]
-    return LANGUAGES["english"]
+    return ""

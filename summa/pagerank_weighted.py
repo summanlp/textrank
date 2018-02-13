@@ -12,7 +12,6 @@ except ImportError:
 CONVERGENCE_THRESHOLD = 0.0001
 
 
-
 def pagerank_weighted(graph, initial_value=None, damping=0.85):
     """Calculates PageRank for an undirected graph"""
     if initial_value == None: initial_value = 1.0 / len(graph.nodes())
