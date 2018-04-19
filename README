@@ -2,9 +2,8 @@
 summa - textrank
 ================
 
-TextRank_ implementation for text summarization and keyword extraction in Python.
+TextRank implementation for text summarization and keyword extraction in Python, with `optimizations on the similarity function <https://arxiv.org/pdf/1602.03606.pdf>`_.
 
-.. _TextRank: http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf
 
 Features
 --------
@@ -82,6 +81,34 @@ The available languages are "danish", "dutch", "english", "finnish", "french", "
     ['Automatic summarization is the process of reducing a text document with a 
     computer program in order to create a summary that retains the most important 
     points of the original document.']
+
+
+References
+-------------
+- Mihalcea, R., Tarau, P.: Textrank: Bringing order into texts. In: Lin, D., Wu, D. (eds.) Proceedings of EMNLP 2004. pp. 404–411. Association for Computational Linguistics, Barcelona, Spain. July 2004.
+`PDF <http://www.aclweb.org/anthology/W04-3252>`_
+
+- Barrios, F., López, F., Argerich, L., Wachenchauzer, R.: “Variations of the Similarity Functionof TextRank for Automated Summarization”, Anales de las 44JAIIO. Jornadas Argentinas de Informática, Argentine Symposium on Artificial Intelligence, 2015. 
+`PDF <https://arxiv.org/pdf/1602.03606.pdf>`_
+
+To cite this work::
+
+    @article{DBLP:journals/corr/BarriosLAW16,
+      author    = {Federico Barrios and
+                 Federico L{\'{o}}pez and
+                 Luis Argerich and
+                 Rosa Wachenchauzer},
+      title     = {Variations of the Similarity Function of TextRank for Automated Summarization},
+      journal   = {CoRR},
+      volume    = {abs/1602.03606},
+      year      = {2016},
+      url       = {http://arxiv.org/abs/1602.03606},
+      archivePrefix = {arXiv},
+      eprint    = {1602.03606},
+      timestamp = {Wed, 07 Jun 2017 14:40:43 +0200},
+      biburl    = {https://dblp.org/rec/bib/journals/corr/BarriosLAW16},
+      bibsource = {dblp computer science bibliography, https://dblp.org}
+    }
 
 
 -------------
