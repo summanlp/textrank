@@ -85,11 +85,11 @@ The available languages are "danish", "dutch", "english", "finnish", "french", "
 
 References
 -------------
-Mihalcea, R., Tarau, P.: Textrank: Bringing order into texts. In: Lin, D., Wu, D. (eds.) Proceedings of EMNLP 2004. pp. 404–411. Association for Computational Linguistics, Barcelona, Spain. July 2004.
-`PDF <http://www.aclweb.org/anthology/W04-3252>`_
+- Mihalcea, R., Tarau, P.: Textrank: Bringing order into texts. In: Lin, D., Wu, D. (eds.) Proceedings of EMNLP 2004. pp. 404–411. Association for Computational Linguistics, Barcelona, Spain. July 2004.
+  `PDF <http://www.aclweb.org/anthology/W04-3252>`_
 
-Barrios, F., López, F., Argerich, L., Wachenchauzer, R.: “Variations of the Similarity Functionof TextRank for Automated Summarization”, Anales de las 44JAIIO. Jornadas Argentinas de Informática, Argentine Symposium on Artificial Intelligence, 2015. 
-`PDF <https://arxiv.org/pdf/1602.03606.pdf>`_
+- Barrios, F., López, F., Argerich, L., Wachenchauzer, R.: “Variations of the Similarity Functionof TextRank for Automated Summarization”, Anales de las 44JAIIO. Jornadas Argentinas de Informática, Argentine Symposium on Artificial Intelligence, 2015. 
+  `PDF <https://arxiv.org/pdf/1602.03606.pdf>`_
 
 
 To cite this work::
