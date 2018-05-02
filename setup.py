@@ -10,7 +10,6 @@ setup(
     description = 'A text summarization and keyword extraction package based on TextRank',
     long_description = open('README').read(),
     author = 'Federico Barrios, Federico Lopez',
-    author_email = 'summanlp@gmail.com',
     url = 'https://github.com/summanlp/textrank',
     download_url = 'https://github.com/summanlp/textrank/tarball/v1.0.0',
     keywords = ['summa', 'nlp', 'summarization', "NLP",

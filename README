@@ -89,7 +89,7 @@ More examples
 References
 -------------
 - Mihalcea, R., Tarau, P.:
-`"Textrank: Bringing order into texts" <http://www.aclweb.org/anthology/W04-3252>`__.
+  `"Textrank: Bringing order into texts" <http://www.aclweb.org/anthology/W04-3252>`__.
   In: Lin, D., Wu, D. (eds.)
   Proceedings of EMNLP 2004. pp. 404–411. Association for Computational Linguistics,
   Barcelona, Spain. July 2004.
@@ -123,4 +123,5 @@ To cite this work::
 -------------
 
 Summa is open source software released under the `The MIT License (MIT) <http://opensource.org/licenses/MIT>`_.
-Copyright (c) 2014 - now Summa NLP
+
+Copyright (c) 2014 – now Summa NLP.
