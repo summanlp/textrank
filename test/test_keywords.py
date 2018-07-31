@@ -2,7 +2,7 @@ import unittest
 
 from summa.keywords import keywords
 from summa.preprocessing.textcleaner import deaccent
-from utils import get_text_from_test_data
+from .utils import get_text_from_test_data
 
 
 class TestKeywords(unittest.TestCase):
