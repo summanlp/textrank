@@ -33,8 +33,8 @@ UNDO_AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)" + SEPARATOR + "(\w)")
 UNDO_AB_ACRONYM = re.compile("(\.[a-zA-Z]\.)" + SEPARATOR + "(\w)")
 
 
-LANGUAGES = {"danish", "dutch", "english", "finnish", "french", "german", \
-             "hungarian", "italian", "norwegian", "porter", "portuguese", \
+LANGUAGES = {"danish", "dutch", "english", "finnish", "french", "german",
+             "hungarian", "italian", "norwegian", "porter", "portuguese",
              "romanian", "russian", "spanish", "swedish"}
 STEMMER = None
 STOPWORDS = None
@@ -42,22 +42,25 @@ STOPWORDS = None
 
 def set_stemmer_language(language):
     global STEMMER
-    if not language in LANGUAGES:
+    if language not in LANGUAGES:
         raise ValueError("Valid languages are danish, dutch, english, finnish," +
-                 " french, german, hungarian, italian, norwegian, porter, portuguese," +
-                 "romanian, russian, spanish, swedish")
+                         " french, german, hungarian, italian, norwegian, porter, portuguese," +
+                         "romanian, russian, spanish, swedish")
     STEMMER = SnowballStemmer(language)
 
 
-def set_stopwords_by_language(language):
+def set_stopwords_by_language(language, additional_stopwords):
     global STOPWORDS
     words = get_stopwords_by_language(language)
+    words = words.strip()
+    if additional_stopwords:
+        words += " "+" ".join(additional_stopwords)
     STOPWORDS = frozenset(w for w in words.split() if w)
 
 
-def init_textcleanner(language):
+def init_textcleanner(language, additional_stopwords):
     set_stemmer_language(language)
-    set_stopwords_by_language(language)
+    set_stopwords_by_language(language, additional_stopwords)
 
 
 def split_sentences(text):
@@ -162,20 +165,20 @@ def merge_syntactic_units(original_units, filtered_units, tags=None):
     return units
 
 
-def clean_text_by_sentences(text, language="english"):
+def clean_text_by_sentences(text, language="english", additional_stopwords=None):
     """ Tokenizes a given text into sentences, applying filters and lemmatizing them.
     Returns a SyntacticUnit list. """
-    init_textcleanner(language)
+    init_textcleanner(language, additional_stopwords)
     original_sentences = split_sentences(text)
     filtered_sentences = filter_words(original_sentences)
 
     return merge_syntactic_units(original_sentences, filtered_sentences)
 
 
-def clean_text_by_word(text, language="english", deacc=False):
+def clean_text_by_word(text, language="english", deacc=False, additional_stopwords=None):
     """ Tokenizes a given text into words, applying filters and lemmatizing them.
     Returns a dict of word -> syntacticUnit. """
-    init_textcleanner(language)
+    init_textcleanner(language, additional_stopwords)
     text_without_acronyms = replace_with_separator(text, "", [AB_ACRONYM_LETTERS])
     original_words = list(tokenize(text_without_acronyms, lowercase=True, deacc=deacc))
     filtered_words = filter_words(original_words)

@@ -184,7 +184,7 @@ def _format_results(_keywords, combined_keywords, split, scores):
     return "\n".join(combined_keywords)
 
 
-def keywords(text, ratio=0.2, words=None, language="english", split=False, scores=False, deaccent=False):
+def keywords(text, ratio=0.2, words=None, language="english", split=False, scores=False, deaccent=False, additional_keywords=None):
     if not isinstance(text, str):
         raise ValueError("Text parameter must be a Unicode object (str)!")
 
