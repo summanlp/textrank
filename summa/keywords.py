@@ -184,12 +184,12 @@ def _format_results(_keywords, combined_keywords, split, scores):
     return "\n".join(combined_keywords)
 
 
-def keywords(text, ratio=0.2, words=None, language="english", split=False, scores=False, deaccent=False, additional_keywords=None):
+def keywords(text, ratio=0.2, words=None, language="english", split=False, scores=False, deaccent=False, additional_stopwords=None):
     if not isinstance(text, str):
         raise ValueError("Text parameter must be a Unicode object (str)!")
 
     # Gets a dict of word -> lemma
-    tokens = _clean_text_by_word(text, language, deacc=deaccent)
+    tokens = _clean_text_by_word(text, language, deacc=deaccent, additional_stopwords=additional_stopwords)
     split_text = list(_tokenize_by_word(text))
 
     # Creates the graph and adds the edges

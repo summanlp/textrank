@@ -37,12 +37,12 @@ def get_arguments():
             words = int(a)
         elif o in ("-r", "--ratio"):
             ratio = float(a)
-        elif o in ("-e", "--additional_stopwords"):
+        elif o in ("-a", "--additional_stopwords"):
             if os.path.exists(a):
                 additional_stopwords = []
                 with open(a, "r") as f:
                     for linea in f:
-                        additional_stopwords.extend(linea.strip.split(','))
+                        additional_stopwords.extend(linea.strip().split(','))
             else:
                 additional_stopwords = a.split(",")
         else:
@@ -64,7 +64,7 @@ help_text = """Usage: textrank -t FILE
 \tFloat number (0,1] that defines the length of the summary. It's a proportion of the original text. Default value: 0.2.
 -w WORDS, --words=WORDS:
 \tNumber to limit the length of the summary. The length option is ignored if the word limit is set.
--e, --extra_keywords
+-a, --additional_stopwords
 \tEither a string of comma separated stopwords or a path to a file which has comma separated stopwords in every line
 -h, --help:
 \tprints this help
