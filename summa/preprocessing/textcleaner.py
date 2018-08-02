@@ -52,10 +52,9 @@ def set_stemmer_language(language):
 def set_stopwords_by_language(language, additional_stopwords):
     global STOPWORDS
     words = get_stopwords_by_language(language)
-    words = words.strip()
-    if additional_stopwords:
-        words += " "+" ".join(additional_stopwords)
-    STOPWORDS = frozenset(w for w in words.split() if w)
+    if not additional_stopwords:
+        additional_stopwords = {}
+    STOPWORDS = frozenset({ w for w in words.split() if w } | { w for w in additional_stopwords if w })
 
 
 def init_textcleanner(language, additional_stopwords):

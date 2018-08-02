@@ -38,13 +38,7 @@ def get_arguments():
         elif o in ("-r", "--ratio"):
             ratio = float(a)
         elif o in ("-a", "--additional_stopwords"):
-            if os.path.exists(a):
-                additional_stopwords = []
-                with open(a, "r") as f:
-                    for linea in f:
-                        additional_stopwords.extend(linea.strip().split(','))
-            else:
-                additional_stopwords = a.split(",")
+            additional_stopwords = a
         else:
             assert False, "unhandled option"
 
@@ -87,6 +81,13 @@ def main():
 
     with open(path) as file:
         text = file.read()
+
+    if additional_stopwords:
+        if os.path.exists(additional_stopwords):
+            with open(additional_stopwords) as f:
+                additional_stopwords = { s for l in f for s in l.strip().split(",") }
+        else:
+            additional_stopwords = additional_stopwords.split(",")
 
     print(textrank(text, summarize_by, ratio, words, additional_stopwords))
 
