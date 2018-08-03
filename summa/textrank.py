@@ -13,7 +13,6 @@ def exit_with_error(err):
     usage()
     sys.exit(2)
 
-
 def get_arguments():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "t:s:r:w:a:h", ["text=", "summary=", "ratio=", "words=", "additional_stopwords=", "help"])
@@ -69,8 +68,6 @@ help_text = """Usage: textrank -t FILE
 -h, --help:
 \tprints this help
 """
-
-
 def usage():
     print(help_text)
 
