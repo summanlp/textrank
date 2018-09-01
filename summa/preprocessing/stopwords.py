@@ -142,6 +142,23 @@ omkring overalt samme sammen selvom senere siden stadig synes syntes således te
 udover undtagen via vore vær øvrigt
 """
 
+italian = """
+un avete dal voi nostri avesti stiano starò sull tutto faccio sarai vostri farebbe ai degli farò c faccia lo 
+sullo farà facevate avendo fummo stiamo staranno questi sia con sue al mio fareste ero di e avessi alle avreste 
+avesse alla avrei avemmo col ad ne avremmo avevano tuo avessero siate suoi facevo ti che mi questa avrebbe fossero 
+tua starebbero faceste facesti anche cui ho tra foste stavamo non stessi avevate nostre quelli queste avrete eri 
+facemmo stavate stia in dagl avrò avremo se feci furono io stavano nelle quante per abbiano nell faceva fecero steste
+eravamo farei sarei avevi sui quanto dai dello era loro su quello fossi stava nostra quale una farete gli siano avranno
+i stette fece negli facciano facevano dove vostra farebbero sugli vostro uno aveva dall ha avuto avuti sarete sulla sarà 
+perché essendo fai siete facendo da avevamo starà o faranno lei mie stiate nel fu facciamo stessero noi facciate stando 
+si è avute sarebbero miei sto contro avrà coi chi ci avrebbero aveste stettero abbiamo sarebbe agl del stareste sua faremo 
+siamo fanno sei abbiate fui ed quella dalle facessero tue fosti facevamo erano stessimo nei facessimo nello le dell abbia 
+fosse farai facesse starai stavo staremo mia stesse avevo lui agli fossimo dagli vostre stanno sareste quanti stemmo facessi 
+ebbe stesti tuoi dallo tutti sugl staremmo vi la dei quanta ebbero stavi saranno delle dalla saresti staresti stai suo nostro 
+aremo starete saremmo sarò li hai allo avresti dov avuta faresti starei il quelle degl all a ebbi nella eravate stetti negl 
+come questo facevi sulle più tu della sono starebbe sul hanno faremmo sta avrai avessimo ma l
+"""
+
 LANGUAGES = {
     "danish": danish,
     "english": english,
@@ -149,6 +166,7 @@ LANGUAGES = {
     "spanish": spanish,
     "portuguese": portuguese,
     "swedish": swedish,
+    "italian": italian,
 }
 
 
