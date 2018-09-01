@@ -8,7 +8,7 @@ setup(
     },
     version = '1.0.0',
     description = 'A text summarization and keyword extraction package based on TextRank',
-    long_description = open('README').read(),
+    long_description = open('README', encoding="utf-8").read(),
     author = 'Federico Barrios, Federico Lopez',
     url = 'https://github.com/summanlp/textrank',
     download_url = 'https://github.com/summanlp/textrank/tarball/v1.0.0',
