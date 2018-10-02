@@ -103,6 +103,11 @@ class TestSummarizer(unittest.TestCase):
         text = get_text_from_test_data("spanish.txt")
         self.assertIsNotNone(summarize(text, language="spanish"))
 
+    def test_polish(self):
+        # Test the summarization module for Polish language.
+        text = get_text_from_test_data("polish.txt")
+        self.assertIsNotNone(summarize(text, language="polish"))
+
     def test_text_as_bytes_raises_exception(self):
         # Test the keyword extraction for a text that is not a unicode object
         # (Python 3 str).
