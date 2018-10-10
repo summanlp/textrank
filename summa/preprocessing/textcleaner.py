@@ -32,20 +32,14 @@ AB_ACRONYM_LETTERS = re.compile("([a-zA-Z])\.([a-zA-Z])\.")
 UNDO_AB_SENIOR = re.compile("([A-Z][a-z]{1,2}\.)" + SEPARATOR + "(\w)")
 UNDO_AB_ACRONYM = re.compile("(\.[a-zA-Z]\.)" + SEPARATOR + "(\w)")
 
-
-LANGUAGES = {"danish", "dutch", "english", "finnish", "french", "german", \
-             "hungarian", "italian", "norwegian", "porter", "portuguese", \
-             "romanian", "russian", "spanish", "swedish"}
 STEMMER = None
 STOPWORDS = None
 
 
 def set_stemmer_language(language):
     global STEMMER
-    if not language in LANGUAGES:
-        raise ValueError("Valid languages are danish, dutch, english, finnish," +
-                 " french, german, hungarian, italian, norwegian, porter, portuguese," +
-                 "romanian, russian, spanish, swedish")
+    if not language in SnowballStemmer.languages:
+        raise ValueError("Valid languages are: " + ", ".join(sorted(SnowballStemmer.languages)))
     STEMMER = SnowballStemmer(language)
 
 
