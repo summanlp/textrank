@@ -56,3 +56,11 @@ class TestArgs(unittest.TestCase):
     def test_words_parameter_long(self):
         args = parse_args(["-t", "some_text", "--words", "200"])
         self.assertEqual(200, args.words)
+
+    def test_additional_stopwords_short(self):
+        args = parse_args(["-t", "some_text", "-a", "uno dos tres catorce"])
+        self.assertEqual("uno dos tres catorce", args.additional_stopwords)
+
+    def test_additional_stopwords_long(self):
+        args = parse_args(["-t", "some_text", "--additional_stopwords", "uno dos tres catorce"])
+        self.assertEqual("uno dos tres catorce", args.additional_stopwords)
