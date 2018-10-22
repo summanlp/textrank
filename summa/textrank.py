@@ -26,8 +26,8 @@ def restricted_float(x):
 
 def parse_args(args):
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter, prog="textrank", description="Extract the most relevant sentences or keywords of a given text using the TextRank algorithm.")
-    parser.add_argument('--summary', '-s', type=int, default=0, help="Type of unit to summarize: sentence (0) or word (1)")
     parser.add_argument('--text', '-t', type=str, required=True, help="Text to summarize")
+    parser.add_argument('--summary', '-s', type=int, default=0, help="Type of unit to summarize: sentence (0) or word (1)")
     parser.add_argument('--ratio', '-r', type=restricted_float, default=0.2, help="Float number (0,1] that defines the length of the summary. It's a proportion of the original text")
     parser.add_argument('--words', '-w', help="Number to limit the length of the summary. The length option is ignored if the word limit is set.")
     parser.add_argument('--additional_stopwords', '-a', help="Either a string of comma separated stopwords or a path to a file which has comma separated stopwords in every line")
