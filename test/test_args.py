@@ -48,3 +48,11 @@ class TestArgs(unittest.TestCase):
     def test_ratio_must_be_less_than_1(self):
         with self.assertRaises(SystemExit):
             parse_args(["-t", "some_text", "-r", "1.1"])
+
+    def test_words_parameter_short(self):
+        args = parse_args(["-t", "some_text", "-w", "200"])
+        self.assertEqual(200, args.words)
+
+    def test_words_parameter_long(self):
+        args = parse_args(["-t", "some_text", "--words", "200"])
+        self.assertEqual(200, args.words)
