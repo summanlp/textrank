@@ -1,6 +1,6 @@
 import unittest
 
-from summa.textrank import parse_args, SENTENCE, WORD
+from summa.textrank import parse_args, SENTENCE, WORD, DEFAULT_RATIO
 
 
 class TestArgs(unittest.TestCase):
@@ -36,3 +36,15 @@ class TestArgs(unittest.TestCase):
     def test_keyword_mode(self):
         args = parse_args(["-t", "some_text", "-s", str(WORD)])
         self.assertEqual(WORD, args.summary)
+
+    def test_ratio_default(self):
+        args = parse_args(["-t", "some_text"])
+        self.assertEqual(DEFAULT_RATIO, args.ratio)
+
+    def test_ratio_must_be_positive(self):
+        with self.assertRaises(SystemExit):
+            parse_args(["-t", "some_text", "-r", "-1.0"])
+
+    def test_ratio_must_be_less_than_1(self):
+        with self.assertRaises(SystemExit):
+            parse_args(["-t", "some_text", "-r", "1.1"])
