@@ -17,12 +17,12 @@ Examples
 
 Text summarization::
 
-    >>> text = """Automatic summarization is the process of reducing a text document with a
-    computer program in order to create a summary that retains the most important points
-    of the original document. As the problem of information overload has grown, and as
-    the quantity of data has increased, so has interest in automatic summarization.
-    Technologies that can make a coherent summary take into account variables such as
-    length, writing style and syntax. An example of the use of summarization technology
+    >>> text = """Automatic summarization is the process of reducing a text document with a \
+    computer program in order to create a summary that retains the most important points \
+    of the original document. As the problem of information overload has grown, and as \
+    the quantity of data has increased, so has interest in automatic summarization. \
+    Technologies that can make a coherent summary take into account variables such as \
+    length, writing style and syntax. An example of the use of summarization technology \
     is search engines such as Google. Document summarization is another."""
 
     >>> from summa import summarizer
@@ -42,10 +42,14 @@ Keyword extraction::
     account
 
 
+Note that line breaks in the input will be used as sentence separators, so be sure
+to preprocess your text accordingly.
+
 Installation
 ------------
 
-This software depends on `NumPy <http://www.numpy.org/>`_ and `Scipy <https://www.scipy.org/>`_,
+This software is `available in PyPI <https://pypi.org/project/summa/>`_.
+It depends on `NumPy <http://www.numpy.org/>`_ and `Scipy <https://www.scipy.org/>`_,
 two Python libraries for scientific computing.
 Pip will automatically install them along with `summa`::
 
@@ -70,13 +74,13 @@ More examples
 
     >>> summarize(text, words=50)
 
-- Define input text language (also available in :code:`keywords`):
+- Define input text language (also available in :code:`keywords`).
 
   The available languages are danish, dutch, english, finnish, french, german,
   hungarian, italian, norwegian, polish, porter, portuguese, romanian, russian,
-  spanish, swedish.
+  spanish, swedish::
 
-  >>> summarize(text, language='spanish')
+    >>> summarize(text, language='spanish')
 
 - Get results as a list (also available in :code:`keywords`)::
 
