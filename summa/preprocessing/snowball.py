@@ -47,9 +47,7 @@ class SnowballStemmer():
 
     >>> from summa.preprocessing.snowball import SnowballStemmer
     >>> print(" ".join(SnowballStemmer.languages)) # See which languages are supported
-    danish dutch english finnish french german hungarian
-    italian norwegian porter portuguese romanian russian
-    spanish swedish
+    ...
     >>> stemmer = SnowballStemmer("german") # Choose a language
     >>> stemmer.stem("Autobahnen") # Stem a word
     'autobahn'
@@ -69,9 +67,23 @@ class SnowballStemmer():
                            language, a ValueError is raised.
     """
 
-    languages = ("danish", "dutch", "english", "finnish", "french", "german",
-                 "hungarian", "italian", "norwegian", "polish", "porter",
-                 "portuguese", "romanian", "russian", "spanish", "swedish")
+    languages = (
+        "danish",
+        "dutch",
+        "english",
+        "finnish",
+        "french",
+        "german",
+        "hungarian",
+        "italian",
+        "norwegian",
+        "polish",
+        "portuguese",
+        "romanian",
+        "russian",
+        "spanish",
+        "swedish",
+    )
 
     def __init__(self, language):
         if language not in self.languages:
