@@ -1,28 +1,21 @@
 import unittest
-import os, sys
 from summa.textrank import parse_args, SENTENCE, WORD, DEFAULT_RATIO
-
-STDERR = sys.stderr
+from test.utils import silence_stderr
 
 
 class TestArgs(unittest.TestCase):
 
-    # Horrible hack for preventing argparse to print the usage message.
-    def setUp(self):
-        sys.stderr = open(os.devnull, 'w')
-
-    def tearDown(self):
-        sys.stderr.close()
-        sys.stderr = STDERR
-
+    @silence_stderr
     def test_parse_fails_with_no_text_option(self):
         with self.assertRaises(SystemExit):
             parse_args([])
 
+    @silence_stderr
     def test_parse_fails_with_no_text_short(self):
         with self.assertRaises(SystemExit):
             parse_args(["-t"])
 
+    @silence_stderr
     def test_parse_fails_with_no_text_long(self):
         with self.assertRaises(SystemExit):
             parse_args(["--text"])
@@ -51,10 +44,12 @@ class TestArgs(unittest.TestCase):
         args = parse_args(["-t", "some_text"])
         self.assertEqual(DEFAULT_RATIO, args.ratio)
 
+    @silence_stderr
     def test_ratio_must_be_positive(self):
         with self.assertRaises(SystemExit):
             parse_args(["-t", "some_text", "-r", "-1.0"])
 
+    @silence_stderr
     def test_ratio_must_be_less_than_1(self):
         with self.assertRaises(SystemExit):
             parse_args(["-t", "some_text", "-r", "1.1"])
