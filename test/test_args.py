@@ -1,9 +1,19 @@
 import unittest
-
+import os, sys
 from summa.textrank import parse_args, SENTENCE, WORD, DEFAULT_RATIO
+
+STDERR = sys.stderr
 
 
 class TestArgs(unittest.TestCase):
+
+    # Horrible hack for preventing argparse to print the usage message.
+    def setUp(self):
+        sys.stderr = open(os.devnull, 'w')
+
+    def tearDown(self):
+        sys.stderr.close()
+        sys.stderr = STDERR
 
     def test_parse_fails_with_no_text_option(self):
         with self.assertRaises(SystemExit):
