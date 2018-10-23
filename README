@@ -48,7 +48,8 @@ to preprocess your text accordingly.
 Installation
 ------------
 
-This software depends on `NumPy <http://www.numpy.org/>`_ and `Scipy <https://www.scipy.org/>`_,
+This software is `available in PyPI <https://pypi.org/project/summa/>`_.
+It depends on `NumPy <http://www.numpy.org/>`_ and `Scipy <https://www.scipy.org/>`_,
 two Python libraries for scientific computing.
 Pip will automatically install them along with `summa`::
 
