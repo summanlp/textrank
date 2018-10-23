@@ -42,6 +42,9 @@ Keyword extraction::
     account
 
 
+Note that line breaks in the input will be used as sentence separators, so be sure
+to preprocess your text accordingly.
+
 Installation
 ------------
 
