@@ -86,18 +86,62 @@ zum zur uber
 """
 
 portuguese = """
-de a o que e do da em um para é com não uma os no se na por mais as dos como mas foi ao ele das tem à seu
-sua ou ser quando muito há nos já está eu também só pelo pela até isso ela entre era depois sem mesmo aos ter
-seus quem nas me esse eles estão você tinha foram essa num nem suas meu às minha têm numa pelos elas havia seja
-qual será nós tenho lhe deles essas esses pelas este fosse dele tu te vocês vos lhes meus minhas teu tua teus
-tuas nosso nossa nossos nossas dela delas esta estes estas aquele aquela aqueles aquelas isto aquilo estou está
-estamos estão estive esteve estivemos estiveram estava estávamos estavam estivera estivéramos esteja estejamos
-estejam estivesse estivéssemos estivessem estiver estivermos estiverem hei há havemos hão houve houvemos houveram
-houvera houvéramos haja hajamos hajam houvesse houvéssemos houvessem houver houvermos houverem houverei houverá
-houveremos houverão houveria houveríamos houveriam sou somos são era éramos eram fui foi fomos foram fora fôramos
-seja sejamos sejam fosse fôssemos fossem for formos forem serei será seremos serão seria seríamos seriam tenho
-tem temos tém tinha tínhamos tinham tive teve tivemos tiveram tivera tivéramos tenha tenhamos tenham tivesse
-tivéssemos tivessem tiver tivermos tiverem terei terá teremos terão teria teríamos teriam
+dever devendo devido devo deves deve devemos deveis devem devia devias devíamos devíeis deviam devi deveste deveu
+devestes deveram devera deveras devêramos devêreis deveria deverias deveríamos deveríeis deveriam deverei deverás
+deverá deveremos devereis deverão deva devas devamos devais devam devesse devesses devêssemos devêsseis devessem
+deveres devermos deverdes deverem devei dizer dizendo dito digo dizes diz dizemos dizeis dizem dizia dizias dizíamos
+dizíeis diziam disse disseste dissemos dissestes disseram dissera disseras disséramos disséreis diria dirias diríamos
+diríeis diriam direi dirás dirá diremos direis dirão diga digas digamos digais digam dissesse dissesses disséssemos
+dissésseis dissessem disser disseres dissermos disserdes disserem dizei dizeres dizermos dizerdes dizerem estar
+estando estado estou estás está estamos estais estão estava estavas estávamos estáveis estavam estive estiveste
+esteve estivemos estivestes estiveram estivera estiveras estivéramos estivéreis estaria estarias estaríamos estaríeis
+estariam estarei estarás estará estaremos estareis estarão esteja estejas estejamos estejais estejam estivesse
+estivesses estivéssemos estivésseis estivessem estiver estiveres estivermos estiverdes estiverem estai estares estarmos
+estardes estarem fazer fazendo feito faço fazes faz fazemos fazeis fazem fazia fazias fazíamos fazíeis faziam fiz
+fizeste fez fizemos fizestes fizeram fizera fizeras fizéramos fizéreis faria farias faríamos faríeis fariam farei farás
+fará faremos fareis farão faça faças façamos façais façam fizesse fizesses fizéssemos fizésseis fizessem fizer fizeres
+fizermos fizerdes fizerem fazei fazeres fazermos fazerdes fazerem haver havendo havido hei hás há havemos haveis hão
+havia havias havíamos havíeis haviam houve houveste houvemos houvestes houveram houvera houveras houvéramos houvéreis
+haveria haverias haveríamos haveríeis haveriam haverei haverás haverá haveremos havereis haverão haja hajas hajamos
+hajais hajam houvesse houvesses houvéssemos houvésseis houvessem houver houveres houvermos houverdes houverem havei
+haveres havermos haverdes haverem ir indo ido vou vais vai vamos ides vão ia ias íamos íeis iam fui foste foi fomos
+fostes foram fora foras fôramos fôreis iria irias iríamos iríeis iriam irei irás irá iremos ireis irão vá vás vades
+fosse fosses fôssemos fôsseis fossem for fores formos fordes forem ide ires irmos irdes irem poder podendo podido posso
+podes pode podemos podeis podem podia podias podíamos podíeis podiam pude pudeste pôde pudemos pudestes puderam pudera
+puderas pudéramos pudéreis poderia poderias poderíamos poderíeis poderiam poderei poderás poderá poderemos podereis
+poderão possa possas possamos possais possam pudesse pudesses pudéssemos pudésseis pudessem puder puderes pudermos
+puderdes puderem poderes podermos poderdes poderem ser sendo sido sou és é somos sois são era eras éramos éreis eram
+fui foste foi fomos fostes foram fora foras fôramos fôreis seria serias seríamos seríeis seriam serei serás será seremos
+sereis serão seja sejas sejamos sejais sejam fosse fosses fôssemos fôsseis fossem for fores formos fordes forem sede
+seres sermos serdes serem ter tendo tido tenho tens tem temos tendes têm tinha tinhas tínhamos tínheis tinham tive
+tivesteteve tivemos tivestes tiveram tivera tiveras tivéramos tivéreis teria terias teríamos teríeis teriam terei terás
+terá teremos tereis terão tenha tenhas tenhamos tenhais tenham tivesse tivesses tivéssemos tivésseis tivessem tiver
+tiveres tivermos tiverdes tiverem tende teres termos terdes terem ver vendo visto vejo vês vê vemos vedes vêem via vias
+víamos víeis viam vi viste viu vimos vistes viram vira viras víramos víreis veria verias veríamos veríeis veriam verei
+verás verá veremos vereis verão veja vejas vejamos vejais vejam visse visses víssemos vísseis vissem vir vires virmos
+virdes virem vede veres vermos verdes verem vir vindo venho vens vem vimos vindes vêm vinha vinhas vínhamos vínheis
+vinham vim vieste veio viemos viestes vieram viera vieras viéramos viéreis viria virias viríamos viríeis viriam virei
+virás virá viremos vireis virão venha venham venhamos venhais viesse viesses viéssemos viésseis viessem vier vieres
+viermos vierdes vierem vinde vires virmos virdes virem a à abaixo acerca acima adiante agora ah-ah ah ai ainda além algo
+alguém algum alguma algumas alguns ali alô amanhã ambas ambos ante anterior anteriores anteriormente antes ao aonde aos
+apenas após aquela aquelas aquele aqueles aqui aquilo as às assim até através atuais atual atualmente bem bom cá cada
+causa causas cedo certa certas certo certos chamada chamadas chamado chamados coisa coisas coloca colocada colocadas
+colocado colocados colocar coloco com comigo como conforme conosco consoante contigo contra contudo convosco cuja cujas
+cujo cujos da daquela daquelas daquele daqueles das de define dela delas dele deles demais demasiadamente dentro depois
+depressa desde desligada desligadas desligado desligados diferente diretamente disso do dois donde dos durante e ela
+elas ele eles em embora enquanto então entre essa essas esse esses esta estas este estes etc eu excepcionalmente exceto
+fim finais final finalizada finalizada finalizado finalizado freqüente hem hum hoje i.e ih iniciais inicial invés isso
+isto já jamais lá ligada ligadas ligado ligados logo longe má mais mal manhã mas máximo me menor menos mesma mesmas
+mesmo mesmos meu meus minha minhas muita muitas muito muitos na nada não nas nele neles nem nisso no nos nós nossa
+nossas nosso nossos novamente o ó ô obtida obtidas obtido obtidos oh ok onde opa ora os ou outra outras outrem outro
+outrora outros outrossim para parada paradas parado parados parece pareço pelo pela pelos pelas per perante perto pois
+por porém porque porquê portanto pouca poucas pouco poucos precisa precisar preciso prefere preferir prefiro primeira
+primeiras primeiro primeiros própria próprias próprio próprios próxima próximas próximo próximos quais quaisquer qual
+qualquer quando quão quase quatro que quê quem quer querer quero realmente repete repetir repito salvo se seguinte
+seguintes sem sempre seu seus si sim só sob sobre somente sós sua suas suficiente suficientes tais tal talvez também
+tanta tantas tanto tantos tão tarde te teu ti toda todas todo todos topo topos trás três tu tua tuas tudo uh ui última
+últimas último últimos um uma umas unicamente uns use vária várias vário vários vez vista você vocês vos vós vossa
+vossas vosso vossos
 """
 
 swedish = """
@@ -143,19 +187,19 @@ udover undtagen via vore vær øvrigt
 """
 
 italian = """
-un avete dal voi nostri avesti stiano starò sull tutto faccio sarai vostri farebbe ai degli farò c faccia lo 
-sullo farà facevate avendo fummo stiamo staranno questi sia con sue al mio fareste ero di e avessi alle avreste 
-avesse alla avrei avemmo col ad ne avremmo avevano tuo avessero siate suoi facevo ti che mi questa avrebbe fossero 
-tua starebbero faceste facesti anche cui ho tra foste stavamo non stessi avevate nostre quelli queste avrete eri 
-facemmo stavate stia in dagl avrò avremo se feci furono io stavano nelle quante per abbiano nell faceva fecero steste
-eravamo farei sarei avevi sui quanto dai dello era loro su quello fossi stava nostra quale una farete gli siano avranno
-i stette fece negli facciano facevano dove vostra farebbero sugli vostro uno aveva dall ha avuto avuti sarete sulla sarà 
-perché essendo fai siete facendo da avevamo starà o faranno lei mie stiate nel fu facciamo stessero noi facciate stando 
-si è avute sarebbero miei sto contro avrà coi chi ci avrebbero aveste stettero abbiamo sarebbe agl del stareste sua faremo 
-siamo fanno sei abbiate fui ed quella dalle facessero tue fosti facevamo erano stessimo nei facessimo nello le dell abbia 
-fosse farai facesse starai stavo staremo mia stesse avevo lui agli fossimo dagli vostre stanno sareste quanti stemmo facessi 
-ebbe stesti tuoi dallo tutti sugl staremmo vi la dei quanta ebbero stavi saranno delle dalla saresti staresti stai suo nostro 
-aremo starete saremmo sarò li hai allo avresti dov avuta faresti starei il quelle degl all a ebbi nella eravate stetti negl 
+un avete dal voi nostri avesti stiano starò sull tutto faccio sarai vostri farebbe ai degli farò c faccia lo sullo farà
+facevate avendo fummo stiamo staranno questi sia con sue al mio fareste ero di e avessi alle avreste avesse alla avrei
+avemmo col ad ne avremmo avevano tuo avessero siate suoi facevo ti che mi questa avrebbe fossero tua starebbero faceste
+facesti anche cui ho tra foste stavamo non stessi avevate nostre quelli queste avrete eri facemmo stavate stia in dagl
+avrò avremo se feci furono io stavano nelle quante per abbiano nell faceva fecero steste eravamo farei sarei avevi sui
+quanto dai dello era loro su quello fossi stava nostra quale una farete gli siano avranno i stette fece negli facciano
+facevano dove vostra farebbero sugli vostro uno aveva dall ha avuto avuti sarete sulla sarà perché essendo fai siete
+facendo da avevamo starà o faranno lei mie stiate nel fu facciamo stessero noi facciate stando si è avute sarebbero miei
+sto contro avrà coi chi ci avrebbero aveste stettero abbiamo sarebbe agl del stareste sua faremo siamo fanno sei abbiate
+fui ed quella dalle facessero tue fosti facevamo erano stessimo nei facessimo nello le dell abbia fosse farai facesse
+starai stavo staremo mia stesse avevo lui agli fossimo dagli vostre stanno sareste quanti stemmo facessi ebbe stesti
+tuoi dallo tutti sugl staremmo vi la dei quanta ebbero stavi saranno delle dalla saresti staresti stai suo nostro aremo
+starete saremmo sarò li hai allo avresti dov avuta faresti starei il quelle degl all a ebbi nella eravate stetti negl 
 come questo facevi sulle più tu della sono starebbe sul hanno faremmo sta avrai avessimo ma l
 """
 
