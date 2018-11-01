@@ -9,8 +9,10 @@ from .keywords import keywords
 SENTENCE = 0
 WORD = 1
 
+DEFAULT_RATIO = 0.2
 
-def textrank(text, summarize_by=SENTENCE, ratio=0.2, words=None, additional_stopwords=None):
+
+def textrank(text, summarize_by=SENTENCE, ratio=DEFAULT_RATIO, words=None, additional_stopwords=None):
     if summarize_by == SENTENCE:
         return summarize(text, ratio, words, additional_stopwords=additional_stopwords)
     else:
@@ -20,18 +22,22 @@ def textrank(text, summarize_by=SENTENCE, ratio=0.2, words=None, additional_stop
 def restricted_float(x):
     x = float(x)
     if x < 0.0 or x > 1.0:
-        raise argparse.ArgumentTypeError("%r not in range [0.0, 1.0]".format(x,))
+        raise argparse.ArgumentTypeError("{} not in range [0.0, 1.0]".format(x))
     return x
 
 
-def main():
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+def parse_args(args):
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter, prog="textrank", description="Extract the most relevant sentences or keywords of a given text using the TextRank algorithm.")
+    parser.add_argument('--text', '-t', type=str, required=True, help="Text to summarize")
     parser.add_argument('--summary', '-s', type=int, default=0, help="Type of unit to summarize: sentence (0) or word (1)")
-    parser.add_argument('--text', '-t', type=str, help="Text to summarize")
-    parser.add_argument('--ratio', '-r', type=restricted_float, default=0.2, help="Float number (0,1] that defines the length of the summary. It's a proportion of the original text")
-    parser.add_argument('--words', '-w', help="Number to limit the length of the summary. The length option is ignored if the word limit is set.")
+    parser.add_argument('--ratio', '-r', type=restricted_float, default=DEFAULT_RATIO, help="Float number (0,1] that defines the length of the summary. It's a proportion of the original text")
+    parser.add_argument('--words', '-w', type=int, help="Number to limit the length of the summary. The length option is ignored if the word limit is set.")
     parser.add_argument('--additional_stopwords', '-a', help="Either a string of comma separated stopwords or a path to a file which has comma separated stopwords in every line")
-    args = parser.parse_args()
+    return parser.parse_args(args)
+
+
+def main():
+    args = parse_args(sys.argv[1:])
 
     with open(args.text) as file:
         text = file.read()
