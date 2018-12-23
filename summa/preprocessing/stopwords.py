@@ -181,6 +181,9 @@ więcej wlasnie właśnie wszyscy wszystkich wszystkie wszystkim wszystko wtedy 
 zadnych zapewne zawsze ze zeby zeznowu zł znow znowu znów zostal został żaden żadna żadne żadnych że żeby
 """
 
+arabic = """
+"""
+
 LANGUAGES = {
     "danish": danish,
     "english": english,
@@ -189,7 +192,8 @@ LANGUAGES = {
     "portuguese": portuguese,
     "swedish": swedish,
     "italian": italian,
-    "polish": polish
+    "polish": polish,
+    "arabic": arabic
 }
 
 
