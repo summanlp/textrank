@@ -17,11 +17,35 @@ class TestSummarizer(unittest.TestCase):
 
         self.assertEqual(generated_summary, summary)
 
+    def test_reference_text_summarization_wstopwords(self):
+        text = get_text_from_test_data("mihalcea_tarau.txt")
+        additional_stoplist = get_text_from_test_data("mihalcea_tarau.sw.txt").strip().split(",")
+        # Makes a summary of the text.
+        generated_summary = summarize(text,additional_stopwords=additional_stoplist)
+
+        # To be compared to the method reference.
+        summary = get_text_from_test_data("mihalcea_tarau.summ.txt")
+
+        self.assertEqual(generated_summary, summary)
+
     def test_reference_text_summarization_with_split(self):
         text = get_text_from_test_data("mihalcea_tarau.txt")
 
         # Makes a summary of the text as a list.
         generated_summary = summarize(text, split=True)
+
+        # To be compared to the method reference.
+        summary = get_text_from_test_data("mihalcea_tarau.summ.txt")
+        summary = summary.split("\n")
+
+        self.assertSequenceEqual(generated_summary, summary)
+
+    def test_reference_text_summarization_wstopwords_with_split(self):
+        text = get_text_from_test_data("mihalcea_tarau.txt")
+        additional_stoplist = get_text_from_test_data("mihalcea_tarau.sw.txt").strip().split(",")
+
+        # Makes a summary of the text as a list.
+        generated_summary = summarize(text, split=True, additional_stopwords=additional_stoplist)
 
         # To be compared to the method reference.
         summary = get_text_from_test_data("mihalcea_tarau.summ.txt")
@@ -36,6 +60,16 @@ class TestSummarizer(unittest.TestCase):
     def test_few_distinct_words_summarization_with_split_is_empty_list(self):
         text = get_text_from_test_data("few_distinct_words.txt")
         self.assertEqual(summarize(text, split=True), [])
+
+    def test_few_distinct_words_summarization_wstopwords_is_empty_string(self):
+        text = get_text_from_test_data("few_distinct_words.txt")
+        additional_stoplist = ["here","there"]
+        self.assertEqual(summarize(text, additional_stopwords=additional_stoplist), "")
+
+    def test_few_distinct_words_summarization_wstopwords_with_split_is_empty_list(self):
+        text = get_text_from_test_data("few_distinct_words.txt")
+        additional_stoplist = ["here","there"]
+        self.assertEqual(summarize(text, split=True, additional_stopwords=additional_stoplist), [])
 
     def test_summary_from_unrelated_sentences_is_not_empty_string(self):
         # Tests that the summarization of a text with unrelated sentences is not empty string.
@@ -102,6 +136,11 @@ class TestSummarizer(unittest.TestCase):
         # Test the summarization module with accented characters.
         text = get_text_from_test_data("spanish.txt")
         self.assertIsNotNone(summarize(text, language="spanish"))
+
+    def test_polish(self):
+        # Test the summarization module for Polish language.
+        text = get_text_from_test_data("polish.txt")
+        self.assertIsNotNone(summarize(text, language="polish"))
 
     def test_text_as_bytes_raises_exception(self):
         # Test the keyword extraction for a text that is not a unicode object

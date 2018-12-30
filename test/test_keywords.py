@@ -18,13 +18,45 @@ class TestKeywords(unittest.TestCase):
 
         self.assertEqual({str(x) for x in generated_keywords}, {str(x) for x in reference_keywords})
 
+    def test_text_keywords_wempty_stoplist(self):
+        text = get_text_from_test_data("mihalcea_tarau.txt")
+        additional_stoplist = []
+        generated_keywords = keywords(text, split=True, additional_stopwords=additional_stoplist)
+        reference_keywords = get_text_from_test_data("mihalcea_tarau.kw.txt").split("\n")
+        self.assertEqual({str(x) for x in generated_keywords}, {str(x) for x in reference_keywords})
+
+    def test_text_keywords_wstoplist(self):
+        text = get_text_from_test_data("mihalcea_tarau.txt")
+        additional_stoplist = get_text_from_test_data("mihalcea_tarau.sw.txt").strip().split(",")
+        generated_keywords = keywords(text, split=True, additional_stopwords=additional_stoplist)
+        reference_keywords = get_text_from_test_data("mihalcea_tarau.swkw.txt").split("\n")
+        self.assertEqual({str(x) for x in generated_keywords}, {str(x) for x in reference_keywords})
+
     def test_keywords_few_distinct_words_is_empty_string(self):
         text = get_text_from_test_data("few_distinct_words.txt")
         self.assertEqual(keywords(text), "")
 
+    def test_keywords_few_distinct_words_wempty_stoplist_is_empty_string(self):
+        text = get_text_from_test_data("few_distinct_words.txt")
+        self.assertEqual(keywords(text,additional_stopwords=[]), "")
+
+    def test_keywords_few_distinct_words_w_stoplist_is_empty_string(self):
+        text = get_text_from_test_data("few_distinct_words.txt")
+        additional_stopwords = ["here","there"]
+        self.assertEqual(keywords(text,additional_stopwords=additional_stopwords), "")
+
     def test_keywords_few_distinct_words_split_is_empty_list(self):
         text = get_text_from_test_data("few_distinct_words.txt")
         self.assertEqual(keywords(text, split=True), [])
+
+    def test_keywords_few_distinct_words_wempty_stoplist_split_is_empty_list(self):
+        text = get_text_from_test_data("few_distinct_words.txt")
+        self.assertEqual(keywords(text, split=True, additional_stopwords=[]), [])
+
+    def test_keywords_few_distinct_words_w_stoplist_split_is_empty_list(self):
+        text = get_text_from_test_data("few_distinct_words.txt")
+        additional_stopwords = ["here","there"]
+        self.assertEqual(keywords(text, split=True, additional_stopwords=additional_stopwords), [])
 
     def test_text_summarization_on_short_input_text_and_split_is_not_empty_list(self):
         text = get_text_from_test_data("unrelated.txt")
@@ -53,6 +85,17 @@ class TestKeywords(unittest.TestCase):
 
         self.assertAlmostEqual(float(len(selected_docs_40)) / len(selected_docs_20), 0.4 / 0.2, places=1)
 
+    def test_keywords_ratio_wstopwords(self):
+        text = get_text_from_test_data("mihalcea_tarau.txt")
+        additional_stoplist = get_text_from_test_data("mihalcea_tarau.sw.txt").strip().split(",")
+        # Check ratio parameter is well behaved.
+        # Because length is taken on tokenized clean text we just check that
+        # ratio 40% is twice as long as ratio 20%
+        selected_docs_20 = keywords(text, ratio=0.2, split=True, additional_stopwords=additional_stoplist)
+        selected_docs_40 = keywords(text, ratio=0.4, split=True, additional_stopwords=additional_stoplist)
+
+        self.assertAlmostEqual(float(len(selected_docs_40)) / len(selected_docs_20), 0.4 / 0.2, places=1)
+
     def test_keywords_consecutive_keywords(self):
         text = "Rabbit populations known to be plentiful, large, and diverse \
                 in the area. \
@@ -66,8 +109,13 @@ class TestKeywords(unittest.TestCase):
 
     def test_repeated_keywords(self):
         text = get_text_from_test_data("repeated_keywords.txt")
-
         kwds = keywords(text)
+        self.assertTrue(len(kwds.splitlines()))
+
+    def test_repeated_keywords_wstopwords(self):
+        text = get_text_from_test_data("repeated_keywords.txt")
+        additional_stoplist = ["sage","user"]
+        kwds = keywords(text,additional_stopwords=additional_stoplist)
         self.assertTrue(len(kwds.splitlines()))
 
     def test_spanish_without_accents(self):

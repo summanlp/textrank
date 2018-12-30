@@ -47,9 +47,7 @@ class SnowballStemmer():
 
     >>> from summa.preprocessing.snowball import SnowballStemmer
     >>> print(" ".join(SnowballStemmer.languages)) # See which languages are supported
-    danish dutch english finnish french german hungarian
-    italian norwegian porter portuguese romanian russian
-    spanish swedish
+    ...
     >>> stemmer = SnowballStemmer("german") # Choose a language
     >>> stemmer.stem("Autobahnen") # Stem a word
     'autobahn'
@@ -69,9 +67,23 @@ class SnowballStemmer():
                            language, a ValueError is raised.
     """
 
-    languages = ("danish", "dutch", "english", "finnish", "french", "german",
-                 "hungarian", "italian", "norwegian", "porter", "portuguese",
-                 "romanian", "russian", "spanish", "swedish")
+    languages = (
+        "danish",
+        "dutch",
+        "english",
+        "finnish",
+        "french",
+        "german",
+        "hungarian",
+        "italian",
+        "norwegian",
+        "polish",
+        "portuguese",
+        "romanian",
+        "russian",
+        "spanish",
+        "swedish",
+    )
 
     def __init__(self, language):
         if language not in self.languages:
@@ -3582,4 +3594,108 @@ class SwedishStemmer(_ScandinavianStemmer):
                 break
 
 
+        return word
+
+
+class PolishStemmer(_LanguageSpecificStemmer):
+    """
+    The Polish stemmer, implemented based on python stemmer
+    for Polish language available at: https://github.com/Tutanchamon/pl_stemmer
+    """
+
+    def stem(self, word):
+        word = word.lower()
+
+        stem = word[:]
+        stem = self.remove_nouns(stem)
+        stem = self.remove_diminutive(stem)
+        stem = self.remove_adjective_ends(stem)
+        stem = self.remove_verbs_ends(stem)
+        stem = self.remove_adverbs_ends(stem)
+        stem = self.remove_plural_forms(stem)
+        stem = self.remove_general_ends(stem)
+
+        return stem
+
+    @staticmethod
+    def remove_general_ends(word):
+        # print "DEBUG: END", word[-1:]
+        if len(word) > 4 and word[-2:] in {"ia", "ie"}:
+            return word[:-2]
+        if len(word) > 4 and word[-1:] in {"u", u"ą", "i", "a", u"ę", "y", u"ę", u"ł"}:
+            return word[:-1]
+        return word
+
+    @staticmethod
+    def remove_diminutive(word):
+        if len(word) > 6:
+            if word[-5:] in {"eczek", "iczek", "iszek", "aszek", "uszek"}:
+                return word[:-5]
+            if word[-4:] in {"enek", "ejek", "erek"}:
+                return word[:-2]
+        if len(word) > 4:
+            if word[-2:] in {"ek", "ak"}:
+                return word[:-2]
+        return word
+
+    @staticmethod
+    def remove_verbs_ends(word):
+        if len(word) > 5 and word.endswith("bym"):
+            return word[:-3]
+        if len(word) > 5 and word[-3:] in {"esz", "asz", "cie", u"eść", u"aść", u"łem", "amy", "emy"}:
+            return word[:-3]
+        if len(word) > 3 and word[-3:] in {"esz", "asz", u"eść", u"aść", u"eć", u"ać"}:
+            return word[:-2]
+        if len(word) > 3 and word[-3:] in {"aj"}:
+            return word[:-1]
+        if len(word) > 3 and word[-2:] in {u"ać", "em", "am", u"ał", u"ił", u"ić", u"ąc"}:
+            return word[:-2]
+        return word
+
+    @staticmethod
+    def remove_nouns(word):
+        if len(word) > 7 and word[-5:] in {"zacja", u"zacją", "zacji"}:
+            return word[:-4]
+        if len(word) > 6 and word[-4:] in {"acja", "acji", u"acją", "tach", "anie", "enie",
+                                           "eniu", "aniu"}:
+            return word[:-4]
+        if len(word) > 6 and word.endswith("tyka"):
+            return word[:-2]
+        if len(word) > 5 and word[-3:] in {"ach", "ami", "nia", "niu", "cia", "ciu"}:
+            return word[:-3]
+        if len(word) > 5 and word[-3:] in {"cji", "cja", u"cją"}:
+            return word[:-2]
+        if len(word) > 5 and word[-2:] in {"ce", "ta"}:
+            return word[:-2]
+        return word
+
+    @staticmethod
+    def remove_adjective_ends(word):
+        if len(word) > 7 and word.startswith("naj") and (word.endswith("sze")
+                                                         or word.endswith("szy")):
+            return word[3:-3]
+        if len(word) > 7 and word.startswith("naj") and word.endswith("szych"):
+            return word[3:-5]
+        if len(word) > 6 and word.endswith("czny"):
+            return word[:-4]
+        if len(word) > 5 and word[-3:] in {"owy", "owa", "owe", "ych", "ego"}:
+            return word[:-3]
+        if len(word) > 5 and word[-2:] in {"ej"}:
+            return word[:-2]
+        return word
+
+    @staticmethod
+    def remove_adverbs_ends(word):
+        if len(word) > 4 and word[:-3] in {"nie", "wie"}:
+            return word[:-2]
+        if len(word) > 4 and word.endswith("rze"):
+            return word[:-2]
+        return word
+
+    @staticmethod
+    def remove_plural_forms(word):
+        if len(word) > 4 and (word.endswith(u"ów") or word.endswith("om")):
+            return word[:-2]
+        if len(word) > 4 and word.endswith("ami"):
+            return word[:-3]
         return word
