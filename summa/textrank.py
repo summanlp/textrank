@@ -14,7 +14,7 @@ DEFAULT_RATIO = 0.2
 
 def textrank(text, summarize_by=SENTENCE, ratio=DEFAULT_RATIO, words=None, additional_stopwords=None):
     if summarize_by == SENTENCE:
-        return summarize(text, ratio, words)
+        return summarize(text, ratio, words, additional_stopwords=additional_stopwords)
     else:
         return keywords(text, ratio, words, additional_stopwords=additional_stopwords)
 
