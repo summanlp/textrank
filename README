@@ -76,7 +76,7 @@ More examples
 
 - Define input text language (also available in :code:`keywords`).
 
-  The available languages are danish, dutch, english, finnish, french, german,
+  The available languages are arabic, danish, dutch, english, finnish, french, german,
   hungarian, italian, norwegian, polish, porter, portuguese, romanian, russian,
   spanish and swedish::
 
