@@ -6,7 +6,7 @@ setup(
     package_data = {
         'summa': ['README', 'LICENSE']
     },
-    version = '1.1.0',
+    version = '1.2.0',
     description = 'A text summarization and keyword extraction package based on TextRank',
     long_description = open('README', encoding="utf-8").read(),
     author = 'Federico Barrios, Federico Lopez',
