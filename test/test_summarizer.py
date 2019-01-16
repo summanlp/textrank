@@ -149,6 +149,11 @@ class TestSummarizer(unittest.TestCase):
         bytes = text.encode(encoding="utf-8")
         with self.assertRaises(ValueError):
             summarize(bytes, language="spanish")
+    
+    def test_arabic(self):
+         # Test the summarization module for arabic language.
+        text = get_text_from_test_data("arabic.txt")
+        self.assertIsNotNone(summarize(text, language='arabic'))
 
 
 if __name__ == '__main__':
