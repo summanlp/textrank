@@ -2969,8 +2969,11 @@ class RussianStemmer(_LanguageSpecificStemmer):
                 chr_exceeded = True
                 break
 
-        if chr_exceeded:
-            word = self.__cyrillic_to_roman(word)
+        # If there are no Cyrillic chars -> return as is
+        if not chr_exceeded:
+            return word
+
+        word = self.__cyrillic_to_roman(word)
 
         step1_success = False
         adjectival_removed = False
@@ -3115,8 +3118,7 @@ class RussianStemmer(_LanguageSpecificStemmer):
             if word.endswith("'"):
                 word = word[:-1]
 
-        if chr_exceeded:
-            word = self.__roman_to_cyrillic(word)
+        word = self.__roman_to_cyrillic(word)
 
 
         return word
