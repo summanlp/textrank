@@ -2,9 +2,14 @@ import os.path
 import sys
 
 
-def get_text_from_test_data(file):
+def get_test_file_path(file):
     pre_path = os.path.join(os.path.dirname(__file__), 'test_data')
-    with open(os.path.join(pre_path, file), mode='r', encoding="utf-8") as f:
+    return os.path.join(pre_path, file)
+
+
+def get_text_from_test_data(file):
+    file_path = get_test_file_path(file)
+    with open(file_path, mode='r', encoding="utf-8") as f:
         return f.read()
 
 
