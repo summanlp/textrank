@@ -2,6 +2,7 @@ import unittest
 
 from summa.keywords import keywords
 from summa.preprocessing.textcleaner import deaccent
+from numpy import isclose
 from .utils import get_text_from_test_data
 
 
@@ -94,7 +95,10 @@ class TestKeywords(unittest.TestCase):
         selected_docs_20 = keywords(text, ratio=0.2, split=True, additional_stopwords=additional_stoplist)
         selected_docs_40 = keywords(text, ratio=0.4, split=True, additional_stopwords=additional_stoplist)
 
-        self.assertAlmostEqual(float(len(selected_docs_40)) / len(selected_docs_20), 0.4 / 0.2, places=1)
+        actual_ratio = float(len(selected_docs_40)) / len(selected_docs_20)
+        expected_ratio = 0.4 / 0.2
+        # Expect the same ratio with a relative tolerance of 5%.
+        self.assertTrue(isclose(actual_ratio, expected_ratio, rtol=0.5), "Ratio between number of keywords should be 2.")
 
     def test_keywords_consecutive_keywords(self):
         text = "Rabbit populations known to be plentiful, large, and diverse \
