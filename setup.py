@@ -17,7 +17,7 @@ setup(
                 "automatic summarization",
                 "keywords", "summary", "textrank", "pagerank"],
     install_requires = [
-        'scipy >= 0.19'
+        'scipy >= 1.0.0'
     ],
     python_requires = '>=3.4',
     classifiers = [

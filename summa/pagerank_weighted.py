@@ -2,13 +2,6 @@ from scipy.sparse import csr_matrix
 from scipy.linalg import eig
 from numpy import empty as empty_matrix
 
-try:
-    from numpy import VisibleDeprecationWarning
-    import warnings
-    warnings.filterwarnings("ignore", category=VisibleDeprecationWarning)
-except ImportError:
-    pass
-
 CONVERGENCE_THRESHOLD = 0.0001
 
 
@@ -42,7 +35,15 @@ def pagerank_weighted_scipy(graph, damping=0.85):
     adjacency_matrix = build_adjacency_matrix(graph)
     probability_matrix = build_probability_matrix(graph)
 
-    pagerank_matrix = damping * adjacency_matrix.todense() + (1 - damping) * probability_matrix
+    # Suppress deprecation warnings from numpy.
+    # See https://github.com/summanlp/textrank/issues/57
+    import warnings
+    with warnings.catch_warnings():
+        from numpy import VisibleDeprecationWarning
+        warnings.filterwarnings("ignore", category=VisibleDeprecationWarning)
+        warnings.filterwarnings("ignore", category=PendingDeprecationWarning)
+        pagerank_matrix = damping * adjacency_matrix.todense() + (1 - damping) * probability_matrix
+
     vals, vecs = eig(pagerank_matrix, left=True, right=False)
     return process_results(graph, vecs)
 
