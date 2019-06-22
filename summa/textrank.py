@@ -1,6 +1,7 @@
-import os, sys
 import argparse
-
+import os
+import sys
+import warnings
 
 from .summarizer import summarize
 from .keywords import keywords
@@ -19,6 +20,14 @@ def textrank(text, summarize_by=SENTENCE, ratio=DEFAULT_RATIO, words=None, addit
         return keywords(text, ratio, words, additional_stopwords=additional_stopwords)
 
 
+def existing_file(file_name):
+    try:
+        with open(file_name, 'r') as file:
+            return file.read()
+    except Exception:
+        raise argparse.ArgumentTypeError("The file provided could not be opened.")
+
+
 def restricted_float(x):
     x = float(x)
     if x < 0.0 or x > 1.0:
@@ -28,15 +37,26 @@ def restricted_float(x):
 
 def parse_args(args):
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter, prog="textrank", description="Extract the most relevant sentences or keywords of a given text using the TextRank algorithm.")
-    # Old API - left for backward compatibility
-    parser.add_argument('--text', '-t', type=str, help="Text to summarize")
-    parser.add_argument('--summary', '-s', type=int, default=0, help="Type of unit to summarize: sentence (0) or word (1)")
-    parser.add_argument('--ratio', '-r', type=restricted_float, default=DEFAULT_RATIO, help="Float number (0,1] that defines the length of the summary. It's a proportion of the original text")
-    parser.add_argument('--words', '-w', type=int, help="Number to limit the length of the summary. The length option is ignored if the word limit is set.")
-    parser.add_argument('--additional_stopwords', '-a', help="Either a string of comma separated stopwords or a path to a file which has comma separated stopwords in every line")
-    # New api
-    parser.add_argument('--summarize', type=str, help="Run textrank to summarize the input text.")
-    parser.add_argument('--keywords', type=str, help="Run textrank to extract keywords from the input text.")
+
+    group = parser.add_mutually_exclusive_group(required=True)
+    # New API
+    group.add_argument('--summarize', metavar="path/to/file", type=existing_file,
+                       help="Run textrank to summarize the input text.")
+    group.add_argument('--keywords', metavar="path/to/file", type=existing_file,
+                       help="Run textrank to extract keywords from the input text.")
+    # Old API
+    group.add_argument('--text', '-t', metavar="path/to/file", type=existing_file,
+                       help="(Deprecated) Text to summarize if --summary option is selected")
+
+    parser.add_argument('--summary', '-s', metavar="{0,1}", type=int, choices=[SENTENCE, WORD], default=0,
+                        help="(Deprecated) Type of unit to summarize: sentence (0) or word (1)")
+    parser.add_argument('--ratio', '-r', metavar="r", type=restricted_float, default=DEFAULT_RATIO,
+                        help="Float number (0,1] that defines the length of the summary. It's a proportion of the original text")
+    parser.add_argument('--words', '-w', metavar="#words", type=int,
+                        help="Number to limit the length of the summary. The length option is ignored if the word limit is set.")
+    parser.add_argument('--additional_stopwords', '-a', metavar="list,of,stopwords",
+                        help="Either a string of comma separated stopwords or a path to a file which has comma separated stopwords in every line")
+
     return parser.parse_args(args)
 
 
@@ -53,16 +73,14 @@ def main():
         text = args.keywords
         mode = WORD
     elif args.summary:  # Old api
+        warnings.warn("The --summary option is deprecated. Please use either --summarize or --keywords", DeprecationWarning)
         text = args.text
         mode = args.summary
+
+        if text is None:
+            raise argparse.ArgumentTypeError('Error: no text to summarize provided.')
     else:
         raise argparse.ArgumentTypeError('Error: --summarize or --keywords is required')
-
-    if text is None:
-        raise argparse.ArgumentTypeError('Error: no text to summarize provided.')
-
-    with open(text) as file:
-        text = file.read()
 
     additional_stopwords = None
     if args.additional_stopwords:
