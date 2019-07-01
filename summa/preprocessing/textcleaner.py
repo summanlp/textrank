@@ -56,9 +56,9 @@ def init_textcleanner(language, additional_stopwords):
     set_stopwords_by_language(language, additional_stopwords)
 
 
-def split_sentences(text):
+def split_sentences(text, sentence_delimiter=None):
     processed = replace_abbreviations(text)
-    return [undo_replacement(sentence) for sentence in get_sentences(processed)]
+    return [undo_replacement(sentence) for sentence in get_sentences(processed, sentence_delimiter=sentence_delimiter)]
 
 
 def replace_abbreviations(text):
@@ -77,9 +77,14 @@ def replace_with_separator(text, separator, regexs):
     return result
 
 
-def get_sentences(text):
-    for match in RE_SENTENCE.finditer(text):
-        yield match.group()
+def get_sentences(text, sentence_delimiter=None):
+    
+    if sentence_delimiter:
+        for sentence in text.split(sentence_delimiter):
+            yield sentence
+    else:
+        for match in RE_SENTENCE.finditer(text):
+            yield match.group()
 
 
 # Taken from Gensim
@@ -158,11 +163,11 @@ def merge_syntactic_units(original_units, filtered_units, tags=None):
     return units
 
 
-def clean_text_by_sentences(text, language="english", additional_stopwords=None):
+def clean_text_by_sentences(text, language="english", additional_stopwords=None, sentence_delimiter=None):
     """ Tokenizes a given text into sentences, applying filters and lemmatizing them.
     Returns a SyntacticUnit list. """
     init_textcleanner(language, additional_stopwords)
-    original_sentences = split_sentences(text)
+    original_sentences = split_sentences(text, sentence_delimiter=sentence_delimiter)
     filtered_sentences = filter_words(original_sentences)
 
     return merge_syntactic_units(original_sentences, filtered_sentences)
