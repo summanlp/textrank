@@ -95,21 +95,25 @@ def _get_sentences_with_word_count(sentences, words):
     return selected_sentences
 
 
-def _extract_most_important_sentences(sentences, ratio, words):
+def _extract_most_important_sentences(sentences, ratio, words, sen_nb):
     sentences.sort(key=lambda s: s.score, reverse=True)
 
-    # If no "words" option is selected, the number of sentences is
-    # reduced by the provided ratio.
-    if words is None:
+    # If no "words" option is selected and no "sen_nb" option is selected, the
+    # number of sentences is reduced by the provided ratio.
+    if words is None and sen_nb is None:
         length = len(sentences) * ratio
         return sentences[:int(length)]
 
-    # Else, the ratio is ignored.
+    # Else the number of sentence is used to select the top K sentences
+    elif sen_nb is not None:
+        return sentences[:sen_nb]
+
+    # Else, the number of words is used to select the best matching sentences.
     else:
         return _get_sentences_with_word_count(sentences, words)
 
 
-def summarize(text, ratio=0.2, words=None, language="english", split=False, scores=False, additional_stopwords=None):
+def summarize(text, ratio=0.2, words=None, language="english", split=False, scores=False, additional_stopwords=None, sen_nb=None):
     if not isinstance(text, str):
         raise ValueError("Text parameter must be a Unicode object (str)!")
 
@@ -134,7 +138,7 @@ def summarize(text, ratio=0.2, words=None, language="english", split=False, scor
     _add_scores_to_sentences(sentences, pagerank_scores)
 
     # Extracts the most important sentences with the selected criterion.
-    extracted_sentences = _extract_most_important_sentences(sentences, ratio, words)
+    extracted_sentences = _extract_most_important_sentences(sentences, ratio, words, sen_nb)
 
     # Sorts the extracted sentences by apparition order in the original text.
     extracted_sentences.sort(key=lambda s: s.index)
