@@ -3505,7 +3505,8 @@ class SpanishStemmer(_StandardStemmer):
             if rv.endswith(suffix):
                 if suffix in ("e", "\xE9"):
                     word = word[:-len(suffix)]
-                    rv = rv[:-len(suffix)]
+                    if len(rv) > 1:
+                        rv = rv[:-len(suffix)]
 
                     if word[-2:] == "gu" and rv[-1] == "u":
                         word = word[:-1]
